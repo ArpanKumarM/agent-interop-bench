@@ -114,7 +114,7 @@ flowchart TB
 Requires Python 3.12 and [`uv`](https://docs.astral.sh/uv/).
 
 ```bash
-git clone <this-repo>
+git clone https://github.com/ArpanKumarM/agenttrust.git
 cd agenttrust
 uv sync
 ```
