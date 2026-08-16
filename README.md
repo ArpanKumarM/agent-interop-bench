@@ -17,6 +17,13 @@ deterministic scenarios against a controlled mock server and scores the
 result with rule-based evaluators, so the report is reproducible and the
 scoring logic is auditable.
 
+**The mock MCP server (`mock_servers/github_mock.py`) performs no real
+GitHub API calls and no external network operations of any kind.** It's a
+fully local, in-process simulation — every "issue," "repository," and
+"comment" it returns is synthetic data generated on the fly. Running the
+benchmark suite never touches a real GitHub account or any other external
+service.
+
 ## Phase 1 scope
 
 This repository currently implements **Phase 1: an MCP evaluation engine**.
