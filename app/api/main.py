@@ -1,4 +1,4 @@
-"""FastAPI application exposing the AgentTrust Phase 1 MCP evaluation engine."""
+"""FastAPI application exposing the Agent Interop Bench Phase 1 MCP evaluation engine."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ from app.runner.suite_execution import execute_suite
 from app.runner.transport import StdioMCPTransport
 
 configure_logging(settings.log_level)
-logger = logging.getLogger("agenttrust.api")
+logger = logging.getLogger("agent_interop_bench.api")
 
 
 class AppState:
@@ -42,15 +42,18 @@ def new_transport() -> StdioMCPTransport:
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     logger.info(
-        "agenttrust_startup",
+        "agent_interop_bench_startup",
         extra={"suite_name": app_state.suite.name, "case_count": len(app_state.suite.cases)},
     )
     yield
 
 
 app = FastAPI(
-    title="AgentTrust",
-    description="Reliability and security evaluation platform for MCP agents (Phase 1).",
+    title="Agent Interop Bench",
+    description=(
+        "Reliability, security, and interoperability testing for MCP and A2A agents. "
+        "Phase 1 implements MCP only; A2A support is planned."
+    ),
     version="0.1.0",
     lifespan=lifespan,
 )
@@ -78,12 +81,12 @@ async def create_run(_: RunCreateRequest | None = None) -> RunSummary:
     summary = RunSummary(run_id=run_id, status=RunStatus.RUNNING)
     app_state.run_repository.save(Run(summary=summary))
 
-    logger.info("agenttrust_run_started", extra={"run_id": run_id})
+    logger.info("agent_interop_bench_run_started", extra={"run_id": run_id})
     try:
         async with new_transport() as transport:
             report = await execute_suite(run_id, app_state.suite, transport)
     except Exception as exc:  # noqa: BLE001 - convert any run failure into a stored FAILED run
-        logger.exception("agenttrust_run_failed", extra={"run_id": run_id})
+        logger.exception("agent_interop_bench_run_failed", extra={"run_id": run_id})
         failed_summary = RunSummary(
             run_id=run_id,
             status=RunStatus.FAILED,
@@ -102,7 +105,7 @@ async def create_run(_: RunCreateRequest | None = None) -> RunSummary:
     )
     app_state.run_repository.save(Run(summary=completed_summary, report=report))
     logger.info(
-        "agenttrust_run_completed",
+        "agent_interop_bench_run_completed",
         extra={
             "run_id": run_id,
             "passed": report.summary.passed_tests,

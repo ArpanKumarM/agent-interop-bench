@@ -1,7 +1,7 @@
 [project]
-name = "agenttrust"
+name = "agent-interop-bench"
 version = "0.1.0"
-description = "Reliability and security evaluation platform for MCP (and later A2A) agents"
+description = "Reliability, security, and interoperability testing for MCP and A2A agents"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = { text = "MIT" }

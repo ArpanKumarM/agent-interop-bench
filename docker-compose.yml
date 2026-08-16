@@ -1,5 +1,7 @@
+name: agent-interop-bench
+
 services:
-  agenttrust:
+  api:
     build: .
     ports:
       - "8000:8000"

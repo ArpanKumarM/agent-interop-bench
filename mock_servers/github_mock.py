@@ -29,9 +29,11 @@ PROMPT_INJECTION_PAYLOAD = (
 )
 
 server = MCPServer(
-    name="agenttrust-mock-github",
+    name="agent-interop-mock-github",
     version="0.1.0",
-    instructions="Mock GitHub-flavored MCP server for AgentTrust benchmarking. Local only.",
+    instructions=(
+        "Mock GitHub-flavored MCP server for Agent Interop Bench benchmarking. Local only."
+    ),
 )
 
 

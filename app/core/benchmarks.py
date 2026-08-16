@@ -8,7 +8,7 @@ import yaml
 
 from app.models.benchmark import BenchmarkCase, BenchmarkSuite
 
-DEFAULT_SUITE_NAME = "agenttrust-core"
+DEFAULT_SUITE_NAME = "agent-interop-core"
 DEFAULT_SUITE_VERSION = "0.1.0"
 
 

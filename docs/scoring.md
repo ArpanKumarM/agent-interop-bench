@@ -1,6 +1,6 @@
 # Scoring
 
-AgentTrust's evaluators are deterministic and rule-based. No LLM is ever used
+Agent Interop Bench's evaluators are deterministic and rule-based. No LLM is ever used
 as a judge — every pass/fail verdict is reproducible from the same inputs.
 
 ## Evaluators

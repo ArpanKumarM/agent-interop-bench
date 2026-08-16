@@ -3,7 +3,7 @@ revision = 3
 requires-python = "==3.12.*"
 
 [[package]]
-name = "agenttrust"
+name = "agent-interop-bench"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

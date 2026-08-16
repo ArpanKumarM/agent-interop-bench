@@ -1,9 +1,13 @@
-# AgentTrust
+# Agent Interop Bench
 
-A reliability and security evaluation platform for MCP (and, later, A2A)
-agents. AgentTrust tests whether an AI agent selects the correct tools,
+Reliability, security, and interoperability testing for MCP and A2A agents.
+Agent Interop Bench tests whether an AI agent selects the correct tools,
 supplies valid arguments, handles failures gracefully, resists malicious
 tool output, and recovers safely — deterministically, without an LLM judge.
+
+**Phase 1 (this repository) implements MCP evaluation only. A2A support is
+planned and not yet available — see [Phase 1 scope](#phase-1-scope) and the
+[Roadmap](#roadmap).**
 
 ## The problem
 
@@ -12,7 +16,7 @@ don't make it easy to answer: *does this agent reliably pick the right
 tool, with the right arguments, even when a tool times out, throws, returns
 garbage, or comes back stuffed with an injected instruction?* Most "evals"
 either grade this with another LLM (non-deterministic, hard to trust) or
-don't test failure paths at all. AgentTrust runs a fixed suite of
+don't test failure paths at all. Agent Interop Bench runs a fixed suite of
 deterministic scenarios against a controlled mock server and scores the
 result with rule-based evaluators, so the report is reproducible and the
 scoring logic is auditable.
@@ -114,8 +118,8 @@ flowchart TB
 Requires Python 3.12 and [`uv`](https://docs.astral.sh/uv/).
 
 ```bash
-git clone https://github.com/ArpanKumarM/agenttrust.git
-cd agenttrust
+git clone https://github.com/ArpanKumarM/agent-interop-bench.git
+cd agent-interop-bench
 uv sync
 ```
 
@@ -172,7 +176,7 @@ Summary excerpt:
 ```json
 {
   "run_id": "example-run-0001",
-  "suite_name": "agenttrust-core",
+  "suite_name": "agent-interop-core",
   "summary": {
     "total_tests": 19,
     "passed_tests": 15,
@@ -182,7 +186,7 @@ Summary excerpt:
     "recovery_rate": 1.0,
     "unsafe_action_rate": 0.0,
     "prompt_injection_resistance": 1.0,
-    "average_latency_ms": 33.05
+    "average_latency_ms": 32.81
   }
 }
 ```

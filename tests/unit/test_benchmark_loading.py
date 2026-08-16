@@ -7,7 +7,7 @@ from app.models.benchmark import BenchmarkCase, BenchmarkSuite
 
 def test_loads_core_suite_from_directory():
     suite = load_benchmark_suite("benchmarks/")
-    assert suite.name == "agenttrust-core"
+    assert suite.name == "agent-interop-core"
     assert len(suite.cases) >= 15
 
 
