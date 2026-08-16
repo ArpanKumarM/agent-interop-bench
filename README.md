@@ -1,5 +1,7 @@
 # Agent Interop Bench
 
+[![CI](https://github.com/ArpanKumarM/agent-interop-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/ArpanKumarM/agent-interop-bench/actions/workflows/ci.yml)
+
 Reliability, security, and interoperability testing for MCP and A2A agents.
 Agent Interop Bench tests whether an AI agent selects the correct tools,
 supplies valid arguments, handles failures gracefully, resists malicious
@@ -144,6 +146,19 @@ docker compose up --build
 This builds the image with `uv`, starts the FastAPI service on
 `http://localhost:8000`, and the app spawns the mock MCP server itself as a
 stdio subprocess per run — no second container needed.
+
+## Quick Demo
+
+```bash
+./scripts/demo.sh
+```
+
+One command, no API keys, nothing but Docker and `curl`/`python3` on your
+machine. It starts the stack, waits for `/health`, discovers the MCP tools,
+lists the benchmark suite, runs all 19 cases, fetches the generated JSON
+report, and prints the real reliability scores plus the intentional
+evaluator-validation failures — then tears down every Docker resource it
+created, even if a step fails partway through.
 
 ## Example API commands
 
