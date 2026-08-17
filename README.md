@@ -153,6 +153,8 @@ stdio subprocess per run — no second container needed.
 ./scripts/demo.sh
 ```
 
+![Agent Interop Bench running MCP reliability benchmarks](docs/assets/demo.gif)
+
 One command, no API keys, nothing but Docker and `curl`/`python3` on your
 machine. It starts the stack, waits for `/health`, discovers the MCP tools,
 lists the benchmark suite, runs all 19 cases, fetches the generated JSON
