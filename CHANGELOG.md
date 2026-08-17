@@ -38,7 +38,13 @@ Initial public release: Phase 1, an MCP evaluation engine.
   `/runs/{id}`, `/runs/{id}/report`) with an in-memory run store behind a
   `RunRepository` interface, ready for a persistent backend later.
 - Docker and Docker Compose for one-command startup, and
-  `scripts/demo.sh` for a reproducible, self-cleaning end-to-end demo.
+  `scripts/demo.sh` for a reproducible, self-cleaning end-to-end demo,
+  with a detailed default mode plus condensed `--presentation` and
+  `--recording` modes — the latter paced for a 30-40 second screen
+  recording, with pauses skipped automatically outside a real terminal.
+- A recorded demo GIF (`docs/assets/demo.gif`), embedded in the README,
+  showing tool discovery, the benchmark run, real reliability scores,
+  and the intentional evaluator-validation failures end to end.
 - GitHub Actions CI running lint (`ruff check`), format verification
   (`ruff format --check`), and the full test suite on every push and PR.
 - 47 unit and integration tests; no network access or paid API required.
