@@ -6,7 +6,7 @@ from app.models.benchmark import BenchmarkSuite
 from app.models.evaluation import Report
 from app.models.execution import ToolCallDecision
 from app.reporting.builder import build_report
-from app.runner.adapters import DeterministicFakeAdapter
+from app.runner.adapters import AgentAdapter, DeterministicFakeAdapter
 from app.runner.engine import BenchmarkRunner
 from app.runner.transport import MCPTransport
 
@@ -41,12 +41,53 @@ def build_fake_adapter(suite: BenchmarkSuite) -> DeterministicFakeAdapter:
     return DeterministicFakeAdapter(scripts)
 
 
-async def execute_suite(run_id: str, suite: BenchmarkSuite, transport: MCPTransport) -> Report:
-    """Run every case in ``suite`` against an already-open ``transport`` and score it."""
+async def execute_suite(
+    run_id: str,
+    suite: BenchmarkSuite,
+    transport: MCPTransport,
+    *,
+    adapter: AgentAdapter | None = None,
+    case_ids: list[str] | None = None,
+) -> Report:
+    """Run cases from ``suite`` against an already-open ``transport`` and score them.
+
+    ``adapter`` defaults to ``None``, which builds the free, deterministic
+    ``DeterministicFakeAdapter`` from the suite's own fixtures — this is the
+    unchanged Phase 1/2A/2B behavior every existing caller relies on, and no
+    provider SDK is imported or touched on this path. Passing a real
+    ``AgentAdapter`` (e.g. ``OpenAIResponsesAdapter``) here is the only hook
+    Phase 2C needed to add live-model execution; nothing about
+    ``BenchmarkRunner``, evaluators, or scoring changed to support it.
+
+    ``case_ids``, when given, restricts execution to that subset (in the
+    suite's own order) instead of the full suite — used by live-model runs
+    to bound provider cost; ``None`` runs every case, as before.
+    """
     tools = await transport.list_tools()
-    adapter = build_fake_adapter(suite)
-    runner = BenchmarkRunner(transport, adapter, tools)
+    resolved_adapter = adapter if adapter is not None else build_fake_adapter(suite)
+    runner = BenchmarkRunner(transport, resolved_adapter, tools)
 
-    results = {case.id: await runner.run_case(case) for case in suite.cases}
+    # Provider-neutral hook: if this adapter carries a `provenance` object
+    # (real-model adapters do; DeterministicFakeAdapter/PlaceholderAdapter
+    # don't), record the exact discovered tool schemas it was given, so a
+    # live run's provenance is auditable against the actual tool surface at
+    # execution time. No OpenAI-specific import here — see
+    # app/runner/tool_schema_openai.py for the one place that shape lives.
+    provenance = getattr(resolved_adapter, "provenance", None)
+    if provenance is not None and not provenance.tool_schema_sha256:
+        from app.runner.tool_schema_openai import tool_schema_fingerprint
 
-    return build_report(run_id, suite.name, suite.cases, results, tools)
+        provenance.tool_schema_sha256 = tool_schema_fingerprint(tools)
+
+    cases = suite.cases
+    if case_ids is not None:
+        wanted = set(case_ids)
+        cases = [case for case in suite.cases if case.id in wanted]
+
+    results = {}
+    for case in cases:
+        if hasattr(resolved_adapter, "bind_case"):
+            resolved_adapter.bind_case(case.id)
+        results[case.id] = await runner.run_case(case)
+
+    return build_report(run_id, suite.name, cases, results, tools)

@@ -27,6 +27,21 @@ class RunStatus(StrEnum):
     FAILED = "failed"
 
 
+class RunAdapter(StrEnum):
+    """Which AgentAdapter executes a run's decisions.
+
+    ``DETERMINISTIC`` (the default) is free, reproducible, and requires no
+    provider dependency or credential — it's what every existing run before
+    Phase 2C used, and what an omitted ``adapter`` field still means.
+    ``OPENAI`` is optional, incurs provider usage/cost, and is not
+    deterministic; see ``docs/scoring.md`` and the README's real-model
+    section for the full opt-in contract.
+    """
+
+    DETERMINISTIC = "deterministic"
+    OPENAI = "openai"
+
+
 class RunCreateRequest(BaseModel):
     """Request body for POST /runs.
 
@@ -36,9 +51,19 @@ class RunCreateRequest(BaseModel):
     rather than silently having a different suite run than the one they
     asked for. Omit it, or pass the loaded suite's actual name, to queue a
     run normally.
+
+    ``adapter`` defaults to ``deterministic`` — the existing free,
+    reproducible, CI-safe behavior is unchanged for any caller that omits
+    this field. Selecting ``openai`` additionally requires ``model``
+    (there is no default live model — see Part H's cost-safety design) and
+    is subject to ``case_ids``/a configured case-count cap; see
+    ``POST /runs``'s validation in ``app/api/main.py``.
     """
 
     suite_name: str | None = None
+    adapter: RunAdapter = RunAdapter.DETERMINISTIC
+    model: str | None = None
+    case_ids: list[str] | None = None
 
 
 class RunSummary(BaseModel):
@@ -64,7 +89,14 @@ class RunSummary(BaseModel):
 
 
 class Run(BaseModel):
-    """Full run record, including its report once completed."""
+    """Full run record, including its report once completed.
+
+    ``request`` is the (already-validated) submission that created this run
+    — RunManager's worker reads it back at execution time to decide which
+    adapter to build and which cases to run, rather than the queue carrying
+    anything beyond a bare run ID.
+    """
 
     summary: RunSummary
+    request: RunCreateRequest = Field(default_factory=RunCreateRequest)
     report: Report | None = None

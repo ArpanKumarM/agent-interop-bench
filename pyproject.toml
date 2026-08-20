@@ -15,6 +15,14 @@ dependencies = [
     "jsonschema>=4.26.0",
 ]
 
+[project.optional-dependencies]
+# Optional real-model adapter (Phase 2C). The deterministic benchmark --
+# the default and only path CI ever exercises -- never imports `openai` and
+# works with a plain `uv sync --frozen`. Install this extra only to use
+# adapter="openai" against a real OpenAI model:
+#   uv sync --frozen --extra openai
+openai = ["openai>=3.0.0"]
+
 [dependency-groups]
 dev = [
     "pytest>=8.3",

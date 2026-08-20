@@ -3,6 +3,39 @@
 Agent Interop Bench's evaluators are deterministic and rule-based. No LLM is ever used
 as a judge — every pass/fail verdict is reproducible from the same inputs.
 
+## Deterministic fixture evaluation vs. live provider/model evaluation
+
+Everything on this page describes how a case is *scored* — the evaluators
+themselves are deterministic and rule-based no matter which adapter produced
+the decisions they're scoring. What's **not** always deterministic is the
+*decision* being scored:
+
+- **Deterministic fixture evaluation** (the default, and everything CI
+  runs): `DeterministicFakeAdapter` reads scripted decisions from
+  `simulated_agent_response`/`simulated_reaction`. The same suite run twice
+  produces byte-identical scores (see
+  `tests/integration/test_scientific_equivalence.py`). `Report.model_provenance`
+  is `null`.
+- **Live provider/model evaluation** (optional, explicit opt-in — see the
+  README's "Real-model mode" section): a real model (currently
+  `OpenAIResponsesAdapter`) makes the actual decisions. The same request
+  against the same model **is not guaranteed to reproduce the same score**
+  on a re-run — that's an inherent property of a live model, not a bug in
+  this harness. `Report.model_provenance` is set, recording exactly which
+  model, baseline policy, and tool schemas produced that run's results, so
+  a score can always be traced back to what generated it (see
+  `app/models/provenance.py`).
+
+Never compare a live-model score to the deterministic sample report as if
+they measured the same thing — the deterministic report validates that
+*this harness's evaluators* work correctly against known-good and
+known-bad scripted behavior; a live report measures *a specific model's*
+behavior at a specific point in time, under a specific policy and tool
+surface. The checked-in `examples/sample_report.json` is, and will remain,
+a deterministic-fixture report — a live report is not suitable as a
+committed "canonical" baseline the way the deterministic one is, since it
+isn't reproducible.
+
 ## Evaluators
 
 Each evaluator inspects one `BenchmarkCase` (the ground truth) and the

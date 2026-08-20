@@ -21,6 +21,10 @@ def _settings(**overrides) -> Settings:
         mock_server_args=[],
         run_worker_count=2,
         run_queue_maxsize=10,
+        enable_real_model_runs=False,
+        real_model_max_cases=3,
+        real_model_timeout_seconds=30.0,
+        real_model_max_output_tokens=256,
     )
     defaults.update(overrides)
     return Settings(**defaults)
@@ -42,3 +46,41 @@ def test_zero_or_negative_worker_count_rejected(value):
 def test_zero_or_negative_queue_maxsize_rejected(value):
     with pytest.raises(ValueError, match="RUN_QUEUE_MAXSIZE"):
         _settings(run_queue_maxsize=value)
+
+
+def test_enable_real_model_runs_defaults_false_and_is_a_plain_bool():
+    settings = _settings()
+    assert settings.enable_real_model_runs is False
+
+
+@pytest.mark.parametrize("value", [0, -1])
+def test_zero_or_negative_real_model_max_cases_rejected(value):
+    with pytest.raises(ValueError, match="REAL_MODEL_MAX_CASES"):
+        _settings(real_model_max_cases=value)
+
+
+@pytest.mark.parametrize("value", [0, -1.0])
+def test_non_positive_real_model_timeout_rejected(value):
+    with pytest.raises(ValueError, match="REAL_MODEL_TIMEOUT_SECONDS"):
+        _settings(real_model_timeout_seconds=value)
+
+
+@pytest.mark.parametrize("value", [0, -1])
+def test_zero_or_negative_real_model_max_output_tokens_rejected(value):
+    with pytest.raises(ValueError, match="REAL_MODEL_MAX_OUTPUT_TOKENS"):
+        _settings(real_model_max_output_tokens=value)
+
+
+def test_from_env_defaults_disable_real_model_runs(monkeypatch):
+    for key in (
+        "ENABLE_REAL_MODEL_RUNS",
+        "REAL_MODEL_MAX_CASES",
+        "REAL_MODEL_TIMEOUT_SECONDS",
+        "REAL_MODEL_MAX_OUTPUT_TOKENS",
+        "OPENAI_API_KEY",
+    ):
+        monkeypatch.delenv(key, raising=False)
+
+    settings = Settings.from_env()
+    assert settings.enable_real_model_runs is False
+    assert settings.real_model_max_cases == 3

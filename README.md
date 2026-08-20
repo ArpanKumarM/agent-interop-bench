@@ -7,9 +7,8 @@ Agent Interop Bench tests whether an AI agent selects the correct tools,
 supplies valid arguments, handles failures gracefully, resists malicious
 tool output, and recovers safely — deterministically, without an LLM judge.
 
-**Phase 1 (this repository) implements MCP evaluation only. A2A support is
-planned and not yet available — see [Phase 1 scope](#phase-1-scope) and the
-[Roadmap](#roadmap).**
+**This repository implements MCP evaluation only. A2A support is planned
+and not yet available — see [Scope](#scope) and the [Roadmap](#roadmap).**
 
 ## The problem
 
@@ -30,26 +29,29 @@ fully local, in-process simulation — every "issue," "repository," and
 benchmark suite never touches a real GitHub account or any other external
 service.
 
-## Phase 1 scope
+## Scope
 
-This repository currently implements **Phase 1: an MCP evaluation engine**.
+This repository implements an MCP evaluation engine, built up in phases.
 
-In scope:
+In scope today:
 - A safe, local mock MCP server with configurable failure injection
 - MCP tool discovery, normalized into Pydantic models
-- A deterministic benchmark suite (YAML) and runner
-- A pluggable `AgentAdapter` interface, with a deterministic fake adapter for CI
+- A deterministic benchmark suite (YAML) and a bounded multi-turn runner
+- A pluggable `AgentAdapter` interface: a deterministic fake adapter (free,
+  reproducible, the default everywhere) and an optional, disabled-by-default
+  real-model adapter for OpenAI
 - Eight rule-based evaluators and an aggregate JSON reliability report
-- A FastAPI service with in-memory run storage
+- A FastAPI service with async background run execution and in-memory run
+  storage
 - Docker / Docker Compose for one-command startup
 
-Out of scope for Phase 1 (see [Roadmap](#roadmap)):
+Out of scope for now (see [Roadmap](#roadmap)):
 - A2A agent support
 - A frontend/dashboard
 - PostgreSQL or any persistent database
 - Authentication
 - Cloud deployment
-- Real LLM-backed adapters (Claude/OpenAI)
+- Additional real-model providers beyond OpenAI (e.g. Anthropic)
 
 ## Architecture
 
@@ -114,7 +116,9 @@ flowchart TB
   deterministic fake adapter is a fixture lookup table built from each
   benchmark case's `simulated_agent_response` — it lets negative test cases
   (wrong tool, hallucinated tool, bad arguments) be expressed declaratively.
-  A `PlaceholderAdapter` documents the future real-model integration point.
+  `OpenAIResponsesAdapter` is the first real-model implementation of the
+  same interface (see [Real-model mode](#real-model-mode-optional)); adding
+  it required zero changes to `BenchmarkRunner`, evaluators, or scoring.
 - **The safety gate lives in the runner, not the adapter.** A mutating tool
   (flagged via MCP tool annotations' `destructiveHint`) is only executed if
   the benchmark case explicitly sets `approved_mutation: true` — an
@@ -167,6 +171,101 @@ database, and multiple server processes do not share run state — each
 process has its own independent `RunManager` and repository. Persistent
 storage (e.g. a `RunRepository` backed by a real database, behind the same
 interface used today) is future work; see Roadmap.
+
+## Real-model mode (optional)
+
+Every run above uses the **deterministic mode**: the default, free,
+reproducible, CI-safe fixture adapter (`DeterministicFakeAdapter`) — no
+external model, no network call beyond the local mock MCP subprocess, no
+API key, ever required. This is what `POST /runs` does when `adapter` is
+omitted, and it's the only mode any test in this repository or CI exercises.
+
+**Real-model mode** replaces the fixture adapter with a live OpenAI model
+(via the Responses API) for a bounded subset of cases. It is optional,
+explicitly opt-in, and fundamentally different in kind from deterministic
+mode:
+
+- **Not deterministic.** The same request against the same model can
+  produce different results across runs — there is no reproducibility
+  guarantee, and results should never be compared to the deterministic
+  baseline as if they measured the same thing.
+- **Incurs provider usage/cost.** Every case run this way is a real, billed
+  API call.
+- **Never runs automatically.** Disabled by default; CI never enables it.
+
+The model only *proposes* what to do — it can never execute an MCP tool
+directly. Every proposed action still passes through the exact same
+`BenchmarkRunner` used by deterministic mode: the same tool-existence and
+argument-schema checks, and critically, the **same mutation safety gate**.
+A live model that decides to call a mutating tool without approval is
+blocked exactly like a scripted fixture would be — mutation safety is
+enforced entirely outside the model, never by trusting what it says.
+
+### Enabling it
+
+```bash
+export ENABLE_REAL_MODEL_RUNS=true
+export OPENAI_API_KEY=your-key-here   # never commit a real key; read from env only
+uv sync --frozen --extra openai        # installs the optional openai dependency
+```
+
+`OPENAI_API_KEY` is read only from the environment, using the OpenAI SDK's
+own standard behavior — never accepted in a request body, query parameter,
+suite YAML, or benchmark fixture, and never echoed back in any response.
+
+### Requesting a live run
+
+```bash
+curl -i -X POST http://localhost:8000/runs -H 'content-type: application/json' -d '{
+  "adapter": "openai",
+  "model": "your-model-name",
+  "case_ids": ["correct-001-search-issues"]
+}'
+```
+
+- `model` is **required** for `adapter="openai"` — there is no default live
+  model, so there is never ambiguity about what will incur usage.
+- `case_ids` bounds which cases run; omitting it means "every case," which
+  is checked against a conservative cap (`REAL_MODEL_MAX_CASES`, default
+  **3**) before anything is queued or any provider call is made. A full
+  21-case live run requires deliberately raising that cap, not the
+  accidental default.
+- Preconditions are validated *before* queueing: an unsupported/missing
+  `model`, invalid or duplicate `case_ids`, or a case count over the cap
+  returns `400`; the feature being disabled, the optional dependency not
+  being installed, or no credential being configured returns `503` — none
+  of these ever create a queued run record.
+- The provider client is configured with a short, finite timeout
+  (`REAL_MODEL_TIMEOUT_SECONDS`, default 30s) and **zero automatic SDK
+  retries** — one benchmark turn is one intentional, observable provider
+  request, never a hidden extra paid attempt.
+
+### Provenance
+
+A live run's `GET /runs/{run_id}/report` includes `model_provenance`
+(`null` for every deterministic run — the unambiguous signal a report is
+non-reproducible): the exact model requested/returned, the frozen baseline
+policy's version and content hash, a hash of the exact tool schemas offered,
+the cost-safety configuration used, and per-call token/response usage. No
+credential, header, or hidden model reasoning is ever persisted. See
+`app/models/provenance.py` and `docs/scoring.md`.
+
+### Protocol fidelity and reasoning-model support
+
+`OpenAIResponsesAdapter` correlates each turn with the provider's own,
+opaque `call_id` — it replays a turn's actual `response.output` items
+(including any reasoning items a reasoning-capable model emits) verbatim on
+the next request, exactly as OpenAI's own function-calling guide's
+`input_list += response.output` pattern does, rather than reconstructing a
+synthetic function-call item with an invented ID. This state is
+provider-internal and transient: it's cached in memory for the duration of
+one case's turns, reset at each case boundary, never written to
+`TurnResult`/`model_provenance`/logs, and never inspected for content — a
+reasoning model's private reasoning text is preserved for the provider's
+own continuity without this project ever reading or storing it. If a
+provider response is `incomplete` (for example, truncated by
+`REAL_MODEL_MAX_OUTPUT_TOKENS`), it's treated as a controlled execution
+failure, never interpreted as a partial decision.
 
 ## Installation
 
@@ -300,18 +399,26 @@ suite.
 
 ## Known limitations
 
-- **Multi-turn is opt-in per case, bounded, and still scripted.** Every case
-  runs a turn loop capped at `max_turns` (1 by default): the adapter decides,
-  the runner validates and gates the decision, executes it if allowed, and —
-  only if `max_turns >= 2` — hands the result back to the adapter for another
-  decision. This makes genuine prompt-injection resistance testing possible,
-  but the adapter in every case today is `DeterministicFakeAdapter` reading
-  scripted fixtures, not a real model reacting to real output. See
-  `docs/scoring.md` for the full execution model and why the resulting
-  `prompt_injection_resistance` score is a harness-validation metric, not a
-  real-model robustness measurement.
-- **No real LLM adapter yet.** `PlaceholderAdapter` is a documented stub;
-  wiring a real model is future work.
+- **Multi-turn is opt-in per case and bounded.** Every case runs a turn loop
+  capped at `max_turns` (1 by default): the adapter decides, the runner
+  validates and gates the decision, executes it if allowed, and — only if
+  `max_turns >= 2` — hands the result back to the adapter for another
+  decision. The deterministic suite's fixtures are still scripted
+  (`DeterministicFakeAdapter`); real-model mode (see above) is what makes
+  the `prompt_injection_resistance` metric measure actual model behavior
+  instead of a harness-validation fixture — see `docs/scoring.md`, and note
+  that a live score is not deterministic/reproducible the way a fixture
+  score is.
+- **One real-model provider (OpenAI).** `OpenAIResponsesAdapter` is the
+  first live-model adapter; other providers (e.g. Anthropic) are future
+  work — see Roadmap. `PlaceholderAdapter` remains a documented stub for
+  whichever comes next.
+- **No per-case execution-error isolation for live runs.** A provider-level
+  failure (timeout, rate limit, API error) on any one case currently fails
+  the whole run, the same way a buggy deterministic fixture already would —
+  there's no partial-results/retry-just-this-case concept yet. Keep
+  `case_ids` selections small; this is also what the conservative
+  `REAL_MODEL_MAX_CASES` default bounds the blast radius of.
 - **In-memory run storage and queue only.** Runs, and the pending-work
   queue itself, do not survive a process restart. This is not a distributed
   job system: multiple server processes do not share run state, each has
@@ -326,9 +433,13 @@ suite.
 
 - **A2A support** — extend discovery/runner/evaluators to Agent-to-Agent
   protocol targets alongside MCP.
-- **Real-model adapters** — Claude and OpenAI adapters implementing
-  `AgentAdapter`, exercising the same benchmark suite non-deterministically
-  with statistical reporting.
+- **Additional real-model providers** (e.g. Anthropic) implementing
+  `AgentAdapter`, alongside the existing `OpenAIResponsesAdapter`.
+- **Per-case execution-error isolation** for live runs, so one provider
+  hiccup doesn't fail an entire multi-case live run.
+- **Statistical reporting across repeated live runs** — since a live score
+  isn't reproducible the way a fixture score is, aggregating N runs per
+  case would give a more honest picture than a single non-deterministic pass.
 - **OpenTelemetry** — trace each benchmark run for latency/error visibility
   beyond the JSON report.
 - **A dashboard** — a frontend over the existing API for browsing runs and

@@ -22,6 +22,14 @@ class Settings:
     # rejected with 429 rather than accepted unboundedly.
     run_worker_count: int
     run_queue_maxsize: int
+    # Real-model (Phase 2C) cost-safety controls. Disabled by default: a
+    # deterministic run never inspects any of these, never constructs a
+    # provider client, and never requires OPENAI_API_KEY. See
+    # app/runner/openai_adapter.py and docs/scoring.md.
+    enable_real_model_runs: bool
+    real_model_max_cases: int
+    real_model_timeout_seconds: float
+    real_model_max_output_tokens: int
 
     def __post_init__(self) -> None:
         # asyncio.Queue(maxsize=0) means UNBOUNDED, not zero — so a value < 1
@@ -33,6 +41,17 @@ class Settings:
             raise ValueError(f"RUN_WORKER_COUNT must be >= 1, got {self.run_worker_count}")
         if self.run_queue_maxsize < 1:
             raise ValueError(f"RUN_QUEUE_MAXSIZE must be >= 1, got {self.run_queue_maxsize}")
+        if self.real_model_max_cases < 1:
+            raise ValueError(f"REAL_MODEL_MAX_CASES must be >= 1, got {self.real_model_max_cases}")
+        if self.real_model_timeout_seconds <= 0:
+            raise ValueError(
+                f"REAL_MODEL_TIMEOUT_SECONDS must be > 0, got {self.real_model_timeout_seconds}"
+            )
+        if self.real_model_max_output_tokens < 1:
+            raise ValueError(
+                "REAL_MODEL_MAX_OUTPUT_TOKENS must be >= 1, "
+                f"got {self.real_model_max_output_tokens}"
+            )
 
     @classmethod
     def from_env(cls) -> Settings:
@@ -47,7 +66,22 @@ class Settings:
             ).split(),
             run_worker_count=int(os.environ.get("RUN_WORKER_COUNT", "2")),
             run_queue_maxsize=int(os.environ.get("RUN_QUEUE_MAXSIZE", "10")),
+            enable_real_model_runs=os.environ.get("ENABLE_REAL_MODEL_RUNS", "false").lower()
+            in ("1", "true", "yes"),
+            real_model_max_cases=int(os.environ.get("REAL_MODEL_MAX_CASES", "3")),
+            real_model_timeout_seconds=float(os.environ.get("REAL_MODEL_TIMEOUT_SECONDS", "30.0")),
+            real_model_max_output_tokens=int(os.environ.get("REAL_MODEL_MAX_OUTPUT_TOKENS", "256")),
         )
+
+
+def real_model_api_key_configured() -> bool:
+    """Whether OPENAI_API_KEY is present in the environment.
+
+    Deliberately returns only a bool — the value is never read, logged, or
+    stored anywhere else in this module or in Settings, so a key can never
+    end up serialized into a report, a log line, or an API response.
+    """
+    return bool(os.environ.get("OPENAI_API_KEY"))
 
 
 settings = Settings.from_env()

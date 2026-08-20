@@ -180,7 +180,7 @@ def test_report_not_ready_returns_409_and_api_stays_responsive_during_execution(
 
 
 def test_create_run_returns_429_when_queue_is_full(client, monkeypatch):
-    def full_submit():
+    def full_submit(request=None):
         raise RunQueueFullError("Run queue is full (10 pending); try again shortly.")
 
     monkeypatch.setattr(app_state.run_manager, "submit", full_submit)

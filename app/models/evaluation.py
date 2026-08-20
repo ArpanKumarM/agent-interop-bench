@@ -8,6 +8,7 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 from app.models.execution import TerminationReason, TurnResult
+from app.models.provenance import ModelRunProvenance
 
 
 class EvaluationResult(BaseModel):
@@ -58,14 +59,26 @@ class ScoreSummary(BaseModel):
 
 
 class Report(BaseModel):
-    """The complete JSON reliability report produced for a benchmark run."""
+    """The complete JSON reliability report produced for a benchmark run.
+
+    ``model_provenance`` is ``None`` for every deterministic run (the
+    default, and the only kind of run CI or an unconfigured deployment can
+    ever produce) and is the single, unambiguous signal that a report came
+    from a live model adapter instead: its presence means this report is
+    **not deterministic** and may not reproduce identically on a re-run,
+    even with the same configuration. See ``app.models.provenance`` and
+    `docs/scoring.md`.
+    """
 
     run_id: str
     generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     suite_name: str
     summary: ScoreSummary
     per_test: list[CaseReport]
+    model_provenance: ModelRunProvenance | None = None
     scoring_notes: str = (
         "See docs/scoring.md for the full definition of each metric. "
-        "All evaluators are deterministic; no LLM is used as a judge."
+        "All evaluators are deterministic; no LLM is used as a judge. "
+        "If model_provenance is set, the underlying decisions came from a "
+        "live model adapter and this report's results are not reproducible."
     )
