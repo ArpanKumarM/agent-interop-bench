@@ -9,6 +9,8 @@ def _case_report(case_id, passed, evaluations, latency_ms=10.0) -> CaseReport:
         expected_outcome="success",
         passed=passed,
         latency_ms=latency_ms,
+        turns=[],
+        termination_reason="max_turns_reached",
         evaluations=evaluations,
         failure_reasons=[] if passed else ["something failed"],
     )

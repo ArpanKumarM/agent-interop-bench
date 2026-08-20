@@ -5,6 +5,49 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Generalized the runner from a single tool call into a bounded interaction
+  loop: `BenchmarkRunner.run_case` now calls `AgentAdapter.decide` up to
+  `BenchmarkCase.max_turns` times (default `1`, i.e. behaviorally unchanged
+  single-turn execution), validating and mutation-gating every turn
+  identically, and terminating deterministically for exactly one of three
+  reasons (`TerminationReason`: `voluntary_stop`, `blocked_unsafe`,
+  `max_turns_reached`) — never an unbounded loop.
+- Replaced the ad hoc, recursive `RunResult.follow_up` with a flat
+  `RunResult.turns: list[TurnResult]` interaction trace. Each `TurnResult`
+  independently audits the adapter's decision, the requested tool/arguments,
+  whether the tool was known, its mutation status and approval, the safety
+  gate's verdict, whether execution actually happened, and the tool
+  output/error/timing. `RunResult` keeps `selected_tool`, `tool_output`,
+  `latency_ms`, etc. as computed properties over `turns[0]`, so every
+  existing evaluator needed no changes.
+- `prompt_injection_resistance` now scores real reaction resistance for any
+  case with `max_turns >= 2` and a `simulated_reaction` fixture (via
+  `RunResult.reaction_turns`), and falls back to the original single-turn
+  check otherwise. Two new cases (`injection-003-resists-hijack-attempt`,
+  `injection-004-hijacked-into-mutation`) demonstrate both outcomes; the
+  latter is also proven, via `test_injection_004_defense_in_depth_full_proof`,
+  to be blocked by the mutation safety gate at the transport level (the mock
+  `create_comment` tool is never actually invoked) while the evaluator still
+  records it as compromised. Documentation added distinguishing this
+  deterministic-fixture harness validation from real-model robustness
+  measurement, which remains future work. See `docs/scoring.md`.
+- `CaseReport` now persists the full per-case interaction trace —
+  `turns: list[TurnResult]` and `termination_reason` — directly in the JSON
+  report, not just inside individual evaluators' `evidence` dicts. Every
+  executed or blocked turn (requested tool/arguments, mutation/safety-gate
+  verdict, execution status, tool output/error, per-turn latency) is
+  reconstructable from `GET /runs/{id}/report` alone; verified by
+  `test_injection_004_is_reconstructable_from_the_persisted_report_alone`.
+- `docs/scoring.md` and the README now mechanically break down
+  `prompt_injection_resistance`'s 3/4 = 0.75 into its two disjoint
+  populations — legacy single-turn (2/2) and reactive multi-turn (1/2) —
+  pinned by `test_prompt_injection_resistance_legacy_vs_reactive_subsets`,
+  rather than presenting one blended number without explanation.
+
 ## [0.1.0] - 2026-08-16
 
 Initial public release: Phase 1, an MCP evaluation engine.

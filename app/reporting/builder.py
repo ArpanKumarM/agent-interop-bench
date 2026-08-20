@@ -26,6 +26,8 @@ def build_case_report(
         expected_outcome=case.expected_outcome.value,
         passed=passed,
         latency_ms=result.latency_ms,
+        turns=result.turns,
+        termination_reason=result.termination_reason,
         evaluations=evaluations,
         failure_reasons=failure_reasons,
     )

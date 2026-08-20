@@ -34,9 +34,20 @@ class BenchmarkCase(BaseModel):
     simulated_failure_mode: FailureMode = FailureMode.NORMAL
     expected_outcome: ExpectedOutcome
     max_latency_ms: int = 2000
+    # Bounded turn budget for this case's interaction loop. 1 (the default)
+    # means single-turn: the runner asks the adapter for exactly one decision
+    # and never asks it to react to that decision's tool output. Raise this
+    # to let a case exercise multi-turn behavior (e.g. reacting to a
+    # prompt-injection payload observed in tool output). The runner always
+    # stops at this bound regardless of what the adapter would otherwise do —
+    # termination is deterministic, never open-ended.
+    max_turns: int = Field(default=1, ge=1, le=10)
     is_mutating: bool = False
     approved_mutation: bool = False
     simulated_agent_response: SimulatedAgentResponse | None = None
+    # Second-turn fixture: what the fake adapter does after observing the first
+    # turn's tool output. Only reachable when max_turns >= 2.
+    simulated_reaction: SimulatedAgentResponse | None = None
     notes: str | None = None
 
     @model_validator(mode="after")
@@ -52,6 +63,15 @@ class BenchmarkCase(BaseModel):
             self.simulated_agent_response = SimulatedAgentResponse(
                 tool_name=self.expected_tool,
                 arguments=dict(self.expected_arguments),
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _reaction_requires_turn_budget(self) -> BenchmarkCase:
+        if self.simulated_reaction is not None and self.max_turns < 2:
+            raise ValueError(
+                f"Case '{self.id}' sets simulated_reaction but max_turns={self.max_turns}; "
+                "the runner would never reach a second turn to use it. Set max_turns >= 2."
             )
         return self
 

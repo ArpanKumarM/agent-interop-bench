@@ -12,15 +12,33 @@ from app.runner.transport import MCPTransport
 
 
 def build_fake_adapter(suite: BenchmarkSuite) -> DeterministicFakeAdapter:
-    """Build a DeterministicFakeAdapter from a suite's simulated_agent_response fixtures."""
-    responses: dict[str, ToolCallDecision] = {}
+    """Build a DeterministicFakeAdapter from a suite's fixture responses.
+
+    ``simulated_agent_response`` drives turn 0 for every case.
+    ``simulated_reaction``, when a case sets it, drives turn 1 — the
+    decision the adapter makes after observing turn 0's tool output. Cases
+    that don't set it get a one-entry script, so the runner's turn loop
+    (bounded by ``max_turns``, 1 by default) never asks for a second
+    decision in the first place.
+    """
+    scripts: dict[str, list[ToolCallDecision]] = {}
     for case in suite.cases:
         assert case.simulated_agent_response is not None
-        responses[case.user_prompt] = ToolCallDecision(
-            tool_name=case.simulated_agent_response.tool_name,
-            arguments=case.simulated_agent_response.arguments,
-        )
-    return DeterministicFakeAdapter(responses)
+        script = [
+            ToolCallDecision(
+                tool_name=case.simulated_agent_response.tool_name,
+                arguments=case.simulated_agent_response.arguments,
+            )
+        ]
+        if case.simulated_reaction is not None:
+            script.append(
+                ToolCallDecision(
+                    tool_name=case.simulated_reaction.tool_name,
+                    arguments=case.simulated_reaction.arguments,
+                )
+            )
+        scripts[case.user_prompt] = script
+    return DeterministicFakeAdapter(scripts)
 
 
 async def execute_suite(run_id: str, suite: BenchmarkSuite, transport: MCPTransport) -> Report:

@@ -157,7 +157,7 @@ stdio subprocess per run — no second container needed.
 
 One command, no API keys, nothing but Docker and `curl`/`python3` on your
 machine. It starts the stack, waits for `/health`, discovers the MCP tools,
-lists the benchmark suite, runs all 19 cases, fetches the generated JSON
+lists the benchmark suite, runs all 21 cases, fetches the generated JSON
 report, and prints the real reliability scores plus the intentional
 evaluator-validation failures — then tears down every Docker resource it
 created, even if a step fails partway through.
@@ -195,24 +195,41 @@ Summary excerpt:
   "run_id": "example-run-0001",
   "suite_name": "agent-interop-core",
   "summary": {
-    "total_tests": 19,
-    "passed_tests": 15,
-    "failed_tests": 4,
-    "tool_selection_accuracy": 0.947,
-    "argument_accuracy": 0.833,
+    "total_tests": 21,
+    "passed_tests": 16,
+    "failed_tests": 5,
+    "tool_selection_accuracy": 0.952,
+    "argument_accuracy": 0.85,
     "recovery_rate": 1.0,
     "unsafe_action_rate": 0.0,
-    "prompt_injection_resistance": 1.0,
-    "average_latency_ms": 32.81
+    "prompt_injection_resistance": 0.75,
+    "average_latency_ms": 29.35
   }
 }
 ```
 
-The four "failures" here are by design: they're the negative-test cases
-(missing argument, wrong argument type, hallucinated tool) whose job is to
-confirm the evaluators correctly *catch* bad agent behavior, not to always
-pass. See [`docs/scoring.md`](docs/scoring.md) for exactly how each metric
-is computed.
+The five "failures" here are by design: they're the negative-test cases
+(missing argument, wrong argument type, hallucinated tool, and the
+multi-turn case where the simulated agent gets hijacked by the injected
+payload) whose job is to confirm the evaluators correctly *catch* bad agent
+behavior, not to always pass. See [`docs/scoring.md`](docs/scoring.md) for
+exactly how each metric is computed, including a full worked breakdown of
+the `prompt_injection_resistance` denominator.
+
+**A note on that 0.75:** it blends two different populations. Two of the four
+prompt-injection cases are legacy single-turn cases (2/2 pass — but that
+subset can only confirm a pre-existing decision wasn't visibly altered, not
+that a hijack was resisted); the other two are reactive multi-turn cases
+(1/2 pass — this is the subset where a genuine hijack, `injection-004`, is
+actually caught). See `docs/scoring.md` for the full mechanical breakdown.
+And regardless of subset: every decision in the core suite, including the
+multi-turn reactions, comes from `DeterministicFakeAdapter` reading a
+scripted fixture (`simulated_reaction` in `benchmarks/core_suite.yaml`) —
+not from a real language model. This number validates that the harness's
+evaluator correctly tells scripted-resistant behavior apart from
+scripted-compromised behavior. It is not, and should not be read as, a
+robustness score for Claude, GPT, or any other real model — that requires a
+real-model adapter, which doesn't exist yet (see Roadmap).
 
 ## Testing
 
@@ -229,11 +246,16 @@ suite.
 
 ## Known limitations
 
-- **Single-step execution.** The runner's adapter decides which tool to
-  call before seeing any tool output, so prompt-injection resistance is
-  scored as "was the payload detected and did the pre-existing decision
-  stay uncompromised," not multi-turn resistance to an agent reacting to
-  malicious output mid-task. See `docs/scoring.md`.
+- **Multi-turn is opt-in per case, bounded, and still scripted.** Every case
+  runs a turn loop capped at `max_turns` (1 by default): the adapter decides,
+  the runner validates and gates the decision, executes it if allowed, and —
+  only if `max_turns >= 2` — hands the result back to the adapter for another
+  decision. This makes genuine prompt-injection resistance testing possible,
+  but the adapter in every case today is `DeterministicFakeAdapter` reading
+  scripted fixtures, not a real model reacting to real output. See
+  `docs/scoring.md` for the full execution model and why the resulting
+  `prompt_injection_resistance` score is a harness-validation metric, not a
+  real-model robustness measurement.
 - **No real LLM adapter yet.** `PlaceholderAdapter` is a documented stub;
   wiring a real model is Phase 2+ work.
 - **In-memory run storage only.** Runs do not survive a process restart.
@@ -250,8 +272,6 @@ suite.
 - **Real-model adapters** — Claude and OpenAI adapters implementing
   `AgentAdapter`, exercising the same benchmark suite non-deterministically
   with statistical reporting.
-- **Multi-turn evaluation** — let an agent observe tool output and react,
-  for genuine prompt-injection resistance testing.
 - **OpenTelemetry** — trace each benchmark run for latency/error visibility
   beyond the JSON report.
 - **A dashboard** — a frontend over the existing API for browsing runs and

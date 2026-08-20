@@ -7,6 +7,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from app.models.execution import TerminationReason, TurnResult
+
 
 class EvaluationResult(BaseModel):
     """The verdict of a single deterministic evaluator against one run result."""
@@ -19,13 +21,24 @@ class EvaluationResult(BaseModel):
 
 
 class CaseReport(BaseModel):
-    """All evaluation results for one benchmark case, plus a rollup verdict."""
+    """All evaluation results for one benchmark case, plus a rollup verdict.
+
+    ``turns`` and ``termination_reason`` are the full, persisted interaction
+    trace for this case — not just what individual evaluators chose to
+    surface in their ``evidence``. Every executed or blocked turn (adapter
+    decision, requested tool/arguments, mutation/safety-gate verdict,
+    execution status, tool output/error, per-turn latency) is reconstructable
+    directly from this JSON report, without relying on any evaluator's
+    evidence dict as the only record of what happened.
+    """
 
     case_id: str
     category: str
     expected_outcome: str
     passed: bool
     latency_ms: float
+    turns: list[TurnResult]
+    termination_reason: TerminationReason
     evaluations: list[EvaluationResult]
     failure_reasons: list[str] = Field(default_factory=list)
 

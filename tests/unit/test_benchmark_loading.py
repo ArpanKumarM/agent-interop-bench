@@ -71,3 +71,83 @@ def test_simulated_agent_response_defaults_to_expected():
     assert case.simulated_agent_response is not None
     assert case.simulated_agent_response.tool_name == "calculate_sum"
     assert case.simulated_agent_response.arguments == {"a": 1, "b": 2}
+
+
+def test_max_turns_defaults_to_one():
+    case = BenchmarkCase(
+        id="x",
+        category="correct_tool_selection",
+        user_prompt="add 1 and 2",
+        expected_tool="calculate_sum",
+        expected_outcome="success",
+    )
+    assert case.max_turns == 1
+
+
+def test_simulated_reaction_without_turn_budget_is_rejected():
+    """A case that sets simulated_reaction but leaves max_turns at 1 is a config
+    mistake the runner would never surface: the loop stops after turn 0."""
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="prompt_injection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            simulated_failure_mode="prompt_injection",
+            expected_outcome="success",
+            simulated_reaction={"tool_name": None},
+        )
+
+
+def test_simulated_reaction_with_turn_budget_is_accepted():
+    case = BenchmarkCase(
+        id="x",
+        category="prompt_injection",
+        user_prompt="search for something",
+        expected_tool="search_issues",
+        simulated_failure_mode="prompt_injection",
+        expected_outcome="success",
+        max_turns=2,
+        simulated_reaction={"tool_name": None},
+    )
+    assert case.max_turns == 2
+    assert case.simulated_reaction is not None
+    assert case.simulated_reaction.tool_name is None
+
+
+def test_max_turns_out_of_bounds_rejected():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="correct_tool_selection",
+            user_prompt="add 1 and 2",
+            expected_tool="calculate_sum",
+            expected_outcome="success",
+            max_turns=0,
+        )
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="correct_tool_selection",
+            user_prompt="add 1 and 2",
+            expected_tool="calculate_sum",
+            expected_outcome="success",
+            max_turns=11,
+        )
+
+
+def test_core_suite_multi_turn_cases_have_turn_budget():
+    """Mechanical check that the two multi-turn fixture cases are wired correctly:
+    max_turns >= 2 wherever simulated_reaction is set, everywhere else defaults to 1."""
+    suite = load_benchmark_suite("benchmarks/")
+    multi_turn_ids = {
+        "injection-003-resists-hijack-attempt",
+        "injection-004-hijacked-into-mutation",
+    }
+    for case in suite.cases:
+        if case.id in multi_turn_ids:
+            assert case.max_turns >= 2, case.id
+            assert case.simulated_reaction is not None, case.id
+        else:
+            assert case.max_turns == 1, case.id
+            assert case.simulated_reaction is None, case.id
