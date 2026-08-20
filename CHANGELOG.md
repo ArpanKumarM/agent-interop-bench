@@ -7,6 +7,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — `argument_correctness` gains explicit, opt-in per-argument matchers (Phase 2C.3)
+
+- **Evaluator-validity audit, prompted by a live-model canary**: two
+  independent live `gpt-4o-mini` runs against `correct-001-search-issues`
+  ("Find open issues about login failures in acme/webapp") both produced a
+  `search_issues` query reasonably reformulating the prompt's intent
+  (`"login failure(s) is:open"`) rather than the fixture's exact
+  `"login failures"`, and both were scored `argument_correctness: FAIL`
+  under the previous exact-match-only comparison. Auditing the mock
+  `search_issues` tool confirmed it doesn't parse or filter on query
+  content at all — any string produces the same canned response — so there
+  was no tool-contract basis for requiring one exact literal rendering of a
+  prompt that itself only states an intent. This is the only case in the
+  suite shaped that way: every other `search_issues`/`create_comment` case
+  quotes its exact required string in the `user_prompt` itself.
+- **Fix**: `BenchmarkCase` gained an optional `argument_match_rules: dict[str,
+  ArgumentMatchRule]` (`app/models/benchmark.py`). Every argument still
+  matches with exact equality (`==`) unless a case explicitly opts a named
+  argument into `contains_substrings` — a deterministic, case-insensitive
+  substring check requiring every one of a fixed `terms` list to appear in
+  the actual value. No LLM judge, no embeddings, no fuzzy/edit-distance
+  matching, and nothing provider- or model-specific. `ArgumentCorrectnessEvaluator`
+  (`app/evaluators/arguments.py`) now resolves a per-key matcher (`exact` by
+  default) and records `matchers_used`/`mismatches`/`extra_keys`/`missing_keys`
+  in its evidence so a pass or fail is reconstructible after the fact.
+  `correct-001-search-issues` is the only case using the new matcher
+  (`terms: ["login", "failure"]`, derived from the case's own `user_prompt`,
+  not from either observed model string); `benchmarks/core_suite.yaml`
+  bumped `version` `0.1.0` → `0.2.0` for this evaluator-semantics change.
+  See `docs/scoring.md`'s new "`argument_correctness` matchers" section.
+- **Precision/naming review before release**: the matcher was renamed
+  `contains_terms` → `contains_substrings` (it performs raw substring
+  containment, not tokenized/term matching — the name now says so
+  directly), and `correct-001`'s `terms` was tightened from
+  `["login", "fail"]` to `["login", "failure"]` after auditing found
+  `"fail"` false-positives on unrelated words like `"failover"`;
+  `"failure"` doesn't, while remaining a substring of `"failures"` so
+  singular/plural are both still accepted without a stemmer. Both changes
+  were made before this evaluator-semantics change was ever committed, so
+  there is no migration or compatibility concern.
+- **Deterministic suite unaffected**: the fake adapter's default simulated
+  response always mirrors `expected_arguments` byte-for-byte, so it
+  satisfies any matcher trivially — `examples/sample_report.json` was
+  regenerated and its pass/fail verdicts for all 21 cases, and every
+  aggregate metric, are unchanged; only `argument_correctness`'s evidence
+  shape (the new `matchers_used`/`mismatches`/... keys) differs.
+- **Historical live-model canary preserved, not rewritten**:
+  `reports/canaries/phase-2c-openai-canary-002-three-case.json` (SHA-256
+  `0b01e79c6be9a1e1a26520d65e2b49481c30d1df2c12de592c05ff1156136820`) is
+  untouched and remains the historical record scored under the *previous*
+  semantics. An offline re-score of its persisted `correct-001` decision
+  under the new matcher — no provider contacted — is saved alongside it at
+  `phase-2c-openai-canary-002-three-case.argcorrectness-rescore.json` and
+  flips that one case's classification from FAIL to PASS.
+- Adds `ArgumentMatchRule` model-validation tests
+  (`tests/unit/test_benchmark_loading.py`) and matcher-behavior tests
+  (`tests/unit/test_evaluators.py`): exact-default rejection of altered
+  identifiers, `contains_substrings` acceptance of task-derived reformulations
+  (including a third phrasing never observed from any model), rejection of
+  missing-concept/off-topic/gaming queries (`"anything"`), mutation payload
+  text (`create_comment`'s `body`) staying exact regardless, nested
+  structured arguments, and evidence completeness.
+
 ### Added — state-isolation regression coverage and offline real-SDK contract test
 
 - **Adapter lifetime/ownership audited and confirmed already correct**: one

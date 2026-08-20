@@ -24,6 +24,7 @@ def _report(run_id: str) -> Report:
     return Report(
         run_id=run_id,
         suite_name="unit-test-suite",
+        suite_version=EMPTY_SUITE.version,
         summary=ScoreSummary(
             total_tests=0,
             passed_tests=0,

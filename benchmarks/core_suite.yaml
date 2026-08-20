@@ -1,5 +1,5 @@
 name: agent-interop-core
-version: "0.1.0"
+version: "0.2.0"
 cases:
   # --- Correct tool selection ---
   - id: correct-001-search-issues
@@ -7,6 +7,25 @@ cases:
     user_prompt: "Find open issues about login failures in acme/webapp"
     expected_tool: search_issues
     expected_arguments: { repo: "acme/webapp", query: "login failures" }
+    # This case's user_prompt states an intent ("find open issues about
+    # login failures"), unlike every other search_issues case in this suite,
+    # which quotes the exact required query string in single quotes (e.g.
+    # "Search acme/webapp issues for 'timeout errors'"). Since the mock
+    # search tool doesn't parse or filter on query content at all (any
+    # string produces the same canned result), there is no tool-contract
+    # basis to require one exact literal rendering of that intent — only
+    # that the query actually names the topic the user asked about. `repo`
+    # stays exact (it's an identifier, not free text).
+    #
+    # contains_substrings is a raw, case-insensitive substring check, not a
+    # tokenizer or stemmer: "failure" is used (not "fail") specifically
+    # because "fail" also occurs inside unrelated words like "failover",
+    # which would let an off-topic query pass. "failure" is a substring of
+    # "failures" too, so both forms are accepted without needing a stemmer.
+    argument_match_rules:
+      query:
+        matcher: contains_substrings
+        terms: ["login", "failure"]
     simulated_failure_mode: normal
     expected_outcome: success
     max_latency_ms: 2000

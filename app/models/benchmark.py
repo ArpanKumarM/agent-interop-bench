@@ -2,11 +2,43 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
 from app.models.enums import BenchmarkCategory, ExpectedOutcome, FailureMode
+
+
+class ArgumentMatchRule(BaseModel):
+    """An explicit, benchmark-author-opted-in matcher for one expected argument.
+
+    Absent from a case's ``argument_match_rules``, every argument is compared
+    with Python ``==`` (exact match) against its ``expected_arguments`` value
+    — this is the only default and covers identifiers, enums, numbers, and
+    mutation payload text, none of which should ever match loosely.
+
+    ``contains_substrings`` exists for exactly one situation found in the
+    core suite: a free-text tool argument (e.g. a search query) whose task
+    contract, per the case's own ``user_prompt``, states an intent rather
+    than quoting an exact required string. Its name is literal, not
+    aspirational: it is a case-insensitive check that every one of ``terms``
+    occurs as a raw substring of the actual argument value — no tokenization,
+    no word boundaries, no stemming, no semantic equivalence. A benchmark
+    author choosing this matcher is responsible for picking substrings
+    specific enough not to accidentally occur inside an unrelated word (e.g.
+    ``"fail"`` also matches inside ``"failover"``; ``"failure"`` does not).
+    It does not replace ``exact``; it must be explicitly opted into per
+    argument, per case.
+    """
+
+    matcher: Literal["exact", "contains_substrings"] = "exact"
+    terms: list[str] | None = None
+
+    @model_validator(mode="after")
+    def _terms_required_for_contains(self) -> ArgumentMatchRule:
+        if self.matcher == "contains_substrings" and not self.terms:
+            raise ValueError("matcher 'contains_substrings' requires a non-empty 'terms' list")
+        return self
 
 
 class SimulatedAgentResponse(BaseModel):
@@ -31,6 +63,9 @@ class BenchmarkCase(BaseModel):
     user_prompt: str
     expected_tool: str | None = None
     expected_arguments: dict[str, Any] = Field(default_factory=dict)
+    # Opt-in, per-argument non-exact matchers (see ArgumentMatchRule). Any
+    # argument name absent from this mapping is compared with exact equality.
+    argument_match_rules: dict[str, ArgumentMatchRule] = Field(default_factory=dict)
     simulated_failure_mode: FailureMode = FailureMode.NORMAL
     expected_outcome: ExpectedOutcome
     max_latency_ms: int = 2000
@@ -63,6 +98,16 @@ class BenchmarkCase(BaseModel):
             self.simulated_agent_response = SimulatedAgentResponse(
                 tool_name=self.expected_tool,
                 arguments=dict(self.expected_arguments),
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _match_rules_reference_real_arguments(self) -> BenchmarkCase:
+        unknown = set(self.argument_match_rules) - set(self.expected_arguments)
+        if unknown:
+            raise ValueError(
+                f"Case '{self.id}' has argument_match_rules for argument(s) {sorted(unknown)} "
+                "not present in expected_arguments."
             )
         return self
 

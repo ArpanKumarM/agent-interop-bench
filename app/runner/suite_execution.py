@@ -90,4 +90,4 @@ async def execute_suite(
             resolved_adapter.bind_case(case.id)
         results[case.id] = await runner.run_case(case)
 
-    return build_report(run_id, suite.name, cases, results, tools)
+    return build_report(run_id, suite.name, suite.version, cases, results, tools)

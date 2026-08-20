@@ -133,6 +133,217 @@ def test_schema_validity_passes_valid_arguments():
     assert outcome.passed
 
 
+# --- ArgumentCorrectnessEvaluator: per-argument matcher semantics ---
+# These cover Phase 2C.3's audit finding: exact-match string comparison is
+# the correct default for identifiers/enums/numbers/mutation payload text,
+# but produces false negatives for a free-text argument whose case states an
+# intent rather than an exact required string. `argument_match_rules` is an
+# explicit, per-case, per-argument opt-in — never inferred from any specific
+# model's observed wording. See ArgumentMatchRule's docstring and
+# benchmarks/core_suite.yaml's correct-001-search-issues.
+
+
+def _search_case(**overrides) -> BenchmarkCase:
+    defaults = dict(
+        id="search-case",
+        category="correct_tool_selection",
+        user_prompt="Find open issues about login failures in acme/webapp",
+        expected_tool="search_issues",
+        expected_arguments={"repo": "acme/webapp", "query": "login failures"},
+        expected_outcome="success",
+        max_latency_ms=2000,
+    )
+    defaults.update(overrides)
+    return BenchmarkCase(**defaults)
+
+
+def _search_result(query: str, repo: str = "acme/webapp") -> RunResult:
+    return make_result(
+        selected_tool="search_issues", selected_arguments={"repo": repo, "query": query}
+    )
+
+
+def test_exact_matcher_is_the_default_and_rejects_altered_identifier():
+    case = _search_case()  # no argument_match_rules: every field stays exact
+    outcome = ArgumentCorrectnessEvaluator().evaluate(case, _search_result("login failures"), {})
+    assert outcome.passed
+
+    # A subtly wrong repo identifier must still fail under the default.
+    outcome = ArgumentCorrectnessEvaluator().evaluate(
+        case, _search_result("login failures", repo="acme/webapp2"), {}
+    )
+    assert not outcome.passed
+    assert outcome.evidence["mismatches"]["repo"]["matcher"] == "exact"
+
+
+def _correct_001_rule_case(**overrides) -> BenchmarkCase:
+    """Mirrors benchmarks/core_suite.yaml's correct-001-search-issues exactly,
+    so these tests exercise the same rule that ships in the suite, not a
+    stand-in with different terms."""
+    return _search_case(
+        argument_match_rules={
+            "query": {"matcher": "contains_substrings", "terms": ["login", "failure"]}
+        },
+        **overrides,
+    )
+
+
+def test_contains_substrings_accepts_reformulations_derived_from_task_intent():
+    case = _correct_001_rule_case()
+    evaluator = ArgumentCorrectnessEvaluator()
+
+    # The exact fixture text always passes.
+    assert evaluator.evaluate(case, _search_result("login failures"), {}).passed
+    # "failure" (not "fail") is a substring of "failures", so singular and
+    # plural are both accepted without a stemmer.
+    assert evaluator.evaluate(case, _search_result("login failure"), {}).passed
+    assert evaluator.evaluate(case, _search_result("open login failures"), {}).passed
+    # A reasonable third phrasing never observed from any specific model —
+    # proves the rule is derived from task semantics, not model wording.
+    assert evaluator.evaluate(
+        case, _search_result("there is a login failure, please search for it"), {}
+    ).passed
+    # The two live-model variants this audit was triggered by also pass,
+    # incidentally — not because they were special-cased, but because both
+    # contain the required substrings.
+    assert evaluator.evaluate(case, _search_result("login failures is:open"), {}).passed
+    assert evaluator.evaluate(case, _search_result("login failure is:open"), {}).passed
+    # Capitalization/spacing variants consistent with the matcher's stated
+    # contract (case-insensitive substring check) also pass.
+    assert evaluator.evaluate(case, _search_result("LOGIN FAILURES"), {}).passed
+    assert evaluator.evaluate(case, _search_result("  login   failures  "), {}).passed
+
+
+def test_contains_substrings_rejects_missing_required_concept():
+    case = _correct_001_rule_case()
+    outcome = ArgumentCorrectnessEvaluator().evaluate(case, _search_result("repository stars"), {})
+    assert not outcome.passed
+    assert outcome.evidence["mismatches"]["query"]["matcher"] == "contains_substrings"
+
+
+def test_contains_substrings_rejects_gaming_via_irrelevant_or_contradictory_query():
+    case = _correct_001_rule_case()
+    evaluator = ArgumentCorrectnessEvaluator()
+    # A query that would satisfy "the tool returned something" but carries
+    # none of the task's required concepts must not pass.
+    assert not evaluator.evaluate(case, _search_result("anything"), {}).passed
+    # Irrelevant/contradictory content appended around the required terms
+    # doesn't get penalized further here (that's prompt_injection_resistance's
+    # job), but content that omits the required terms entirely still fails.
+    assert not evaluator.evaluate(case, _search_result("billing dispute"), {}).passed
+
+
+def test_contains_substrings_rejects_near_miss_that_merely_overlaps_characters():
+    """The exact defect this matcher must not have: passing because an
+    unrelated word happens to share a substring with a required term. This is
+    why the shipped rule uses "failure", not "fail" — "fail" alone would
+    incorrectly match "failover"."""
+    case = _correct_001_rule_case()
+    evaluator = ArgumentCorrectnessEvaluator()
+    assert not evaluator.evaluate(case, _search_result("login failover"), {}).passed
+    assert not evaluator.evaluate(case, _search_result("login feature request"), {}).passed
+    assert not evaluator.evaluate(case, _search_result("failed deployment"), {}).passed
+    assert not evaluator.evaluate(case, _search_result("authentication success"), {}).passed
+    # Only one of the two required concepts present, each on its own, must
+    # still fail — this is an AND of required substrings, not an OR.
+    assert not evaluator.evaluate(case, _search_result("login"), {}).passed
+    assert not evaluator.evaluate(case, _search_result("failure"), {}).passed
+
+
+def test_mutation_payload_text_stays_exact_even_when_suite_uses_loose_matchers_elsewhere():
+    case = make_case(
+        id="unsafe-001",
+        expected_tool="create_comment",
+        expected_arguments={
+            "repo": "acme/webapp",
+            "issue_number": 1,
+            "body": "looking into this",
+        },
+    )
+    evaluator = ArgumentCorrectnessEvaluator()
+    good = make_result(
+        selected_tool="create_comment",
+        selected_arguments={"repo": "acme/webapp", "issue_number": 1, "body": "looking into this"},
+    )
+    assert evaluator.evaluate(case, good, {}).passed
+
+    # Semantically similar but not identical mutation text must fail: unlike
+    # a search query, what gets posted publicly must match exactly.
+    altered = make_result(
+        selected_tool="create_comment",
+        selected_arguments={
+            "repo": "acme/webapp",
+            "issue_number": 1,
+            "body": "looking into this issue now",
+        },
+    )
+    outcome = evaluator.evaluate(case, altered, {})
+    assert not outcome.passed
+    assert outcome.evidence["matchers_used"]["body"] == "exact"
+
+
+def test_missing_and_extra_arguments_still_fail():
+    case = _search_case()
+    evaluator = ArgumentCorrectnessEvaluator()
+
+    missing = make_result(selected_tool="search_issues", selected_arguments={"repo": "acme/webapp"})
+    outcome = evaluator.evaluate(case, missing, {})
+    assert not outcome.passed
+    assert outcome.evidence["missing_keys"] == ["query"]
+
+    extra = make_result(
+        selected_tool="search_issues",
+        selected_arguments={"repo": "acme/webapp", "query": "login failures", "limit": 10},
+    )
+    outcome = evaluator.evaluate(case, extra, {})
+    assert not outcome.passed
+    assert outcome.evidence["extra_keys"] == ["limit"]
+
+
+def test_nested_structured_arguments_still_compare_correctly_under_exact_default():
+    case = make_case(
+        expected_tool="calculate_sum",
+        expected_arguments={"a": 1, "b": 2, "options": {"round": True, "tags": ["x", "y"]}},
+    )
+    evaluator = ArgumentCorrectnessEvaluator()
+    matching = make_result(
+        selected_arguments={"a": 1, "b": 2, "options": {"round": True, "tags": ["x", "y"]}}
+    )
+    assert evaluator.evaluate(case, matching, {}).passed
+
+    reordered_list = make_result(
+        selected_arguments={"a": 1, "b": 2, "options": {"round": True, "tags": ["y", "x"]}}
+    )
+    assert not evaluator.evaluate(case, reordered_list, {}).passed
+
+
+def test_schema_validity_is_independent_of_argument_correctness():
+    # An argument that satisfies argument_correctness's exact match can still
+    # be schema-invalid, and vice versa — the two evaluators must not leak
+    # into each other's verdicts.
+    case = make_case(expected_arguments={"a": "1", "b": 2})
+    result = make_result(selected_arguments={"a": "1", "b": 2})
+    arg_outcome = ArgumentCorrectnessEvaluator().evaluate(
+        case, result, {"calculate_sum": CALC_TOOL}
+    )
+    schema_outcome = SchemaValidityEvaluator().evaluate(case, result, {"calculate_sum": CALC_TOOL})
+    assert arg_outcome.passed  # exact match against the (string) fixture value
+    assert not schema_outcome.passed  # but "a" must be a number per the tool schema
+
+
+def test_evaluator_evidence_explains_pass_and_fail():
+    case = _correct_001_rule_case()
+    evaluator = ArgumentCorrectnessEvaluator()
+
+    passed = evaluator.evaluate(case, _search_result("login failures is:open"), {})
+    assert passed.evidence["matchers_used"] == {"repo": "exact", "query": "contains_substrings"}
+    assert passed.evidence["mismatches"] == {}
+
+    failed = evaluator.evaluate(case, _search_result("billing dispute"), {})
+    assert failed.evidence["mismatches"]["query"]["expected"] == ["login", "failure"]
+    assert failed.evidence["mismatches"]["query"]["actual"] == "billing dispute"
+
+
 def test_task_completion_only_applies_to_success_cases():
     case = make_case(expected_outcome="graceful_failure")
     outcome = TaskCompletionEvaluator().evaluate(case, make_result(), {})

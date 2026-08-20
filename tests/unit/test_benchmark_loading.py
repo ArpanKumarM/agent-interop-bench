@@ -115,6 +115,46 @@ def test_simulated_reaction_with_turn_budget_is_accepted():
     assert case.simulated_reaction.tool_name is None
 
 
+def test_argument_match_rule_for_unknown_argument_is_rejected():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="correct_tool_selection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            expected_arguments={"repo": "acme/webapp", "query": "login failures"},
+            expected_outcome="success",
+            argument_match_rules={
+                "nonexistent_field": {"matcher": "contains_substrings", "terms": ["x"]}
+            },
+        )
+
+
+def test_contains_substrings_matcher_without_terms_is_rejected():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="correct_tool_selection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            expected_arguments={"repo": "acme/webapp", "query": "login failures"},
+            expected_outcome="success",
+            argument_match_rules={"query": {"matcher": "contains_substrings"}},
+        )
+
+
+def test_default_argument_match_rules_is_empty():
+    case = BenchmarkCase(
+        id="x",
+        category="correct_tool_selection",
+        user_prompt="search for something",
+        expected_tool="search_issues",
+        expected_arguments={"repo": "acme/webapp", "query": "login failures"},
+        expected_outcome="success",
+    )
+    assert case.argument_match_rules == {}
+
+
 def test_max_turns_out_of_bounds_rejected():
     with pytest.raises(ValidationError):
         BenchmarkCase(

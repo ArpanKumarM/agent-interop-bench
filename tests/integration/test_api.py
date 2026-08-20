@@ -20,6 +20,7 @@ def _canned_report(run_id: str) -> Report:
     return Report(
         run_id=run_id,
         suite_name="fake-suite-for-tests",
+        suite_version="0.0.0",
         summary=ScoreSummary(
             total_tests=1,
             passed_tests=1,

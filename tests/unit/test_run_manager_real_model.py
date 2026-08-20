@@ -56,6 +56,7 @@ def _report(run_id: str, case_ids: list[str]) -> Report:
     return Report(
         run_id=run_id,
         suite_name="unit-test-suite",
+        suite_version="0.0.0",
         summary=ScoreSummary(
             total_tests=len(case_ids),
             passed_tests=len(case_ids),

@@ -36,6 +36,7 @@ def build_case_report(
 def build_report(
     run_id: str,
     suite_name: str,
+    suite_version: str,
     cases: list[BenchmarkCase],
     results: dict[str, RunResult],
     tool_definitions: list[ToolDefinition],
@@ -47,4 +48,10 @@ def build_report(
         if case.id in results
     ]
     summary = build_summary(case_reports)
-    return Report(run_id=run_id, suite_name=suite_name, summary=summary, per_test=case_reports)
+    return Report(
+        run_id=run_id,
+        suite_name=suite_name,
+        suite_version=suite_version,
+        summary=summary,
+        per_test=case_reports,
+    )

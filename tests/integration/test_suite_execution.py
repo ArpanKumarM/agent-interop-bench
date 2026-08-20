@@ -16,6 +16,10 @@ async def test_full_suite_executes_and_produces_report():
     # Every case must produce a scored result — none silently skipped.
     assert len(report.per_test) == len(suite.cases)
     assert {c.case_id for c in report.per_test} == {c.id for c in suite.cases}
+    # A consumer must be able to tell which suite version (and therefore
+    # which evaluator semantics, e.g. argument_correctness's matchers) scored
+    # this report without consulting git history or a filename.
+    assert report.suite_version == suite.version
 
 
 async def test_unapproved_mutation_is_blocked_end_to_end():

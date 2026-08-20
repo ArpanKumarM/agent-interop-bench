@@ -73,6 +73,13 @@ class Report(BaseModel):
     run_id: str
     generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     suite_name: str
+    # BenchmarkSuite.version at the time this run was scored (e.g. "0.2.0").
+    # Evaluator semantics can change between suite versions (see
+    # docs/scoring.md's "argument_correctness matchers" section) without any
+    # change to run_id, generated_at, or suite_name, so a consumer needs this
+    # to know which evaluator semantics produced a given report without
+    # consulting git history or a filename.
+    suite_version: str
     summary: ScoreSummary
     per_test: list[CaseReport]
     model_provenance: ModelRunProvenance | None = None
