@@ -24,6 +24,7 @@ set -euo pipefail
 
 BASE_URL="http://localhost:8000"
 HEALTH_TIMEOUT_SECONDS=60
+RUN_TIMEOUT_SECONDS=60
 
 BOLD=$(tput bold 2>/dev/null || echo "")
 RESET=$(tput sgr0 2>/dev/null || echo "")
@@ -223,6 +224,29 @@ run_response=$(curl -sf -X POST "$BASE_URL/runs")
 run_id=$(echo "$run_response" | python3 -c "import json, sys; print(json.load(sys.stdin)['run_id'])")
 if [ "$MODE" = "detailed" ]; then
     echo "Run ID: ${BOLD}${run_id}${RESET}"
+    echo "Run queued (202 Accepted) — polling GET /runs/${run_id} until it completes..."
+fi
+
+# POST /runs is asynchronous: it queues the run and returns immediately.
+# Poll status until it leaves queued/running.
+elapsed=0
+run_status=""
+until [ "$run_status" = "completed" ] || [ "$run_status" = "failed" ]; do
+    elapsed=$((elapsed + 1))
+    if [ "$elapsed" -ge "$RUN_TIMEOUT_SECONDS" ]; then
+        echo "${RED}Run did not finish within ${RUN_TIMEOUT_SECONDS}s.${RESET}" >&2
+        exit 1
+    fi
+    sleep 1
+    run_status=$(curl -sf "$BASE_URL/runs/${run_id}" | python3 -c "import json, sys; print(json.load(sys.stdin)['status'])")
+done
+
+if [ "$run_status" = "failed" ]; then
+    echo "${RED}Run failed.${RESET} See GET /runs/${run_id} for error details." >&2
+    exit 1
+fi
+
+if [ "$MODE" = "detailed" ]; then
     section "Fetching the generated report (GET /runs/${run_id}/report)"
 fi
 report=$(curl -sf "$BASE_URL/runs/${run_id}/report")

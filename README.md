@@ -62,6 +62,11 @@ flowchart TB
         R1["POST /runs"]
         R2["GET /runs/{id}"]
         R3["GET /runs/{id}/report"]
+    end
+
+    subgraph RM["RunManager (app/runner/run_manager)"]
+        Queue[("bounded asyncio.Queue")]
+        Workers["fixed worker pool\n(asyncio tasks)"]
         Repo[("InMemoryRunRepository")]
     end
 
@@ -82,8 +87,10 @@ flowchart TB
 
     Mock["Mock MCP Server\n(mock_servers/github_mock.py)\nsearch_issues, get_repository,\ncreate_comment, calculate_sum"]
 
-    R1 --> Runner
-    Loader --> R1
+    R1 -->|"enqueue, return 202"| Queue
+    Queue --> Workers
+    Workers -->|"execute_suite(...)"| Runner
+    Loader --> Workers
     Runner --> Adapter
     Runner --> Transport
     Discovery --> Transport
@@ -91,6 +98,7 @@ flowchart TB
     Runner --> Evaluators
     Evaluators --> Reporting
     Reporting --> Repo
+    Workers --> Repo
     R2 --> Repo
     R3 --> Repo
     T --> Discovery
@@ -114,6 +122,51 @@ flowchart TB
 - **Evaluators are pure functions with no side effects and no LLM judge.**
   See [`docs/scoring.md`](docs/scoring.md) for the full, transparent scoring
   definition.
+
+## Run execution model
+
+Benchmark runs execute in the background, not inline in the HTTP request:
+
+```text
+POST /runs
+      |
+      v
+   queued  ---->  running  ---->  completed
+                              \-> failed
+```
+
+`POST /runs` enqueues a run and returns `202 Accepted` immediately with
+`{"run_id": ..., "status": "queued"}` and a `Location: /runs/{run_id}`
+header — it never waits for the suite to finish. A small fixed pool of
+background workers (`RunManager`, `RUN_WORKER_COUNT`, default 2) pulls from
+a bounded queue (`RUN_QUEUE_MAXSIZE`, default 10) and runs each queued run
+through the unchanged `execute_suite` primitive. If the queue is full,
+`POST /runs` returns `429` rather than accepting unbounded work — this is
+atomic: a rejected submission is never assigned a run ID and never written
+to run storage, so it cannot later be retrieved or executed. Only one suite
+is ever loaded, so `suite_name` in the request body is validated, not used
+to select behavior: omit it, or pass exactly the loaded suite's name, to
+queue a run; any other value is rejected with `400` before anything is
+queued.
+
+Poll `GET /runs/{run_id}` for lifecycle status (`queued` / `running` /
+`completed` / `failed`, with `created_at`/`started_at`/`completed_at`/
+`failed_at` timestamps) and `GET /runs/{run_id}/report` once
+`status == "completed"`:
+
+- Unknown run ID: `404`.
+- `queued` / `running` / `failed`: `409`, with structured `detail` (`run_id`,
+  `status`, `message`) identifying why no report is available — a failed
+  run's report is never fabricated; its error is only surfaced via
+  `GET /runs/{run_id}`.
+- `completed`: `200` with the exact persisted `Report`.
+
+**This is intentionally in-memory, not distributed infrastructure.** Run
+history does not survive a process restart, there is no persistent queue or
+database, and multiple server processes do not share run state — each
+process has its own independent `RunManager` and repository. Persistent
+storage (e.g. a `RunRepository` backed by a real database, behind the same
+interface used today) is future work; see Roadmap.
 
 ## Installation
 
@@ -174,13 +227,14 @@ curl http://localhost:8000/tools
 # List the loaded benchmark suite
 curl http://localhost:8000/benchmarks
 
-# Kick off a full benchmark run (synchronous; returns once complete)
-curl -X POST http://localhost:8000/runs
+# Queue a benchmark run (returns 202 immediately; does not wait for completion)
+curl -i -X POST http://localhost:8000/runs
 
-# Fetch run status
+# Poll run status until status is "completed" (or "failed")
 curl http://localhost:8000/runs/<run_id>
 
-# Fetch the full JSON reliability report
+# Fetch the full JSON reliability report (only once status == "completed";
+# returns 409 with structured detail before that, 404 for an unknown run_id)
 curl http://localhost:8000/runs/<run_id>/report
 ```
 
@@ -257,10 +311,13 @@ suite.
   `prompt_injection_resistance` score is a harness-validation metric, not a
   real-model robustness measurement.
 - **No real LLM adapter yet.** `PlaceholderAdapter` is a documented stub;
-  wiring a real model is Phase 2+ work.
-- **In-memory run storage only.** Runs do not survive a process restart.
-- **Synchronous run execution.** `POST /runs` blocks until the whole suite
-  finishes; there's no background job queue in Phase 1.
+  wiring a real model is future work.
+- **In-memory run storage and queue only.** Runs, and the pending-work
+  queue itself, do not survive a process restart. This is not a distributed
+  job system: multiple server processes do not share run state, each has
+  its own independent `RunManager`. A persistent `RunRepository`
+  implementation (e.g. backed by a real database) is future work — see
+  Roadmap.
 - **Malformed-response detection is heuristic**, not schema-driven (MCP
   tools don't declare output schemas), scoped to "was it captured without
   crashing," not "was the specific corruption identified."

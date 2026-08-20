@@ -7,7 +7,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed (breaking API change)
+
+- **`POST /runs` is now asynchronous.** Previously it blocked until the full
+  benchmark suite finished and returned `200` with a completed run summary.
+  It now returns immediately with `202 Accepted`, a `Location: /runs/{run_id}`
+  header, and a `{"run_id": ..., "status": "queued"}` body; the suite
+  executes in the background. Poll `GET /runs/{run_id}` for lifecycle status
+  (`queued` -> `running` -> `completed`/`failed`) and `GET /runs/{run_id}/report`
+  once `status == "completed"`. `GET /runs/{run_id}/report` now returns `409`
+  for `queued`/`running`/`failed` runs (with structured detail identifying
+  which), not just for "not yet completed" as before; a `failed` run's
+  report is never fabricated — its error is only discoverable via
+  `GET /runs/{run_id}`. Existing `GET /runs/{run_id}` and unknown-run `404`
+  behavior are unchanged. Nothing else in the API contract changed. There is
+  no legacy synchronous endpoint kept alongside this — see the README's
+  execution model section for the rationale.
+
 ### Added
+
+- **Bounded background run execution** (`app/runner/run_manager.py`):
+  `RunManager` owns run creation, lifecycle transitions, a bounded
+  `asyncio.Queue` of pending work, and a small fixed pool of asyncio worker
+  tasks (`RUN_WORKER_COUNT`, default 2) that call the unchanged
+  `execute_suite` primitive. Workers start/stop with the FastAPI lifespan.
+  Queue capacity (`RUN_QUEUE_MAXSIZE`, default 10) is bounded; submissions
+  past that capacity get `429`, not silently unbounded queueing. A worker
+  that hits an exception (in the suite itself, or in bookkeeping) logs it,
+  marks the run `failed`, and keeps servicing subsequent queued runs — one
+  failure never kills the worker loop.
+- **New run lifecycle model** (`app/models/run.py`): `RunStatus` is now
+  exactly `queued` / `running` / `completed` / `failed` (previously
+  `pending`/`running`/`completed`/`failed`, where `pending` was dead code —
+  never actually produced). `RunSummary` gained `started_at` and
+  `failed_at` alongside `created_at`/`completed_at`, with documented,
+  tested timestamp invariants per status. Transitions are enforced
+  monotonic: a completed or failed run is never re-executed or regressed
+  (`RunManager._execute`'s defensive `QUEUED`-only guard, backed by a
+  regression test).
+- 18 new tests across `tests/unit/test_run_manager.py` (lifecycle,
+  timestamp invariants, bounded concurrency, queue-full behavior, failure
+  isolation, terminal-state monotonicity — all synchronization-primitive-based,
+  no sleep-heavy timing) and `tests/integration/test_api.py` /
+  `tests/integration/test_scientific_equivalence.py` (202/429/409 contract,
+  API responsiveness during execution, concurrent-run isolation, and a
+  mechanical proof that the async path's output is byte-identical to direct
+  `execute_suite` after stripping run IDs/timestamps/latency — Phase 2A's
+  21-case, 3/4 prompt-injection, injection-004-blocked results are
+  unchanged).
+- **`POST /runs` now validates `suite_name`.** Only one suite is ever
+  loaded; omitting `suite_name` or passing exactly the loaded suite's name
+  queues a run as before, but any other value is now rejected with `400`
+  *before* anything is queued, rather than being silently ignored while a
+  different suite quietly ran anyway.
+- **`RUN_WORKER_COUNT`/`RUN_QUEUE_MAXSIZE` are validated at both layers**:
+  `Settings.__post_init__` and `RunManager.__init__` both reject values
+  `< 1` — a 0 in particular would otherwise be especially dangerous, since
+  `asyncio.Queue(maxsize=0)` means *unbounded*, not zero, which would
+  silently defeat the bounded-execution guarantee.
+- **Documented, tested shutdown policy**: `RunManager.stop()` does not wait
+  for in-flight or queued runs to finish — a worker mid-execution is
+  cancelled immediately and its run is left stuck at whatever state it was
+  last persisted in (never fabricated to a terminal state, never silently
+  discarded), consistent with Phase 2B's in-memory-only storage having no
+  durability contract to honor.
+- Confirmed (and regression-tested) that `RunManager.submit()` is already
+  atomic with respect to `RunQueueFullError`: `asyncio.Queue.put_nowait()`
+  is attempted *before* the run record is ever written to the repository,
+  so a rejected submission never receives a run ID, is never persisted, and
+  cannot execute — no orphan `queued` record is left behind.
 
 - Generalized the runner from a single tool call into a bounded interaction
   loop: `BenchmarkRunner.run_case` now calls `AgentAdapter.decide` up to
