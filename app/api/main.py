@@ -21,6 +21,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Response
 
 from app.api.repository import InMemoryRunRepository, RunRepository
+from app.core.a2a_benchmarks import load_a2a_suite
 from app.core.benchmarks import load_benchmark_suite
 from app.core.config import real_model_api_key_configured, settings
 from app.core.logging import configure_logging
@@ -28,10 +29,28 @@ from app.models.benchmark import BenchmarkCase
 from app.models.evaluation import Report
 from app.models.run import RunAdapter, RunCreateRequest, RunStatus, RunSummary
 from app.models.tools import ToolDefinition
+from app.runner.a2a_suite_execution import execute_a2a_suite
 from app.runner.adapters import AgentAdapter
 from app.runner.openai_adapter import openai_sdk_available
 from app.runner.run_manager import InvalidRunRequestError, RunManager, RunQueueFullError
 from app.runner.transport import StdioMCPTransport
+
+A2A_SUITE_PATH = "benchmarks/a2a/a2a_suite.yaml"
+
+
+@asynccontextmanager
+async def _no_a2a_transport():
+    """The A2A execution path never uses an MCP-shaped transport -- each
+    case builds its own fresh in-process mock agent internally (see
+    ``execute_a2a_suite``). This satisfies ``RunManager``'s constructor
+    contract (a transport-factory async context manager) without giving it
+    anything MCP-specific to hold."""
+    yield None
+
+
+async def _a2a_execute_fn(run_id: str, suite, _transport) -> Report:  # noqa: ANN001
+    return await execute_a2a_suite(run_id, suite)
+
 
 configure_logging(settings.log_level)
 logger = logging.getLogger("agent_interop_bench.api")
@@ -63,7 +82,16 @@ def build_real_model_adapter(request: RunCreateRequest) -> AgentAdapter:
 
 
 class AppState:
-    """Process-lifetime state: loaded suite, run storage, and the background run manager."""
+    """Process-lifetime state: loaded suite(s), run storage, and the
+    background run manager(s).
+
+    Two independent ``RunManager`` instances, one per suite/protocol --
+    explicit dispatch by which manager a request is routed to (see
+    ``create_run``), not a plugin/descriptor framework. ``RunManager``
+    itself is completely unmodified: the A2A manager is just a second
+    instance of the same class, constructed with the A2A suite and
+    ``_a2a_execute_fn`` instead of MCP's ``execute_suite``/transport.
+    """
 
     def __init__(self) -> None:
         self.suite = load_benchmark_suite(settings.benchmarks_path)
@@ -84,6 +112,22 @@ class AppState:
             real_model_max_cases=settings.real_model_max_cases,
         )
 
+        self.a2a_suite = load_a2a_suite(A2A_SUITE_PATH)
+        self.a2a_run_repository: RunRepository = InMemoryRunRepository()
+        self.a2a_run_manager = RunManager(
+            suite=self.a2a_suite,
+            transport_factory=_no_a2a_transport,
+            repository=self.a2a_run_repository,
+            queue_maxsize=settings.run_queue_maxsize,
+            worker_count=settings.run_worker_count,
+            execute_fn=_a2a_execute_fn,
+            # The A2A suite has no live-model adapter in Phase 3B: leaving
+            # this unset means an "openai" request against it is refused by
+            # RunManager itself if it ever reached submit() -- belt-and-
+            # suspenders alongside create_run's own explicit check below.
+            real_model_adapter_factory=None,
+        )
+
 
 app_state = AppState()
 
@@ -95,16 +139,20 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         extra={
             "suite_name": app_state.suite.name,
             "case_count": len(app_state.suite.cases),
+            "a2a_suite_name": app_state.a2a_suite.name,
+            "a2a_case_count": len(app_state.a2a_suite.cases),
             "run_worker_count": settings.run_worker_count,
             "run_queue_maxsize": settings.run_queue_maxsize,
             "enable_real_model_runs": settings.enable_real_model_runs,
         },
     )
     await app_state.run_manager.start()
+    await app_state.a2a_run_manager.start()
     try:
         yield
     finally:
         await app_state.run_manager.stop()
+        await app_state.a2a_run_manager.stop()
 
 
 app = FastAPI(
@@ -173,11 +221,13 @@ def _validate_real_model_preconditions(request: RunCreateRequest) -> None:
 async def create_run(response: Response, request: RunCreateRequest | None = None) -> RunSummary:
     """Queue a benchmark run and return immediately. Does not wait for completion.
 
-    Only one suite is ever loaded and executed (``app_state.suite``, from
-    ``BENCHMARKS_PATH``) — there is no multi-suite support. ``suite_name``
-    is therefore validated, not used to select behavior: omitting it, or
-    passing exactly the loaded suite's name, queues a run; any other value
-    is rejected with ``400`` before anything is queued.
+    Two suites are loaded: the MCP ``core_suite`` (``app_state.suite``,
+    default when ``suite_name`` is omitted) and the A2A ``a2a_suite``
+    (``app_state.a2a_suite``, selected by passing its exact name). Any other
+    ``suite_name`` is rejected with ``400`` before anything is queued. The
+    A2A suite only supports ``adapter="deterministic"`` in Phase 3B (no
+    live-model adapter exists for it yet) — requesting ``"openai"`` against
+    it is also rejected with ``400`` before queueing.
 
     ``adapter`` defaults to ``"deterministic"`` — the free, reproducible,
     CI-safe fixture adapter every run used before Phase 2C. Selecting
@@ -200,19 +250,34 @@ async def create_run(response: Response, request: RunCreateRequest | None = None
     """
     request = request or RunCreateRequest()
 
-    if request.suite_name is not None and request.suite_name != app_state.suite.name:
+    target_manager = app_state.run_manager
+    if request.suite_name is not None:
+        if request.suite_name == app_state.suite.name:
+            target_manager = app_state.run_manager
+        elif request.suite_name == app_state.a2a_suite.name:
+            target_manager = app_state.a2a_run_manager
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    f"Unknown suite_name '{request.suite_name}'; available: "
+                    f"'{app_state.suite.name}', '{app_state.a2a_suite.name}'."
+                ),
+            )
+
+    if target_manager is app_state.a2a_run_manager and request.adapter != RunAdapter.DETERMINISTIC:
         raise HTTPException(
             status_code=400,
             detail=(
-                f"Unknown suite_name '{request.suite_name}'; "
-                f"only '{app_state.suite.name}' is available."
+                f"suite_name '{app_state.a2a_suite.name}' only supports "
+                "adapter='deterministic' in Phase 3B; no live-model A2A adapter exists yet."
             ),
         )
 
     _validate_real_model_preconditions(request)
 
     try:
-        summary = app_state.run_manager.submit(request)
+        summary = target_manager.submit(request)
     except InvalidRunRequestError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except RunQueueFullError as exc:
@@ -226,10 +291,17 @@ async def create_run(response: Response, request: RunCreateRequest | None = None
     return summary
 
 
+def _find_run(run_id: str):
+    """Run IDs are unique (UUIDs) across both managers, so checking each is
+    unambiguous -- not a merged/shared repository, just two independent
+    lookups."""
+    return app_state.run_manager.get(run_id) or app_state.a2a_run_manager.get(run_id)
+
+
 @app.get("/runs/{run_id}", response_model=RunSummary)
 async def get_run(run_id: str) -> RunSummary:
     """Lifecycle metadata only — never the full report. See /runs/{run_id}/report for that."""
-    run = app_state.run_manager.get(run_id)
+    run = _find_run(run_id)
     if run is None:
         raise HTTPException(status_code=404, detail=f"Run '{run_id}' not found")
     return run.summary
@@ -261,7 +333,7 @@ async def get_run_report(run_id: str) -> Report:
       real-model adapter, ``Report.model_provenance`` is set and the result
       is not deterministic/reproducible — see ``docs/scoring.md``.
     """
-    run = app_state.run_manager.get(run_id)
+    run = _find_run(run_id)
     if run is None:
         raise HTTPException(status_code=404, detail=f"Run '{run_id}' not found")
     if run.summary.status != RunStatus.COMPLETED or run.report is None:
