@@ -155,6 +155,103 @@ def test_default_argument_match_rules_is_empty():
     assert case.argument_match_rules == {}
 
 
+def test_injected_turns_defaults_to_none_meaning_turn_zero_only():
+    case = BenchmarkCase(
+        id="x",
+        category="prompt_injection",
+        user_prompt="search for something",
+        expected_tool="search_issues",
+        simulated_failure_mode="prompt_injection",
+        expected_outcome="success",
+    )
+    assert case.injected_turns is None
+
+
+def test_injected_turns_out_of_range_rejected():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="prompt_injection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            simulated_failure_mode="prompt_injection",
+            expected_outcome="success",
+            max_turns=2,
+            injected_turns=[0, 2],
+        )
+
+
+def test_injected_turns_with_normal_failure_mode_rejected():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="correct_tool_selection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            expected_outcome="success",
+            max_turns=2,
+            injected_turns=[0],
+        )
+
+
+def test_injected_turns_empty_list_rejected():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="prompt_injection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            simulated_failure_mode="prompt_injection",
+            expected_outcome="success",
+            max_turns=2,
+            injected_turns=[],
+        )
+
+
+def test_simulated_reactions_list_accepted_for_more_than_one_reaction():
+    case = BenchmarkCase(
+        id="x",
+        category="prompt_injection",
+        user_prompt="search for something",
+        expected_tool="search_issues",
+        simulated_failure_mode="prompt_injection",
+        expected_outcome="success",
+        max_turns=3,
+        injected_turns=[0, 1],
+        simulated_reactions=[{"tool_name": "search_issues"}, {"tool_name": None}],
+    )
+    assert len(case.simulated_reactions) == 2
+
+
+def test_simulated_reaction_and_simulated_reactions_are_mutually_exclusive():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="prompt_injection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            simulated_failure_mode="prompt_injection",
+            expected_outcome="success",
+            max_turns=3,
+            simulated_reaction={"tool_name": None},
+            simulated_reactions=[{"tool_name": None}],
+        )
+
+
+def test_simulated_reactions_requires_enough_turn_budget():
+    with pytest.raises(ValidationError):
+        BenchmarkCase(
+            id="x",
+            category="prompt_injection",
+            user_prompt="search for something",
+            expected_tool="search_issues",
+            simulated_failure_mode="prompt_injection",
+            expected_outcome="success",
+            max_turns=2,
+            simulated_reactions=[{"tool_name": "search_issues"}, {"tool_name": None}],
+        )
+
+
 def test_max_turns_out_of_bounds_rejected():
     with pytest.raises(ValidationError):
         BenchmarkCase(
@@ -176,15 +273,30 @@ def test_max_turns_out_of_bounds_rejected():
         )
 
 
-def test_core_suite_multi_turn_cases_have_turn_budget():
-    """Mechanical check that the two multi-turn fixture cases are wired correctly:
-    max_turns >= 2 wherever simulated_reaction is set, everywhere else defaults to 1."""
+def test_original_21_cases_multi_turn_cases_have_turn_budget():
+    """Mechanical check that the two Phase 2A/2B multi-turn fixture cases are wired
+    correctly, and that every other one of the original 21 cases is still
+    single-turn (max_turns=1, no simulated_reaction). Scoped to the original
+    21 IDs -- Phase 2D's own multi-turn cases are covered by
+    tests/integration/test_phase_2d_adversarial_cases.py."""
     suite = load_benchmark_suite("benchmarks/")
     multi_turn_ids = {
         "injection-003-resists-hijack-attempt",
         "injection-004-hijacked-into-mutation",
     }
+    phase_2d_ids = {
+        "injection-005-redirects-to-different-tool",
+        "injection-006-argument-poisoning",
+        "injection-007-repeated-injection-resists-twice",
+        "injection-008-repeated-injection-worn-down",
+        "exception-003-unsafe-fallback-after-failure",
+        "exception-004-safe-recovery-after-failure",
+        "timeout-003-safe-recovery-after-timeout",
+        "hallucinated-002-mid-conversation-hallucination",
+    }
     for case in suite.cases:
+        if case.id in phase_2d_ids:
+            continue
         if case.id in multi_turn_ids:
             assert case.max_turns >= 2, case.id
             assert case.simulated_reaction is not None, case.id

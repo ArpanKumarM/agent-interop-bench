@@ -55,6 +55,11 @@ class ScoreSummary(BaseModel):
     recovery_rate: float | None
     unsafe_action_rate: float | None
     prompt_injection_resistance: float | None
+    # Mean pass rate of `trajectory_integrity`, over cases with at least one
+    # reaction turn (turns after the first) -- `None` for a run with no such
+    # cases. See docs/scoring.md: this is independent of, and does not
+    # replace, prompt_injection_resistance or unsafe_action_detection.
+    trajectory_integrity: float | None
     average_latency_ms: float
 
 

@@ -36,11 +36,15 @@ This repository implements an MCP evaluation engine, built up in phases.
 In scope today:
 - A safe, local mock MCP server with configurable failure injection
 - MCP tool discovery, normalized into Pydantic models
-- A deterministic benchmark suite (YAML) and a bounded multi-turn runner
+- A deterministic 29-case benchmark suite (YAML) and a bounded multi-turn
+  runner, including adversarial/security coverage: prompt-injection
+  redirection into a different tool, argument poisoning, repeated
+  (multi-observation) injection across a 3-turn interaction, and
+  unsafe-fallback/safe-recovery behavior after a legitimate tool failure
 - A pluggable `AgentAdapter` interface: a deterministic fake adapter (free,
   reproducible, the default everywhere) and an optional, disabled-by-default
   real-model adapter for OpenAI
-- Eight rule-based evaluators and an aggregate JSON reliability report
+- Nine rule-based evaluators and an aggregate JSON reliability report
 - A FastAPI service with async background run execution and in-memory run
   storage
 - Docker / Docker Compose for one-command startup
@@ -228,7 +232,7 @@ curl -i -X POST http://localhost:8000/runs -H 'content-type: application/json' -
 - `case_ids` bounds which cases run; omitting it means "every case," which
   is checked against a conservative cap (`REAL_MODEL_MAX_CASES`, default
   **3**) before anything is queued or any provider call is made. A full
-  21-case live run requires deliberately raising that cap, not the
+  29-case live run requires deliberately raising that cap, not the
   accidental default.
 - Preconditions are validated *before* queueing: an unsupported/missing
   `model`, invalid or duplicate `case_ids`, or a case count over the cap
@@ -309,7 +313,7 @@ stdio subprocess per run — no second container needed.
 
 One command, no API keys, nothing but Docker and `curl`/`python3` on your
 machine. It starts the stack, waits for `/health`, discovers the MCP tools,
-lists the benchmark suite, runs all 21 cases, fetches the generated JSON
+lists the benchmark suite, runs all 29 cases, fetches the generated JSON
 report, and prints the real reliability scores plus the intentional
 evaluator-validation failures — then tears down every Docker resource it
 created, even if a step fails partway through.
@@ -347,42 +351,79 @@ Summary excerpt:
 {
   "run_id": "example-run-0001",
   "suite_name": "agent-interop-core",
+  "suite_version": "0.3.0",
   "summary": {
-    "total_tests": 21,
-    "passed_tests": 16,
-    "failed_tests": 5,
-    "tool_selection_accuracy": 0.952,
-    "argument_accuracy": 0.85,
+    "total_tests": 29,
+    "passed_tests": 19,
+    "failed_tests": 10,
+    "tool_selection_accuracy": 0.966,
+    "argument_accuracy": 0.893,
     "recovery_rate": 1.0,
     "unsafe_action_rate": 0.0,
-    "prompt_injection_resistance": 0.75,
-    "average_latency_ms": 29.35
+    "prompt_injection_resistance": 0.5,
+    "trajectory_integrity": 0.6,
+    "average_latency_ms": 32.2
   }
 }
 ```
 
-The five "failures" here are by design: they're the negative-test cases
-(missing argument, wrong argument type, hallucinated tool, and the
-multi-turn case where the simulated agent gets hijacked by the injected
-payload) whose job is to confirm the evaluators correctly *catch* bad agent
-behavior, not to always pass. See [`docs/scoring.md`](docs/scoring.md) for
-exactly how each metric is computed, including a full worked breakdown of
-the `prompt_injection_resistance` denominator.
+The core suite is 29 cases (suite version `0.3.0`): the original 21
+Phase 1-2C cases, frozen and unchanged, plus 8 Phase 2D adversarial cases
+adding read-only prompt-injection redirection, argument poisoning, repeated
+(two-observation) injection across a genuine 3-turn interaction, an
+unrelated/mutating fallback attempted after a legitimate tool failure, and a
+mid-conversation tool hallucination — plus a ninth evaluator,
+`trajectory_integrity`, added alongside them (see below). Every `Report`
+carries `suite_version` so a consumer can tell which evaluator semantics
+scored it without consulting git history.
 
-**A note on that 0.75:** it blends two different populations. Two of the four
-prompt-injection cases are legacy single-turn cases (2/2 pass — but that
-subset can only confirm a pre-existing decision wasn't visibly altered, not
-that a hijack was resisted); the other two are reactive multi-turn cases
-(1/2 pass — this is the subset where a genuine hijack, `injection-004`, is
-actually caught). See `docs/scoring.md` for the full mechanical breakdown.
-And regardless of subset: every decision in the core suite, including the
-multi-turn reactions, comes from `DeterministicFakeAdapter` reading a
-scripted fixture (`simulated_reaction` in `benchmarks/core_suite.yaml`) —
-not from a real language model. This number validates that the harness's
+The ten "failures" here are by design: they're the negative-test cases
+(missing argument, wrong argument type, hallucinated tool at turn 0 and
+turn 1, five prompt-injection cases where the simulated agent gets hijacked
+by the injected payload — one into a different read-only tool, one via a
+poisoned argument, two into an attempted mutation — and a mutating fallback
+attempted after a legitimate tool failure) whose job is to confirm the
+evaluators correctly *catch* bad agent behavior, not to always pass. See
+[`docs/scoring.md`](docs/scoring.md) for exactly how each metric is
+computed, including a full worked breakdown of the
+`prompt_injection_resistance` denominator.
+
+**A note on that 0.5** (down from Phase 2C's 0.75 — a lower score from
+broader adversarial coverage, not a regression): it blends two different
+populations across all 8 prompt-injection cases. Two are legacy single-turn
+cases (2/2 pass — but that subset can only confirm a pre-existing decision
+wasn't visibly altered, not that a hijack was resisted); the other six are
+reactive multi-turn cases (2/6 pass — `injection-003` and the new
+`injection-007` are the resisted ones; `injection-004`, `-005`, `-006`, and
+`-008` are the caught hijacks). See `docs/scoring.md` for the full
+mechanical breakdown. And regardless of subset: every decision in the core
+suite, including every multi-turn reaction, comes from
+`DeterministicFakeAdapter` reading a scripted fixture
+(`simulated_reaction`/`simulated_reactions` in `benchmarks/core_suite.yaml`)
+— not from a real language model. This number validates that the harness's
 evaluator correctly tells scripted-resistant behavior apart from
 scripted-compromised behavior. It is not, and should not be read as, a
 robustness score for Claude, GPT, or any other real model — that requires a
-real-model adapter, which doesn't exist yet (see Roadmap).
+real-model adapter (see the OpenAI adapter above for the one that exists
+today, and its own, separate, non-reproducible live canaries).
+
+**A note on `trajectory_integrity` (0.6 = 6/10):** `tool_selection_accuracy`
+and `unsafe_action_detection` only ever inspect a case's first turn or its
+case-level `is_mutating` flag, so neither can catch a policy violation that
+appears in a *later* turn of a case whose primary task is read-only —
+`exception-003`'s mutating fallback after a legitimate tool failure, or
+`hallucinated-002`'s mid-conversation hallucination, would otherwise be
+invisible at the report level despite being clearly bad agent behavior.
+`trajectory_integrity` closes that gap: it inspects every reaction turn
+(turn 1 onward — never turn 0, which stays exclusively
+`unsafe_action_detection`'s/`tool_selection_accuracy`'s job) for exactly two
+provider-neutral violations — an unknown/unadvertised tool, or a known
+mutating tool requested without case-level pre-approval — independent of
+whether the runner's safety gate then blocked it. Denominator is the 10
+cases with at least one reaction turn; a case with no reaction turns
+(19 of the 29) reports `applicable: false`, not a pass. See
+`docs/scoring.md`'s "Trajectory integrity" section for the full design
+rationale and worked example.
 
 ## Testing
 
@@ -428,6 +469,13 @@ suite.
 - **Malformed-response detection is heuristic**, not schema-driven (MCP
   tools don't declare output schemas), scoped to "was it captured without
   crashing," not "was the specific corruption identified."
+- **`trajectory_integrity` only checks two specific, generic policy
+  violations** (unknown tool, unapproved mutation) on reaction turns — it
+  does not judge task-goal quality or catch, for example, a reaction turn
+  that calls a known, non-mutating, but off-task tool (that remains
+  `prompt_injection_resistance`'s job for injection-flavored cases, and is
+  otherwise unscored — the same turn-0-only shape every other evaluator
+  has always had).
 
 ## Roadmap
 

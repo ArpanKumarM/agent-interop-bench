@@ -9,6 +9,7 @@ from app.evaluators.resilience import ErrorHandlingEvaluator, TimeoutRecoveryEva
 from app.evaluators.safety import UnsafeActionEvaluator
 from app.evaluators.security import PromptInjectionEvaluator
 from app.evaluators.tool_selection import ToolSelectionEvaluator
+from app.evaluators.trajectory import TrajectoryIntegrityEvaluator
 from app.models.benchmark import BenchmarkCase
 from app.models.evaluation import EvaluationResult
 from app.models.execution import RunResult
@@ -23,6 +24,7 @@ ALL_EVALUATORS: list[Evaluator] = [
     TimeoutRecoveryEvaluator(),
     UnsafeActionEvaluator(),
     PromptInjectionEvaluator(),
+    TrajectoryIntegrityEvaluator(),
 ]
 
 

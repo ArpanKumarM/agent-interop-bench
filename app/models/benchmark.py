@@ -81,8 +81,25 @@ class BenchmarkCase(BaseModel):
     approved_mutation: bool = False
     simulated_agent_response: SimulatedAgentResponse | None = None
     # Second-turn fixture: what the fake adapter does after observing the first
-    # turn's tool output. Only reachable when max_turns >= 2.
+    # turn's tool output. Only reachable when max_turns >= 2. Mutually
+    # exclusive with simulated_reactions (below) — use this one for a single
+    # reaction turn (the original Phase 2A/2B shape); it is unchanged.
     simulated_reaction: SimulatedAgentResponse | None = None
+    # Turn 1..N fixtures, in order, for a case that needs more than one
+    # scripted reaction (e.g. a 3-turn case: turn 0, then two more scripted
+    # decisions). Mutually exclusive with simulated_reaction. Added in
+    # Phase 2D; every case that predates it uses simulated_reaction or
+    # neither, so this field is empty for all of them.
+    simulated_reactions: list[SimulatedAgentResponse] = Field(default_factory=list)
+    # Which turn indices the mock MCP server should apply this case's
+    # simulated_failure_mode to; every other turn gets FailureMode.NORMAL
+    # regardless of what tool is called. None (the default) means exactly
+    # {0} — turn 0 only — which is the literal, hardcoded behavior every
+    # case before Phase 2D relies on, so leaving this unset changes nothing
+    # for any of them. Set explicitly (e.g. [0, 1]) only for a case that
+    # deliberately exercises more than one malicious/failing observation in
+    # the same bounded run.
+    injected_turns: list[int] | None = None
     notes: str | None = None
 
     @model_validator(mode="after")
@@ -117,6 +134,44 @@ class BenchmarkCase(BaseModel):
             raise ValueError(
                 f"Case '{self.id}' sets simulated_reaction but max_turns={self.max_turns}; "
                 "the runner would never reach a second turn to use it. Set max_turns >= 2."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _reactions_mutually_exclusive_and_bounded(self) -> BenchmarkCase:
+        if self.simulated_reaction is not None and self.simulated_reactions:
+            raise ValueError(
+                f"Case '{self.id}' sets both simulated_reaction and simulated_reactions; "
+                "use exactly one."
+            )
+        if self.simulated_reactions and self.max_turns < len(self.simulated_reactions) + 1:
+            raise ValueError(
+                f"Case '{self.id}' has {len(self.simulated_reactions)} simulated_reactions "
+                f"but max_turns={self.max_turns}; need max_turns >= "
+                f"{len(self.simulated_reactions) + 1} (turn 0 plus every reaction)."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _injected_turns_are_in_range(self) -> BenchmarkCase:
+        if self.injected_turns is None:
+            return self
+        if not self.injected_turns:
+            raise ValueError(
+                f"Case '{self.id}' sets injected_turns to an empty list; omit it instead."
+            )
+        if len(set(self.injected_turns)) != len(self.injected_turns):
+            raise ValueError(f"Case '{self.id}' has duplicate values in injected_turns.")
+        out_of_range = [t for t in self.injected_turns if t < 0 or t >= self.max_turns]
+        if out_of_range:
+            raise ValueError(
+                f"Case '{self.id}' has injected_turns {out_of_range} outside "
+                f"[0, max_turns={self.max_turns})."
+            )
+        if self.simulated_failure_mode == FailureMode.NORMAL:
+            raise ValueError(
+                f"Case '{self.id}' sets injected_turns but simulated_failure_mode is 'normal'; "
+                "injected_turns only has an effect for a non-normal failure mode."
             )
         return self
 

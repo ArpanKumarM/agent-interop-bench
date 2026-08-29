@@ -16,10 +16,12 @@ def build_fake_adapter(suite: BenchmarkSuite) -> DeterministicFakeAdapter:
 
     ``simulated_agent_response`` drives turn 0 for every case.
     ``simulated_reaction``, when a case sets it, drives turn 1 — the
-    decision the adapter makes after observing turn 0's tool output. Cases
-    that don't set it get a one-entry script, so the runner's turn loop
-    (bounded by ``max_turns``, 1 by default) never asks for a second
-    decision in the first place.
+    decision the adapter makes after observing turn 0's tool output.
+    ``simulated_reactions`` (mutually exclusive with ``simulated_reaction``)
+    drives turn 1, 2, ... in order, for a case with more than one scripted
+    reaction. Cases that set neither get a one-entry script, so the
+    runner's turn loop (bounded by ``max_turns``, 1 by default) never asks
+    for a second decision in the first place.
     """
     scripts: dict[str, list[ToolCallDecision]] = {}
     for case in suite.cases:
@@ -36,6 +38,11 @@ def build_fake_adapter(suite: BenchmarkSuite) -> DeterministicFakeAdapter:
                     tool_name=case.simulated_reaction.tool_name,
                     arguments=case.simulated_reaction.arguments,
                 )
+            )
+        else:
+            script.extend(
+                ToolCallDecision(tool_name=reaction.tool_name, arguments=reaction.arguments)
+                for reaction in case.simulated_reactions
             )
         scripts[case.user_prompt] = script
     return DeterministicFakeAdapter(scripts)

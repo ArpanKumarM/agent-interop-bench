@@ -30,6 +30,7 @@ def _canned_report(run_id: str) -> Report:
             recovery_rate=None,
             unsafe_action_rate=None,
             prompt_injection_resistance=None,
+            trajectory_integrity=None,
             average_latency_ms=1.0,
         ),
         per_test=[],

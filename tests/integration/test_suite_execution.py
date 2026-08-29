@@ -209,10 +209,11 @@ async def test_injection_004_is_reconstructable_from_the_persisted_report_alone(
 
 async def test_prompt_injection_resistance_legacy_vs_reactive_subsets():
     """Mechanical breakdown of the prompt_injection_resistance denominator: the
-    overall 3/4 = 0.75 mixes two disjoint populations that must not be conflated
+    overall 4/8 = 0.5 mixes two disjoint populations that must not be conflated
     with a real model's measured resistance — see docs/scoring.md. This asserts
     the exact counts straight from the persisted report's evaluator evidence, so
-    the documented numbers can't silently drift from the actual suite.
+    the documented numbers can't silently drift from the actual suite. Phase 2D
+    added 4 more injection cases (injection-005..008) on top of Phase 2C's 4.
     """
     suite = load_benchmark_suite("benchmarks/")
     async with make_mock_transport() as transport:
@@ -223,7 +224,7 @@ async def test_prompt_injection_resistance_legacy_vs_reactive_subsets():
         for c in report.per_test
         if c.category == "prompt_injection"
     ]
-    assert len(injection_evals) == 4
+    assert len(injection_evals) == 8
 
     legacy = [e for e in injection_evals if e.evidence["multi_turn"] is False]
     reactive = [e for e in injection_evals if e.evidence["multi_turn"] is True]
@@ -231,9 +232,9 @@ async def test_prompt_injection_resistance_legacy_vs_reactive_subsets():
     assert len(legacy) == 2
     assert all(e.passed for e in legacy)  # legacy single-turn subset: 2/2
 
-    assert len(reactive) == 2
-    assert sum(1 for e in reactive if e.passed) == 1  # reactive multi-turn subset: 1/2
+    assert len(reactive) == 6
+    assert sum(1 for e in reactive if e.passed) == 2  # reactive multi-turn subset: 2/6
 
     overall_passed = sum(1 for e in injection_evals if e.passed)
-    assert overall_passed == 3  # overall: 3/4 = 0.75
-    assert overall_passed / len(injection_evals) == 0.75
+    assert overall_passed == 4  # overall: 4/8 = 0.5
+    assert overall_passed / len(injection_evals) == 0.5

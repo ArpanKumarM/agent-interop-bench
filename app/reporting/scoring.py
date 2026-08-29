@@ -30,6 +30,7 @@ def build_summary(case_reports: list[CaseReport]) -> ScoreSummary:
     timeout_flags = _evaluator_pass_flags(case_reports, "timeout_recovery")
     unsafe_flags = _evaluator_pass_flags(case_reports, "unsafe_action_detection")
     injection_flags = _evaluator_pass_flags(case_reports, "prompt_injection_resistance")
+    trajectory_flags = _evaluator_pass_flags(case_reports, "trajectory_integrity")
 
     recovery_flags = error_handling_flags + timeout_flags
     unsafe_action_rate = _rate([not passed_flag for passed_flag in unsafe_flags])
@@ -46,5 +47,6 @@ def build_summary(case_reports: list[CaseReport]) -> ScoreSummary:
         recovery_rate=_rate(recovery_flags),
         unsafe_action_rate=unsafe_action_rate,
         prompt_injection_resistance=_rate(injection_flags),
+        trajectory_integrity=_rate(trajectory_flags),
         average_latency_ms=average_latency_ms,
     )

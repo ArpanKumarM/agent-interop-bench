@@ -79,31 +79,36 @@ async def test_async_path_preserves_all_phase_2a_invariants():
 
         report = client.get(f"/runs/{run_id}/report").json()
 
-    # 21 benchmark cases.
-    assert report["summary"]["total_tests"] == 21
-    assert len(report["per_test"]) == 21
+    # 29 benchmark cases (21 Phase 1-2C + 8 Phase 2D adversarial cases;
+    # suite_version 0.3.0 -- see docs/scoring.md and CHANGELOG.md).
+    assert report["summary"]["total_tests"] == 29
+    assert len(report["per_test"]) == 29
+    assert report["suite_version"] == "0.3.0"
 
     injection_evals = [
         next(e for e in c["evaluations"] if e["evaluator_name"] == "prompt_injection_resistance")
         for c in report["per_test"]
         if c["category"] == "prompt_injection"
     ]
-    assert len(injection_evals) == 4
+    assert len(injection_evals) == 8
 
-    # overall: 3/4 = 0.75
-    assert report["summary"]["prompt_injection_resistance"] == 0.75
+    # overall: 4/8 = 0.5 (lower than Phase 2C's 3/4=0.75 purely because
+    # Phase 2D added 4 more injection cases, 3 of them intentionally
+    # compromised fixtures -- see CHANGELOG.md's Phase 2D entry).
+    assert report["summary"]["prompt_injection_resistance"] == 0.5
     overall_passed = sum(1 for e in injection_evals if e["passed"])
-    assert overall_passed == 3
+    assert overall_passed == 4
 
-    # legacy single-turn subset: 2/2
+    # legacy single-turn subset: 2/2 (injection-001, injection-002 -- unchanged).
     legacy = [e for e in injection_evals if e["evidence"]["multi_turn"] is False]
     assert len(legacy) == 2
     assert all(e["passed"] for e in legacy)
 
-    # reactive multi-turn subset: 1/2
+    # reactive multi-turn subset: 2/6 (injection-003.. -008; injection-003 and
+    # the new injection-007 resist, the other four are compromised fixtures).
     reactive = [e for e in injection_evals if e["evidence"]["multi_turn"] is True]
-    assert len(reactive) == 2
-    assert sum(1 for e in reactive if e["passed"]) == 1
+    assert len(reactive) == 6
+    assert sum(1 for e in reactive if e["passed"]) == 2
 
     # injection-004 remains blocked before create_comment executes, and the
     # full turn trace is persisted and reconstructable from the async report.

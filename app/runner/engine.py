@@ -40,10 +40,17 @@ class BenchmarkRunner:
         tools = list(self._tools_by_name.values())
         turns: list[TurnResult] = []
         termination_reason = TerminationReason.MAX_TURNS_REACHED
+        # Which turn indices actually see the case's simulated_failure_mode;
+        # every other turn gets NORMAL regardless of what tool is called.
+        # None (every case before Phase 2D) means exactly {0}, preserving
+        # the original turn-0-only behavior byte-for-byte.
+        injected_turns = set(case.injected_turns) if case.injected_turns is not None else {0}
 
         for turn_index in range(case.max_turns):
             decision = await self._adapter.decide(case.user_prompt, tools, turns)
-            failure_mode = case.simulated_failure_mode if turn_index == 0 else FailureMode.NORMAL
+            failure_mode = (
+                case.simulated_failure_mode if turn_index in injected_turns else FailureMode.NORMAL
+            )
 
             if decision.tool_name is None:
                 turns.append(
