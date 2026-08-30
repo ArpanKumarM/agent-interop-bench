@@ -52,6 +52,14 @@ def canary_token(case_id: str, canary_name: str) -> str:
     return f"⟦CANARY:{composed_deterministic_id(case_id, 'canary', canary_name)}⟧"
 
 
+def action_trigger_token(case_id: str, trigger_name: str) -> str:
+    """The literal, syntactically-inert marker a shared host reaction policy
+    (``HostActionSpec.trigger_name``) checks for by exact substring identity
+    -- never semantic/NLP content inspection -- to mechanically decide
+    whether to attempt a configured action. See ``ActionTrigger``."""
+    return f"⟦ACTION_TRIGGER:{composed_deterministic_id(case_id, 'trigger', trigger_name)}⟧"
+
+
 Actor = Literal["user", "host", "remote", "local_tool", "remote_tool"]
 
 _DEFAULT_ORIGIN_TRUST: dict[Actor, Literal["trusted", "untrusted"]] = {
@@ -72,6 +80,15 @@ class ProvenanceCanary(BaseModel):
     sensitivity: Literal["public", "sensitive"] = "public"
 
 
+class ActionTrigger(BaseModel):
+    """A fixture-declared, deterministic marker name (Phase 3D.3.1) a shared
+    host reaction policy mechanically checks for, by exact substring
+    identity, to decide whether to attempt a configured action -- see
+    ``HostActionSpec.trigger_name`` and ``action_trigger_token``."""
+
+    name: str
+
+
 class SensitiveEdge(BaseModel):
     """One explicitly authorized observable communication edge for
     sensitive content. Describes the edge itself (who talked to whom, over
@@ -88,13 +105,39 @@ class HostActionSpec(BaseModel):
     literal token (see ``canary_token``) before use; ``{tool_result_text}``
     in ``relay_template`` is substituted with the most recent
     ``mcp_tool_result`` event's text payload -- both are plain string
-    substitution, not templating with any conditional/semantic logic."""
+    substitution, not templating with any conditional/semantic logic.
 
-    action: Literal["call_local_tool", "relay_to_remote", "stop"]
+    ``attempt_mutating_tool`` (Phase 3D.3) is a real, gated mutation
+    attempt: the runner discovers ``tool_name``'s actual annotation via
+    ``MCPTransport.list_tools()`` (never a fixture-asserted "is this
+    mutating" flag) and calls
+    ``app.runner.mutation_gate.mutation_blocked(is_mutating, approved)`` --
+    the identical predicate ``BenchmarkRunner``'s own gate applies -- before
+    deciding whether to actually execute it. ``approved`` is this case's own
+    fixture-declared ground truth, exactly like
+    ``BenchmarkCase.approved_mutation``.
+
+    ``trigger_name`` (Phase 3D.3.1) makes ``attempt_mutating_tool`` a SHARED,
+    mechanically-conditional reaction policy rather than an authored
+    behavioral difference between cases: when set, the runner checks whether
+    the most recently observed A2A artifact's text contains that trigger's
+    exact token (``action_trigger_token`` -- plain substring membership,
+    never semantic/NLP/rationale inspection); only then does it proceed to
+    the gate check and possible execution above. When the token is absent,
+    the action is a safe no-op: no event is emitted at all. The identical
+    ``HostActionSpec`` entry (same ``tool_name``/``tool_arguments``/
+    ``trigger_name``/``approved``) can therefore be scripted verbatim across
+    multiple cases; only the artifact content each case's remote fixture
+    actually produces determines whether it fires. ``trigger_name=None``
+    (the default) makes the attempt unconditional, as before."""
+
+    action: Literal["call_local_tool", "relay_to_remote", "attempt_mutating_tool", "stop"]
     tool_name: str | None = None
     tool_arguments: dict[str, Any] = Field(default_factory=dict)
     relay_template: str | None = None
     content_type: str = "text/plain"
+    approved: bool = False
+    trigger_name: str | None = None
 
 
 class ComposedBenchmarkCase(BaseModel):
@@ -113,6 +156,7 @@ class ComposedBenchmarkCase(BaseModel):
     expected_outcome: Literal["success", "graceful_failure", "blocked_unsafe"]
     target_agent_card: AgentCard
     provenance_canaries: list[ProvenanceCanary] = Field(default_factory=list)
+    action_triggers: list[ActionTrigger] = Field(default_factory=list)
     allowed_sensitive_edges: list[SensitiveEdge] = Field(default_factory=list)
     origin_trust_overrides: dict[str, Literal["trusted", "untrusted"]] = Field(default_factory=dict)
     content_class_overrides: dict[str, Literal["adversarial", "non_adversarial"]] = Field(

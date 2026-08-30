@@ -1,4 +1,5 @@
-"""Cross-protocol composed benchmark runner (Phase 3D.1).
+"""Cross-protocol composed benchmark runner (Phase 3D.1; mutation-attempt
+handling added in Phase 3D.3).
 
 Deliberately does NOT call ``BenchmarkRunner.run_case`` or
 ``A2ABenchmarkRunner.run_case``: those two runners stay completely
@@ -30,10 +31,12 @@ from app.models.composed import (
     Actor,
     ComposedBenchmarkCase,
     CrossProtocolEvent,
+    action_trigger_token,
     canary_token,
     composed_deterministic_id,
     default_origin_trust,
 )
+from app.runner.mutation_gate import mutation_blocked
 from app.runner.transport import MCPTransport
 from mock_servers.a2a_mock import build_a2a_mock_app
 
@@ -53,6 +56,10 @@ def _substitute(text: str, case: ComposedBenchmarkCase, tool_result_text: str | 
         result = result.replace("{tool_result_text}", tool_result_text)
     for canary in case.provenance_canaries:
         result = result.replace(f"{{canary:{canary.name}}}", canary_token(case.id, canary.name))
+    for trigger in case.action_triggers:
+        result = result.replace(
+            f"{{trigger:{trigger.name}}}", action_trigger_token(case.id, trigger.name)
+        )
     return result
 
 
@@ -205,6 +212,7 @@ class ComposedBenchmarkRunner:
 
         last_event: CrossProtocolEvent | None = None
         last_tool_result_text: str | None = None
+        last_artifact_text: str | None = None
 
         with TestClient(mock_app) as client:
             for action in case.simulated_host_actions[: case.max_interaction_steps]:
@@ -283,6 +291,7 @@ class ComposedBenchmarkRunner:
                         artifact_text = "\n".join(
                             part.text for part in task.artifacts[-1].parts if part.text
                         )
+                        last_artifact_text = artifact_text
                         last_event = self._append(
                             case,
                             event_type="a2a_artifact",
@@ -292,5 +301,66 @@ class ComposedBenchmarkRunner:
                             payload={"text": artifact_text},
                             parent_event_ids=[transition_event.event_id],
                         )
+
+                elif action.action == "attempt_mutating_tool":
+                    if action.trigger_name is not None and (
+                        action_trigger_token(case.id, action.trigger_name)
+                        not in (last_artifact_text or "")
+                    ):
+                        # Shared, mechanical reaction policy: the trigger's exact
+                        # token is absent from the most recently observed artifact
+                        # -- continue/stop safely, emitting no event at all. This
+                        # is the ONLY thing that makes an adversarial case's
+                        # outcome differ from a benign twin scripted with the
+                        # identical HostActionSpec entry: which artifact content
+                        # the remote fixture actually produced, never which case
+                        # this is.
+                        continue
+
+                    arguments = _substitute_arguments(action.tool_arguments, case)
+                    async with self._local_transport_factory() as transport:
+                        tools = await transport.list_tools()
+                        tool_def = next((t for t in tools if t.name == action.tool_name), None)
+                        is_mutating = bool(tool_def and tool_def.is_mutating)
+                        if mutation_blocked(is_mutating, action.approved):
+                            last_event = self._append(
+                                case,
+                                event_type="mutation_action",
+                                source="host",
+                                dest="local_tool",
+                                protocol="mcp",
+                                payload={
+                                    "tool_name": action.tool_name,
+                                    "arguments": arguments,
+                                    "reason": "unapproved mutation blocked",
+                                },
+                                parent_event_ids=[last_event.event_id] if last_event else [],
+                                is_mutating=True,
+                                approved=False,
+                                executed=False,
+                            )
+                        else:
+                            outcome = await transport.call_tool(
+                                action.tool_name or "",
+                                arguments,
+                                timeout_seconds=LOCAL_MCP_CALL_TIMEOUT_SECONDS,
+                            )
+                            last_event = self._append(
+                                case,
+                                event_type="mutation_action",
+                                source="host",
+                                dest="local_tool",
+                                protocol="mcp",
+                                payload={
+                                    "tool_name": action.tool_name,
+                                    "arguments": arguments,
+                                    "text_output": outcome.text_output,
+                                    "is_error": outcome.is_error,
+                                },
+                                parent_event_ids=[last_event.event_id] if last_event else [],
+                                is_mutating=True,
+                                approved=action.approved,
+                                executed=True,
+                            )
 
         return list(self._events)

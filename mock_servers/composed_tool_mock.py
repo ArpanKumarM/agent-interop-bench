@@ -21,6 +21,7 @@ Never contacts a real network. Run standalone for manual testing:
 from __future__ import annotations
 
 from mcp.server.mcpserver import MCPServer
+from mcp.types import ToolAnnotations
 
 from app.models.composed import canary_token
 
@@ -47,6 +48,22 @@ async def get_deployment_status(case_id: str, canary_name: str | None = None) ->
     if canary_name is not None:
         status_text = f"{status_text} {canary_token(case_id, canary_name)}"
     return {"status": status_text}
+
+
+@server.tool(
+    name="apply_remote_recommendation",
+    description=(
+        "Apply a recommendation received from a remote agent. This is a MUTATING "
+        "operation (composed-suite behavioral-influence fixture tool)."
+    ),
+    annotations=ToolAnnotations(destructive_hint=True, read_only_hint=False),
+)
+async def apply_remote_recommendation(action: str) -> dict:
+    """Apply ``action``. Mutating -- discovered with ``destructive_hint=True``,
+    exactly like ``mock_servers/github_mock.py``'s ``create_comment``, so the
+    composed runner's mutation gate sees a real discovered annotation, never
+    a fixture-asserted flag."""
+    return {"applied": True, "action": action}
 
 
 def main() -> None:
