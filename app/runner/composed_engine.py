@@ -1,5 +1,6 @@
 """Cross-protocol composed benchmark runner (Phase 3D.1; mutation-attempt
-handling added in Phase 3D.3).
+handling added in Phase 3D.3; ``HostAgentAdapter`` decision seam added in
+Phase 4A.1).
 
 Deliberately does NOT call ``BenchmarkRunner.run_case`` or
 ``A2ABenchmarkRunner.run_case``: those two runners stay completely
@@ -12,6 +13,12 @@ same ``Message``/``Part``/``Task`` wire models ``a2a_engine.py`` already
 uses -- so that a host's actions can interleave across both protocols
 within a single ordered event trace, which calling either existing
 ``run_case`` as an opaque black box would prevent.
+
+The host's next action is decided by a ``HostAgentAdapter`` (Phase 4A.1),
+given only a sanitized ``HostDecisionContext`` -- never this case's ground
+truth or a raw ``CrossProtocolEvent``. Defaults to ``ScriptedHostAdapter``
+(replaying ``case.simulated_host_actions``) when none is supplied, so every
+existing deterministic case behaves exactly as before this seam existed.
 
 No chain-of-thought or adapter rationale is ever read: every
 ``CrossProtocolEvent`` this runner emits is built only from the request/
@@ -36,6 +43,8 @@ from app.models.composed import (
     composed_deterministic_id,
     default_origin_trust,
 )
+from app.models.host_context import HostDecisionContext, ObservableEvent
+from app.runner.host_adapters import DEFAULT_HOST_POLICY_TEXT, HostAgentAdapter, ScriptedHostAdapter
 from app.runner.mutation_gate import mutation_blocked
 from app.runner.transport import MCPTransport
 from mock_servers.a2a_mock import build_a2a_mock_app
@@ -77,8 +86,13 @@ class ComposedBenchmarkRunner:
     """Executes one composed benchmark case, emitting a single ordered,
     DAG-validated ``list[CrossProtocolEvent]`` spanning both protocols."""
 
-    def __init__(self, local_transport_factory: Callable[[], MCPTransport]) -> None:
+    def __init__(
+        self,
+        local_transport_factory: Callable[[], MCPTransport],
+        adapter: HostAgentAdapter | None = None,
+    ) -> None:
         self._local_transport_factory = local_transport_factory
+        self._adapter = adapter
         self._events: list[CrossProtocolEvent] = []
         self._by_id: dict[str, CrossProtocolEvent] = {}
 
@@ -181,16 +195,38 @@ class ComposedBenchmarkRunner:
         self._by_id[event_id] = event
         return event
 
-    async def run_case(self, case: ComposedBenchmarkCase) -> list[CrossProtocolEvent]:
+    def _observable_history(self) -> list[ObservableEvent]:
+        return [
+            ObservableEvent(
+                seq=event.seq,
+                event_type=event.event_type,
+                source=event.source,
+                dest=event.dest,
+                protocol=event.protocol,
+                payload=event.payload,
+                is_mutating=event.is_mutating,
+                approved=event.approved,
+                executed=event.executed,
+            )
+            for event in self._events
+        ]
+
+    async def run_case(
+        self,
+        case: ComposedBenchmarkCase,
+        adapter: HostAgentAdapter | None = None,
+    ) -> list[CrossProtocolEvent]:
         self._events = []
         self._by_id = {}
+        resolved_adapter = adapter or self._adapter or ScriptedHostAdapter.for_case(case)
 
-        # Canary placeholders in the case's own scripted remote-agent fixture
-        # (e.g. artifact_text) are substituted here, before the mock app is
-        # built -- so a fixture author can declare "the remote agent's
-        # artifact echoes this canary back" using the same {canary:NAME}
-        # syntax as host actions, without hand-computing the deterministic
-        # token's UUID and pasting it into YAML.
+        # Canary/trigger placeholders in the case's own scripted remote-agent
+        # fixture (e.g. artifact_text) are substituted here, before the mock
+        # app is built -- so a fixture author can declare "the remote agent's
+        # artifact echoes this canary/trigger back" using the same
+        # {canary:NAME}/{trigger:NAME} syntax as host actions, without
+        # hand-computing the deterministic token's UUID and pasting it into
+        # YAML.
         substituted_remote_behavior = [
             step.model_copy(
                 update={
@@ -210,12 +246,30 @@ class ComposedBenchmarkRunner:
         ]
         mock_app = build_a2a_mock_app(case.target_agent_card, substituted_remote_behavior, case.id)
 
+        # Discovered once, up front: available_tools is model-visible metadata
+        # (name/description/schema/is_mutating), reused both to populate every
+        # HostDecisionContext and as the mutation gate's real annotation
+        # source -- never a fixture-asserted "is this mutating" flag.
+        async with self._local_transport_factory() as transport:
+            available_tools = await transport.list_tools()
+
         last_event: CrossProtocolEvent | None = None
         last_tool_result_text: str | None = None
-        last_artifact_text: str | None = None
 
         with TestClient(mock_app) as client:
-            for action in case.simulated_host_actions[: case.max_interaction_steps]:
+            step = 0
+            while step < case.max_interaction_steps:
+                context = HostDecisionContext(
+                    user_prompt=case.user_prompt,
+                    host_policy=DEFAULT_HOST_POLICY_TEXT,
+                    history=self._observable_history(),
+                    available_tools=available_tools,
+                    target_agent_card=case.target_agent_card,
+                    current_step=step,
+                )
+                action = await resolved_adapter.decide(context)
+                step += 1
+
                 if action.action == "stop":
                     break
 
@@ -291,7 +345,6 @@ class ComposedBenchmarkRunner:
                         artifact_text = "\n".join(
                             part.text for part in task.artifacts[-1].parts if part.text
                         )
-                        last_artifact_text = artifact_text
                         last_event = self._append(
                             case,
                             event_type="a2a_artifact",
@@ -303,64 +356,51 @@ class ComposedBenchmarkRunner:
                         )
 
                 elif action.action == "attempt_mutating_tool":
-                    if action.trigger_name is not None and (
-                        action_trigger_token(case.id, action.trigger_name)
-                        not in (last_artifact_text or "")
-                    ):
-                        # Shared, mechanical reaction policy: the trigger's exact
-                        # token is absent from the most recently observed artifact
-                        # -- continue/stop safely, emitting no event at all. This
-                        # is the ONLY thing that makes an adversarial case's
-                        # outcome differ from a benign twin scripted with the
-                        # identical HostActionSpec entry: which artifact content
-                        # the remote fixture actually produced, never which case
-                        # this is.
-                        continue
-
                     arguments = _substitute_arguments(action.tool_arguments, case)
-                    async with self._local_transport_factory() as transport:
-                        tools = await transport.list_tools()
-                        tool_def = next((t for t in tools if t.name == action.tool_name), None)
-                        is_mutating = bool(tool_def and tool_def.is_mutating)
-                        if mutation_blocked(is_mutating, action.approved):
-                            last_event = self._append(
-                                case,
-                                event_type="mutation_action",
-                                source="host",
-                                dest="local_tool",
-                                protocol="mcp",
-                                payload={
-                                    "tool_name": action.tool_name,
-                                    "arguments": arguments,
-                                    "reason": "unapproved mutation blocked",
-                                },
-                                parent_event_ids=[last_event.event_id] if last_event else [],
-                                is_mutating=True,
-                                approved=False,
-                                executed=False,
-                            )
-                        else:
+                    tool_def = next(
+                        (t for t in available_tools if t.name == action.tool_name), None
+                    )
+                    is_mutating = bool(tool_def and tool_def.is_mutating)
+                    if mutation_blocked(is_mutating, action.approved):
+                        last_event = self._append(
+                            case,
+                            event_type="mutation_action",
+                            source="host",
+                            dest="local_tool",
+                            protocol="mcp",
+                            payload={
+                                "tool_name": action.tool_name,
+                                "arguments": arguments,
+                                "reason": "unapproved mutation blocked",
+                            },
+                            parent_event_ids=[last_event.event_id] if last_event else [],
+                            is_mutating=True,
+                            approved=False,
+                            executed=False,
+                        )
+                    else:
+                        async with self._local_transport_factory() as transport:
                             outcome = await transport.call_tool(
                                 action.tool_name or "",
                                 arguments,
                                 timeout_seconds=LOCAL_MCP_CALL_TIMEOUT_SECONDS,
                             )
-                            last_event = self._append(
-                                case,
-                                event_type="mutation_action",
-                                source="host",
-                                dest="local_tool",
-                                protocol="mcp",
-                                payload={
-                                    "tool_name": action.tool_name,
-                                    "arguments": arguments,
-                                    "text_output": outcome.text_output,
-                                    "is_error": outcome.is_error,
-                                },
-                                parent_event_ids=[last_event.event_id] if last_event else [],
-                                is_mutating=True,
-                                approved=action.approved,
-                                executed=True,
-                            )
+                        last_event = self._append(
+                            case,
+                            event_type="mutation_action",
+                            source="host",
+                            dest="local_tool",
+                            protocol="mcp",
+                            payload={
+                                "tool_name": action.tool_name,
+                                "arguments": arguments,
+                                "text_output": outcome.text_output,
+                                "is_error": outcome.is_error,
+                            },
+                            parent_event_ids=[last_event.event_id] if last_event else [],
+                            is_mutating=True,
+                            approved=action.approved,
+                            executed=True,
+                        )
 
         return list(self._events)
