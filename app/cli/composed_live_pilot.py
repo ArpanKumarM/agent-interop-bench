@@ -43,8 +43,13 @@ from app.runner.decision_point_pilot import (
     DecisionPointAdapterFactory,
     run_decision_point_pilot,
 )
+from app.runner.execution_fingerprint import compute_execution_fingerprint
 from app.runner.host_adapters import HostAgentAdapter
-from app.runner.pilot_ledger import PilotResumeConfigMismatchError, TrialLedger
+from app.runner.pilot_ledger import (
+    PilotResumeConfigMismatchError,
+    PilotResumeFingerprintMismatchError,
+    TrialLedger,
+)
 from app.runner.pilot_runner import AdapterFactory, finalize_summary, run_pilot
 from app.runner.transport import MCPTransport, StdioMCPTransport
 
@@ -129,9 +134,11 @@ def require_live_preconditions() -> None:
 
 
 def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
-    """Validates and describes the resolved plan. Constructs no client, no
-    adapter, no transport -- makes no provider call."""
-    resolve_overlays(plan)  # validation only; the returned list isn't needed here
+    """Validates and describes the resolved plan, including the full
+    execution fingerprint. Constructs no client, no adapter, no transport --
+    makes no provider call."""
+    overlays = resolve_overlays(plan)
+    fingerprint = compute_execution_fingerprint(plan, overlays)
     estimated_max_provider_calls = min(
         plan.trials_per_condition * len(plan.overlay_ids) * plan.max_decisions_per_trial,
         plan.max_total_decisions,
@@ -152,6 +159,11 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
             "a2a": "mock_servers.a2a_mock (in-process TestClient only, no sockets)",
         },
         "config_hash": plan.config_hash,
+        "source_commit_sha": fingerprint.source_commit_sha,
+        "resolved_overlay_bundle_sha256": fingerprint.resolved_overlay_bundle_sha256,
+        "host_policy_sha256": fingerprint.host_policy_sha256,
+        "tool_schema_sha256": fingerprint.tool_schema_sha256,
+        "execution_fingerprint_sha256": fingerprint.execution_fingerprint_sha256,
         "run_directory": str(RUN_DIR_ROOT / run_id),
         "enable_real_model_composed_runs": settings.enable_real_model_composed_runs,
         "openai_api_key_present": real_model_api_key_configured(),
@@ -256,6 +268,7 @@ def build_real_decision_point_adapter_factory(
 
 async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
     overlays = resolve_overlays(plan)
+    fingerprint = compute_execution_fingerprint(plan, overlays)
     ledger = TrialLedger(RUN_DIR_ROOT / run_id)
     if plan.execution_mode == "decision_point":
         await run_decision_point_pilot(
@@ -264,10 +277,16 @@ async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
             ledger,
             build_dry_run_decision_point_adapter_factory(),
             local_transport_factory,
+            fingerprint,
         )
     else:
         await run_pilot(
-            plan, overlays, ledger, build_dry_run_adapter_factory(), local_transport_factory
+            plan,
+            overlays,
+            ledger,
+            build_dry_run_adapter_factory(),
+            local_transport_factory,
+            fingerprint,
         )
     return finalize_summary(plan, overlays, ledger)
 
@@ -275,6 +294,7 @@ async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
 async def run_live(plan: PilotExperimentPlan, run_id: str) -> dict:
     require_live_preconditions()
     overlays = resolve_overlays(plan)
+    fingerprint = compute_execution_fingerprint(plan, overlays)
     ledger = TrialLedger(RUN_DIR_ROOT / run_id)
     if plan.execution_mode == "decision_point":
         await run_decision_point_pilot(
@@ -283,10 +303,16 @@ async def run_live(plan: PilotExperimentPlan, run_id: str) -> dict:
             ledger,
             build_real_decision_point_adapter_factory(plan),
             local_transport_factory,
+            fingerprint,
         )
     else:
         await run_pilot(
-            plan, overlays, ledger, build_real_adapter_factory(plan), local_transport_factory
+            plan,
+            overlays,
+            ledger,
+            build_real_adapter_factory(plan),
+            local_transport_factory,
+            fingerprint,
         )
     return finalize_summary(plan, overlays, ledger)
 
@@ -325,7 +351,11 @@ def main(argv: list[str] | None = None) -> int:
         summary = asyncio.run(run_live(plan, args.run_id))
         print(json.dumps(summary, indent=2, sort_keys=True))
         return 0
-    except (ComposedLivePilotConfigError, PilotResumeConfigMismatchError) as exc:
+    except (
+        ComposedLivePilotConfigError,
+        PilotResumeConfigMismatchError,
+        PilotResumeFingerprintMismatchError,
+    ) as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 1
 

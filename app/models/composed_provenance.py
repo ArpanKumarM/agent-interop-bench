@@ -18,6 +18,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from app.models.execution_fingerprint import ExecutionFingerprint
+
 
 class ComposedProviderCallRecord(BaseModel):
     """One provider call made to decide one host action."""
@@ -61,6 +63,11 @@ class ComposedModelRunProvenance(BaseModel):
     the model on every request this run (a subset of the canonical four that
     ``tool_schema_sha256`` still fingerprints). None == the full action
     surface was offered (v1 free-run)."""
+    execution_fingerprint: ExecutionFingerprint | None = None
+    """Phase 4A.3e: the run's full execution fingerprint (config_hash +
+    source commit + resolved overlay bundle + host policy + tool schema),
+    attached to every trial's provenance by the pilot runner. None for
+    non-fingerprinted callers/tests."""
     run_started_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     provider_calls: list[ComposedProviderCallRecord] = Field(default_factory=list)
 

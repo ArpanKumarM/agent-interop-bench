@@ -37,6 +37,7 @@ from collections.abc import Callable
 
 from app.models.composed import CrossProtocolEvent, HostActionSpec
 from app.models.composed_provenance import ComposedModelRunProvenance
+from app.models.execution_fingerprint import ExecutionFingerprint
 from app.models.host_context import HostDecisionContext
 from app.models.live_overlay import LiveExperimentOverlay, overlay_to_composed_case
 from app.models.pilot_plan import PilotExperimentPlan
@@ -154,6 +155,7 @@ async def run_decision_point_trial(
     adapter_factory: DecisionPointAdapterFactory,
     local_transport_factory: Callable[[], MCPTransport],
     global_budget: GlobalDecisionBudget,
+    execution_fingerprint: ExecutionFingerprint | None = None,
 ) -> TrialRecord:
     case = overlay_to_composed_case(overlay)
     bootstrap, allowed_actions = bootstrap_plan_for(overlay)
@@ -189,6 +191,8 @@ async def run_decision_point_trial(
         termination_reason = _classify_termination(exc)
 
     provenance: ComposedModelRunProvenance = real_adapter.provenance
+    if execution_fingerprint is not None:
+        provenance.execution_fingerprint = execution_fingerprint
     outcomes = (
         compute_decision_point_outcomes(case, events, composite.decision_point_action)
         if status == "completed"
@@ -227,6 +231,7 @@ async def run_decision_point_pilot(
     ledger: TrialLedger,
     adapter_factory: DecisionPointAdapterFactory,
     local_transport_factory: Callable[[], MCPTransport],
+    execution_fingerprint: ExecutionFingerprint | None = None,
 ) -> list[TrialRecord]:
     """Runs every not-yet-recorded decision-point trial for ``plan``.
 
@@ -241,6 +246,8 @@ async def run_decision_point_pilot(
             f"got {plan.execution_mode!r}"
         )
     ledger.write_or_verify_plan(plan)
+    if execution_fingerprint is not None:
+        ledger.write_or_verify_execution_fingerprint(execution_fingerprint)
     completed_ids = ledger.load_completed_trial_ids()
     global_budget = GlobalDecisionBudget(plan.max_total_decisions)
     overlays_by_id = {overlay.id: overlay for overlay in overlays}
@@ -259,6 +266,7 @@ async def run_decision_point_pilot(
                 adapter_factory,
                 local_transport_factory,
                 global_budget,
+                execution_fingerprint,
             )
             ledger.append_trial(record)
             new_records.append(record)

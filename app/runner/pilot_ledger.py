@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from app.models.execution_fingerprint import ExecutionFingerprint
 from app.models.pilot_plan import PilotExperimentPlan
 from app.models.trial_ledger import TrialRecord
 
@@ -28,12 +29,21 @@ class PilotResumeConfigMismatchError(RuntimeError):
     configurations under one run_id."""
 
 
+class PilotResumeFingerprintMismatchError(RuntimeError):
+    """Raised when resuming against an existing run directory whose
+    persisted execution_fingerprint.json differs from the current run's --
+    even when config_hash is identical. "Same methodology, different
+    resolved stimulus text / source commit / policy / tool schema" is never
+    silently appended to an existing ledger."""
+
+
 class TrialLedger:
     def __init__(self, run_dir: str | Path) -> None:
         self.run_dir = Path(run_dir)
         self.plan_path = self.run_dir / "plan.json"
         self.trials_path = self.run_dir / "trials.jsonl"
         self.summary_path = self.run_dir / "summary.json"
+        self.execution_fingerprint_path = self.run_dir / "execution_fingerprint.json"
 
     def write_or_verify_plan(self, plan: PilotExperimentPlan) -> None:
         self.run_dir.mkdir(parents=True, exist_ok=True)
@@ -47,6 +57,28 @@ class TrialLedger:
                 )
         else:
             self.plan_path.write_text(plan.model_dump_json(indent=2))
+
+    def write_or_verify_execution_fingerprint(self, fingerprint: ExecutionFingerprint) -> None:
+        """Phase 4A.3e: on a fresh run, persist the fingerprint alongside
+        plan.json. On a resume, refuse (``PilotResumeFingerprintMismatchError``)
+        if the persisted fingerprint's ``execution_fingerprint_sha256``
+        differs -- independently of, and in addition to, the config_hash
+        check."""
+        self.run_dir.mkdir(parents=True, exist_ok=True)
+        if self.execution_fingerprint_path.exists():
+            existing = ExecutionFingerprint.model_validate_json(
+                self.execution_fingerprint_path.read_text()
+            )
+            if existing.execution_fingerprint_sha256 != fingerprint.execution_fingerprint_sha256:
+                raise PilotResumeFingerprintMismatchError(
+                    "Existing execution_fingerprint.json "
+                    f"{existing.execution_fingerprint_sha256!r} does not match the current "
+                    f"run's {fingerprint.execution_fingerprint_sha256!r}; refusing to resume "
+                    "(config_hash may be identical, but the resolved overlays / source "
+                    "commit / host policy / tool schema differ)."
+                )
+        else:
+            self.execution_fingerprint_path.write_text(fingerprint.model_dump_json(indent=2))
 
     def load_completed_trial_ids(self) -> set[str]:
         if not self.trials_path.exists():

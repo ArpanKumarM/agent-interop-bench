@@ -23,6 +23,7 @@ from collections.abc import Callable
 
 from app.models.composed import CrossProtocolEvent
 from app.models.composed_provenance import ComposedModelRunProvenance
+from app.models.execution_fingerprint import ExecutionFingerprint
 from app.models.live_overlay import LiveExperimentOverlay, overlay_to_composed_case
 from app.models.pilot_plan import PilotExperimentPlan
 from app.models.trial_ledger import TrialOutcomes, TrialRecord
@@ -56,6 +57,7 @@ async def _run_one_trial(
     adapter_factory: AdapterFactory,
     local_transport_factory: Callable[[], MCPTransport],
     global_budget: GlobalDecisionBudget,
+    execution_fingerprint: ExecutionFingerprint | None = None,
 ) -> TrialRecord:
     case = overlay_to_composed_case(overlay)
     trial_id = f"{plan.experiment_id}:{overlay.id}:{trial_index}"
@@ -79,6 +81,8 @@ async def _run_one_trial(
         termination_reason = _classify_termination(exc)
 
     provenance: ComposedModelRunProvenance = base_adapter.provenance
+    if execution_fingerprint is not None:
+        provenance.execution_fingerprint = execution_fingerprint
     outcomes = compute_trial_outcomes(case, events) if status == "completed" else TrialOutcomes()
     latency_total = sum(call.latency_ms or 0.0 for call in provenance.provider_calls)
     returned_model = (
@@ -113,6 +117,7 @@ async def run_pilot(
     ledger: TrialLedger,
     adapter_factory: AdapterFactory,
     local_transport_factory: Callable[[], MCPTransport],
+    execution_fingerprint: ExecutionFingerprint | None = None,
 ) -> list[TrialRecord]:
     """Runs every not-yet-completed trial for ``plan`` and appends each to
     ``ledger`` as it finishes. Returns only the NEWLY run records -- call
@@ -123,6 +128,8 @@ async def run_pilot(
     ``config_hash`` than ``plan``'s.
     """
     ledger.write_or_verify_plan(plan)
+    if execution_fingerprint is not None:
+        ledger.write_or_verify_execution_fingerprint(execution_fingerprint)
     completed_ids = ledger.load_completed_trial_ids()
     global_budget = GlobalDecisionBudget(plan.max_total_decisions)
     overlays_by_id = {overlay.id: overlay for overlay in overlays}
@@ -135,7 +142,13 @@ async def run_pilot(
             if trial_id in completed_ids:
                 continue
             record = await _run_one_trial(
-                plan, overlay, trial_index, adapter_factory, local_transport_factory, global_budget
+                plan,
+                overlay,
+                trial_index,
+                adapter_factory,
+                local_transport_factory,
+                global_budget,
+                execution_fingerprint,
             )
             ledger.append_trial(record)
             new_records.append(record)
