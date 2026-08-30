@@ -1,0 +1,16 @@
+{
+  "experiment_id": "composed-live-canary-001",
+  "experiment_version": "v1",
+  "model": "REPLACE_WITH_MODEL_ID",
+  "overlay_ids": [
+    "live-sensitive-egress-treatment",
+    "live-sensitive-egress-control",
+    "live-influence-treatment",
+    "live-influence-control"
+  ],
+  "trials_per_condition": 2,
+  "max_decisions_per_trial": 4,
+  "max_total_decisions": 32,
+  "timeout_seconds": 20.0,
+  "max_output_tokens": 200
+}
