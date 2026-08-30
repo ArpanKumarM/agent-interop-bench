@@ -7,8 +7,11 @@ Agent Interop Bench tests whether an AI agent selects the correct tools,
 supplies valid arguments, handles failures gracefully, resists malicious
 tool output, and recovers safely — deterministically, without an LLM judge.
 
-**This repository implements MCP evaluation only. A2A support is planned
-and not yet available — see [Scope](#scope) and the [Roadmap](#roadmap).**
+**This repository implements two independent deterministic evaluation
+engines: MCP (Model Context Protocol) tool-use evaluation, and A2A
+(Agent2Agent Protocol) interoperability evaluation.** Both run against
+local, in-process mock servers/fixtures with no external network access —
+see [Scope](#scope) for exactly what each covers today.
 
 ## The problem
 
@@ -27,30 +30,73 @@ GitHub API calls and no external network operations of any kind.** It's a
 fully local, in-process simulation — every "issue," "repository," and
 "comment" it returns is synthetic data generated on the fly. Running the
 benchmark suite never touches a real GitHub account or any other external
-service.
+service. **The mock A2A remote agent (`mock_servers/a2a_mock.py`) is the
+same discipline applied to the second protocol:** a local, in-process
+FastAPI app exercised only through `fastapi.testclient.TestClient` (no
+sockets), never a real remote agent.
 
 ## Scope
 
-This repository implements an MCP evaluation engine, built up in phases.
+This repository implements two separate, deterministic evaluation engines,
+built up in phases: MCP tool-use evaluation, and A2A interoperability
+evaluation. They share no case vocabulary and are scored independently —
+see [`docs/scoring.md`](docs/scoring.md) for MCP and the A2A evaluators
+below for A2A.
 
-In scope today:
+### MCP evaluation (in scope today)
+
 - A safe, local mock MCP server with configurable failure injection
 - MCP tool discovery, normalized into Pydantic models
-- A deterministic 29-case benchmark suite (YAML) and a bounded multi-turn
-  runner, including adversarial/security coverage: prompt-injection
-  redirection into a different tool, argument poisoning, repeated
-  (multi-observation) injection across a 3-turn interaction, and
+- A deterministic **29-case** benchmark suite (YAML) and a bounded
+  multi-turn runner, including adversarial/security coverage:
+  prompt-injection redirection into a different tool, argument poisoning,
+  repeated (multi-observation) injection across a 3-turn interaction, and
   unsafe-fallback/safe-recovery behavior after a legitimate tool failure
 - A pluggable `AgentAdapter` interface: a deterministic fake adapter (free,
   reproducible, the default everywhere) and an optional, disabled-by-default
-  real-model adapter for OpenAI
-- Nine rule-based evaluators and an aggregate JSON reliability report
+  real-model adapter for OpenAI (**MCP-only** — see
+  [Real-model mode](#real-model-mode-optional-mcp-only))
+- **Nine** rule-based evaluators and an aggregate JSON reliability report
 - A FastAPI service with async background run execution and in-memory run
   storage
 - Docker / Docker Compose for one-command startup
 
+### A2A evaluation (in scope today)
+
+- A2A Protocol **v1.0**, HTTP+JSON/REST binding, modeled with Pydantic and
+  serialized wire-conformant: internal Python stays snake_case, but every
+  JSON request/response is validated and emitted in the spec's required
+  **camelCase** (`messageId`, `contextId`, `taskId`, `defaultInputModes`,
+  `supportedInterfaces`, ...) — a snake_case key on an *incoming* request
+  (e.g. `message_id`) is rejected as non-conformant, not leniently accepted
+  (see `app/models/a2a.py`'s `reject_snake_case_wire_keys`)
+- A local, in-process mock A2A remote agent (`mock_servers/a2a_mock.py`)
+  implementing `GET /.well-known/agent-card.json`, `POST /message:send`,
+  `GET /tasks/{id}`, and `POST /tasks/{id}:cancel`, scripted per case —
+  never a real remote agent
+- A deterministic **8-case** benchmark suite (YAML) covering: basic task
+  completion, capability negotiation (unsupported input mode), task
+  lifecycle with `INPUT_REQUIRED` interruption and resumption, remote task
+  failure, cross-agent injection via a malicious artifact/message (both a
+  resisted and a hijacked case), false-success detection (premature
+  completion), and cancellation handling
+- **Five** rule-based evaluators (`TaskStateCorrectnessEvaluator`,
+  `ArtifactValidityEvaluator`, `CrossAgentInjectionResistanceEvaluator`,
+  `RemoteErrorHandlingEvaluator`, `CapabilityCompatibilityEvaluator`)
+- Runs through the **same** `POST /runs` API and `RunManager` as MCP
+  (select the A2A suite by name), producing the same `Report` shape
+
+**A2A currently uses a deterministic client against a deterministic,
+scripted remote-agent fixture — there is no live A2A-agent evaluation yet.**
+Every A2A interaction in this repository, including every adversarial and
+recovery case, is one local process talking to another local, in-process
+mock over `TestClient`. This differs from MCP's real-model mode (which does
+exist, see below): no equivalent "real remote A2A agent" mode exists today.
+
 Out of scope for now (see [Roadmap](#roadmap)):
-- A2A agent support
+
+- Live A2A-agent evaluation (a real remote agent in place of the scripted
+  mock)
 - A frontend/dashboard
 - PostgreSQL or any persistent database
 - Authentication
@@ -82,20 +128,28 @@ flowchart TB
         Log["Structured JSON logging"]
     end
 
-    subgraph Engine["Evaluation engine"]
+    subgraph Engine["MCP evaluation engine"]
         Discovery["Discovery\n(app/discovery)"]
         Adapter["AgentAdapter\n(app/runner/adapters)"]
         Runner["BenchmarkRunner\n(app/runner/engine)"]
         Transport["MCPTransport\n(stdio subprocess)"]
-        Evaluators["8 deterministic evaluators\n(app/evaluators)"]
+        Evaluators["9 deterministic evaluators\n(app/evaluators)"]
         Reporting["Report builder + scoring\n(app/reporting)"]
     end
 
     Mock["Mock MCP Server\n(mock_servers/github_mock.py)\nsearch_issues, get_repository,\ncreate_comment, calculate_sum"]
 
+    subgraph A2AEngine["A2A evaluation engine"]
+        A2ARunner["A2ABenchmarkRunner\n(app/runner/a2a_engine)"]
+        A2AEval["5 deterministic evaluators\n(app/evaluators/a2a_*)"]
+    end
+
+    A2AMock["Mock A2A remote agent\n(mock_servers/a2a_mock.py)\nHTTP+JSON/REST, camelCase wire,\nscripted task-lifecycle responses"]
+
     R1 -->|"enqueue, return 202"| Queue
     Queue --> Workers
     Workers -->|"execute_suite(...)"| Runner
+    Workers -->|"execute_a2a_suite(...)"| A2ARunner
     Loader --> Workers
     Runner --> Adapter
     Runner --> Transport
@@ -103,6 +157,9 @@ flowchart TB
     Transport <-->|stdio subprocess| Mock
     Runner --> Evaluators
     Evaluators --> Reporting
+    A2ARunner <-->|"TestClient (in-process HTTP)"| A2AMock
+    A2ARunner --> A2AEval
+    A2AEval --> Reporting
     Reporting --> Repo
     Workers --> Repo
     R2 --> Repo
@@ -121,7 +178,7 @@ flowchart TB
   benchmark case's `simulated_agent_response` — it lets negative test cases
   (wrong tool, hallucinated tool, bad arguments) be expressed declaratively.
   `OpenAIResponsesAdapter` is the first real-model implementation of the
-  same interface (see [Real-model mode](#real-model-mode-optional)); adding
+  same interface (see [Real-model mode](#real-model-mode-optional-mcp-only)); adding
   it required zero changes to `BenchmarkRunner`, evaluators, or scoring.
 - **The safety gate lives in the runner, not the adapter.** A mutating tool
   (flagged via MCP tool annotations' `destructiveHint`) is only executed if
@@ -130,6 +187,17 @@ flowchart TB
 - **Evaluators are pure functions with no side effects and no LLM judge.**
   See [`docs/scoring.md`](docs/scoring.md) for the full, transparent scoring
   definition.
+- **The trust boundary is fundamentally different between the two
+  protocols, and the README/scoring should never blur this.** MCP's
+  mutation gate is a real, local control: it can and does block a mutating
+  tool from executing at all when a case hasn't pre-approved it — the
+  runner owns the tool process. A2A has no equivalent lever: the benchmark
+  scores how a client *delegates to and reacts to* a remote agent (does it
+  detect a hijacked artifact, does it recover from `INPUT_REQUIRED`, does it
+  handle a remote failure or a false-success claim correctly) — it cannot
+  prevent a real remote agent from taking an action, because in this
+  repository the "remote agent" is always the local, scripted mock, not a
+  live third party the harness has any control over.
 
 ## Run execution model
 
@@ -176,13 +244,18 @@ process has its own independent `RunManager` and repository. Persistent
 storage (e.g. a `RunRepository` backed by a real database, behind the same
 interface used today) is future work; see Roadmap.
 
-## Real-model mode (optional)
+## Real-model mode (optional, MCP-only)
 
 Every run above uses the **deterministic mode**: the default, free,
 reproducible, CI-safe fixture adapter (`DeterministicFakeAdapter`) — no
 external model, no network call beyond the local mock MCP subprocess, no
 API key, ever required. This is what `POST /runs` does when `adapter` is
 omitted, and it's the only mode any test in this repository or CI exercises.
+
+**This section applies to the MCP suite only.** The A2A suite has no
+real-model or live-remote-agent adapter in this repository — every A2A run
+is deterministic, client and remote fixture alike (see
+[Scope](#scope)).
 
 **Real-model mode** replaces the fixture adapter with a live OpenAI model
 (via the Responses API) for a bounded subset of cases. It is optional,
@@ -313,10 +386,12 @@ stdio subprocess per run — no second container needed.
 
 One command, no API keys, nothing but Docker and `curl`/`python3` on your
 machine. It starts the stack, waits for `/health`, discovers the MCP tools,
-lists the benchmark suite, runs all 29 cases, fetches the generated JSON
-report, and prints the real reliability scores plus the intentional
+lists the benchmark suite, runs all 29 MCP cases, fetches the generated
+JSON report, and prints the real reliability scores plus the intentional
 evaluator-validation failures — then tears down every Docker resource it
-created, even if a step fails partway through.
+created, even if a step fails partway through. (This script covers the MCP
+suite; the A2A suite is reachable through the same `POST /runs` API by
+suite name — see [Scope](#scope) — but has no dedicated demo script yet.)
 
 ## Example API commands
 
@@ -435,11 +510,21 @@ uv run ruff format --check .  # formatting
 ```
 
 Integration tests spawn the mock MCP server as a real local subprocess over
-stdio — no network access, no paid API, no API key required anywhere in the
-suite.
+stdio, and exercise the mock A2A remote agent in-process via
+`fastapi.testclient.TestClient` — no network access, no paid API, no API
+key required anywhere in the suite (the optional OpenAI SDK contract tests
+still run entirely offline against a mocked HTTP transport; see
+[Real-model mode](#real-model-mode-optional-mcp-only)).
 
 ## Known limitations
 
+- **A2A has no live-remote-agent mode.** Every A2A case runs a deterministic
+  client against a deterministic, scripted mock remote agent
+  (`mock_servers/a2a_mock.py`) — there is no equivalent of MCP's
+  `OpenAIResponsesAdapter` for A2A yet, so an A2A score reflects the
+  harness's own evaluator logic correctly distinguishing scripted-resistant
+  from scripted-compromised behavior, not a real remote agent's behavior.
+  See Roadmap.
 - **Multi-turn is opt-in per case and bounded.** Every case runs a turn loop
   capped at `max_turns` (1 by default): the adapter decides, the runner
   validates and gates the decision, executes it if allowed, and — only if
@@ -479,8 +564,9 @@ suite.
 
 ## Roadmap
 
-- **A2A support** — extend discovery/runner/evaluators to Agent-to-Agent
-  protocol targets alongside MCP.
+- **Live A2A-agent evaluation** — a real remote-agent adapter for the A2A
+  suite, replacing the scripted mock the same way `OpenAIResponsesAdapter`
+  did for MCP's deterministic fixture.
 - **Additional real-model providers** (e.g. Anthropic) implementing
   `AgentAdapter`, alongside the existing `OpenAIResponsesAdapter`.
 - **Per-case execution-error isolation** for live runs, so one provider

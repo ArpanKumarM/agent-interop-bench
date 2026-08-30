@@ -159,10 +159,11 @@ app = FastAPI(
     title="Agent Interop Bench",
     description=(
         "Reliability, security, and interoperability testing for MCP and A2A agents. "
-        "MCP is implemented; A2A support is planned. Benchmark runs execute in the "
-        "background against a bounded worker pool; see /runs for the queued/running/"
-        "completed/failed lifecycle. An optional, disabled-by-default real-model "
-        "adapter (OpenAI) can replace the free deterministic fixture adapter."
+        "MCP and deterministic A2A (v1.0, HTTP+JSON) are both implemented. Benchmark "
+        "runs execute in the background against a bounded worker pool; see /runs for "
+        "the queued/running/completed/failed lifecycle. An optional, "
+        "disabled-by-default real-model adapter (OpenAI, MCP-only) can replace the "
+        "free deterministic fixture adapter."
     ),
     version="0.3.0",
     lifespan=lifespan,

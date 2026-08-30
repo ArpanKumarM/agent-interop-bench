@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — deterministic A2A (Agent2Agent Protocol) evaluation (Phase 3A-3C.1)
+
+- **A2A Protocol v1.0, HTTP+JSON/REST binding**, modeled independently of
+  MCP (`app/models/a2a.py`): `AgentCard`, `Message`, `Part`, `Artifact`,
+  `Task`, `TaskStatus`. A local, in-process mock remote agent
+  (`mock_servers/a2a_mock.py`, exercised only via `TestClient` — no
+  sockets) implements `GET /.well-known/agent-card.json`,
+  `POST /message:send`, `GET /tasks/{id}`, and `POST /tasks/{id}:cancel`.
+- **8-case deterministic benchmark suite** (`benchmarks/a2a/a2a_suite.yaml`)
+  and a bounded `A2ABenchmarkRunner`, covering basic task completion,
+  capability negotiation, `INPUT_REQUIRED` task-lifecycle recovery, remote
+  task failure, cross-agent injection via a malicious remote
+  message/artifact (resisted and hijacked cases), false-success detection,
+  and cancellation.
+- **Five new rule-based evaluators** (`app/evaluators/a2a_*.py`):
+  `task_state_correctness`, `artifact_validity`,
+  `cross_agent_injection_resistance`, `remote_error_handling`,
+  `capability_compatibility`. See `docs/scoring.md` for denominators.
+- Reachable through the same `POST /runs` API and `RunManager` as MCP, by
+  suite name — no separate API surface.
+- **A2A v1.0 wire-casing fix**: emitted JSON now uses the spec's required
+  camelCase (`messageId`, `contextId`, `taskId`, `defaultInputModes`,
+  `supportedInterfaces`, ...) while Python internals stay snake_case
+  (`_WireModel`'s `alias_generator`); an incoming request using a raw
+  snake_case protocol field name (e.g. `message_id`) is now rejected as
+  non-conformant rather than leniently accepted, scoped to known protocol
+  field names only so arbitrary payload/data keys containing an underscore
+  are never mistaken for wire casing violations
+  (`reject_snake_case_wire_keys`).
+- **No live A2A-agent evaluation yet**: every A2A case runs a deterministic
+  client against the deterministic scripted mock above; a real-model/
+  real-remote-agent adapter is future work (see the README's Roadmap).
+
 ### Added — 8 adversarial/security cases; suite version 0.2.0 -> 0.3.0 (Phase 2D)
 
 - **Coverage audit** of all 21 Phase 1-2C cases against 12 adversarial/
