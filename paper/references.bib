@@ -1,0 +1,233 @@
+% Phase 5C — finalized bibliography for paper/main.md.
+% Every entry was verified against a primary source (official spec site,
+% arXiv abstract/HTML page, publisher DOI/JSTOR page, IETF datatracker, or
+% ICLR proceedings/OpenReview). Author lists and order are taken from the
+% arXiv author line or the official project page. No bibliographic data was
+% invented. See paper/citation_audit.md for the per-entry verification record.
+
+% ---------------------------------------------------------------------------
+% Protocol specifications
+% ---------------------------------------------------------------------------
+
+@misc{mcp-spec,
+  title        = {Model Context Protocol Specification (Revision 2025-06-18)},
+  author       = {{Anthropic and Model Context Protocol contributors}},
+  year         = {2025},
+  howpublished = {\url{https://modelcontextprotocol.io/specification/2025-06-18}},
+  note         = {Authoritative revision 2025-06-18, based on
+                  \texttt{schema/2025-06-18/schema.ts}. Defines Hosts/Clients/Servers,
+                  the ``Tools'' server feature (JSON-RPC \texttt{tools/call}), and
+                  tool annotations (e.g. destructive / read-only hints), which the
+                  spec states ``should be considered untrusted, unless obtained
+                  from a trusted server.'' A later revision (2026-07-28) also exists.
+                  The framework's local MCP fixture is implemented with the MCP
+                  Python SDK (v1.6.0 in the frozen run environment).}
+}
+
+@misc{a2a-spec,
+  title        = {{Agent2Agent (A2A) Protocol Specification, Version 1.0.0}},
+  author       = {{A2A Project, Linux Foundation}},
+  year         = {2026},
+  howpublished = {\url{https://a2a-protocol.org/v1.0.0/specification/}},
+  note         = {v1.0.0. Agent Card (Sec.~8); Task/TaskStatus/TaskState
+                  (Sec.~4.1.1--4.1.3); Message and Part (Sec.~4.1.4, 4.1.6);
+                  Artifact (Sec.~4.1.7); HTTP+JSON/REST protocol binding (Sec.~11).
+                  Project hosted by the Linux Foundation since June 2025. The
+                  framework's local A2A fixture implements the HTTP+JSON/REST
+                  binding shapes only.}
+}
+
+% ---------------------------------------------------------------------------
+% Statistics
+% ---------------------------------------------------------------------------
+
+@article{wilson1927,
+  title   = {Probable Inference, the Law of Succession, and Statistical Inference},
+  author  = {Wilson, Edwin B.},
+  journal = {Journal of the American Statistical Association},
+  volume  = {22},
+  number  = {158},
+  pages   = {209--212},
+  year    = {1927},
+  doi     = {10.1080/01621459.1927.10502953},
+  note    = {JSTOR \url{https://www.jstor.org/stable/2276774}.}
+}
+
+% ---------------------------------------------------------------------------
+% Indirect prompt injection
+% ---------------------------------------------------------------------------
+
+@inproceedings{greshake2023indirect,
+  title     = {Not What You've Signed Up For: Compromising Real-World
+               {LLM}-Integrated Applications with Indirect Prompt Injection},
+  author    = {Greshake, Kai and Abdelnabi, Sahar and Mishra, Shailesh and
+               Endres, Christoph and Holz, Thorsten and Fritz, Mario},
+  booktitle = {Proceedings of the 16th ACM Workshop on Artificial Intelligence
+               and Security (AISec '23)},
+  year      = {2023},
+  note      = {arXiv:2302.12173.}
+}
+
+% ---------------------------------------------------------------------------
+% Single-protocol MCP safety / security benchmarks
+% ---------------------------------------------------------------------------
+
+@inproceedings{mcpsafetybench2026,
+  title     = {{MCP-SafetyBench}: A Benchmark for Safety Evaluation of Large
+               Language Models with Real-World {MCP} Servers},
+  author    = {Zong, Xuanjun and Shen, Zhiqi and Wang, Lei and Lan, Yunshi and
+               Yang, Chao},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
+  note      = {arXiv:2512.15163. Accepted to ICLR 2026 (proceedings.iclr.cc,
+               paper 2026). Multi-turn ReAct tasks over real-world MCP servers;
+               20-category attack taxonomy across server/host/user sides.}
+}
+
+@inproceedings{msb2026,
+  title     = {{MCP Security Bench (MSB)}: Benchmarking Attacks Against Model
+               Context Protocol in {LLM} Agents},
+  author    = {Zhang, Dongsen and Li, Zekun and Luo, Xu and Liu, Xuannan and
+               Li, Peipei and Xu, Wenjun},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
+  note      = {arXiv:2510.15994; arXiv Comments field: ``Accepted by ICLR 2026.''
+               12-attack taxonomy across the tool-use pipeline; 405 tools,
+               2000 attack instances.}
+}
+
+@misc{mcpsecbench2025,
+  title        = {{MCPSecBench}: A Systematic Security Benchmark and Playground
+                  for Testing Model Context Protocols},
+  author       = {Yang, Yixuan and Gao, Cuifeng and Wu, Daoyuan and Chen, Yufan
+                  and Li, Yingjiu and Wang, Shuai},
+  year         = {2025},
+  howpublished = {arXiv:2508.13220},
+  note         = {\url{https://arxiv.org/abs/2508.13220}. Technical report,
+                  Lingnan University, Hong Kong; not a peer-reviewed venue.
+                  17 attack types across 4 MCP attack surfaces. Code
+                  \url{https://github.com/AIS2Lab/MCPSecBench}.}
+}
+
+% ---------------------------------------------------------------------------
+% Single-protocol A2A security benchmark
+% ---------------------------------------------------------------------------
+
+@inproceedings{a2asecbench2026,
+  title     = {{A2ASecBench}: A Protocol-Aware Security Benchmark for
+               Agent-to-Agent Multi-Agent Systems},
+  author    = {Li, Tianhao and Chu, Chuangxin and Zheng, Yujia and
+               Zhang, Bohan and Gong, Neil Zhenqiang and Xiao, Chaowei},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
+  note      = {Poster. OpenReview \url{https://openreview.net/forum?id=LfdFnakqGJ};
+               project page \url{https://safo-lab.github.io/A2ASecBench/};
+               ICLR virtual \url{https://iclr.cc/virtual/2026/poster/10010017}.
+               Taxonomy of supply-chain manipulations and protocol-logic
+               weaknesses; six attacks across A2A stages.}
+}
+
+% ---------------------------------------------------------------------------
+% Cross-protocol composition / pivoting — prior articulations (NOT ours to claim)
+% ---------------------------------------------------------------------------
+
+@misc{agentrfc2026,
+  title        = {{AgentRFC}: Security Design Principles and Conformance Testing
+                  for Agent Protocols},
+  author       = {Zheng, Shenghan and Zhang, Qifan},
+  year         = {2026},
+  howpublished = {arXiv:2603.23801},
+  note         = {\url{https://arxiv.org/abs/2603.23801}. Preprint, submitted
+                  25 March 2026 (cs.CR). Introduces the ``Composition Safety''
+                  principle --- ``security properties that hold for individual
+                  protocols can break when protocols are composed through shared
+                  infrastructure'' --- with formal (TLA+) models of five
+                  cross-protocol composition patterns spanning MCP/A2A/ANP/ACP,
+                  plus a spec-conformance checker (AgentConform).}
+}
+
+@misc{mohiuddin2026mcpsec,
+  title        = {Security Considerations for Model Context Protocol ({MCP})
+                  Implementations in {AI} Agent Systems},
+  author       = {Syed, Anas Mohiuddin},
+  year         = {2026},
+  howpublished = {IETF Internet-Draft draft-mohiuddin-mcp-security-considerations-00},
+  note         = {\url{https://datatracker.ietf.org/doc/draft-mohiuddin-mcp-security-considerations/00/}.
+                  June 2026, individual submission, Informational, version -00.
+                  Section~6 (``Protocol Pivoting'') describes lateral movement
+                  that crosses agent-protocol boundaries, ``combining MCP with
+                  Agent-to-Agent (A2A) delegation,'' and states that
+                  ``mitigations that consider each protocol in isolation do not
+                  address movement that crosses protocol boundaries.''}
+}
+
+% ---------------------------------------------------------------------------
+% Agent evaluation and defenses (context / contrast)
+% ---------------------------------------------------------------------------
+
+@inproceedings{agentdojo2024,
+  title     = {{AgentDojo}: A Dynamic Environment to Evaluate Prompt Injection
+               Attacks and Defenses for {LLM} Agents},
+  author    = {Debenedetti, Edoardo and Zhang, Jie and Balunovi\'{c}, Mislav and
+               Beurer-Kellner, Luca and Fischer, Marc and Tram\`{e}r, Florian},
+  booktitle = {Advances in Neural Information Processing Systems 37 (NeurIPS),
+               Datasets and Benchmarks Track},
+  year      = {2024},
+  note      = {arXiv:2406.13352. Rule-based (non-LLM-judge) utility and security
+               functions.}
+}
+
+@inproceedings{toolemu2024,
+  title     = {Identifying the Risks of {LM} Agents with an {LM}-Emulated Sandbox},
+  author    = {Ruan, Yangjun and Dong, Honghua and Wang, Andrew and Pitis, Silviu
+               and Zhou, Yongchao and Ba, Jimmy and Dubois, Yann and
+               Maddison, Chris J. and Hashimoto, Tatsunori},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  note      = {arXiv:2309.15817. Framework known as {ToolEmu}; LM-emulated tool
+               execution and an LM-based safety evaluator.}
+}
+
+@misc{camel2025,
+  title        = {Defeating Prompt Injections by Design},
+  author       = {Debenedetti, Edoardo and Shumailov, Ilia and Fan, Tianqi and
+                  Hayes, Jamie and Carlini, Nicholas and Fabian, Daniel and
+                  Kern, Christoph and Shi, Chongyang and Terzis, Andreas and
+                  Tram\`{e}r, Florian},
+  year         = {2025},
+  howpublished = {arXiv:2503.18813},
+  note         = {\url{https://arxiv.org/abs/2503.18813}. Preprint (latest
+                  revision 24 June 2025); no peer-reviewed venue listed.
+                  Proposes {CaMeL}: control/data-flow separation, capabilities,
+                  and a custom interpreter tracking data provenance before each
+                  tool call.}
+}
+
+@misc{masec2025,
+  title        = {Open Challenges in Multi-Agent Security: Towards Secure Systems
+                  of Interacting {AI} Agents},
+  author       = {Schroeder de Witt, Christian and Krawiecka, Klaudia and
+                  Krawczuk, Igor and others},
+  year         = {2025},
+  howpublished = {arXiv:2505.02077},
+  note         = {\url{https://arxiv.org/abs/2505.02077}. Multi-author position
+                  paper (23 authors; full list in the arXiv record); v2 2026.}
+}
+
+% ---------------------------------------------------------------------------
+% Models under test
+% ---------------------------------------------------------------------------
+
+@misc{openai-gpt56,
+  title        = {{GPT-5.6}},
+  author       = {{OpenAI}},
+  year         = {2026},
+  howpublished = {\url{https://openai.com/index/gpt-5-6/}},
+  note         = {Model family: \texttt{gpt-5.6-sol} (flagship tier),
+                  \texttt{gpt-5.6-terra} (balanced default tier),
+                  \texttt{gpt-5.6-luna} (lightweight tier). General availability
+                  9 July 2026. These are the exact API model identifiers
+                  recorded as both \texttt{requested\_model} and
+                  \texttt{returned\_model} in every trial of the frozen runs.
+                  See also \url{https://openai.com/index/previewing-gpt-5-6-sol/}.}
+}
