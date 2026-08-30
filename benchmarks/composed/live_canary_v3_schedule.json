@@ -1,0 +1,2209 @@
+{
+  "blocks_per_model": 20,
+  "cells": [
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "live-sensitive-egress-treatment"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "live-sensitive-egress-control"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "live-influence-treatment"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "live-influence-control"
+    }
+  ],
+  "model_panel": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna"
+  ],
+  "model_schedule_sha256": {
+    "gpt-5.6-luna": "cfc8283db416bd7c3322bef17cbe813e2156848c00a631f768305ddd7a12f8db",
+    "gpt-5.6-sol": "ef4cfdf6f99ddcfa1a8b28aa4c315b5c41da12d5b0d487d83d8c113ed587a841",
+    "gpt-5.6-terra": "181318bfa1571de701480cc05760acdd705d88e5b986e89d2696abd86a2011bb"
+  },
+  "per_model_schedule": {
+    "gpt-5.6-luna": [
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 4
+      },
+      {
+        "block_index": 5,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 5
+      },
+      {
+        "block_index": 6,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 6
+      },
+      {
+        "block_index": 7,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 7
+      },
+      {
+        "block_index": 8,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 8
+      },
+      {
+        "block_index": 9,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 9
+      },
+      {
+        "block_index": 10,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 10
+      },
+      {
+        "block_index": 11,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 11
+      },
+      {
+        "block_index": 12,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 12
+      },
+      {
+        "block_index": 13,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 13
+      },
+      {
+        "block_index": 14,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 14
+      },
+      {
+        "block_index": 15,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 15
+      },
+      {
+        "block_index": 16,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 16
+      },
+      {
+        "block_index": 17,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 17
+      },
+      {
+        "block_index": 18,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 18
+      },
+      {
+        "block_index": 19,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 19
+      }
+    ],
+    "gpt-5.6-sol": [
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 4,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 4
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 5
+      },
+      {
+        "block_index": 6,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 6
+      },
+      {
+        "block_index": 7,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 7
+      },
+      {
+        "block_index": 8,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 8
+      },
+      {
+        "block_index": 9,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 9
+      },
+      {
+        "block_index": 10,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 10
+      },
+      {
+        "block_index": 11,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 11
+      },
+      {
+        "block_index": 12,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 12
+      },
+      {
+        "block_index": 13,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 13
+      },
+      {
+        "block_index": 14,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 14
+      },
+      {
+        "block_index": 15,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 15
+      },
+      {
+        "block_index": 16,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 16
+      },
+      {
+        "block_index": 17,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 17
+      },
+      {
+        "block_index": 18,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 18
+      },
+      {
+        "block_index": 19,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 19
+      }
+    ],
+    "gpt-5.6-terra": [
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 4,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 4
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 5
+      },
+      {
+        "block_index": 6,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 6
+      },
+      {
+        "block_index": 6,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 6
+      },
+      {
+        "block_index": 7,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 7
+      },
+      {
+        "block_index": 7,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 7
+      },
+      {
+        "block_index": 8,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 8
+      },
+      {
+        "block_index": 8,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 8
+      },
+      {
+        "block_index": 9,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 9
+      },
+      {
+        "block_index": 9,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 9
+      },
+      {
+        "block_index": 10,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 10
+      },
+      {
+        "block_index": 10,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 10
+      },
+      {
+        "block_index": 11,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 11
+      },
+      {
+        "block_index": 11,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 11
+      },
+      {
+        "block_index": 12,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 12
+      },
+      {
+        "block_index": 12,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 12
+      },
+      {
+        "block_index": 13,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 13
+      },
+      {
+        "block_index": 13,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 13
+      },
+      {
+        "block_index": 14,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 14
+      },
+      {
+        "block_index": 14,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 14
+      },
+      {
+        "block_index": 15,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 1,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 2,
+        "trial_index": 15
+      },
+      {
+        "block_index": 15,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 3,
+        "trial_index": 15
+      },
+      {
+        "block_index": 16,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 0,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 1,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 2,
+        "trial_index": 16
+      },
+      {
+        "block_index": 16,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 16
+      },
+      {
+        "block_index": 17,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 0,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 17
+      },
+      {
+        "block_index": 17,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 3,
+        "trial_index": 17
+      },
+      {
+        "block_index": 18,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 0,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 1,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 2,
+        "trial_index": 18
+      },
+      {
+        "block_index": 18,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 3,
+        "trial_index": 18
+      },
+      {
+        "block_index": 19,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-control",
+        "position_in_block": 0,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-treatment",
+        "position_in_block": 1,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-influence-treatment",
+        "position_in_block": 2,
+        "trial_index": 19
+      },
+      {
+        "block_index": 19,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "live-sensitive-egress-control",
+        "position_in_block": 3,
+        "trial_index": 19
+      }
+    ]
+  },
+  "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+  "scheduling_seed": 20260401,
+  "study_id": "composed-live-canary-003",
+  "study_schedule_sha256": "b8252a12acacc0c4df661ad1deabf5544e1906272f00e5a116da297bb93e2301",
+  "study_version": "v3",
+  "trials_per_model": 80
+}

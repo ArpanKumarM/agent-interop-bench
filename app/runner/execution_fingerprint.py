@@ -107,6 +107,7 @@ def _combine(
     resolved_overlay_bundle_sha256: str,
     host_policy_sha256: str,
     tool_schema_sha256: str,
+    schedule_sha256: str | None,
 ) -> str:
     payload = {
         "config_hash": config_hash,
@@ -115,6 +116,10 @@ def _combine(
         "host_policy_sha256": host_policy_sha256,
         "tool_schema_sha256": tool_schema_sha256,
     }
+    # Folded in only when a blocked schedule applies (Phase 4B+), so every
+    # already-frozen v1/v2 fingerprint stays byte-identical.
+    if schedule_sha256 is not None:
+        payload["schedule_sha256"] = schedule_sha256
     canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
@@ -125,11 +130,13 @@ def compute_execution_fingerprint(
     *,
     source_commit_sha: str | None = None,
     tool_schema_sha256: str | None = None,
+    schedule_sha256: str | None = None,
 ) -> ExecutionFingerprint:
     """Build the fingerprint from a resolved plan + its resolved overlays.
     ``source_commit_sha``/``tool_schema_sha256`` may be injected (tests);
     otherwise they are resolved from the working tree / the canonical
-    host-action schema."""
+    host-action schema. ``schedule_sha256`` is the run's frozen blocked
+    trial-schedule hash (Phase 4B); ``None`` for v1/v2."""
     commit = source_commit_sha if source_commit_sha is not None else resolve_source_commit_sha()
     tool_hash = (
         tool_schema_sha256 if tool_schema_sha256 is not None else host_action_schema_fingerprint()
@@ -142,6 +149,7 @@ def compute_execution_fingerprint(
         resolved_overlay_bundle_sha256=bundle_hash,
         host_policy_sha256=policy_hash,
         tool_schema_sha256=tool_hash,
+        schedule_sha256=schedule_sha256,
     )
     return ExecutionFingerprint(
         config_hash=plan.config_hash,
@@ -149,5 +157,6 @@ def compute_execution_fingerprint(
         resolved_overlay_bundle_sha256=bundle_hash,
         host_policy_sha256=policy_hash,
         tool_schema_sha256=tool_hash,
+        schedule_sha256=schedule_sha256,
         execution_fingerprint_sha256=fingerprint,
     )

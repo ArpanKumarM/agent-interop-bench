@@ -26,4 +26,9 @@ class ExecutionFingerprint(BaseModel):
     resolved_overlay_bundle_sha256: str
     host_policy_sha256: str
     tool_schema_sha256: str
+    # Phase 4B: SHA-256 of this run's frozen BLOCKED trial schedule (the
+    # per-model 80-entry ordering). None for runs with no explicit schedule
+    # (v1/v2) -- folded into execution_fingerprint_sha256 only when present,
+    # so pre-Phase-4B fingerprints are byte-unchanged.
+    schedule_sha256: str | None = None
     execution_fingerprint_sha256: str

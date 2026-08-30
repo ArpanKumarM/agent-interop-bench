@@ -39,6 +39,12 @@ from app.models.composed_provenance import ComposedModelRunProvenance
 from app.models.host_context import HostDecisionContext
 from app.models.live_overlay import LiveExperimentOverlay
 from app.models.pilot_plan import PilotExperimentPlan
+from app.runner.blocked_schedule import (
+    PHASE_4B_SCHEDULE_SEED,
+    ScheduledTrial,
+    build_model_schedule,
+    schedule_sha256,
+)
 from app.runner.decision_point_pilot import (
     DecisionPointAdapterFactory,
     run_decision_point_pilot,
@@ -48,6 +54,7 @@ from app.runner.host_adapters import HostAgentAdapter
 from app.runner.pilot_ledger import (
     PilotResumeConfigMismatchError,
     PilotResumeFingerprintMismatchError,
+    PilotResumeScheduleMismatchError,
     TrialLedger,
 )
 from app.runner.pilot_runner import AdapterFactory, finalize_summary, run_pilot
@@ -61,7 +68,12 @@ FROZEN_PLAN_PATH = _BENCHMARKS_DIR / "live_canary_plan.json"
 FROZEN_PLAN_PATHS: dict[str, Path] = {
     "v1": FROZEN_PLAN_PATH,
     "v2": _BENCHMARKS_DIR / "live_canary_plan_v2.json",
+    # Phase 4B: the confirmatory decision-point plan (20 trials/condition,
+    # blocked-randomised order -- see app.runner.blocked_schedule).
+    "v3": _BENCHMARKS_DIR / "live_canary_plan_v3.json",
 }
+# Plan versions that dispatch trials in a frozen BLOCKED schedule.
+_BLOCKED_SCHEDULE_PLAN_VERSIONS = frozenset({"v3"})
 OVERLAYS_PATH = "benchmarks/composed/live_overlays.yaml"
 MODEL_PLACEHOLDER = "REPLACE_WITH_MODEL_ID"
 RUN_DIR_ROOT = Path("reports/experiments")
@@ -120,6 +132,28 @@ def resolve_overlays(plan: PilotExperimentPlan) -> list[LiveExperimentOverlay]:
     return [overlays_by_id[oid] for oid in plan.overlay_ids]
 
 
+def _uses_blocked_schedule(plan: PilotExperimentPlan) -> bool:
+    return plan.experiment_version in _BLOCKED_SCHEDULE_PLAN_VERSIONS
+
+
+def _resolve_schedule(plan: PilotExperimentPlan) -> list[ScheduledTrial] | None:
+    """The frozen per-model blocked schedule for a v3 plan (None otherwise).
+    Raises ``ComposedLivePilotConfigError`` if the model is not in the frozen
+    Phase 4B panel."""
+    if not _uses_blocked_schedule(plan):
+        return None
+    try:
+        return build_model_schedule(plan.model, blocks_per_model=plan.trials_per_condition)
+    except ValueError as exc:
+        raise ComposedLivePilotConfigError(str(exc)) from None
+
+
+def _execution_fingerprint_for(plan: PilotExperimentPlan, overlays: list[LiveExperimentOverlay]):
+    schedule = _resolve_schedule(plan)
+    sched_sha = schedule_sha256(schedule) if schedule is not None else None
+    return compute_execution_fingerprint(plan, overlays, schedule_sha256=sched_sha), schedule
+
+
 def require_live_preconditions() -> None:
     """Checked before anything else in ``run_live`` -- no client, no
     adapter, no ledger write happens if either of these fails."""
@@ -138,12 +172,12 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
     execution fingerprint. Constructs no client, no adapter, no transport --
     makes no provider call."""
     overlays = resolve_overlays(plan)
-    fingerprint = compute_execution_fingerprint(plan, overlays)
+    fingerprint, schedule = _execution_fingerprint_for(plan, overlays)
     estimated_max_provider_calls = min(
         plan.trials_per_condition * len(plan.overlay_ids) * plan.max_decisions_per_trial,
         plan.max_total_decisions,
     )
-    return {
+    report = {
         "model": plan.model,
         "overlays": list(plan.overlay_ids),
         "trials_per_condition": plan.trials_per_condition,
@@ -163,11 +197,26 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
         "resolved_overlay_bundle_sha256": fingerprint.resolved_overlay_bundle_sha256,
         "host_policy_sha256": fingerprint.host_policy_sha256,
         "tool_schema_sha256": fingerprint.tool_schema_sha256,
+        "schedule_sha256": fingerprint.schedule_sha256,
         "execution_fingerprint_sha256": fingerprint.execution_fingerprint_sha256,
         "run_directory": str(RUN_DIR_ROOT / run_id),
         "enable_real_model_composed_runs": settings.enable_real_model_composed_runs,
         "openai_api_key_present": real_model_api_key_configured(),
     }
+    if schedule is not None:
+        report["blocked_schedule"] = {
+            "scheduling_seed": PHASE_4B_SCHEDULE_SEED,
+            "blocks": plan.trials_per_condition,
+            "trials_in_schedule": len(schedule),
+            "first_block_overlay_order": [
+                entry.overlay_id
+                for entry in sorted(
+                    (e for e in schedule if e.block_index == 0),
+                    key=lambda e: e.position_in_block,
+                )
+            ],
+        }
+    return report
 
 
 class _DryRunAdapter(HostAgentAdapter):
@@ -268,7 +317,7 @@ def build_real_decision_point_adapter_factory(
 
 async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
     overlays = resolve_overlays(plan)
-    fingerprint = compute_execution_fingerprint(plan, overlays)
+    fingerprint, schedule = _execution_fingerprint_for(plan, overlays)
     ledger = TrialLedger(RUN_DIR_ROOT / run_id)
     if plan.execution_mode == "decision_point":
         await run_decision_point_pilot(
@@ -278,6 +327,7 @@ async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
             build_dry_run_decision_point_adapter_factory(),
             local_transport_factory,
             fingerprint,
+            schedule,
         )
     else:
         await run_pilot(
@@ -294,7 +344,7 @@ async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
 async def run_live(plan: PilotExperimentPlan, run_id: str) -> dict:
     require_live_preconditions()
     overlays = resolve_overlays(plan)
-    fingerprint = compute_execution_fingerprint(plan, overlays)
+    fingerprint, schedule = _execution_fingerprint_for(plan, overlays)
     ledger = TrialLedger(RUN_DIR_ROOT / run_id)
     if plan.execution_mode == "decision_point":
         await run_decision_point_pilot(
@@ -304,6 +354,7 @@ async def run_live(plan: PilotExperimentPlan, run_id: str) -> dict:
             build_real_decision_point_adapter_factory(plan),
             local_transport_factory,
             fingerprint,
+            schedule,
         )
     else:
         await run_pilot(
@@ -355,6 +406,7 @@ def main(argv: list[str] | None = None) -> int:
         ComposedLivePilotConfigError,
         PilotResumeConfigMismatchError,
         PilotResumeFingerprintMismatchError,
+        PilotResumeScheduleMismatchError,
     ) as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 1

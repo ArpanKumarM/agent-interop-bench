@@ -20,6 +20,7 @@ from pathlib import Path
 from app.models.execution_fingerprint import ExecutionFingerprint
 from app.models.pilot_plan import PilotExperimentPlan
 from app.models.trial_ledger import TrialRecord
+from app.runner.blocked_schedule import ScheduledTrial, schedule_sha256
 
 
 class PilotResumeConfigMismatchError(RuntimeError):
@@ -37,6 +38,13 @@ class PilotResumeFingerprintMismatchError(RuntimeError):
     silently appended to an existing ledger."""
 
 
+class PilotResumeScheduleMismatchError(RuntimeError):
+    """Phase 4B: raised when resuming against an existing run directory
+    whose persisted schedule.json differs from the current run's frozen
+    blocked schedule -- the original trial ordering is always preserved on
+    resume, never re-randomised."""
+
+
 class TrialLedger:
     def __init__(self, run_dir: str | Path) -> None:
         self.run_dir = Path(run_dir)
@@ -44,6 +52,7 @@ class TrialLedger:
         self.trials_path = self.run_dir / "trials.jsonl"
         self.summary_path = self.run_dir / "summary.json"
         self.execution_fingerprint_path = self.run_dir / "execution_fingerprint.json"
+        self.schedule_path = self.run_dir / "schedule.json"
 
     def write_or_verify_plan(self, plan: PilotExperimentPlan) -> None:
         self.run_dir.mkdir(parents=True, exist_ok=True)
@@ -79,6 +88,36 @@ class TrialLedger:
                 )
         else:
             self.execution_fingerprint_path.write_text(fingerprint.model_dump_json(indent=2))
+
+    def write_or_verify_schedule(self, schedule: list[ScheduledTrial]) -> None:
+        """Phase 4B: on a fresh run, persist the frozen blocked schedule
+        alongside plan.json. On a resume, refuse
+        (``PilotResumeScheduleMismatchError``) if the persisted schedule's
+        hash differs -- the original ordering is always preserved."""
+        self.run_dir.mkdir(parents=True, exist_ok=True)
+        current_sha = schedule_sha256(schedule)
+        if self.schedule_path.exists():
+            existing = [
+                ScheduledTrial.model_validate(entry)
+                for entry in json.loads(self.schedule_path.read_text())["entries"]
+            ]
+            if schedule_sha256(existing) != current_sha:
+                raise PilotResumeScheduleMismatchError(
+                    f"Existing schedule.json (sha {schedule_sha256(existing)!r}) does not match "
+                    f"the current run's frozen schedule (sha {current_sha!r}); refusing to "
+                    "resume with a re-randomised trial order."
+                )
+        else:
+            self.schedule_path.write_text(
+                json.dumps(
+                    {
+                        "schedule_sha256": current_sha,
+                        "entries": [entry.model_dump() for entry in schedule],
+                    },
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
 
     def load_completed_trial_ids(self) -> set[str]:
         if not self.trials_path.exists():

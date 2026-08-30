@@ -53,7 +53,7 @@ expansion is a later, separate design.
 
 | Axis | Frozen value |
 | --- | --- |
-| Models | **3** (the confirmatory panel). Pilot model `gpt-5.6-terra` is included; the other two model IDs are frozen at study kickoff and recorded in each run's provenance. Not a leaderboard — a confirmatory replication panel. |
+| Models | **3**, frozen (`app.runner.blocked_schedule.PHASE_4B_MODEL_PANEL`), in this order: **`gpt-5.6-sol`**, **`gpt-5.6-terra`**, **`gpt-5.6-luna`**. `gpt-5.6-terra` is the Phase 4A pilot model. Not a leaderboard — a confirmatory replication panel; each run records its own model provenance. |
 | Conditions per experiment | 2 (`treatment`, `control`) |
 | Experiments | 2 (`sensitive_egress`, `adversarial_influence`) |
 | Cells per model | 4 (experiment × condition) |
@@ -61,9 +61,9 @@ expansion is a later, separate design.
 | Trials per model | 4 × 20 = **80** |
 | **Total planned trials** | 3 × 80 = **240** |
 
-One frozen plan template per this study (to be created at kickoff as
-`benchmarks/composed/live_canary_plan_v3.json`, **not created by this
-document**), executed once per model with `--model <id>`:
+One frozen plan template for this study,
+`benchmarks/composed/live_canary_plan_v3.json` (committed at Phase 4B
+kickoff), executed once per model with `--model <id> --plan v3`:
 
 | Plan field | Value |
 | --- | --- |
@@ -83,7 +83,49 @@ v1/v2 hashes (new `experiment_id`/`experiment_version`/`trials_per_condition`
 /`max_total_decisions`). Each model run additionally carries its own
 `execution_fingerprint_sha256` (see §5).
 
-Run ids: `composed-live-canary-003-<modelslug>-attempt-1`.
+Run ids: `composed-live-canary-003-<modelslug>-attempt-1`
+(`composed-live-canary-003-sol-attempt-1`, `…-terra-…`, `…-luna-…`).
+
+---
+
+## 2a. Blocked-randomisation methodology (frozen)
+
+Trial dispatch order is a **deterministic blocked randomisation**
+(`app.runner.blocked_schedule`), frozen to
+`benchmarks/composed/live_canary_v3_schedule.json` before any execution:
+
+- **Scheduling seed** — one integer, `PHASE_4B_SCHEDULE_SEED = 20260401`,
+  frozen permanently at kickoff. Arbitrary; changing it defines a different
+  study.
+- **Blocks** — for each model, `20` blocks (= `trials_per_condition`). Each
+  block contains the four cells
+  (`sensitive_egress`×`{treatment,control}`,
+  `adversarial_influence`×`{treatment,control}`) **exactly once**, so after
+  20 blocks every cell has exactly 20 observations and no cell can be
+  over- or under-sampled by drift.
+- **Within-block order** — shuffled by one `random.Random(SEED)` advanced
+  **model-by-model in panel order** (`sol` → `terra` → `luna`),
+  block-by-block. Each model therefore gets a distinct block-permutation
+  stream from the single seed; the full 3×80 schedule is reproducible from
+  (seed, panel, cells, blocks) alone.
+- **`trial_index`** — the per-`(model,cell)` sequential index `0..19`
+  (equals `block_index`). It is what goes into
+  `trial_id = f"{experiment_id}:{overlay_id}:{trial_index}"`, so **resume
+  dedup is order-independent**: a completed trial is skipped wherever it
+  sits in the schedule.
+- **Persistence** — each run writes `schedule.json` (the model's ordered 80
+  entries + `schedule_sha256`) into its run dir before dispatching trial 1;
+  a resume re-derives the identical schedule and refuses
+  (`PilotResumeScheduleMismatchError`) if the persisted hash differs.
+- **Fingerprint** — the per-model `schedule_sha256` is a sixth input to
+  `execution_fingerprint_sha256` (§5). Changing the seed, the panel, the
+  cells, or the block count changes every affected run's fingerprint, and a
+  resume against a re-randomised order is refused even when `config_hash`
+  is identical.
+
+The schedule changes **only** the order trials are dispatched in. Prompts,
+overlays, host policy, action surfaces, the mutation gate, and every
+outcome function are untouched.
 
 ---
 
@@ -224,13 +266,15 @@ Each model run persists, and analysis records:
   and `provenance.execution_fingerprint` on **every** trial, carrying:
   `config_hash`, `source_commit_sha`, `resolved_overlay_bundle_sha256`
   (overlay CONTENT, not ids), `host_policy_sha256`, `tool_schema_sha256`,
-  and the derived `execution_fingerprint_sha256`.
-- **Resume guard** — a resume is refused if either `config_hash` **or**
-  `execution_fingerprint_sha256` differs from what is already on disk for
-  that run id.
+  `schedule_sha256` (the per-model blocked trial ordering — §2a), and the
+  derived `execution_fingerprint_sha256`.
+- **Resume guard** — a resume is refused if `config_hash`,
+  `execution_fingerprint_sha256`, **or** the persisted `schedule.json`
+  hash differs from what is already on disk for that run id.
 - **Artifacts per run** — `plan.json`, `execution_fingerprint.json`,
-  `trials.jsonl`, `summary.json`; SHA-256 of each recorded in the study
-  log. Any offline rescore emits a separate `summary_rescored_*.json` and
+  `schedule.json`, `trials.jsonl`, `summary.json`; SHA-256 of each recorded
+  in the study log. Any offline rescore emits a separate
+  `summary_rescored_*.json` and
   never overwrites `summary.json`.
 
 Preflight (no provider call) must print and be checked to match the frozen
@@ -259,12 +303,31 @@ plan before each run: `config_hash`, `execution_fingerprint_sha256`,
 
 ---
 
+## 6a. Interpretation limits (frozen)
+
+- **Repeated calls are repeated samples, not assumed statistically
+  independent provider executions.** The 20 trials in a cell are 20 draws
+  from the same model under the same fixed stimulus; the provider may share
+  hidden state, batching, caching, or fleet routing across them. Wilson
+  intervals are reported as a descriptive spread of the observed
+  proportion, **not** as a guarantee of i.i.d. Bernoulli sampling. No
+  independence assumption is made or required by the analysis.
+- **Phase 4B is a confirmatory pilot, not a safety certification.** It
+  checks whether the Phase 4A decision-point observations reproduce at
+  n = 20/cell across three models. It does not certify any model as safe or
+  unsafe, does not bound worst-case behavior, and its rates do not
+  generalize beyond these four fixed stimuli.
+
+---
+
 ## 7. Out of scope for Phase 4B
 
 - No stimulus expansion (same 4 overlays).
-- No change to the decision-point methodology, the mutation gate, the
-  evaluators, or the fingerprint.
+- No change to the decision-point methodology, the blocked schedule, the
+  mutation gate, the evaluators, or the fingerprint.
 - No p-values / significance testing.
 - No model comparison claims beyond per-model rates + Wilson intervals at
   n = 20/cell.
+- No independence assumption across repeated provider calls (see §6a).
+- No safety certification (see §6a).
 - Execution of any run — this is a design artifact only.
