@@ -35,8 +35,8 @@ ordered event trace, and attaches an observable **cross-protocol provenance
 model** (deterministic content canaries with a sensitivity label, an
 explicit allowed-edge policy, and per-event causal ancestry) so that
 information flow and behavioral influence across the protocol boundary can
-be measured by exact rule-based checks with no LLM anywhere in the
-evaluation.
+be measured by exact rule-based checks without an LLM-based judge or
+evaluator.
 
 Using a **decision-point** methodology that deterministically constructs
 the situation and then elicits exactly one restricted host decision, we ran
@@ -749,7 +749,7 @@ in an LM-emulated sandbox with an LM safety evaluator. We differ from both
 in two ways relevant here: our environment executes a real-model host
 across a local deterministic MCP+A2A protocol composition (protocol
 fixtures, not an LM emulator), and our scoring is exact-rule provenance
-checking (no LLM anywhere in evaluation).
+checking (without an LLM-based judge or evaluator).
 *CaMeL* [@camel2025] is a defense that separates control and data flow and
 tracks data provenance before each tool call; it is conceptually adjacent
 to our provenance model but is a mitigation, whereas ours is an evaluation

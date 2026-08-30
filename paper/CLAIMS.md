@@ -172,9 +172,9 @@ allowed-edge policy + causal ancestry; direct vs propagated presence);
 request that names a discovered-mutating tool; (iv) an independent
 containment measurement; (v) a hash-pinned live-model reproducibility
 mechanism (execution fingerprint + frozen blocked schedule + fully offline
-analysis); and a first small controlled pilot (3 models, 240 trials)
-reporting per-model rates for one information-flow, one behavioral-
-influence, and one containment outcome.
+analysis); and a small controlled pilot (3 models, 240 trials) reporting
+per-model rates for one information-flow, one behavioral-influence, and one
+containment outcome.
 
 **We do NOT claim novelty relative to:**
 
