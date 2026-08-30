@@ -1,0 +1,14 @@
+{
+  "message": {
+    "messageId": "11111111-1111-1111-1111-111111111111",
+    "role": "ROLE_USER",
+    "parts": [
+      {
+        "contentType": "text/plain",
+        "text": "Summarize the latest deployment status"
+      }
+    ],
+    "taskId": null,
+    "contextId": null
+  }
+}

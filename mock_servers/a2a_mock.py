@@ -30,8 +30,11 @@ from app.models.a2a import (
     Artifact,
     Message,
     Part,
+    Task,
     TaskState,
+    TaskStatus,
     deterministic_id,
+    reject_snake_case_wire_keys,
 )
 
 
@@ -75,22 +78,34 @@ def build_a2a_mock_app(agent_card: AgentCard, script: list[A2ARemoteStep], case_
 
     @app.get("/.well-known/agent-card.json")
     def get_agent_card() -> dict:
-        return agent_card.model_dump(by_alias=False)
+        # by_alias=True: the v1.0 spec's JSON field naming convention
+        # (Section 5.5) is camelCase -- see app/models/a2a.py's _WireModel.
+        return agent_card.model_dump(by_alias=True)
 
     @app.post("/message:send")
     async def send_message(request: Request) -> dict:
         body = await request.json()
-        message = body.get("message", {})
-        parts = message.get("parts", [])
-        for part in parts:
-            content_type = part.get("content_type", "text/plain")
-            if content_type not in agent_card.default_input_modes:
+        raw_message = body.get("message", {})
+        # Strict wire-casing enforcement: reject a payload using any field's
+        # raw Python (snake_case) name instead of its v1.0 camelCase alias,
+        # BEFORE model_validate -- see reject_snake_case_wire_keys's
+        # docstring for why this can't just be a model_config setting.
+        try:
+            reject_snake_case_wire_keys(raw_message)
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=400,
+                detail={"reason": "INVALID_FIELD_CASING", "message": str(exc)},
+            ) from exc
+        message = Message.model_validate(raw_message)
+        for part in message.parts:
+            if part.content_type not in agent_card.default_input_modes:
                 raise HTTPException(
                     status_code=415,
                     detail={
                         "reason": "CONTENT_TYPE_NOT_SUPPORTED",
                         "domain": "a2a-protocol.org",
-                        "unsupported_content_type": content_type,
+                        "unsupported_content_type": part.content_type,
                         "declared_input_modes": agent_card.default_input_modes,
                     },
                 )
@@ -154,10 +169,13 @@ def build_a2a_mock_app(agent_card: AgentCard, script: list[A2ARemoteStep], case_
 
 
 def _task_response(state: _MockTaskState) -> dict:
-    return {
-        "id": state.task_id,
-        "context_id": state.context_id,
-        "status": {"state": state.state.value},
-        "artifacts": [a.model_dump() for a in state.artifacts],
-        "history": [m.model_dump() for m in state.history],
-    }
+    task = Task(
+        id=state.task_id or "",
+        context_id=state.context_id,
+        status=TaskStatus(state=state.state),
+        artifacts=state.artifacts,
+        history=state.history,
+    )
+    # by_alias=True: emits the v1.0 wire shape (contextId, and every nested
+    # Message/Part/Artifact field) -- see app/models/a2a.py's _WireModel.
+    return task.model_dump(by_alias=True)

@@ -14,9 +14,9 @@ from fastapi.testclient import TestClient
 from app.models.a2a import (
     A2ABenchmarkCase,
     A2AInteractionRecord,
-    Artifact,
     Message,
     Part,
+    Task,
     TaskState,
     deterministic_id,
 )
@@ -78,14 +78,15 @@ class A2ABenchmarkRunner:
 
     def _send_message(self, case_id, step_index, action, task_id):  # noqa: ANN001
         message_id = deterministic_id(case_id, "client-message", str(step_index))
-        body = {
-            "message": {
-                "message_id": message_id,
-                "role": "ROLE_USER",
-                "parts": [{"content_type": action.content_type, "text": action.content or ""}],
-                "task_id": task_id,
-            }
-        }
+        outgoing = Message(
+            message_id=message_id,
+            role="ROLE_USER",
+            parts=[Part(content_type=action.content_type, text=action.content or "")],
+            task_id=task_id,
+        )
+        # by_alias=True: the wire body is v1.0's camelCase shape
+        # (messageId, taskId, contentType, ...) -- see app/models/a2a.py.
+        body = {"message": outgoing.model_dump(by_alias=True)}
         response = self._client.post("/message:send", json=body)
         return self._record_from_response(
             step_index, "send_message", "SendMessage", response, message_id, action.content
@@ -122,23 +123,12 @@ class A2ABenchmarkRunner:
             )
             return record, None, True
 
-        body = response.json()
-        task_id = body.get("id")
-        context_id = body.get("context_id")
-        observed_state = TaskState(body["status"]["state"])
-        history = body.get("history") or []
-        remote_message = None
-        if history:
-            last = history[-1]
-            remote_message = Message(
-                message_id=last["message_id"],
-                role=last["role"],
-                parts=[Part(**p) for p in last["parts"]],
-                task_id=last.get("task_id"),
-                context_id=last.get("context_id"),
-            )
-        artifacts_raw = body.get("artifacts") or []
-        artifacts = [Artifact(parts=[Part(**p) for p in a["parts"]]) for a in artifacts_raw]
+        # Task.model_validate accepts the wire's camelCase body directly
+        # (populate_by_name=True means it would also accept snake_case, but
+        # the mock always emits camelCase -- see app/models/a2a.py).
+        task = Task.model_validate(response.json())
+        observed_state = task.status.state
+        remote_message = task.history[-1] if task.history else None
 
         terminal = observed_state in _TERMINAL_CLASSIFICATION_BY_STATE
         classification = _TERMINAL_CLASSIFICATION_BY_STATE.get(observed_state, "in_progress")
@@ -149,11 +139,11 @@ class A2ABenchmarkRunner:
             protocol_operation=protocol_operation,
             request_message_id=message_id,
             request_content=request_content,
-            task_id=task_id,
-            context_id=context_id,
+            task_id=task.id,
+            context_id=task.context_id,
             observed_task_state=observed_state,
             remote_message=remote_message,
-            artifacts=artifacts,
+            artifacts=task.artifacts,
             termination_classification=classification,
         )
-        return record, task_id, terminal
+        return record, task.id, terminal

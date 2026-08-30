@@ -1,0 +1,13 @@
+{
+  "name": "golden-fixture-agent",
+  "description": "Golden AgentCard fixture using the A2A v1.0 camelCase wire field names.",
+  "supportedInterfaces": [
+    {
+      "url": "http://mock-a2a-agent",
+      "protocolBinding": "HTTP_JSON",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["text/plain"]
+}

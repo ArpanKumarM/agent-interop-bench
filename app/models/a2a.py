@@ -21,7 +21,8 @@ import uuid
 from enum import StrEnum
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic.alias_generators import to_camel
 
 # Fixed namespace so `deterministic_id` produces the exact same UUID string
 # for the exact same (case_id, ...) input across every run -- the A2A
@@ -56,17 +57,86 @@ TERMINAL_TASK_STATES = frozenset(
 )
 
 
-class Part(BaseModel):
+def reject_snake_case_wire_keys(data: Any) -> None:
+    """Raise ``ValueError`` if ``data`` (a JSON value already decoded into
+    Python dict/list/scalar form) contains any dict key with an underscore,
+    anywhere, at any nesting depth.
+
+    This is the strict half of the wire-casing contract: ``_WireModel``'s
+    ``populate_by_name=True`` must stay on so *internal* Python code can keep
+    constructing these models with readable snake_case keyword arguments
+    (``Message(message_id=...)``) — but that same setting would otherwise
+    also let a payload arriving over HTTP use snake_case keys
+    (``{"message_id": ...}``), which the v1.0 spec's JSON Field Naming
+    Convention (Section 5.5, camelCase-only) does not permit. Pydantic v2
+    has no per-call-site way to make ``populate_by_name`` apply to
+    construction but not to ``model_validate`` (both are governed by the
+    same model-level setting) — so external-JSON ingestion call sites
+    (currently: the mock agent's ``/message:send`` handler) call this
+    *before* ``model_validate``, rejecting the payload outright if it uses
+    any field's raw Python name instead of its camelCase alias. A key is
+    flagged by the presence of ``_`` alone (our camelCase convention never
+    uses one), so this holds for every current and future ``_WireModel``
+    field without needing to enumerate them.
+    """
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if "_" in key:
+                raise ValueError(
+                    f"Field '{key}' is not valid A2A v1.0 wire JSON: the spec's JSON Field "
+                    "Naming Convention (Section 5.5) requires camelCase (e.g. 'messageId', "
+                    "not 'message_id')."
+                )
+            reject_snake_case_wire_keys(value)
+    elif isinstance(data, list):
+        for item in data:
+            reject_snake_case_wire_keys(item)
+
+
+class _WireModel(BaseModel):
+    """Base for models that are literally exchanged as A2A v1.0 HTTP+JSON
+    request/response bodies (``AgentCard``, ``Message``, ``Part``,
+    ``Artifact``, ``Task``, ``TaskStatus``).
+
+    The v1.0 specification's normative field tables (Section 5.5, "JSON
+    Field Naming Convention") use camelCase on the wire (``messageId``,
+    ``contextId``, ``defaultInputModes``, ``supportedInterfaces``,
+    ``protocolBinding``, ...) — Phase 3B shipped these fields serialized
+    under their raw Python (snake_case) names instead, a real spec
+    non-conformance found and fixed in Phase 3C.1. ``alias_generator``
+    derives the camelCase wire name from each snake_case Python attribute
+    automatically; ``populate_by_name=True`` means construction and
+    ``model_validate`` still accept the snake_case name too, so internal
+    Python code is completely unaffected and stays snake_case throughout
+    (see class docstrings below) — only code that explicitly serializes
+    with ``by_alias=True`` (the mock agent and the A2A client engine) emits
+    camelCase on the wire, and only external-JSON ingestion call sites that
+    also call ``reject_snake_case_wire_keys`` first (see that function's
+    docstring) actually *enforce* camelCase-only on the way in.
+
+    Benchmark-authored fixture/config models below (``ArgumentMatchRule``,
+    ``A2ARemoteStep``, ``A2AActionSpec``, ``A2ABenchmarkCase``,
+    ``A2ABenchmarkSuite``) and the persisted-report model
+    (``A2AInteractionRecord``) are deliberately **not** ``_WireModel``\\ s:
+    they are this project's own YAML/report vocabulary, never literally
+    transmitted as A2A protocol JSON, and keep the project's existing
+    snake_case JSON convention (matching ``CaseReport``/``TurnResult``).
+    """
+
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+
+
+class Part(_WireModel):
     """A v1.0 ``Part`` — text-only for Phase 3B (file/data parts are a real
-    protocol concept but no initial case needs them)."""
+    protocol concept but no initial case needs them). Wire: ``contentType``."""
 
     content_type: str = "text/plain"
     text: str
 
 
-class Message(BaseModel):
+class Message(_WireModel):
     """A v1.0 ``Message``. ``extensions``/``referenceTaskIds`` omitted: unused
-    by any Phase 3B case."""
+    by any Phase 3B case. Wire: ``messageId``, ``taskId``, ``contextId``."""
 
     message_id: str
     role: Literal["ROLE_USER", "ROLE_AGENT"]
@@ -75,26 +145,47 @@ class Message(BaseModel):
     context_id: str | None = None
 
 
-class Artifact(BaseModel):
+class Artifact(_WireModel):
     """A v1.0 ``Artifact`` — a finalized deliverable, composed of ``Part``s."""
 
     parts: list[Part] = Field(default_factory=list)
 
 
-class AgentInterface(BaseModel):
-    """One entry of a v1.0 ``AgentCard.supportedInterfaces[]``."""
+class TaskStatus(_WireModel):
+    """A v1.0 ``TaskStatus`` — ``Task.status``. ``message``/``timestamp``
+    omitted: unused by any Phase 3B case."""
+
+    state: TaskState
+
+
+class Task(_WireModel):
+    """A v1.0 ``Task``. Wire: ``contextId``; ``id``/``status``/``artifacts``/
+    ``history`` are already single-word-or-already-camelCase and unaffected
+    by the alias generator. ``metadata`` omitted: unused by any Phase 3B case."""
+
+    id: str
+    context_id: str | None = None
+    status: TaskStatus
+    artifacts: list[Artifact] = Field(default_factory=list)
+    history: list[Message] = Field(default_factory=list)
+
+
+class AgentInterface(_WireModel):
+    """One entry of a v1.0 ``AgentCard.supportedInterfaces[]``. Wire:
+    ``protocolBinding``, ``protocolVersion``."""
 
     url: str
     protocol_binding: Literal["HTTP_JSON", "JSON_RPC", "GRPC"]
     protocol_version: str
 
 
-class AgentCard(BaseModel):
+class AgentCard(_WireModel):
     """A v1.0 ``AgentCard`` fixture. Only the fields Phase 3B's cases actually
     need: identity, transport/version declaration, and input/output-mode
     capability declaration. ``skills``/``provider``/``securitySchemes``/
     ``security``/``extensions``/``signature`` are real v1.0 fields but unused
-    by any Phase 3B case, so omitted rather than modeled speculatively."""
+    by any Phase 3B case, so omitted rather than modeled speculatively.
+    Wire: ``supportedInterfaces``, ``defaultInputModes``, ``defaultOutputModes``."""
 
     name: str
     description: str = ""
