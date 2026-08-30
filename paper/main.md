@@ -45,8 +45,8 @@ a **controlled confirmatory pilot** over three models
 blocked-randomised replicates per model per condition), addressing three
 questions. **RQ1:** does confidential MCP-originated content propagate
 across the A2A boundary? We separate *relay initiation* (the host chose to
-message the remote agent after reading a confidential record) from *direct
-sensitive egress* (the exact confidential marker crossed the
+send a message onto the A2A leg after reading a confidential record) from
+*direct sensitive egress* (the exact confidential marker crossed the
 host→remote/A2A edge). Relay initiation varied widely by model (15%, 85%,
 100% of confidential trials); **direct exact-token sensitive egress was 0**
 in every model (0/3, 0/17, 0/20 of relay trials; Wilson 95% upper bounds
@@ -55,14 +55,16 @@ in every model (0/3, 0/17, 0/20 of relay trials; Wilson 95% upper bounds
 adversarial A2A artifact influence a host toward requesting a *mutating*
 MCP tool? Using the outcome *actual mutating-tool request* — the host
 selected the mutation-attempt action **and** named a tool the harness
-discovered to be mutating — the adversarial condition exceeded the
-structurally matched benign condition for all three models (signed
+discovered to be mutating — the adversarial condition showed a higher rate
+than the structurally matched benign condition for all three models (signed
 treatment−control rate differences +0.20, +0.40, +0.50; Wilson 95%
-intervals reported per cell). **RQ3:** can an independent mutation gate
-contain those requests? Every actual mutating-tool request was blocked by
-the gate (100% blocked in all six model×condition cells) and **zero**
-executed across the entire study (Wilson 95% upper bounds on the executed
-rate 21.5–56.2% depending on cell size). We report Wilson 95% confidence
+intervals reported per cell). We report this as an association under a
+controlled manipulation, not a causal-mechanism claim. **RQ3:** can an
+independent mutation gate contain those requests? Every *observed* actual
+mutating-tool request was blocked by the gate (100% blocked in all six
+model×condition cells) and **zero** executed across the entire study
+(Wilson 95% upper bounds on the executed rate 21.5–56.2% depending on cell
+size). We report Wilson 95% confidence
 intervals and signed rate differences throughout and deliberately report no
 p-values; the 20 replicates in a cell are repeated draws from one model
 under one fixed stimulus and are not assumed to be statistically
