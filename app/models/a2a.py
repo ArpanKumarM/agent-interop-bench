@@ -57,42 +57,6 @@ TERMINAL_TASK_STATES = frozenset(
 )
 
 
-def reject_snake_case_wire_keys(data: Any) -> None:
-    """Raise ``ValueError`` if ``data`` (a JSON value already decoded into
-    Python dict/list/scalar form) contains any dict key with an underscore,
-    anywhere, at any nesting depth.
-
-    This is the strict half of the wire-casing contract: ``_WireModel``'s
-    ``populate_by_name=True`` must stay on so *internal* Python code can keep
-    constructing these models with readable snake_case keyword arguments
-    (``Message(message_id=...)``) — but that same setting would otherwise
-    also let a payload arriving over HTTP use snake_case keys
-    (``{"message_id": ...}``), which the v1.0 spec's JSON Field Naming
-    Convention (Section 5.5, camelCase-only) does not permit. Pydantic v2
-    has no per-call-site way to make ``populate_by_name`` apply to
-    construction but not to ``model_validate`` (both are governed by the
-    same model-level setting) — so external-JSON ingestion call sites
-    (currently: the mock agent's ``/message:send`` handler) call this
-    *before* ``model_validate``, rejecting the payload outright if it uses
-    any field's raw Python name instead of its camelCase alias. A key is
-    flagged by the presence of ``_`` alone (our camelCase convention never
-    uses one), so this holds for every current and future ``_WireModel``
-    field without needing to enumerate them.
-    """
-    if isinstance(data, dict):
-        for key, value in data.items():
-            if "_" in key:
-                raise ValueError(
-                    f"Field '{key}' is not valid A2A v1.0 wire JSON: the spec's JSON Field "
-                    "Naming Convention (Section 5.5) requires camelCase (e.g. 'messageId', "
-                    "not 'message_id')."
-                )
-            reject_snake_case_wire_keys(value)
-    elif isinstance(data, list):
-        for item in data:
-            reject_snake_case_wire_keys(item)
-
-
 class _WireModel(BaseModel):
     """Base for models that are literally exchanged as A2A v1.0 HTTP+JSON
     request/response bodies (``AgentCard``, ``Message``, ``Part``,
@@ -198,6 +162,59 @@ class AgentCard(_WireModel):
         if not self.supported_interfaces:
             raise ValueError("AgentCard.supported_interfaces must declare at least one interface")
         return self
+
+
+_PROTOCOL_SNAKE_CASE_FIELD_NAMES: frozenset[str] = frozenset(
+    name
+    for cls in (Part, Message, Artifact, TaskStatus, Task, AgentInterface, AgentCard)
+    for name in cls.model_fields
+    if "_" in name
+)
+
+
+def reject_snake_case_wire_keys(data: Any) -> None:
+    """Raise ``ValueError`` if ``data`` (a JSON value already decoded into
+    Python dict/list/scalar form) uses a known A2A protocol field's raw
+    snake_case Python name as a dict key, anywhere, at any nesting depth.
+
+    This is the strict half of the wire-casing contract: ``_WireModel``'s
+    ``populate_by_name=True`` must stay on so *internal* Python code can keep
+    constructing these models with readable snake_case keyword arguments
+    (``Message(message_id=...)``) — but that same setting would otherwise
+    also let a payload arriving over HTTP use snake_case keys
+    (``{"message_id": ...}``), which the v1.0 spec's JSON Field Naming
+    Convention (Section 5.5, camelCase-only) does not permit. Pydantic v2
+    has no per-call-site way to make ``populate_by_name`` apply to
+    construction but not to ``model_validate`` (both are governed by the
+    same model-level setting) — so external-JSON ingestion call sites
+    (currently: the mock agent's ``/message:send`` handler) call this
+    *before* ``model_validate``, rejecting the payload outright if it uses
+    any protocol field's raw Python name instead of its camelCase alias.
+
+    Deliberately narrower than "any key containing an underscore": this only
+    flags names in ``_PROTOCOL_SNAKE_CASE_FIELD_NAMES``, the actual snake_case
+    attribute names declared on ``_WireModel`` subclasses (``message_id``,
+    ``task_id``, ``context_id``, ``content_type``, ``protocol_binding``,
+    ``protocol_version``, ``supported_interfaces``, ``default_input_modes``,
+    ``default_output_modes``). A caller's own nested payload/data content
+    (e.g. ``{"customer_id": "123"}`` inside message text or future
+    unstructured fields) is not A2A protocol vocabulary and must not be
+    rejected just because it happens to contain an underscore. The set is
+    derived from the model classes themselves (not hand-enumerated) so it
+    stays correct as protocol fields are added or removed.
+    """
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if key in _PROTOCOL_SNAKE_CASE_FIELD_NAMES:
+                raise ValueError(
+                    f"Field '{key}' is not valid A2A v1.0 wire JSON: the spec's JSON Field "
+                    "Naming Convention (Section 5.5) requires camelCase (e.g. 'messageId', "
+                    "not 'message_id')."
+                )
+            reject_snake_case_wire_keys(value)
+    elif isinstance(data, list):
+        for item in data:
+            reject_snake_case_wire_keys(item)
 
 
 class ArtifactMatchRule(BaseModel):

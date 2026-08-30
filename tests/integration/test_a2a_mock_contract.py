@@ -355,6 +355,32 @@ def test_reject_snake_case_wire_keys_helper_directly():
         reject_snake_case_wire_keys({"parts": [{"content_type": "text/plain"}]})
 
 
+def test_reject_snake_case_wire_keys_rejects_known_protocol_field():
+    """A recognized A2A protocol field name (e.g. message_id) is still
+    rejected in its raw snake_case form -- narrowing the check to a known
+    field-name allowlist must not weaken this."""
+    from app.models.a2a import reject_snake_case_wire_keys
+
+    with pytest.raises(ValueError, match="camelCase"):
+        reject_snake_case_wire_keys({"messageId": "m1", "task_id": "t1"})
+
+
+def test_reject_snake_case_wire_keys_allows_arbitrary_underscored_payload_keys():
+    """A nested key that merely contains an underscore but is not an A2A
+    protocol field name (e.g. caller-supplied data like customer_id) must
+    pass through untouched -- only protocol field names are wire-casing
+    checked, not arbitrary payload content."""
+    from app.models.a2a import reject_snake_case_wire_keys
+
+    reject_snake_case_wire_keys(
+        {
+            "messageId": "m1",
+            "parts": [{"contentType": "text/plain", "text": "hi"}],
+            "metadata": {"customer_id": "123", "order_total_usd": 42},
+        }
+    )
+
+
 def test_no_outbound_network_used():
     """The mock is exercised purely in-process; TestClient never opens a socket."""
     app = build_a2a_mock_app(
