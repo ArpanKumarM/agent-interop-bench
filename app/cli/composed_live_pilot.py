@@ -182,11 +182,16 @@ def build_real_adapter_factory(plan: PilotExperimentPlan) -> AdapterFactory:
     has already passed."""
     from app.runner.real_host_adapter import RealHostAgentAdapter, build_openai_responses_client
 
-    client = build_openai_responses_client(timeout_seconds=plan.timeout_seconds, max_retries=0)
+    # build_openai_responses_client already returns the AsyncOpenAI().responses
+    # resource (a ResponsesClient) -- pass it straight through; do NOT
+    # dereference .responses again.
+    responses_client = build_openai_responses_client(
+        timeout_seconds=plan.timeout_seconds, max_retries=0
+    )
 
     def factory(case_id: str, max_decisions: int) -> HostAgentAdapter:
         return RealHostAgentAdapter(
-            client.responses,
+            responses_client,
             model=plan.model,
             max_output_tokens=plan.max_output_tokens,
             timeout_seconds=plan.timeout_seconds,
