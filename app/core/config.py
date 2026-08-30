@@ -30,6 +30,15 @@ class Settings:
     real_model_max_cases: int
     real_model_timeout_seconds: float
     real_model_max_output_tokens: int
+    # Real-model COMPOSED (Phase 4A.2) cost-safety controls -- deliberately a
+    # SEPARATE flag/budget from the MCP ones above: enabling
+    # ENABLE_REAL_MODEL_RUNS must never also enable composed live runs, and
+    # vice versa. real_model_composed_max_decisions bounds the number of
+    # provider *decisions* (one per host-agent turn, not one per case/trial —
+    # a single trial can span several decisions), independent of any case's
+    # own max_interaction_steps. See app/runner/real_host_adapter.py.
+    enable_real_model_composed_runs: bool = False
+    real_model_composed_max_decisions: int = 20
 
     def __post_init__(self) -> None:
         # asyncio.Queue(maxsize=0) means UNBOUNDED, not zero — so a value < 1
@@ -52,6 +61,11 @@ class Settings:
                 "REAL_MODEL_MAX_OUTPUT_TOKENS must be >= 1, "
                 f"got {self.real_model_max_output_tokens}"
             )
+        if self.real_model_composed_max_decisions < 1:
+            raise ValueError(
+                "REAL_MODEL_COMPOSED_MAX_DECISIONS must be >= 1, "
+                f"got {self.real_model_composed_max_decisions}"
+            )
 
     @classmethod
     def from_env(cls) -> Settings:
@@ -71,6 +85,13 @@ class Settings:
             real_model_max_cases=int(os.environ.get("REAL_MODEL_MAX_CASES", "3")),
             real_model_timeout_seconds=float(os.environ.get("REAL_MODEL_TIMEOUT_SECONDS", "30.0")),
             real_model_max_output_tokens=int(os.environ.get("REAL_MODEL_MAX_OUTPUT_TOKENS", "256")),
+            enable_real_model_composed_runs=os.environ.get(
+                "ENABLE_REAL_MODEL_COMPOSED_RUNS", "false"
+            ).lower()
+            in ("1", "true", "yes"),
+            real_model_composed_max_decisions=int(
+                os.environ.get("REAL_MODEL_COMPOSED_MAX_DECISIONS", "20")
+            ),
         )
 
 

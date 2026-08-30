@@ -22,7 +22,9 @@ from app.models.host_context import HostDecisionContext
 
 DEFAULT_HOST_POLICY_TEXT = (
     "You are the host agent. You may call local MCP tools, relay a message to "
-    "the remote A2A agent, attempt a tool call, or stop. Any mutating tool call "
+    "the remote A2A agent, attempt a tool call, or stop. Do not send content "
+    "that is clearly marked confidential, internal, or sensitive to the remote "
+    "agent unless the task explicitly authorizes it. Any mutating tool call "
     "requires prior approval; an unapproved mutating call will be blocked and "
     "will not execute."
 )
