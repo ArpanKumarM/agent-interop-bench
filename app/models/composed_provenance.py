@@ -56,6 +56,11 @@ class ComposedModelRunProvenance(BaseModel):
     reasoning_effort: str | None = None
     """Explicitly frozen (Phase 4A.3c) reasoning effort sent on every
     request; never left to the provider's default."""
+    restricted_to_actions: list[str] | None = None
+    """Phase 4A.3d: when set, the ONLY host-action tool schemas offered to
+    the model on every request this run (a subset of the canonical four that
+    ``tool_schema_sha256`` still fingerprints). None == the full action
+    surface was offered (v1 free-run)."""
     run_started_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     provider_calls: list[ComposedProviderCallRecord] = Field(default_factory=list)
 

@@ -39,17 +39,24 @@ from app.models.composed_provenance import ComposedModelRunProvenance
 from app.models.host_context import HostDecisionContext
 from app.models.live_overlay import LiveExperimentOverlay
 from app.models.pilot_plan import PilotExperimentPlan
+from app.runner.decision_point_pilot import (
+    DecisionPointAdapterFactory,
+    run_decision_point_pilot,
+)
 from app.runner.host_adapters import HostAgentAdapter
 from app.runner.pilot_ledger import PilotResumeConfigMismatchError, TrialLedger
 from app.runner.pilot_runner import AdapterFactory, finalize_summary, run_pilot
 from app.runner.transport import MCPTransport, StdioMCPTransport
 
-FROZEN_PLAN_PATH = (
-    Path(__file__).resolve().parent.parent.parent
-    / "benchmarks"
-    / "composed"
-    / "live_canary_plan.json"
-)
+_BENCHMARKS_DIR = Path(__file__).resolve().parent.parent.parent / "benchmarks" / "composed"
+FROZEN_PLAN_PATH = _BENCHMARKS_DIR / "live_canary_plan.json"
+# Phase 4A.3d: the frozen decision-point (v2) plan. A separate committed
+# file with its own experiment_id/version and its own config_hash -- the v1
+# hash is never reused.
+FROZEN_PLAN_PATHS: dict[str, Path] = {
+    "v1": FROZEN_PLAN_PATH,
+    "v2": _BENCHMARKS_DIR / "live_canary_plan_v2.json",
+}
 OVERLAYS_PATH = "benchmarks/composed/live_overlays.yaml"
 MODEL_PLACEHOLDER = "REPLACE_WITH_MODEL_ID"
 RUN_DIR_ROOT = Path("reports/experiments")
@@ -67,13 +74,15 @@ def local_transport_factory() -> MCPTransport:
     return StdioMCPTransport(command=sys.executable, args=["-m", "mock_servers.composed_tool_mock"])
 
 
-def load_frozen_plan(model: str | None) -> PilotExperimentPlan:
-    """Loads the committed, credential-free plan template. Every field
-    except ``model`` comes from the frozen file, unconditionally -- there
-    is no CLI flag for any of them. ``model`` must be explicitly supplied
-    (the template only contains a placeholder); this is never chosen
-    automatically."""
-    data = json.loads(FROZEN_PLAN_PATH.read_text())
+def load_frozen_plan(model: str | None, plan_version: str = "v1") -> PilotExperimentPlan:
+    """Loads a committed, credential-free plan template. Every field except
+    ``model`` comes from the frozen file, unconditionally -- there is no CLI
+    flag for any of them. ``model`` must be explicitly supplied (the
+    template only contains a placeholder); this is never chosen
+    automatically. ``plan_version`` selects which frozen file (v1 free-run
+    or v2 decision-point); it never alters any field in the chosen file."""
+    plan_path = FROZEN_PLAN_PATHS[plan_version]
+    data = json.loads(plan_path.read_text())
     if model is not None:
         data["model"] = model
     plan = PilotExperimentPlan.model_validate(data)
@@ -136,6 +145,7 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
         "max_total_decisions": plan.max_total_decisions,
         "max_output_tokens": plan.max_output_tokens,
         "reasoning_effort": plan.reasoning_effort,
+        "execution_mode": plan.execution_mode,
         "estimated_max_provider_calls": estimated_max_provider_calls,
         "local_only_targets": {
             "mcp": "mock_servers.composed_tool_mock (local stdio subprocess only)",
@@ -204,11 +214,61 @@ def build_real_adapter_factory(plan: PilotExperimentPlan) -> AdapterFactory:
     return factory
 
 
+def build_dry_run_decision_point_adapter_factory() -> DecisionPointAdapterFactory:
+    def factory(
+        case_id: str, max_decisions: int, allowed_actions: tuple[str, ...]
+    ) -> HostAgentAdapter:
+        return _DryRunAdapter()
+
+    return factory
+
+
+def build_real_decision_point_adapter_factory(
+    plan: PilotExperimentPlan,
+) -> DecisionPointAdapterFactory:
+    """Only reached from ``run_live`` for a decision_point plan, only after
+    ``require_live_preconditions`` has already passed. Each trial's adapter
+    is restricted on the wire to exactly the ``allowed_actions`` its
+    experiment's decision point permits."""
+    from app.runner.real_host_adapter import RealHostAgentAdapter, build_openai_responses_client
+
+    responses_client = build_openai_responses_client(
+        timeout_seconds=plan.timeout_seconds, max_retries=0
+    )
+
+    def factory(
+        case_id: str, max_decisions: int, allowed_actions: tuple[str, ...]
+    ) -> HostAgentAdapter:
+        return RealHostAgentAdapter(
+            responses_client,
+            model=plan.model,
+            max_output_tokens=plan.max_output_tokens,
+            timeout_seconds=plan.timeout_seconds,
+            max_retries=0,
+            reasoning_effort=plan.reasoning_effort,
+            max_decisions=max_decisions,
+            case_id=case_id,
+            allowed_actions=allowed_actions,
+        )
+
+    return factory
+
+
 async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
     overlays = resolve_overlays(plan)
     ledger = TrialLedger(RUN_DIR_ROOT / run_id)
-    adapter_factory = build_dry_run_adapter_factory()
-    await run_pilot(plan, overlays, ledger, adapter_factory, local_transport_factory)
+    if plan.execution_mode == "decision_point":
+        await run_decision_point_pilot(
+            plan,
+            overlays,
+            ledger,
+            build_dry_run_decision_point_adapter_factory(),
+            local_transport_factory,
+        )
+    else:
+        await run_pilot(
+            plan, overlays, ledger, build_dry_run_adapter_factory(), local_transport_factory
+        )
     return finalize_summary(plan, overlays, ledger)
 
 
@@ -216,8 +276,18 @@ async def run_live(plan: PilotExperimentPlan, run_id: str) -> dict:
     require_live_preconditions()
     overlays = resolve_overlays(plan)
     ledger = TrialLedger(RUN_DIR_ROOT / run_id)
-    adapter_factory = build_real_adapter_factory(plan)
-    await run_pilot(plan, overlays, ledger, adapter_factory, local_transport_factory)
+    if plan.execution_mode == "decision_point":
+        await run_decision_point_pilot(
+            plan,
+            overlays,
+            ledger,
+            build_real_decision_point_adapter_factory(plan),
+            local_transport_factory,
+        )
+    else:
+        await run_pilot(
+            plan, overlays, ledger, build_real_adapter_factory(plan), local_transport_factory
+        )
     return finalize_summary(plan, overlays, ledger)
 
 
@@ -228,13 +298,19 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         subparser = subparsers.add_parser(name)
         subparser.add_argument("--run-id", required=True)
         subparser.add_argument("--model", default=None)
+        subparser.add_argument(
+            "--plan",
+            choices=sorted(FROZEN_PLAN_PATHS),
+            default="v1",
+            help="which frozen plan template: v1 (free-run) or v2 (decision-point).",
+        )
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _build_arg_parser().parse_args(argv)
     try:
-        plan = load_frozen_plan(args.model)
+        plan = load_frozen_plan(args.model, args.plan)
 
         if args.command == "preflight":
             report = preflight_report(plan, args.run_id)

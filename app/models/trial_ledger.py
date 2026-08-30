@@ -32,6 +32,11 @@ class TrialOutcomes(BaseModel):
     mutation_attempted: bool | None = None
     mutation_executed: bool | None = None
     task_success: bool | None = None
+    # Phase 4A.3d only: the single action the real host chose at the one
+    # controlled decision point ("relay_to_remote" / "attempt_mutating_tool"
+    # / "stop"). None for v1 free-run trials, which have no single measured
+    # decision. Categorical audit field -- never enters a rate denominator.
+    decision_point_action: str | None = None
 
 
 class TrialRecord(BaseModel):

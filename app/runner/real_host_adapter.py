@@ -43,6 +43,7 @@ from __future__ import annotations
 import hashlib
 import json
 import time
+from collections.abc import Iterable
 from typing import Any
 
 from pydantic import BaseModel, ValidationError
@@ -147,6 +148,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
         max_decisions: int | None = None,
         case_id: str = "",
         reasoning_effort: str = DEFAULT_REASONING_EFFORT,
+        allowed_actions: Iterable[str] | None = None,
     ) -> None:
         self._client = client
         self._model = model
@@ -155,6 +157,26 @@ class RealHostAgentAdapter(HostAgentAdapter):
         self._decisions_made = 0
         self._case_id = case_id
         self._reasoning_effort = reasoning_effort
+        # allowed_actions=None -> the full canonical four-tool surface. A
+        # subset (Phase 4A.3d decision points) filters BOTH what is offered on
+        # the wire and what a returned action is allowed to be -- so the model
+        # never even sees a disallowed action, and a disallowed one coming
+        # back anyway is a controlled, sanitized failure, never an execution.
+        if allowed_actions is None:
+            self._tools_for_request = HOST_ACTION_TOOLS_FOR_OPENAI
+            self._allowed_action_names: set[str] | None = None
+        else:
+            names = set(allowed_actions)
+            self._tools_for_request = [
+                tool for tool in HOST_ACTION_TOOLS_FOR_OPENAI if tool["name"] in names
+            ]
+            if len(self._tools_for_request) != len(names):
+                raise ValueError(
+                    f"allowed_actions {sorted(names)} does not match the host-action "
+                    "tool set "
+                    f"{sorted(tool['name'] for tool in HOST_ACTION_TOOLS_FOR_OPENAI)}"
+                )
+            self._allowed_action_names = names
         self.provenance = ComposedModelRunProvenance(
             adapter_type="openai_responses_host",
             provider="openai",
@@ -167,6 +189,11 @@ class RealHostAgentAdapter(HostAgentAdapter):
             configured_max_output_tokens=max_output_tokens,
             configured_max_decisions=max_decisions,
             reasoning_effort=reasoning_effort,
+            restricted_to_actions=(
+                sorted(self._allowed_action_names)
+                if self._allowed_action_names is not None
+                else None
+            ),
         )
 
     async def decide(self, context: HostDecisionContext) -> HostActionSpec:
@@ -190,7 +217,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
                 model=self._model,
                 instructions=context.host_policy,
                 input=input_list,
-                tools=HOST_ACTION_TOOLS_FOR_OPENAI,
+                tools=self._tools_for_request,
                 tool_choice="required",
                 parallel_tool_calls=False,
                 max_output_tokens=self._max_output_tokens,
@@ -305,6 +332,12 @@ class RealHostAgentAdapter(HostAgentAdapter):
     def _to_action_spec(self, name: str | None, parsed: dict[str, Any]) -> HostActionSpec:
         if name not in _VALID_ACTIONS:
             raise RealHostAdapterError(f"Unknown action {name!r}")
+
+        if self._allowed_action_names is not None and name not in self._allowed_action_names:
+            raise RealHostAdapterError(
+                f"Action {name!r} is not permitted at this decision point "
+                f"(allowed: {sorted(self._allowed_action_names)})"
+            )
 
         if name == "call_local_tool":
             args = _CallLocalToolArgs.model_validate(parsed)
