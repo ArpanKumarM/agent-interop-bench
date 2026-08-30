@@ -46,11 +46,12 @@ def _events_for_equality(events) -> list[dict]:
     return [event.model_dump(exclude={"recorded_at"}) for event in events]
 
 
-async def test_composed_suite_loads_exactly_two_cases():
+async def test_composed_suite_loads_exactly_three_cases():
     suite = load_composed_suite(SUITE_PATH)
     assert {c.id for c in suite.cases} == {
         "composed-benign-001-happy-path",
         "composed-propagation-001-canary-crosses-mcp-to-a2a",
+        "composed-isolated-pass-composition-fails-001-sensitive-egress",
     }
 
 

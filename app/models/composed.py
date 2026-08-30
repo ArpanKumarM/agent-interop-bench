@@ -14,13 +14,15 @@ action). Provenance is tracked via independent, fixture-declared axes
 provenance canaries — never a single "tainted" boolean, and never inferred
 from any adapter's rationale text (no chain-of-thought is read or stored).
 
-Only the two cases Phase 3D.1 implements
-(``composed-benign-001-happy-path``,
-``composed-propagation-001-canary-crosses-mcp-to-a2a``) are exercised by any
-runner today; the six-category ``Literal`` below reflects the full Phase 3D
-design lock so later phases (mutation/approval/remote-failure/isolated-pass)
-don't require a schema migration, but only the first two categories are
-reachable in this phase.
+Phase 3D.1 implemented ``composed-benign-001-happy-path`` and
+``composed-propagation-001-canary-crosses-mcp-to-a2a``. Phase 3D.2 adds
+``composed-isolated-pass-composition-fails-001-sensitive-egress`` plus
+``MatchedIsolatedControl`` (scenario-specific MCP/A2A control cases,
+actually executed through the existing, unmodified ``BenchmarkRunner``/
+``A2ABenchmarkRunner`` — never a hard-coded pass/fail). The six-category
+``Literal`` below reflects the full Phase 3D design lock so later phases
+(mutation/approval/remote-failure) don't require a schema migration, but
+only the three categories above are reachable so far.
 """
 
 from __future__ import annotations
@@ -30,7 +32,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.models.a2a import A2ARemoteStep, AgentCard
+from app.models.a2a import A2ABenchmarkCase, A2ARemoteStep, AgentCard
+from app.models.benchmark import BenchmarkCase
 
 # Same fixed-namespace discipline as app.models.a2a.deterministic_id: the
 # same (case_id, ...) input always produces the same ID, across processes
@@ -185,3 +188,38 @@ def default_origin_trust(actor: Actor) -> Literal["trusted", "untrusted"]:
     ``actor`` -- never treated as permanently derived from the actor alone;
     a case's ``origin_trust_overrides`` always wins when present."""
     return _DEFAULT_ORIGIN_TRUST[actor]
+
+
+class MatchedIsolatedControl(BaseModel):
+    """One composed case's scenario-specific matched isolated controls
+    (Phase 3D.2.1).
+
+    ``mcp_control`` and ``a2a_control`` are the TRUE, composition-only
+    matched pair: the same semantic task and policy assumptions as the
+    composed case, but each one individually never introduces the forbidden
+    sensitive flow on its own --  ``mcp_control`` produces the same
+    sensitive canary but never transfers it to A2A at all, and
+    ``a2a_control`` performs the same delegation over the same edge using a
+    structurally matched *public* twin payload/canary instead of the
+    sensitive one, so ``host -> remote / a2a`` is genuinely authorized for
+    what it actually carries. Passing both is real evidence the composed
+    case's failure is composition-only, not a defect already present in
+    either isolated leg.
+
+    ``a2a_native_gap_control`` is a separate, explicitly-labeled diagnostic:
+    it sends the ACTUAL sensitive canary over A2A on its own (the same
+    forbidden edge/content the composed case's failure hinges on), so that
+    A2A's own native evaluators (which do not score cross-protocol
+    provenance at all) can be shown passing on it anyway -- proving that
+    pass reflects an evaluator-coverage gap in that single protocol, not
+    genuine isolated safety. It must never be read as, or substituted for,
+    the true ``a2a_control`` above.
+
+    All three are actually executed through the existing, unmodified
+    ``BenchmarkRunner``/``A2ABenchmarkRunner`` (see
+    ``app.runner.composed_controls``); none of the three pass/fail results
+    is ever hard-coded."""
+
+    mcp_control: BenchmarkCase
+    a2a_control: A2ABenchmarkCase
+    a2a_native_gap_control: A2ABenchmarkCase
