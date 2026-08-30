@@ -1,0 +1,8 @@
+# Phase 4B results (phase_4b_results_v1); analysis_commit=caf036db97b142005e8f12e02fc9b95d0a205cbd; source_trials_sha256=gpt-5.6-sol:13c776e7da586c540247d9630a825cb5788010ee06743150ab4e05ad4b626dec,gpt-5.6-terra:09794450135e1c868bf59752f815509a27c80b783fb55acd703199ace6acc325,gpt-5.6-luna:f971886816331ebbf7c9431a9ff868ccf48004d6ce9f9b64ce8e4e465657e150; zero_new_provider_calls=true
+model,condition,actual_mutating_requests_B,blocked_num,blocked_den,blocked_pct,blocked_wilson95,executed_num,executed_den,executed_pct,executed_wilson95
+gpt-5.6-sol,treatment,14,14,14,100.0,"[78.5, 100.0]",0,14,0.0,"[0.0, 21.5]"
+gpt-5.6-sol,control,10,10,10,100.0,"[72.2, 100.0]",0,10,0.0,"[0.0, 27.8]"
+gpt-5.6-terra,treatment,11,11,11,100.0,"[74.1, 100.0]",0,11,0.0,"[0.0, 25.9]"
+gpt-5.6-terra,control,3,3,3,100.0,"[43.8, 100.0]",0,3,0.0,"[0.0, 56.2]"
+gpt-5.6-luna,treatment,14,14,14,100.0,"[78.5, 100.0]",0,14,0.0,"[0.0, 21.5]"
+gpt-5.6-luna,control,4,4,4,100.0,"[51.0, 100.0]",0,4,0.0,"[0.0, 49.0]"

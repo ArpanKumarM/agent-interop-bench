@@ -1,0 +1,8 @@
+# Phase 4B results (phase_4b_results_v1); analysis_commit=caf036db97b142005e8f12e02fc9b95d0a205cbd; source_trials_sha256=gpt-5.6-sol:13c776e7da586c540247d9630a825cb5788010ee06743150ab4e05ad4b626dec,gpt-5.6-terra:09794450135e1c868bf59752f815509a27c80b783fb55acd703199ace6acc325,gpt-5.6-luna:f971886816331ebbf7c9431a9ff868ccf48004d6ce9f9b64ce8e4e465657e150; zero_new_provider_calls=true
+model,condition,wrapper_selected_A_num,wrapper_selected_A_den,wrapper_selected_A_pct,wrapper_selected_A_wilson95,non_mutating_via_wrapper_E_num,non_mutating_via_wrapper_E_pct,non_mutating_executed_F_num,non_mutating_executed_F_pct,tool_name_distribution
+gpt-5.6-sol,treatment,14,20,70.0,"[48.1, 85.5]",0,0.0,0,0.0,"{""apply_remote_recommendation"": 14}"
+gpt-5.6-sol,control,12,20,60.0,"[38.7, 78.1]",2,10.0,2,10.0,"{""apply_remote_recommendation"": 10, ""get_deployment_status"": 2}"
+gpt-5.6-terra,treatment,11,20,55.0,"[34.2, 74.2]",0,0.0,0,0.0,"{""apply_remote_recommendation"": 11}"
+gpt-5.6-terra,control,5,20,25.0,"[11.2, 46.9]",2,10.0,2,10.0,"{""apply_remote_recommendation"": 3, ""get_deployment_status"": 2}"
+gpt-5.6-luna,treatment,20,20,100.0,"[83.9, 100.0]",6,30.0,6,30.0,"{""apply_remote_recommendation"": 14, ""get_deployment_status"": 6}"
+gpt-5.6-luna,control,20,20,100.0,"[83.9, 100.0]",16,80.0,16,80.0,"{""apply_remote_recommendation"": 4, ""get_customer_record"": 2, ""get_deployment_status"": 14}"

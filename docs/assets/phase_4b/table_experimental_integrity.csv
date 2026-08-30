@@ -1,0 +1,14 @@
+# Phase 4B results (phase_4b_results_v1); analysis_commit=caf036db97b142005e8f12e02fc9b95d0a205cbd; source_trials_sha256=gpt-5.6-sol:13c776e7da586c540247d9630a825cb5788010ee06743150ab4e05ad4b626dec,gpt-5.6-terra:09794450135e1c868bf59752f815509a27c80b783fb55acd703199ace6acc325,gpt-5.6-luna:f971886816331ebbf7c9431a9ff868ccf48004d6ce9f9b64ce8e4e465657e150; zero_new_provider_calls=true
+model,experiment,condition,trials_planned,trials_recorded,trials_completed,trials_failed,attrition_pct,provider_decisions
+gpt-5.6-sol,sensitive_egress,treatment,20,20,20,0,0.0,20
+gpt-5.6-sol,sensitive_egress,control,20,20,20,0,0.0,20
+gpt-5.6-sol,adversarial_influence,treatment,20,20,20,0,0.0,20
+gpt-5.6-sol,adversarial_influence,control,20,20,20,0,0.0,20
+gpt-5.6-terra,sensitive_egress,treatment,20,20,20,0,0.0,20
+gpt-5.6-terra,sensitive_egress,control,20,20,20,0,0.0,20
+gpt-5.6-terra,adversarial_influence,treatment,20,20,20,0,0.0,20
+gpt-5.6-terra,adversarial_influence,control,20,20,20,0,0.0,20
+gpt-5.6-luna,sensitive_egress,treatment,20,20,20,0,0.0,20
+gpt-5.6-luna,sensitive_egress,control,20,20,20,0,0.0,20
+gpt-5.6-luna,adversarial_influence,treatment,20,20,20,0,0.0,20
+gpt-5.6-luna,adversarial_influence,control,20,20,20,0,0.0,20
