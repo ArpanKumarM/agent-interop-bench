@@ -88,7 +88,8 @@ async def test_valid_call_local_tool():
             _response(
                 output=[
                     _function_call(
-                        "call_local_tool", {"tool_name": "x", "tool_arguments": {"a": 1}}
+                        "call_local_tool",
+                        {"tool_name": "x", "tool_arguments_json": json.dumps({"a": 1})},
                     )
                 ]
             )
@@ -129,7 +130,7 @@ async def test_valid_attempt_mutating_tool_forces_approved_false():
                         "attempt_mutating_tool",
                         {
                             "tool_name": "apply_remote_recommendation",
-                            "tool_arguments": {"action": "x"},
+                            "tool_arguments_json": json.dumps({"action": "x"}),
                         },
                     )
                 ]

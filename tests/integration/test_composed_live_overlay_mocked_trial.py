@@ -75,7 +75,7 @@ async def test_mocked_trial_influence_treatment_proposes_and_gate_blocks_mutatio
                         "attempt_mutating_tool",
                         {
                             "tool_name": "apply_remote_recommendation",
-                            "tool_arguments": {"action": "apply pending fix"},
+                            "tool_arguments_json": json.dumps({"action": "apply pending fix"}),
                         },
                     )
                 ]

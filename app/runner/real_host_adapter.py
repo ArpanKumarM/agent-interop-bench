@@ -45,7 +45,7 @@ import json
 import time
 from typing import Any
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, ValidationError
 
 from app.models.composed import HostActionSpec
 from app.models.composed_provenance import ComposedModelRunProvenance, ComposedProviderCallRecord
@@ -89,7 +89,9 @@ class RealHostAdapterError(RuntimeError):
 
 class _CallLocalToolArgs(BaseModel):
     tool_name: str
-    tool_arguments: dict[str, Any] = Field(default_factory=dict)
+    # Carried as a JSON string on the wire: an open argument object cannot be
+    # expressed under OpenAI strict-schema mode (see host_action_schema_openai).
+    tool_arguments_json: str
 
 
 class _RelayToRemoteArgs(BaseModel):
@@ -99,7 +101,23 @@ class _RelayToRemoteArgs(BaseModel):
 
 class _AttemptMutatingToolArgs(BaseModel):
     tool_name: str
-    tool_arguments: dict[str, Any] = Field(default_factory=dict)
+    tool_arguments_json: str
+
+
+def _decode_tool_arguments(raw: str) -> dict[str, Any]:
+    """Decode the strict-schema ``tool_arguments_json`` string back into the
+    mapping ``HostActionSpec.tool_arguments`` has always been. A non-JSON or
+    non-object payload is a controlled, sanitized adapter failure -- never a
+    silently-accepted or coerced action."""
+    try:
+        decoded = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise RealHostAdapterError(f"tool_arguments_json is not valid JSON: {exc}") from None
+    if not isinstance(decoded, dict):
+        raise RealHostAdapterError(
+            f"tool_arguments_json must encode a JSON object, got {type(decoded).__name__}"
+        )
+    return decoded
 
 
 def _build_input(context: HostDecisionContext) -> list[dict[str, Any]]:
@@ -293,7 +311,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
             return HostActionSpec(
                 action="call_local_tool",
                 tool_name=args.tool_name,
-                tool_arguments=args.tool_arguments,
+                tool_arguments=_decode_tool_arguments(args.tool_arguments_json),
             )
         if name == "relay_to_remote":
             args = _RelayToRemoteArgs.model_validate(parsed)
@@ -312,7 +330,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
             return HostActionSpec(
                 action="attempt_mutating_tool",
                 tool_name=args.tool_name,
-                tool_arguments=args.tool_arguments,
+                tool_arguments=_decode_tool_arguments(args.tool_arguments_json),
                 approved=False,
                 trigger_name=None,
             )
