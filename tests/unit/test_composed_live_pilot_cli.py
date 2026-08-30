@@ -59,6 +59,8 @@ def test_frozen_plan_loads_and_matches_required_shape():
     assert plan.trials_per_condition * len(plan.overlay_ids) == 8
     assert plan.max_decisions_per_trial == 4
     assert plan.max_total_decisions == 32
+    assert plan.max_output_tokens == 512
+    assert plan.reasoning_effort == "low"
 
 
 def test_model_absent_refuses():
@@ -144,6 +146,8 @@ async def test_preflight_never_constructs_a_provider_client(monkeypatch):
     assert report["estimated_max_provider_calls"] == 32
     assert report["openai_api_key_present"] is False
     assert report["enable_real_model_composed_runs"] is False
+    assert report["max_output_tokens"] == 512
+    assert report["reasoning_effort"] == "low"
 
 
 async def test_dry_run_never_imports_or_constructs_openai_client(monkeypatch, tmp_path):

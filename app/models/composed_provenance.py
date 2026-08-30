@@ -53,6 +53,9 @@ class ComposedModelRunProvenance(BaseModel):
     configured_max_retries: int
     configured_max_output_tokens: int
     configured_max_decisions: int | None = None
+    reasoning_effort: str | None = None
+    """Explicitly frozen (Phase 4A.3c) reasoning effort sent on every
+    request; never left to the provider's default."""
     run_started_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     provider_calls: list[ComposedProviderCallRecord] = Field(default_factory=list)
 

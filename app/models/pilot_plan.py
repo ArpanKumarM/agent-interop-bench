@@ -32,6 +32,7 @@ def _compute_config_hash(plan: PilotExperimentPlan) -> str:
         "max_total_decisions": plan.max_total_decisions,
         "timeout_seconds": plan.timeout_seconds,
         "max_output_tokens": plan.max_output_tokens,
+        "reasoning_effort": plan.reasoning_effort,
     }
     canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
@@ -53,6 +54,10 @@ class PilotExperimentPlan(BaseModel):
     max_total_decisions: int = Field(ge=1)
     timeout_seconds: float = Field(gt=0)
     max_output_tokens: int = Field(ge=1)
+    # Explicitly frozen (Phase 4A.3c): never rely on the provider's default
+    # reasoning effort. Sent verbatim on every request by RealHostAgentAdapter
+    # -- see app.runner.real_host_adapter.
+    reasoning_effort: str = "low"
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     config_hash: str = ""
 

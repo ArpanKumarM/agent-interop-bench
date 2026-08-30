@@ -114,6 +114,7 @@ async def test_real_sdk_offline_host_decision_contract():
     assert request["parallel_tool_calls"] is False
     assert request["tool_choice"] == "required"
     assert request["max_output_tokens"] == 256
+    assert request["reasoning"] == {"effort": "low"}
     assert request["instructions"] == "You may call tools, relay, attempt mutations, or stop."
     tool_names = {tool["name"] for tool in request["tools"]}
     assert tool_names == {"call_local_tool", "relay_to_remote", "attempt_mutating_tool", "stop"}

@@ -24,6 +24,11 @@ def _plan(**overrides) -> PilotExperimentPlan:
     return PilotExperimentPlan(**defaults)
 
 
+def test_reasoning_effort_defaults_to_low_and_is_never_left_to_provider_default():
+    plan = _plan()
+    assert plan.reasoning_effort == "low"
+
+
 def test_config_hash_is_deterministic_for_identical_config():
     assert _plan().config_hash == _plan().config_hash
 
@@ -52,6 +57,7 @@ def test_config_hash_ignores_overlay_id_order():
         ("timeout_seconds", 31.0),
         ("max_output_tokens", 257),
         ("overlay_ids", ["a", "c"]),
+        ("reasoning_effort", "medium"),
     ],
 )
 def test_config_hash_changes_when_any_substantive_field_changes(field, value):

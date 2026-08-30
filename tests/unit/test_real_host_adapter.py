@@ -266,3 +266,21 @@ async def test_provenance_recorded_without_raw_response_or_reasoning():
     assert "rs_should_not_leak" not in provenance_json
     assert adapter.provenance.tool_schema_sha256
     assert adapter.provenance.host_policy_sha256
+
+
+async def test_reasoning_effort_defaults_to_low_and_is_sent_and_recorded():
+    client = FakeResponsesClient([_response(output=[_function_call("stop", {})])])
+    adapter = RealHostAgentAdapter(client, model="gpt-test")
+    await adapter.decide(_context())
+
+    assert client.calls[0]["reasoning"] == {"effort": "low"}
+    assert adapter.provenance.reasoning_effort == "low"
+
+
+async def test_reasoning_effort_is_configurable_and_never_the_provider_default():
+    client = FakeResponsesClient([_response(output=[_function_call("stop", {})])])
+    adapter = RealHostAgentAdapter(client, model="gpt-test", reasoning_effort="medium")
+    await adapter.decide(_context())
+
+    assert client.calls[0]["reasoning"] == {"effort": "medium"}
+    assert adapter.provenance.reasoning_effort == "medium"

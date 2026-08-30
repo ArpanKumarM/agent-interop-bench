@@ -134,6 +134,8 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
         "total_trials": plan.trials_per_condition * len(plan.overlay_ids),
         "max_decisions_per_trial": plan.max_decisions_per_trial,
         "max_total_decisions": plan.max_total_decisions,
+        "max_output_tokens": plan.max_output_tokens,
+        "reasoning_effort": plan.reasoning_effort,
         "estimated_max_provider_calls": estimated_max_provider_calls,
         "local_only_targets": {
             "mcp": "mock_servers.composed_tool_mock (local stdio subprocess only)",
@@ -189,6 +191,7 @@ def build_real_adapter_factory(plan: PilotExperimentPlan) -> AdapterFactory:
             max_output_tokens=plan.max_output_tokens,
             timeout_seconds=plan.timeout_seconds,
             max_retries=0,
+            reasoning_effort=plan.reasoning_effort,
             max_decisions=max_decisions,
             case_id=case_id,
         )

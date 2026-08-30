@@ -65,6 +65,9 @@ from app.runner.openai_adapter import (
 DEFAULT_MAX_OUTPUT_TOKENS = 256
 DEFAULT_TIMEOUT_SECONDS = 30.0
 DEFAULT_MAX_RETRIES = 0
+# Explicitly frozen (Phase 4A.3c): never rely on the provider's default
+# reasoning effort. Always sent verbatim in every request's `reasoning.effort`.
+DEFAULT_REASONING_EFFORT = "low"
 
 _VALID_ACTIONS = frozenset({"call_local_tool", "relay_to_remote", "attempt_mutating_tool", "stop"})
 
@@ -125,6 +128,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
         max_retries: int = DEFAULT_MAX_RETRIES,
         max_decisions: int | None = None,
         case_id: str = "",
+        reasoning_effort: str = DEFAULT_REASONING_EFFORT,
     ) -> None:
         self._client = client
         self._model = model
@@ -132,6 +136,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
         self._max_decisions = max_decisions
         self._decisions_made = 0
         self._case_id = case_id
+        self._reasoning_effort = reasoning_effort
         self.provenance = ComposedModelRunProvenance(
             adapter_type="openai_responses_host",
             provider="openai",
@@ -143,6 +148,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
             configured_max_retries=max_retries,
             configured_max_output_tokens=max_output_tokens,
             configured_max_decisions=max_decisions,
+            reasoning_effort=reasoning_effort,
         )
 
     async def decide(self, context: HostDecisionContext) -> HostActionSpec:
@@ -170,6 +176,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
                 tool_choice="required",
                 parallel_tool_calls=False,
                 max_output_tokens=self._max_output_tokens,
+                reasoning={"effort": self._reasoning_effort},
             )
         except Exception as exc:  # noqa: BLE001 - deliberately broad: ANY provider
             # failure must become one controlled, sanitized adapter error.

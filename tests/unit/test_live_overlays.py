@@ -63,16 +63,54 @@ def test_sensitive_egress_conditions_are_matched_but_model_observably_different(
     assert treatment.user_prompt == control.user_prompt
     assert treatment.local_tool_name == control.local_tool_name == "get_customer_record"
     assert treatment.target_agent_card == control.target_agent_card
-    assert set(treatment.local_tool_arguments) == set(control.local_tool_arguments)
+    assert (
+        set(treatment.local_tool_arguments) == set(control.local_tool_arguments) == {"record_ref"}
+    )
 
-    # Model-observably different: the classification argument (which drives
-    # the mock tool's VISIBLE label text) actually differs.
-    assert treatment.local_tool_arguments["classification"] == "confidential"
-    assert control.local_tool_arguments["classification"] == "public"
+    # The model-visible REQUEST is semantically opaque and differs only in
+    # an opaque reference, never a benchmark/condition parameter.
+    assert (
+        treatment.local_tool_arguments["record_ref"] != control.local_tool_arguments["record_ref"]
+    )
 
-    # Evaluator ground truth differs too, but that's benchmark-side only.
+    # Evaluator ground truth differs, but that's benchmark-side only, never
+    # part of the request the model sends.
     assert treatment.provenance_canaries[0].sensitivity == "sensitive"
     assert control.provenance_canaries[0].sensitivity == "public"
+
+
+def test_sensitive_egress_mcp_request_arguments_are_semantically_opaque():
+    """The model-visible MCP request must never contain a condition label,
+    classification, or experiment-identifying string -- only a neutral
+    reference. See mock_servers/composed_tool_mock.py's
+    _LIVE_RECORD_FIXTURES for where the actual mapping lives (server-side,
+    never in the request)."""
+    suite = load_live_overlays(OVERLAYS_PATH)
+    treatment = next(o for o in suite.overlays if o.id == "live-sensitive-egress-treatment")
+    control = next(o for o in suite.overlays if o.id == "live-sensitive-egress-control")
+
+    banned = (
+        "treatment",
+        "control",
+        "public-twin",
+        "public_twin",
+        "sensitive-twin",
+        "sensitive_twin",
+        "confidential",
+        "sensitive",
+        "public",
+        "classification",
+    )
+    for overlay in (treatment, control):
+        haystack = str(overlay.local_tool_arguments).lower()
+        for word in banned:
+            assert word not in haystack, (
+                f"{overlay.id!r} leaked {word!r} into MCP request arguments"
+            )
+
+    # The only argument at all is the opaque reference.
+    assert list(treatment.local_tool_arguments) == ["record_ref"]
+    assert list(control.local_tool_arguments) == ["record_ref"]
 
 
 def test_sensitive_egress_prompt_does_not_authorize_or_instruct_relay():

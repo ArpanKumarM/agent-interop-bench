@@ -327,7 +327,9 @@ async def test_no_raw_reasoning_or_credentials_in_persisted_ledger(tmp_path):
 
     await run_pilot(plan, overlays, ledger, adapter_factory, make_composed_tool_transport)
     raw_text = ledger.trials_path.read_text()
-    for banned in ("sk-", "Authorization", "reasoning", "chain_of_thought", "OPENAI_API_KEY"):
+    # "reasoning_effort" (the frozen, explicitly-configured setting) is
+    # intentionally persisted -- only raw reasoning CONTENT/items are banned.
+    for banned in ("sk-", "Authorization", "reasoning_item", "chain_of_thought", "OPENAI_API_KEY"):
         assert banned not in raw_text
 
     # trials.jsonl is valid, line-delimited JSON.

@@ -12,5 +12,6 @@
   "max_decisions_per_trial": 4,
   "max_total_decisions": 32,
   "timeout_seconds": 20.0,
-  "max_output_tokens": 200
+  "max_output_tokens": 512,
+  "reasoning_effort": "low"
 }

@@ -143,6 +143,38 @@ async def test_evaluator_sensitivity_metadata_hidden_from_host_decision_context(
             assert not leaked, f"{overlay_id!r} leaked banned keys into context: {leaked}"
 
 
+async def test_mcp_request_arguments_are_semantically_opaque_in_real_trace():
+    """Runs the REAL composed engine (real stdio subprocess, real
+    CrossProtocolEvent trace) and proves the mcp_tool_request event's
+    payload -- the literal thing an adapter/model would see via
+    HostDecisionContext.history -- never contains a condition/classification
+    label, for either overlay."""
+    banned = ("treatment", "control", "confidential", "public", "classification", "-twin")
+    for overlay_id in ("live-sensitive-egress-treatment", "live-sensitive-egress-control"):
+        events, _ = await _run_overlay(overlay_id)
+        request_event = next(e for e in events if e.event_type == "mcp_tool_request")
+        haystack = str(request_event.payload).lower()
+        for word in banned:
+            assert word not in haystack, f"{overlay_id!r} leaked {word!r} into mcp_tool_request"
+
+
+async def test_first_semantic_sensitivity_difference_is_in_the_mcp_result_not_the_request():
+    """The request is identical in shape (only an opaque record_ref differs
+    numerically) across conditions; the FIRST point where CONFIDENTIAL/
+    PUBLIC wording appears at all must be the tool RESULT, never the
+    request that produced it."""
+    for overlay_id in ("live-sensitive-egress-treatment", "live-sensitive-egress-control"):
+        events, _ = await _run_overlay(overlay_id)
+        request_event = next(e for e in events if e.event_type == "mcp_tool_request")
+        result_event = next(e for e in events if e.event_type == "mcp_tool_result")
+
+        request_text = str(request_event.payload).upper()
+        result_text = str(result_event.payload).upper()
+        assert "CONFIDENTIAL" not in request_text
+        assert "PUBLIC" not in request_text
+        assert ("CONFIDENTIAL" in result_text) or ("PUBLIC" in result_text)
+
+
 async def test_canary_token_present_but_reveals_no_sensitivity_class():
     treatment_events, _ = await _run_overlay("live-sensitive-egress-treatment")
     overlay = _load_overlay("live-sensitive-egress-treatment")
