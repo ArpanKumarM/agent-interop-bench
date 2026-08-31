@@ -68,6 +68,12 @@ class LiveExperimentOverlay(BaseModel):
     # adversarial ancestry is populated and can be cross-checked against the
     # assigned condition (a consistency check, not a second metric).
     content_class_override: Literal["adversarial"] | None = None
+    # RQ1+RQ2 v4: the exact host-policy text for this trial (the Phase 6B
+    # policy). None -> DEFAULT_HOST_POLICY_TEXT (Phase 4A/4B).
+    host_policy_text: str | None = None
+    # RQ1+RQ2 v4: the exact model-visible tool allowlist (the 12-tool Phase
+    # 6B surface). None -> the model sees every discovered tool.
+    visible_tool_names: list[str] | None = None
     # Metadata only -- never read when building a ComposedBenchmarkCase,
     # never model-visible.
     researcher_notes: str | None = None
@@ -112,4 +118,6 @@ def overlay_to_composed_case(overlay: LiveExperimentOverlay) -> ComposedBenchmar
         ],
         simulated_host_actions=[],
         max_interaction_steps=overlay.max_interaction_steps,
+        host_policy=overlay.host_policy_text,
+        visible_tool_names=overlay.visible_tool_names,
     )

@@ -134,6 +134,23 @@ def _decode_tool_arguments(raw: str) -> dict[str, Any]:
     return decoded
 
 
+def _canonical_history_event(event: Any) -> dict[str, Any]:
+    """One model-visible history event. For an ``mcp_tool_result`` the raw
+    trace keeps BOTH a structured and a textual protocol representation of
+    the same result (scientifically useful); the MODEL sees exactly ONE
+    canonical record representation, so no record value is duplicated in the
+    serialized decision input (Phase 6B)."""
+    dumped = event.model_dump(exclude={"is_mutating", "approved", "executed"})
+    if dumped.get("event_type") == "mcp_tool_result":
+        payload = dumped.get("payload", {})
+        structured = payload.get("structured_output") or {}
+        record = structured.get("record") if isinstance(structured, dict) else None
+        if record is None:
+            record = payload.get("text_output")
+        dumped["payload"] = {"is_error": payload.get("is_error"), "record": record}
+    return dumped
+
+
 def _build_input(context: HostDecisionContext) -> list[dict[str, Any]]:
     """Serializes the full sanitized context fresh, every decision -- no
     provider-side conversation state is threaded between calls."""
@@ -146,10 +163,7 @@ def _build_input(context: HostDecisionContext) -> list[dict[str, Any]]:
         # ``is_mutating`` classification (see ToolDefinition.model_visible_dump),
         # and never a per-event is_mutating / approved / executed / gate label.
         "available_mcp_tools": [tool.model_visible_dump() for tool in context.available_tools],
-        "history": [
-            event.model_dump(exclude={"is_mutating", "approved", "executed"})
-            for event in context.history
-        ],
+        "history": [_canonical_history_event(event) for event in context.history],
     }
     return [{"role": "user", "content": json.dumps(payload, default=str, sort_keys=True)}]
 

@@ -177,10 +177,13 @@ def _execution_fingerprint_for(plan: PilotExperimentPlan, overlays: list[LiveExp
     schedule = _resolve_schedule(plan)
     sched_sha = schedule_sha256(schedule) if schedule is not None else None
     if _is_phase_6b(plan):
+        from app.runner.host_adapters import PHASE_6B_HOST_POLICY_TEXT
+
         fp = compute_execution_fingerprint_v2(
             plan,
             overlays,
             canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
+            host_policy_text=PHASE_6B_HOST_POLICY_TEXT,
             schedule_sha256=sched_sha,
         )
         return fp, schedule

@@ -246,12 +246,22 @@ class ComposedBenchmarkRunner:
         ]
         mock_app = build_a2a_mock_app(case.target_agent_card, substituted_remote_behavior, case.id)
 
-        # Discovered once, up front: available_tools is model-visible metadata
-        # (name/description/schema/is_mutating), reused both to populate every
-        # HostDecisionContext and as the mutation gate's real annotation
-        # source -- never a fixture-asserted "is this mutating" flag.
+        # Discovered once, up front. ``available_tools`` is the FULL discovered
+        # list -- it is the mutation gate's/classifier's real annotation
+        # source (never a fixture-asserted flag). ``model_visible_tools`` is
+        # what a host MODEL sees: the full list, unless the case restricts it
+        # to ``visible_tool_names`` (Phase 6B). A call to a discovered tool
+        # not on that list is still classified correctly, because
+        # ``_handle_tool_invocation`` uses ``available_tools``.
         async with self._local_transport_factory() as transport:
             available_tools = await transport.list_tools()
+        if case.visible_tool_names is not None:
+            allowed = set(case.visible_tool_names)
+            model_visible_tools = [t for t in available_tools if t.name in allowed]
+        else:
+            model_visible_tools = available_tools
+
+        host_policy = case.host_policy or DEFAULT_HOST_POLICY_TEXT
 
         last_event: CrossProtocolEvent | None = None
         last_tool_result_text: str | None = None
@@ -261,9 +271,9 @@ class ComposedBenchmarkRunner:
             while step < case.max_interaction_steps:
                 context = HostDecisionContext(
                     user_prompt=case.user_prompt,
-                    host_policy=DEFAULT_HOST_POLICY_TEXT,
+                    host_policy=host_policy,
                     history=self._observable_history(),
-                    available_tools=available_tools,
+                    available_tools=model_visible_tools,
                     target_agent_card=case.target_agent_card,
                     current_step=step,
                 )

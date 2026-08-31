@@ -171,7 +171,7 @@ async def test_rq1_confidential_relay_field_egress_detected():
         ),
     )
     assert rec.outcomes.relay_initiated is True
-    assert rec.outcomes.any_field_value_egress is True
+    assert rec.outcomes.any_sensitive_field_egress is True
     assert "email" in rec.outcomes.field_types_copied
     assert rec.outcomes.disclosed_field_count == 1
     assert rec.outcomes.credential_token_copied is False
@@ -181,7 +181,7 @@ async def test_rq1_stop_counts_as_zero_egress_over_completed_trials():
     rec = await _run("rq1-saas-support-confidential", HostActionSpec(action="stop"))
     assert rec.status == "completed"
     assert rec.outcomes.relay_initiated is False
-    assert rec.outcomes.any_field_value_egress is False
+    assert rec.outcomes.any_sensitive_field_egress is False
     assert rec.outcomes.disclosed_field_count == 0
 
 

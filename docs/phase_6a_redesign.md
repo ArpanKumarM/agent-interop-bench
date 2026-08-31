@@ -73,7 +73,7 @@ tool" and "should I act" are entangled.
 discovered value:
 
 ```python
-is_mutating = bool(tool_def and tool_def.is_mutating)   # line 363
+is_mutating = bool(tool_def and tool_def.is_mutating)  # line 363
 ```
 
 used correctly by the gate at `:364`, then **discarded**: the emitted
@@ -475,6 +475,7 @@ class ToolInvocationClass(str, Enum):
     MUTATING_TOOL_BLOCKED = "mutating_tool_blocked"
     MUTATING_TOOL_EXECUTED = "mutating_tool_executed"
 
+
 def classify_tool_invocation(
     decision_action: str,
     requested_tool_name: str | None,
@@ -482,14 +483,15 @@ def classify_tool_invocation(
     executed: bool | None,
 ) -> tuple[ToolInvocationClass, ToolInvocationClass | None]:
     """Returns (request_class, execution_class).
-       request_class ∈ {STOP, READ_ONLY_TOOL_REQUESTED, MUTATING_TOOL_REQUESTED}
-       execution_class ∈ {None, READ_ONLY_TOOL_EXECUTED, MUTATING_TOOL_BLOCKED,
-                          MUTATING_TOOL_EXECUTED}"""
+    request_class ∈ {STOP, READ_ONLY_TOOL_REQUESTED, MUTATING_TOOL_REQUESTED}
+    execution_class ∈ {None, READ_ONLY_TOOL_EXECUTED, MUTATING_TOOL_BLOCKED,
+                       MUTATING_TOOL_EXECUTED}"""
+
 
 def assert_trace_taxonomy_consistent(events, discovered_is_mutating) -> None:
     """Raises if any tool_invocation event's recorded discovered_is_mutating
-       ≠ the trusted annotation, or if MUTATING_TOOL_REQUESTED ever pairs
-       with executed is True, or if counts disagree across layers."""
+    ≠ the trusted annotation, or if MUTATING_TOOL_REQUESTED ever pairs
+    with executed is True, or if counts disagree across layers."""
 ```
 
 `tool_invocation` events (the Phase 6B event type replacing the overloaded

@@ -70,12 +70,16 @@ class ExecutionFingerprintError(RuntimeError):
     commit SHA is indeterminable and no override env var is set)."""
 
 
-def host_policy_sha256() -> str:
-    """SHA-256 of the exact host policy text sent on every request
-    (``DEFAULT_HOST_POLICY_TEXT``) -- the same value
-    ``RealHostAgentAdapter`` records as ``host_policy_sha256`` at decide
-    time, computed here up front without any provider call."""
-    return hashlib.sha256(DEFAULT_HOST_POLICY_TEXT.encode("utf-8")).hexdigest()
+def host_policy_sha256(text: str | None = None) -> str:
+    """SHA-256 of the exact host policy text sent on every request -- the
+    same value ``RealHostAgentAdapter`` records as ``host_policy_sha256`` at
+    decide time, computed here up front without any provider call. ``None``
+    resolves to the module-level ``DEFAULT_HOST_POLICY_TEXT`` at call time
+    (v1/v2/v3, and monkeypatchable in tests); Phase 6B passes
+    ``PHASE_6B_HOST_POLICY_TEXT`` explicitly."""
+    if text is None:
+        text = DEFAULT_HOST_POLICY_TEXT
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def resolve_source_commit_sha() -> str:
@@ -112,6 +116,8 @@ _PHASE_6B_OVERLAY_DEFAULTS = {
     "action_surface": "legacy_wrapper",
     "record_field_values": None,
     "content_class_override": None,
+    "host_policy_text": None,
+    "visible_tool_names": None,
 }
 
 
@@ -216,6 +222,7 @@ def compute_execution_fingerprint_v2(
     resolved_overlays: list[LiveExperimentOverlay],
     *,
     canonical_actions: tuple[str, ...],
+    host_policy_text: str | None = None,
     source_commit_sha: str | None = None,
     tool_schema_sha256: str | None = None,
     schedule_sha256: str | None = None,
@@ -224,13 +231,19 @@ def compute_execution_fingerprint_v2(
 ) -> ExecutionFingerprint:
     """Phase 6B fingerprint. Same six v1 inputs PLUS the canonical
     action-schema hash, the ``uv.lock`` SHA-256, and the Python runtime
-    version. v1 verification is untouched: a v1 fingerprint (which carries
-    none of the three new inputs) still combines to the identical value."""
+    version. ``host_policy_text`` (the Phase 6B policy) feeds
+    ``host_policy_sha256``; default keeps ``DEFAULT_HOST_POLICY_TEXT``. v1
+    verification is untouched: a v1 fingerprint (which carries none of the
+    new inputs) still combines to the identical value."""
     commit = source_commit_sha if source_commit_sha is not None else resolve_source_commit_sha()
     tool_hash = (
         tool_schema_sha256 if tool_schema_sha256 is not None else host_action_schema_fingerprint()
     )
-    policy_hash = host_policy_sha256()
+    policy_hash = (
+        host_policy_sha256(host_policy_text)
+        if host_policy_text is not None
+        else host_policy_sha256()
+    )
     bundle_hash = resolved_overlay_bundle_sha256(resolved_overlays)
     from app.runner.host_action_schema_openai import canonical_action_schema_sha256
 

@@ -166,11 +166,12 @@ def compute_decision_point_outcomes(
         values = RecordFieldValues.model_validate(record_field_values)
         egress = detect_field_egress(values, outbound_text, relay_initiated=relay_initiated)
         outcomes.relay_initiated = egress.relay_initiated
-        outcomes.any_field_value_egress = egress.any_field_value_egress
+        outcomes.any_sensitive_field_egress = egress.any_sensitive_field_egress
         outcomes.disclosed_field_count = egress.disclosed_field_count
         outcomes.field_types_copied = egress.field_types_copied
         outcomes.credential_token_copied = egress.credential_token_copied
         outcomes.canary_copied = egress.canary_copied
+        outcomes.header_label_copied = egress.header_label_copied
         outcomes.full_record_copied = egress.full_record_copied
 
     # --- Phase 6B RQ2: canonical taxonomy from the single classifier

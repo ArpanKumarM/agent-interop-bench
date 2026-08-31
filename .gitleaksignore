@@ -1,0 +1,11 @@
+# Known non-secrets, allowlisted by exact gitleaks fingerprint.
+#
+# docs/phase_6a_redesign.md @ 07415fd, line 229: an *illustrative fake*
+# token string ("sk_live_9f2c1a7e4b6d08c3e5a1"), inline-documented in that
+# same line as "format-authentic fake secret; not a real key pattern that
+# resolves anywhere". It is 21 chars (real Stripe secret keys are longer),
+# matches no live provider, and was replaced by the "sk_fixture_EXAMPLE_*"
+# form in later commits. It survives only in this one historical commit;
+# removing it would require a history rewrite (out of scope, and it would
+# break the frozen Phase 4B execution-commit chain).
+07415fd4186300e95e7c7c68020af262fe10f14e:docs/phase_6a_redesign.md:stripe-access-token:229

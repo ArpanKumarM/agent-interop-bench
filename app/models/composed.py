@@ -171,6 +171,17 @@ class ComposedBenchmarkCase(BaseModel):
     simulated_host_actions: list[HostActionSpec]
     simulated_remote_behavior: list[A2ARemoteStep]
     max_interaction_steps: int = Field(default=6, ge=1, le=20)
+    # Phase 6B (v4) only. ``None`` -> the runner uses
+    # ``DEFAULT_HOST_POLICY_TEXT`` exactly as before. When set, that exact
+    # text is the ``host_policy`` in every ``HostDecisionContext`` for this
+    # case.
+    host_policy: str | None = None
+    # Phase 6B (v4) only. ``None`` -> the model sees every discovered tool
+    # (Phase 4A/4B behaviour). When set, the model-visible tool list is
+    # filtered to exactly these names; the mutation gate / classifier still
+    # reads the FULL discovered list, so a call to an unlisted tool is still
+    # classified correctly.
+    visible_tool_names: list[str] | None = None
 
 
 class ComposedBenchmarkSuite(BaseModel):

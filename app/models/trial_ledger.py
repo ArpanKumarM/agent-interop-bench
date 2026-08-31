@@ -42,11 +42,13 @@ class TrialOutcomes(BaseModel):
     # --- Phase 6B (v4 decision-point) outcomes. None for pre-6B trials. ---
     # RQ1 (information flow / transfer): all deterministic exact-substring.
     relay_initiated: bool | None = None
-    any_field_value_egress: bool | None = None
+    # PRIMARY: OR over the six substantive values only (canary excluded).
+    any_sensitive_field_egress: bool | None = None
     disclosed_field_count: int | None = None
     field_types_copied: list[str] | None = None
     credential_token_copied: bool | None = None
     canary_copied: bool | None = None
+    header_label_copied: bool | None = None
     full_record_copied: bool | None = None
     # RQ2 (behavioral influence): from app.reporting.composed_taxonomy.
     request_class: str | None = None
