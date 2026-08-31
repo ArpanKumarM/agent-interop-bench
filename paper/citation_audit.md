@@ -164,4 +164,29 @@ superseded Phase 4B pilot and are retained as a record of that audit; the
 v4r1 study has **320 RQ1 trials, 320 planned / 319 analysable RQ2 trials,
 640 scheduled total**.
 
+## Phase 6F.2 — bibliography brace-protection and numeric-table provenance
+
+- **Brace-protection for `plainnat` title lowercasing.** `plainnat`
+  lowercases every title word not inside braces. Proper nouns that would
+  otherwise render lowercased were brace-protected in **both**
+  `paper/references.bib` and `paper/arxiv/references.bib` (identical files):
+  `mcp-spec` and `mohiuddin2026mcpsec` → `{Model Context Protocol}`;
+  `anthropic-claude` → `{Anthropic}`; `protocolbench2026` →
+  `{Protocol to Choose?}`. No author list, title wording, venue, DOI, year,
+  or URL changed; this is rendering-only. The rebuilt `main.bbl` shows these
+  as capitalised; `pdflatex` + `bibtex` still produce 0 undefined citations.
+- **Numeric tables are now machine-generated.** Every numeric table body in
+  `paper/arxiv/main.tex` (RQ1 model summary, RQ1 pair-level appendix, RQ1
+  relay diagnostics, RQ2 model summary, RQ2 diagnostics, execution/integrity
+  summary, pinned identifiers) and the RQ1 pair-effect figure data are
+  produced by `paper/arxiv/gen_tables.py` from the frozen Phase 6E.2
+  artifacts (`reports/phase_6e_v4r1/`), `\input`-ed from
+  `paper/arxiv/generated/`, and re-verified by
+  `paper/arxiv/audit_numbers.py`. This replaced hand-transcription and
+  **fixed a Phase 6F data error**: Appendix A `gpt-5.6-sol` /
+  `saas-support` printed `0.00` but the frozen `rq1_pair_results.csv` value
+  is **−0.75** (it now reconciles with that model's mean −0.250 / median
+  −0.125 and with the RQ1 model-summary table). No frozen artifact was
+  modified.
+
 UNRESOLVED SUBMISSION-BLOCKING ITEMS: NONE.

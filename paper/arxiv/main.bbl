@@ -13,13 +13,13 @@
 
 \bibitem[{Anthropic}(2026)]{anthropic-claude}
 {Anthropic}.
-\newblock {Claude Sonnet 5} and the anthropic {Messages} {API}.
+\newblock {Claude Sonnet 5} and the {Anthropic} {Messages} {API}.
 \newblock \url{https://docs.anthropic.com/en/api/messages}, 2026.
 \newblock External-family robustness model. API identifier \texttt{claude-sonnet-5}, recorded as both \texttt{requested\_model} and \texttt{returned\_model} in every Anthropic trial of the frozen v4r1 run; called with the provider's low-effort mode (\texttt{output\_config.effort = "low"}) plus adaptive thinking (\texttt{display = "omitted"}), \texttt{tool\_choice = any} with \texttt{disable\_parallel\_tool\_use}, strict decision-tool schema, \texttt{max\_tokens = 2048}, and \texttt{retries = 0}. SDK \texttt{anthropic==1.2.0}.
 
 \bibitem[{Anthropic and Model Context Protocol contributors}(2025)]{mcp-spec}
 {Anthropic and Model Context Protocol contributors}.
-\newblock Model context protocol specification (revision 2025-06-18).
+\newblock {Model Context Protocol} specification (revision 2025-06-18).
 \newblock \url{https://modelcontextprotocol.io/specification/2025-06-18}, 2025.
 \newblock Authoritative revision 2025-06-18, based on \texttt{schema/2025-06-18/schema.ts}. Defines Hosts/Clients/Servers, the ``Tools'' server feature (JSON-RPC \texttt{tools/call}), and tool annotations (e.g. destructive / read-only hints), which the spec states ``should be considered untrusted, unless obtained from a trusted server.'' A later revision (2026-07-28) also exists. The framework's local MCP fixture is implemented with the MCP Python SDK, \texttt{mcp==2.0.0} in the frozen run environment (resolved dependency lock SHA-256 \texttt{6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56}).
 
@@ -37,7 +37,7 @@ Edoardo Debenedetti, Ilia Shumailov, Tianqi Fan, Jamie Hayes, Nicholas Carlini, 
 
 \bibitem[Du et~al.(2026)Du, Su, Li, Ding, Yang, Han, Tang, Zhu, and You]{protocolbench2026}
 Hongyi Du, Jiaqi Su, Jisen Li, Lijie Ding, Yingxuan Yang, Peixuan Han, Xiangru Tang, Kunlun Zhu, and Jiaxuan You.
-\newblock {ProtocolBench}: Which {LLM} {MultiAgent} protocol to choose?
+\newblock {ProtocolBench}: Which {LLM} {MultiAgent} {Protocol to Choose?}
 \newblock In \emph{Proceedings of the 43rd International Conference on Machine Learning (ICML)}, volume 306 of \emph{Proceedings of Machine Learning Research}. PMLR, 2026.
 \newblock Also arXiv:2510.17149 (v1 20 Oct 2025; v3 2 June 2026; DOI 10.48550/arXiv.2510.17149), \url{https://arxiv.org/abs/2510.17149}. Evaluates which multi-agent communication protocol to choose, primarily through task success, latency, communication overhead, and failure robustness. Distinction: a question of protocol choice, not our MCP-to-A2A cross-protocol information-flow and action-containment experiment.
 
@@ -79,7 +79,7 @@ Christian Schroeder~de Witt, Klaudia Krawiecka, Igor Krawczuk, et~al.
 
 \bibitem[Syed(2026)]{mohiuddin2026mcpsec}
 Anas~Mohiuddin Syed.
-\newblock Security considerations for model context protocol ({MCP}) implementations in {AI} agent systems.
+\newblock Security considerations for {Model Context Protocol} ({MCP}) implementations in {AI} agent systems.
 \newblock IETF Internet-Draft draft-mohiuddin-mcp-security-considerations-00, 2026.
 \newblock \url{https://datatracker.ietf.org/doc/draft-mohiuddin-mcp-security-considerations/00/}. June 2026, individual submission, Informational, version -00. Section~6 (``Protocol Pivoting'') describes lateral movement that crosses agent-protocol boundaries, ``combining MCP with Agent-to-Agent (A2A) delegation,'' and states that ``mitigations that consider each protocol in isolation do not address movement that crosses protocol boundaries.''.
 
