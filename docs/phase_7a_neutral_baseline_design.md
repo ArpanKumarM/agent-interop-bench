@@ -348,15 +348,18 @@ no other:
   runner records `EXECUTION_SOURCE_SHA` exactly);
 - **H.** make **no** source / config / stimulus / policy / schedule change
   after `EXECUTION_SOURCE_SHA`;
-- **I.** the operational execution checkout is **`HEAD` = the metadata
-  commit `2201dda…`** (so the FINAL fingerprints artifact is on disk for
-  the preflight to verify), with
+- **I.** the operational execution checkout is **`HEAD` = the branch tip
+  `phase-6b-impl` (`== origin/phase-6b-impl`)** — at or after the metadata
+  commit `2201dda…`, so the FINAL fingerprints artifact is on disk for the
+  preflight to verify — with
   `A2AVALIDATOR_SOURCE_COMMIT=EXECUTION_SOURCE_SHA` (`2a892c0…`) exported
   so the runner still computes and persists `source_commit_sha =
-  2a892c0…` and the four already-frozen FINAL fingerprints —
+  2a892c0…` and the four already-frozen FINAL fingerprints.
   `git diff 2a892c0..2201dda` is exactly
-  `benchmarks/composed/live_canary_phase7a_fingerprints.json` and nothing
-  else. See `docs/phase_7b_execution_governance.md` §5.
+  `benchmarks/composed/live_canary_phase7a_fingerprints.json`;
+  `git diff 2a892c0..<branch tip>` adds only the two Phase 7B / 7B.1 doc
+  files. No executable / config / stimulus / policy / schedule byte
+  differs. See `docs/phase_7b_execution_governance.md` §5.
 - **J.** only then request authorization to execute.
 
 The Phase 7A / 7A.1 fingerprints (in git history, `daee782` / `621fae0`)

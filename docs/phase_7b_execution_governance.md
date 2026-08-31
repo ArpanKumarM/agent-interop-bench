@@ -86,33 +86,45 @@ whether or how to resume.
 
 ## 5. Operational checkout state and source / fingerprint pinning
 
-Two commits are involved:
+Commits involved:
 
-| role | commit |
-|---|---|
-| **`EXECUTION_SOURCE_SHA`** — the frozen executable source (all code / config / stimuli / policy / schedule) | `2a892c0b9a8a636055cc0c4229aebfd788738b60` |
-| **metadata commit** — adds only the FINAL fingerprints artifact | `2201dda204021629548946f1f913fad026af4c28` |
+| role | commit | contents added |
+|---|---|---|
+| **`EXECUTION_SOURCE_SHA`** — the frozen executable source | `2a892c0b9a8a636055cc0c4229aebfd788738b60` | all code / config / stimuli / policy / schedule |
+| **metadata commit** | `2201dda204021629548946f1f913fad026af4c28` | ONLY `benchmarks/composed/live_canary_phase7a_fingerprints.json` (FINAL) |
+| **checkout-alignment commit (7B.1)** | `phase-6b-impl` tip `== origin/phase-6b-impl` | ONLY this doc + `phase_7a_neutral_baseline_design.md` (docs) |
 
-`git diff 2a892c0..2201dda` changes **exactly one file**,
-`benchmarks/composed/live_canary_phase7a_fingerprints.json`, and only its
-`artifact_role` / `final_execution_fingerprint` flag / `source_commit_sha`
-stamp / the four derived `execution_fingerprint_sha256` values. **No
-executable / config / stimulus / policy / schedule byte differs** between
-the two commits; every scientific input hash in the artifact
+Diffs from `EXECUTION_SOURCE_SHA`:
+
+- `git diff 2a892c0..2201dda` — **exactly one file**,
+  `benchmarks/composed/live_canary_phase7a_fingerprints.json`, and only
+  its `artifact_role` / `final_execution_fingerprint` flag /
+  `source_commit_sha` stamp / the four derived
+  `execution_fingerprint_sha256` values.
+- `git diff 2a892c0..<phase-6b-impl tip>` — that same fingerprints file
+  plus `docs/phase_7b_execution_governance.md` and
+  `docs/phase_7a_neutral_baseline_design.md`.
+
+**No executable / config / stimulus / policy / schedule byte differs** in
+either diff. Every *scientific input hash* in the fingerprints artifact
 (`resolved_overlay_bundle_sha256`, `host_policy_sha256`,
 `tool_schema_sha256`, `canonical_action_schema_sha256`, per-model
 `schedule_sha256` / `provider_config_sha256` / `config_hash`,
-`uv_lock_sha256`, `python_runtime_version`) is identical.
+`uv_lock_sha256`, `python_runtime_version`) is identical between the
+reference and the FINAL artifact — only `source_commit_sha` (and its four
+derived fingerprint hashes) changed.
 
 **Operational execution state (preferred):**
 
-- working tree / `HEAD` = the **metadata commit**
-  `2201dda204021629548946f1f913fad026af4c28` — this is the checkout that
-  has the FINAL fingerprints artifact (`final_execution_fingerprint: true`)
-  on disk for the preflight to verify against;
+- working tree / `HEAD` = the **branch tip** `phase-6b-impl`
+  (`== origin/phase-6b-impl`) — any commit at or after the metadata commit
+  `2201dda…` carries the FINAL fingerprints artifact
+  (`final_execution_fingerprint: true`) on disk for the preflight to
+  verify against; the branch tip is the simplest checkout
+  (`git checkout phase-6b-impl && git pull --ff-only`);
 - `HEAD == origin/phase-6b-impl`, clean working tree;
 - environment: `A2AVALIDATOR_SOURCE_COMMIT=2a892c0b9a8a636055cc0c4229aebfd788738b60`
-  (the `EXECUTION_SOURCE_SHA`, **not** the metadata commit).
+  (the `EXECUTION_SOURCE_SHA`, **not** the metadata or 7B.1 commit).
 
 With that env set,
 `app.runner.execution_fingerprint.resolve_source_commit_sha()` returns
