@@ -1,4 +1,4 @@
-\begin{thebibliography}{15}
+\begin{thebibliography}{18}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -11,11 +11,23 @@
 \newblock \url{https://a2a-protocol.org/v1.0.0/specification/}, 2026.
 \newblock v1.0.0. Agent Card (Sec.~8); Task/TaskStatus/TaskState (Sec.~4.1.1--4.1.3); Message and Part (Sec.~4.1.4, 4.1.6); Artifact (Sec.~4.1.7); HTTP+JSON/REST protocol binding (Sec.~11). Project hosted by the Linux Foundation since June 2025. The framework's local A2A fixture implements the HTTP+JSON/REST binding shapes only.
 
+\bibitem[{AgentThread authors}(2026)]{agentthread2026}
+{AgentThread authors}.
+\newblock Formal security analysis of agent protocol composition.
+\newblock arXiv:2606.28690, 2026.
+\newblock \url{https://arxiv.org/abs/2606.28690}. Combines TLA+ specification with SDK replay to derive cross-protocol composition findings and assign composition-responsibility between protocol layers. Distinction: formal assurance/composition-responsibility analysis versus our controlled live-model MCP-to-A2A behavioral experiment.
+
+\bibitem[{Anthropic}(2026)]{anthropic-claude}
+{Anthropic}.
+\newblock {Claude Sonnet 5} and the anthropic {Messages} {API}.
+\newblock \url{https://docs.anthropic.com/en/api/messages}, 2026.
+\newblock External-family robustness model. API identifier \texttt{claude-sonnet-5}, recorded as both \texttt{requested\_model} and \texttt{returned\_model} in every Anthropic trial of the frozen v4r1 run; called with the provider's low-effort mode (\texttt{output\_config.effort = "low"}) plus adaptive thinking (\texttt{display = "omitted"}), \texttt{tool\_choice = any} with \texttt{disable\_parallel\_tool\_use}, strict decision-tool schema, \texttt{max\_tokens = 2048}, and \texttt{retries = 0}. SDK \texttt{anthropic==1.2.0}.
+
 \bibitem[{Anthropic and Model Context Protocol contributors}(2025)]{mcp-spec}
 {Anthropic and Model Context Protocol contributors}.
 \newblock Model context protocol specification (revision 2025-06-18).
 \newblock \url{https://modelcontextprotocol.io/specification/2025-06-18}, 2025.
-\newblock Authoritative revision 2025-06-18, based on \texttt{schema/2025-06-18/schema.ts}. Defines Hosts/Clients/Servers, the ``Tools'' server feature (JSON-RPC \texttt{tools/call}), and tool annotations (e.g. destructive / read-only hints), which the spec states ``should be considered untrusted, unless obtained from a trusted server.'' A later revision (2026-07-28) also exists. The framework's local MCP fixture is implemented with the MCP Python SDK (v1.6.0 in the frozen run environment).
+\newblock Authoritative revision 2025-06-18, based on \texttt{schema/2025-06-18/schema.ts}. Defines Hosts/Clients/Servers, the ``Tools'' server feature (JSON-RPC \texttt{tools/call}), and tool annotations (e.g. destructive / read-only hints), which the spec states ``should be considered untrusted, unless obtained from a trusted server.'' A later revision (2026-07-28) also exists. The framework's local MCP fixture is implemented with the MCP Python SDK, \texttt{mcp==2.0.0} in the frozen run environment (resolved dependency lock SHA-256 \texttt{6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56}).
 
 \bibitem[Debenedetti et~al.(2024)Debenedetti, Zhang, Balunovi\'{c}, Beurer-Kellner, Fischer, and Tram\`{e}r]{agentdojo2024}
 Edoardo Debenedetti, Jie Zhang, Mislav Balunovi\'{c}, Luca Beurer-Kellner, Marc Fischer, and Florian Tram\`{e}r.
@@ -41,11 +53,23 @@ Tianhao Li, Chuangxin Chu, Yujia Zheng, Bohan Zhang, Neil~Zhenqiang Gong, and Ch
 \newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026.
 \newblock Poster. OpenReview \url{https://openreview.net/forum?id=LfdFnakqGJ}; project page \url{https://safo-lab.github.io/A2ASecBench/}; ICLR virtual \url{https://iclr.cc/virtual/2026/poster/10010017}. Taxonomy of supply-chain manipulations and protocol-logic weaknesses; six attacks across A2A stages.
 
+\bibitem[{MCPHunt authors}(2026)]{mcphunt2026}
+{MCPHunt authors}.
+\newblock {MCPHunt}: Tracking cross-boundary content propagation and canary leakage in multi-server {MCP} deployments.
+\newblock arXiv:2604.27819, 2026.
+\newblock \url{https://arxiv.org/abs/2604.27819}. Studies how content and provenance canaries propagate across MCP server boundaries in multi-server deployments. Distinction from this work: our setting explicitly composes MCP with A2A --- the measured flow crosses from a local MCP result into a remote A2A message --- and tests matched confidential/public and remote-approval interventions rather than enumerating propagation paths within the MCP layer.
+
 \bibitem[{OpenAI}(2026)]{openai-gpt56}
 {OpenAI}.
 \newblock {GPT-5.6}.
 \newblock \url{https://openai.com/index/gpt-5-6/}, 2026.
 \newblock Model family: \texttt{gpt-5.6-sol} (flagship tier), \texttt{gpt-5.6-terra} (balanced default tier), \texttt{gpt-5.6-luna} (lightweight tier). General availability 9 July 2026. These are the exact API model identifiers recorded as both \texttt{requested\_model} and \texttt{returned\_model} in every trial of the frozen runs. See also \url{https://openai.com/index/previewing-gpt-5-6-sol/}.
+
+\bibitem[{ProtocolBench authors}(2025)]{protocolbench2026}
+{ProtocolBench authors}.
+\newblock {ProtocolBench}: Benchmarking agent communication protocols for performance and reliability.
+\newblock arXiv:2510.17149, 2025.
+\newblock \url{https://arxiv.org/abs/2510.17149}. Compares agent communication protocols on performance and reliability. Distinction: a question of protocol choice, not cross-protocol security information flow within a fixed composition.
 
 \bibitem[Ruan et~al.(2024)Ruan, Dong, Wang, Pitis, Zhou, Ba, Dubois, Maddison, and Hashimoto]{toolemu2024}
 Yangjun Ruan, Honghua Dong, Andrew Wang, Silviu Pitis, Yongchao Zhou, Jimmy Ba, Yann Dubois, Chris~J. Maddison, and Tatsunori Hashimoto.
@@ -64,13 +88,6 @@ Anas~Mohiuddin Syed.
 \newblock Security considerations for model context protocol ({MCP}) implementations in {AI} agent systems.
 \newblock IETF Internet-Draft draft-mohiuddin-mcp-security-considerations-00, 2026.
 \newblock \url{https://datatracker.ietf.org/doc/draft-mohiuddin-mcp-security-considerations/00/}. June 2026, individual submission, Informational, version -00. Section~6 (``Protocol Pivoting'') describes lateral movement that crosses agent-protocol boundaries, ``combining MCP with Agent-to-Agent (A2A) delegation,'' and states that ``mitigations that consider each protocol in isolation do not address movement that crosses protocol boundaries.''.
-
-\bibitem[Wilson(1927)]{wilson1927}
-Edwin~B. Wilson.
-\newblock Probable inference, the law of succession, and statistical inference.
-\newblock \emph{Journal of the American Statistical Association}, 22\penalty0 (158):\penalty0 209--212, 1927.
-\newblock \doi{10.1080/01621459.1927.10502953}.
-\newblock JSTOR \url{https://www.jstor.org/stable/2276774}.
 
 \bibitem[Yang et~al.(2025)Yang, Gao, Wu, Chen, Li, and Wang]{mcpsecbench2025}
 Yixuan Yang, Cuifeng Gao, Daoyuan Wu, Yufan Chen, Yingjiu Li, and Shuai Wang.

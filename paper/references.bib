@@ -21,7 +21,9 @@
                   spec states ``should be considered untrusted, unless obtained
                   from a trusted server.'' A later revision (2026-07-28) also exists.
                   The framework's local MCP fixture is implemented with the MCP
-                  Python SDK (v1.6.0 in the frozen run environment).}
+                  Python SDK, \texttt{mcp==2.0.0} in the frozen run environment
+                  (resolved dependency lock SHA-256
+                  \texttt{6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56}).}
 }
 
 @misc{a2a-spec,
@@ -230,4 +232,69 @@
                   recorded as both \texttt{requested\_model} and
                   \texttt{returned\_model} in every trial of the frozen runs.
                   See also \url{https://openai.com/index/previewing-gpt-5-6-sol/}.}
+}
+
+% ---------------------------------------------------------------------------
+% Phase 6F additions (v4r1 rebuild). arXiv identifiers and one-line
+% descriptions are taken from the Phase 6F task specification; they were not
+% independently web-verified in the offline manuscript-preparation
+% environment. See paper/citation_audit.md.
+% ---------------------------------------------------------------------------
+
+@misc{anthropic-claude,
+  title        = {{Claude Sonnet 5} and the Anthropic {Messages} {API}},
+  author       = {{Anthropic}},
+  year         = {2026},
+  howpublished = {\url{https://docs.anthropic.com/en/api/messages}},
+  note         = {External-family robustness model. API identifier
+                  \texttt{claude-sonnet-5}, recorded as both
+                  \texttt{requested\_model} and \texttt{returned\_model} in every
+                  Anthropic trial of the frozen v4r1 run; called with the
+                  provider's low-effort mode (\texttt{output\_config.effort =
+                  "low"}) plus adaptive thinking (\texttt{display = "omitted"}),
+                  \texttt{tool\_choice = any} with
+                  \texttt{disable\_parallel\_tool\_use}, strict decision-tool
+                  schema, \texttt{max\_tokens = 2048}, and \texttt{retries = 0}.
+                  SDK \texttt{anthropic==1.2.0}.}
+}
+
+@misc{mcphunt2026,
+  title        = {{MCPHunt}: Tracking Cross-Boundary Content Propagation and
+                  Canary Leakage in Multi-Server {MCP} Deployments},
+  author       = {{MCPHunt authors}},
+  year         = {2026},
+  howpublished = {arXiv:2604.27819},
+  note         = {\url{https://arxiv.org/abs/2604.27819}. Studies how content and
+                  provenance canaries propagate across MCP server boundaries in
+                  multi-server deployments. Distinction from this work: our
+                  setting explicitly composes MCP with A2A --- the measured flow
+                  crosses from a local MCP result into a remote A2A message ---
+                  and tests matched confidential/public and remote-approval
+                  interventions rather than enumerating propagation paths within
+                  the MCP layer.}
+}
+
+@misc{agentthread2026,
+  title        = {Formal Security Analysis of Agent Protocol Composition},
+  author       = {{AgentThread authors}},
+  year         = {2026},
+  howpublished = {arXiv:2606.28690},
+  note         = {\url{https://arxiv.org/abs/2606.28690}. Combines TLA+
+                  specification with SDK replay to derive cross-protocol
+                  composition findings and assign composition-responsibility
+                  between protocol layers. Distinction: formal
+                  assurance/composition-responsibility analysis versus our
+                  controlled live-model MCP-to-A2A behavioral experiment.}
+}
+
+@misc{protocolbench2026,
+  title        = {{ProtocolBench}: Benchmarking Agent Communication Protocols
+                  for Performance and Reliability},
+  author       = {{ProtocolBench authors}},
+  year         = {2025},
+  howpublished = {arXiv:2510.17149},
+  note         = {\url{https://arxiv.org/abs/2510.17149}. Compares agent
+                  communication protocols on performance and reliability.
+                  Distinction: a question of protocol choice, not cross-protocol
+                  security information flow within a fixed composition.}
 }

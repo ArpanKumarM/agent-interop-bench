@@ -110,3 +110,39 @@ identifiers are the exact strings on record.
 ---
 
 UNRESOLVED SUBMISSION-BLOCKING ITEMS: NONE
+
+---
+
+## Phase 6F addendum (v4r1 manuscript rebuild)
+
+The manuscript was rebuilt from the frozen v4r1 Phase 6 study. Four
+references were **added** to `paper/references.bib` /
+`paper/arxiv/references.bib`, plus one model reference for the
+external-family panel model:
+
+| key | claimed identifier / role | verification status |
+|---|---|---|
+| `anthropic-claude` | Claude Sonnet 5 (`claude-sonnet-5`) via the Anthropic Messages API; external-family robustness model | model id **cross-checked against the frozen v4r1 provenance** (`requested_model == returned_model == claude-sonnet-5` for every Anthropic trial); API/parameter description matches `docs/phase_6b_study_design.md` §12 and the frozen `provider_request_config` |
+| `mcphunt2026` | arXiv:2604.27819 — multi-server MCP cross-boundary propagation / canary tracking | arXiv id, title, and one-line description **taken from the Phase 6F task specification**; **not independently web-verified** in the offline manuscript-preparation environment |
+| `agentthread2026` | arXiv:2606.28690 — "Formal Security Analysis of Agent Protocol Composition" (TLA+ + SDK replay, composition-responsibility) | as above — id/title/description from the Phase 6F task spec; **not independently web-verified offline** |
+| `protocolbench2026` | arXiv:2510.17149 — agent-protocol performance/reliability comparison | as above — id/title/description from the Phase 6F task spec; **not independently web-verified offline** |
+
+`agentrfc2026` (arXiv:2603.23801) was already in the bibliography from Phase
+5C and matches the Phase 6F "AgentRFC" reference; it is cited alongside
+`agentthread2026` and `mohiuddin2026mcpsec` for the prior-articulation of
+cross-protocol composition risk.
+
+Bibliographic note corrections in this phase: the `mcp-spec` entry's SDK
+note was corrected from "MCP Python SDK v1.6.0" to `mcp==2.0.0` (the actual
+version in the frozen v4r1 run environment; resolved dependency lock SHA-256
+`6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56`).
+
+`wilson1927` remains in the database but is **no longer cited**: the v4r1
+manuscript reports 10-pair descriptive bootstrap intervals (seed
+`20260615`), not Wilson score intervals. All 18 cited keys resolve;
+`pdflatex`+`bibtex` produce 0 undefined citations.
+
+The historical "240 trials" figures elsewhere in this file describe the
+superseded Phase 4B pilot and are retained as a record of that audit; the
+v4r1 study has **320 RQ1 trials, 320 planned / 319 analysable RQ2 trials,
+640 scheduled total**.
