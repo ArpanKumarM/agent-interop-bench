@@ -1,0 +1,13 @@
+# LaTeX build artefacts — not submission inputs
+*.aux
+*.log
+*.out
+*.blg
+*.fls
+*.fdb_latexmk
+*.toc
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+main.pdf

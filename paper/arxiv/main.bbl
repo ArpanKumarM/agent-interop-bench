@@ -1,0 +1,99 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{A2A Project, Linux Foundation}(2026)]{a2a-spec}
+{A2A Project, Linux Foundation}.
+\newblock {Agent2Agent (A2A) Protocol Specification, Version 1.0.0}.
+\newblock \url{https://a2a-protocol.org/v1.0.0/specification/}, 2026.
+\newblock v1.0.0. Agent Card (Sec.~8); Task/TaskStatus/TaskState (Sec.~4.1.1--4.1.3); Message and Part (Sec.~4.1.4, 4.1.6); Artifact (Sec.~4.1.7); HTTP+JSON/REST protocol binding (Sec.~11). Project hosted by the Linux Foundation since June 2025. The framework's local A2A fixture implements the HTTP+JSON/REST binding shapes only.
+
+\bibitem[{Anthropic and Model Context Protocol contributors}(2025)]{mcp-spec}
+{Anthropic and Model Context Protocol contributors}.
+\newblock Model context protocol specification (revision 2025-06-18).
+\newblock \url{https://modelcontextprotocol.io/specification/2025-06-18}, 2025.
+\newblock Authoritative revision 2025-06-18, based on \texttt{schema/2025-06-18/schema.ts}. Defines Hosts/Clients/Servers, the ``Tools'' server feature (JSON-RPC \texttt{tools/call}), and tool annotations (e.g. destructive / read-only hints), which the spec states ``should be considered untrusted, unless obtained from a trusted server.'' A later revision (2026-07-28) also exists. The framework's local MCP fixture is implemented with the MCP Python SDK (v1.6.0 in the frozen run environment).
+
+\bibitem[Debenedetti et~al.(2024)Debenedetti, Zhang, Balunovi\'{c}, Beurer-Kellner, Fischer, and Tram\`{e}r]{agentdojo2024}
+Edoardo Debenedetti, Jie Zhang, Mislav Balunovi\'{c}, Luca Beurer-Kellner, Marc Fischer, and Florian Tram\`{e}r.
+\newblock {AgentDojo}: A dynamic environment to evaluate prompt injection attacks and defenses for {LLM} agents.
+\newblock In \emph{Advances in Neural Information Processing Systems 37 (NeurIPS), Datasets and Benchmarks Track}, 2024.
+\newblock arXiv:2406.13352. Rule-based (non-LLM-judge) utility and security functions.
+
+\bibitem[Debenedetti et~al.(2025)Debenedetti, Shumailov, Fan, Hayes, Carlini, Fabian, Kern, Shi, Terzis, and Tram\`{e}r]{camel2025}
+Edoardo Debenedetti, Ilia Shumailov, Tianqi Fan, Jamie Hayes, Nicholas Carlini, Daniel Fabian, Christoph Kern, Chongyang Shi, Andreas Terzis, and Florian Tram\`{e}r.
+\newblock Defeating prompt injections by design.
+\newblock arXiv:2503.18813, 2025.
+\newblock \url{https://arxiv.org/abs/2503.18813}. Preprint (latest revision 24 June 2025); no peer-reviewed venue listed. Proposes {CaMeL}: control/data-flow separation, capabilities, and a custom interpreter tracking data provenance before each tool call.
+
+\bibitem[Greshake et~al.(2023)Greshake, Abdelnabi, Mishra, Endres, Holz, and Fritz]{greshake2023indirect}
+Kai Greshake, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten Holz, and Mario Fritz.
+\newblock Not what you've signed up for: Compromising real-world {LLM}-integrated applications with indirect prompt injection.
+\newblock In \emph{Proceedings of the 16th ACM Workshop on Artificial Intelligence and Security (AISec '23)}, 2023.
+\newblock arXiv:2302.12173.
+
+\bibitem[Li et~al.(2026)Li, Chu, Zheng, Zhang, Gong, and Xiao]{a2asecbench2026}
+Tianhao Li, Chuangxin Chu, Yujia Zheng, Bohan Zhang, Neil~Zhenqiang Gong, and Chaowei Xiao.
+\newblock {A2ASecBench}: A protocol-aware security benchmark for agent-to-agent multi-agent systems.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026.
+\newblock Poster. OpenReview \url{https://openreview.net/forum?id=LfdFnakqGJ}; project page \url{https://safo-lab.github.io/A2ASecBench/}; ICLR virtual \url{https://iclr.cc/virtual/2026/poster/10010017}. Taxonomy of supply-chain manipulations and protocol-logic weaknesses; six attacks across A2A stages.
+
+\bibitem[{OpenAI}(2026)]{openai-gpt56}
+{OpenAI}.
+\newblock {GPT-5.6}.
+\newblock \url{https://openai.com/index/gpt-5-6/}, 2026.
+\newblock Model family: \texttt{gpt-5.6-sol} (flagship tier), \texttt{gpt-5.6-terra} (balanced default tier), \texttt{gpt-5.6-luna} (lightweight tier). General availability 9 July 2026. These are the exact API model identifiers recorded as both \texttt{requested\_model} and \texttt{returned\_model} in every trial of the frozen runs. See also \url{https://openai.com/index/previewing-gpt-5-6-sol/}.
+
+\bibitem[Ruan et~al.(2024)Ruan, Dong, Wang, Pitis, Zhou, Ba, Dubois, Maddison, and Hashimoto]{toolemu2024}
+Yangjun Ruan, Honghua Dong, Andrew Wang, Silviu Pitis, Yongchao Zhou, Jimmy Ba, Yann Dubois, Chris~J. Maddison, and Tatsunori Hashimoto.
+\newblock Identifying the risks of {LM} agents with an {LM}-emulated sandbox.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2024.
+\newblock arXiv:2309.15817. Framework known as {ToolEmu}; LM-emulated tool execution and an LM-based safety evaluator.
+
+\bibitem[Schroeder~de Witt et~al.(2025)Schroeder~de Witt, Krawiecka, Krawczuk, et~al.]{masec2025}
+Christian Schroeder~de Witt, Klaudia Krawiecka, Igor Krawczuk, et~al.
+\newblock Open challenges in multi-agent security: Towards secure systems of interacting {AI} agents.
+\newblock arXiv:2505.02077, 2025.
+\newblock \url{https://arxiv.org/abs/2505.02077}. Multi-author position paper (23 authors; full list in the arXiv record); v2 2026.
+
+\bibitem[Syed(2026)]{mohiuddin2026mcpsec}
+Anas~Mohiuddin Syed.
+\newblock Security considerations for model context protocol ({MCP}) implementations in {AI} agent systems.
+\newblock IETF Internet-Draft draft-mohiuddin-mcp-security-considerations-00, 2026.
+\newblock \url{https://datatracker.ietf.org/doc/draft-mohiuddin-mcp-security-considerations/00/}. June 2026, individual submission, Informational, version -00. Section~6 (``Protocol Pivoting'') describes lateral movement that crosses agent-protocol boundaries, ``combining MCP with Agent-to-Agent (A2A) delegation,'' and states that ``mitigations that consider each protocol in isolation do not address movement that crosses protocol boundaries.''.
+
+\bibitem[Wilson(1927)]{wilson1927}
+Edwin~B. Wilson.
+\newblock Probable inference, the law of succession, and statistical inference.
+\newblock \emph{Journal of the American Statistical Association}, 22\penalty0 (158):\penalty0 209--212, 1927.
+\newblock \doi{10.1080/01621459.1927.10502953}.
+\newblock JSTOR \url{https://www.jstor.org/stable/2276774}.
+
+\bibitem[Yang et~al.(2025)Yang, Gao, Wu, Chen, Li, and Wang]{mcpsecbench2025}
+Yixuan Yang, Cuifeng Gao, Daoyuan Wu, Yufan Chen, Yingjiu Li, and Shuai Wang.
+\newblock {MCPSecBench}: A systematic security benchmark and playground for testing model context protocols.
+\newblock arXiv:2508.13220, 2025.
+\newblock \url{https://arxiv.org/abs/2508.13220}. Technical report, Lingnan University, Hong Kong; not a peer-reviewed venue. 17 attack types across 4 MCP attack surfaces. Code \url{https://github.com/AIS2Lab/MCPSecBench}.
+
+\bibitem[Zhang et~al.(2026)Zhang, Li, Luo, Liu, Li, and Xu]{msb2026}
+Dongsen Zhang, Zekun Li, Xu~Luo, Xuannan Liu, Peipei Li, and Wenjun Xu.
+\newblock {MCP Security Bench (MSB)}: Benchmarking attacks against model context protocol in {LLM} agents.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026.
+\newblock arXiv:2510.15994; arXiv Comments field: ``Accepted by ICLR 2026.'' 12-attack taxonomy across the tool-use pipeline; 405 tools, 2000 attack instances.
+
+\bibitem[Zheng and Zhang(2026)]{agentrfc2026}
+Shenghan Zheng and Qifan Zhang.
+\newblock {AgentRFC}: Security design principles and conformance testing for agent protocols.
+\newblock arXiv:2603.23801, 2026.
+\newblock \url{https://arxiv.org/abs/2603.23801}. Preprint, submitted 25 March 2026 (cs.CR). Introduces the ``Composition Safety'' principle --- ``security properties that hold for individual protocols can break when protocols are composed through shared infrastructure'' --- with formal (TLA+) models of five cross-protocol composition patterns spanning MCP/A2A/ANP/ACP, plus a spec-conformance checker (AgentConform).
+
+\bibitem[Zong et~al.(2026)Zong, Shen, Wang, Lan, and Yang]{mcpsafetybench2026}
+Xuanjun Zong, Zhiqi Shen, Lei Wang, Yunshi Lan, and Chao Yang.
+\newblock {MCP-SafetyBench}: A benchmark for safety evaluation of large language models with real-world {MCP} servers.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026.
+\newblock arXiv:2512.15163. Accepted to ICLR 2026 (proceedings.iclr.cc, paper 2026). Multi-turn ReAct tasks over real-world MCP servers; 20-category attack taxonomy across server/host/user sides.
+
+\end{thebibliography}
