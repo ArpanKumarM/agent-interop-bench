@@ -288,23 +288,26 @@ message --- and it tests \emph{matched} confidential/public and
 remote-approval interventions rather than cataloguing propagation paths.
 
 \paragraph{Formal composition safety and conformance.}
-\emph{AgentRFC}~\citep{agentrfc2026} sets out security design principles and
-a spec-conformance checker for agent protocols, including a
+\emph{AgentRFC}~\citep{agentrfc2026} sets out security design principles,
+TLA+ invariants, and conformance checking for agent protocols, including a
 ``Composition Safety'' principle --- security properties that hold for
 individual protocols can break when protocols are composed --- with formal
-(TLA+) models of cross-protocol composition patterns.
-\emph{Formal Security Analysis of Agent Protocol
-Composition}~\citep{agentthread2026} combines TLA+ specification with SDK
-replay to derive composition findings and assign composition-responsibility
-between layers. Both are specification-oriented assurance efforts; our work
-is controlled live-model behavioral measurement over a single concrete
+(TLA+) models of cross-protocol composition patterns. \emph{Formal Security
+Analysis of Agent Protocol Composition}~\citep{agentthread2026} pairs
+source-linked formal analysis with SDK replay and reports security findings
+that emerge specifically under protocol composition (the paper introduces
+the AgentThread framework; ``AgentThread'' is that framework, not the paper
+title). Both are specification- and replay-oriented assurance efforts; our
+work is controlled live-model behavioral measurement over a single concrete
 MCP$\to$A2A composition, and it makes no formal claim.
 
 \paragraph{Protocol comparison.}
-\emph{ProtocolBench}~\citep{protocolbench2026} compares agent protocols on
-performance and reliability dimensions. That is a question of protocol
-choice; ours is a question of cross-protocol security information flow and
-action containment within a fixed composition.
+\emph{ProtocolBench}~\citep{protocolbench2026} evaluates which multi-agent
+communication protocol to choose, primarily through task success, latency,
+communication overhead, and failure robustness. That is a question of
+protocol choice; ours is a question of cross-protocol security information
+flow and action containment within a fixed composition, and it is not that
+information-flow experiment.
 
 \paragraph{Single-protocol safety benchmarks; injection; defenses.}
 Dedicated MCP safety benchmarks~\citep{mcpsafetybench2026,msb2026,

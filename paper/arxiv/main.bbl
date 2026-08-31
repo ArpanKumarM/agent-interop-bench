@@ -11,12 +11,6 @@
 \newblock \url{https://a2a-protocol.org/v1.0.0/specification/}, 2026.
 \newblock v1.0.0. Agent Card (Sec.~8); Task/TaskStatus/TaskState (Sec.~4.1.1--4.1.3); Message and Part (Sec.~4.1.4, 4.1.6); Artifact (Sec.~4.1.7); HTTP+JSON/REST protocol binding (Sec.~11). Project hosted by the Linux Foundation since June 2025. The framework's local A2A fixture implements the HTTP+JSON/REST binding shapes only.
 
-\bibitem[{AgentThread authors}(2026)]{agentthread2026}
-{AgentThread authors}.
-\newblock Formal security analysis of agent protocol composition.
-\newblock arXiv:2606.28690, 2026.
-\newblock \url{https://arxiv.org/abs/2606.28690}. Combines TLA+ specification with SDK replay to derive cross-protocol composition findings and assign composition-responsibility between protocol layers. Distinction: formal assurance/composition-responsibility analysis versus our controlled live-model MCP-to-A2A behavioral experiment.
-
 \bibitem[{Anthropic}(2026)]{anthropic-claude}
 {Anthropic}.
 \newblock {Claude Sonnet 5} and the anthropic {Messages} {API}.
@@ -41,35 +35,35 @@ Edoardo Debenedetti, Ilia Shumailov, Tianqi Fan, Jamie Hayes, Nicholas Carlini, 
 \newblock arXiv:2503.18813, 2025.
 \newblock \url{https://arxiv.org/abs/2503.18813}. Preprint (latest revision 24 June 2025); no peer-reviewed venue listed. Proposes {CaMeL}: control/data-flow separation, capabilities, and a custom interpreter tracking data provenance before each tool call.
 
+\bibitem[Du et~al.(2026)Du, Su, Li, Ding, Yang, Han, Tang, Zhu, and You]{protocolbench2026}
+Hongyi Du, Jiaqi Su, Jisen Li, Lijie Ding, Yingxuan Yang, Peixuan Han, Xiangru Tang, Kunlun Zhu, and Jiaxuan You.
+\newblock {ProtocolBench}: Which {LLM} {MultiAgent} protocol to choose?
+\newblock In \emph{Proceedings of the 43rd International Conference on Machine Learning (ICML)}, volume 306 of \emph{Proceedings of Machine Learning Research}. PMLR, 2026.
+\newblock Also arXiv:2510.17149 (v1 20 Oct 2025; v3 2 June 2026; DOI 10.48550/arXiv.2510.17149), \url{https://arxiv.org/abs/2510.17149}. Evaluates which multi-agent communication protocol to choose, primarily through task success, latency, communication overhead, and failure robustness. Distinction: a question of protocol choice, not our MCP-to-A2A cross-protocol information-flow and action-containment experiment.
+
 \bibitem[Greshake et~al.(2023)Greshake, Abdelnabi, Mishra, Endres, Holz, and Fritz]{greshake2023indirect}
 Kai Greshake, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten Holz, and Mario Fritz.
 \newblock Not what you've signed up for: Compromising real-world {LLM}-integrated applications with indirect prompt injection.
 \newblock In \emph{Proceedings of the 16th ACM Workshop on Artificial Intelligence and Security (AISec '23)}, 2023.
 \newblock arXiv:2302.12173.
 
-\bibitem[Li et~al.(2026)Li, Chu, Zheng, Zhang, Gong, and Xiao]{a2asecbench2026}
+\bibitem[Li et~al.(2026{\natexlab{a}})Li, Sun, Wang, and Zhang]{mcphunt2026}
+Haonan Li, Tianjun Sun, Yongqing Wang, and Qisheng Zhang.
+\newblock {MCPHunt}: An evaluation framework for cross-boundary data propagation in multi-server {MCP} agents.
+\newblock arXiv:2604.27819, 2026{\natexlab{a}}.
+\newblock \url{https://arxiv.org/abs/2604.27819}. Preprint, cs.AI, submitted 30 April 2026; DOI 10.48550/arXiv.2604.27819. Evaluation framework for how data propagates across MCP server boundaries in multi-server MCP agents (cross-boundary propagation / canary tracking within the MCP layer). Distinction from this work: our setting explicitly composes MCP with A2A --- the measured flow crosses from a local MCP result into a remote A2A message --- and tests matched confidential/public and remote-approval interventions.
+
+\bibitem[Li et~al.(2026{\natexlab{b}})Li, Chu, Zheng, Zhang, Gong, and Xiao]{a2asecbench2026}
 Tianhao Li, Chuangxin Chu, Yujia Zheng, Bohan Zhang, Neil~Zhenqiang Gong, and Chaowei Xiao.
 \newblock {A2ASecBench}: A protocol-aware security benchmark for agent-to-agent multi-agent systems.
-\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026{\natexlab{b}}.
 \newblock Poster. OpenReview \url{https://openreview.net/forum?id=LfdFnakqGJ}; project page \url{https://safo-lab.github.io/A2ASecBench/}; ICLR virtual \url{https://iclr.cc/virtual/2026/poster/10010017}. Taxonomy of supply-chain manipulations and protocol-logic weaknesses; six attacks across A2A stages.
-
-\bibitem[{MCPHunt authors}(2026)]{mcphunt2026}
-{MCPHunt authors}.
-\newblock {MCPHunt}: Tracking cross-boundary content propagation and canary leakage in multi-server {MCP} deployments.
-\newblock arXiv:2604.27819, 2026.
-\newblock \url{https://arxiv.org/abs/2604.27819}. Studies how content and provenance canaries propagate across MCP server boundaries in multi-server deployments. Distinction from this work: our setting explicitly composes MCP with A2A --- the measured flow crosses from a local MCP result into a remote A2A message --- and tests matched confidential/public and remote-approval interventions rather than enumerating propagation paths within the MCP layer.
 
 \bibitem[{OpenAI}(2026)]{openai-gpt56}
 {OpenAI}.
 \newblock {GPT-5.6}.
 \newblock \url{https://openai.com/index/gpt-5-6/}, 2026.
 \newblock Model family: \texttt{gpt-5.6-sol} (flagship tier), \texttt{gpt-5.6-terra} (balanced default tier), \texttt{gpt-5.6-luna} (lightweight tier). General availability 9 July 2026. These are the exact API model identifiers recorded as both \texttt{requested\_model} and \texttt{returned\_model} in every trial of the frozen runs. See also \url{https://openai.com/index/previewing-gpt-5-6-sol/}.
-
-\bibitem[{ProtocolBench authors}(2025)]{protocolbench2026}
-{ProtocolBench authors}.
-\newblock {ProtocolBench}: Benchmarking agent communication protocols for performance and reliability.
-\newblock arXiv:2510.17149, 2025.
-\newblock \url{https://arxiv.org/abs/2510.17149}. Compares agent communication protocols on performance and reliability. Distinction: a question of protocol choice, not cross-protocol security information flow within a fixed composition.
 
 \bibitem[Ruan et~al.(2024)Ruan, Dong, Wang, Pitis, Zhou, Ba, Dubois, Maddison, and Hashimoto]{toolemu2024}
 Yangjun Ruan, Honghua Dong, Andrew Wang, Silviu Pitis, Yongchao Zhou, Jimmy Ba, Yann Dubois, Chris~J. Maddison, and Tatsunori Hashimoto.
@@ -105,7 +99,13 @@ Dongsen Zhang, Zekun Li, Xu~Luo, Xuannan Liu, Peipei Li, and Wenjun Xu.
 Shenghan Zheng and Qifan Zhang.
 \newblock {AgentRFC}: Security design principles and conformance testing for agent protocols.
 \newblock arXiv:2603.23801, 2026.
-\newblock \url{https://arxiv.org/abs/2603.23801}. Preprint, submitted 25 March 2026 (cs.CR). Introduces the ``Composition Safety'' principle --- ``security properties that hold for individual protocols can break when protocols are composed through shared infrastructure'' --- with formal (TLA+) models of five cross-protocol composition patterns spanning MCP/A2A/ANP/ACP, plus a spec-conformance checker (AgentConform).
+\newblock \url{https://arxiv.org/abs/2603.23801}. Preprint, cs.CR, submitted 25 March 2026; DOI 10.48550/arXiv.2603.23801. Security design principles, TLA+ invariants, and conformance checking for agent protocols, including the ``Composition Safety'' principle --- ``security properties that hold for individual protocols can break when protocols are composed through shared infrastructure'' --- with formal (TLA+) models of five cross-protocol composition patterns spanning MCP/A2A/ANP/ACP, plus a spec-conformance checker (AgentConform).
+
+\bibitem[Zheng et~al.(2026)Zheng, Zhang, Zhang, Li, and Hauser]{agentthread2026}
+Shenghan Zheng, Qifan Zhang, Zheng Zhang, Haonan Li, and Christophe Hauser.
+\newblock Formal security analysis of agent protocol composition.
+\newblock arXiv:2606.28690, 2026.
+\newblock \url{https://arxiv.org/abs/2606.28690}. Preprint, cs.CR, submitted 27 June 2026; DOI 10.48550/arXiv.2606.28690. Source-linked formal analysis together with SDK replay, reporting security findings that emerge under protocol composition; introduces the \emph{AgentThread} framework (\emph{AgentThread} is the framework, not the paper title). Distinction: formal / replay assurance versus our controlled live-model MCP-to-A2A behavioral experiment.
 
 \bibitem[Zong et~al.(2026)Zong, Shen, Wang, Lan, and Yang]{mcpsafetybench2026}
 Xuanjun Zong, Zhiqi Shen, Lei Wang, Yunshi Lan, and Chao Yang.

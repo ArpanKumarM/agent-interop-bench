@@ -139,13 +139,16 @@
   author       = {Zheng, Shenghan and Zhang, Qifan},
   year         = {2026},
   howpublished = {arXiv:2603.23801},
-  note         = {\url{https://arxiv.org/abs/2603.23801}. Preprint, submitted
-                  25 March 2026 (cs.CR). Introduces the ``Composition Safety''
-                  principle --- ``security properties that hold for individual
-                  protocols can break when protocols are composed through shared
-                  infrastructure'' --- with formal (TLA+) models of five
-                  cross-protocol composition patterns spanning MCP/A2A/ANP/ACP,
-                  plus a spec-conformance checker (AgentConform).}
+  note         = {\url{https://arxiv.org/abs/2603.23801}. Preprint, cs.CR,
+                  submitted 25 March 2026; DOI 10.48550/arXiv.2603.23801.
+                  Security design principles, TLA+ invariants, and conformance
+                  checking for agent protocols, including the ``Composition
+                  Safety'' principle --- ``security properties that hold for
+                  individual protocols can break when protocols are composed
+                  through shared infrastructure'' --- with formal (TLA+) models
+                  of five cross-protocol composition patterns spanning
+                  MCP/A2A/ANP/ACP, plus a spec-conformance checker
+                  (AgentConform).}
 }
 
 @misc{mohiuddin2026mcpsec,
@@ -235,10 +238,10 @@
 }
 
 % ---------------------------------------------------------------------------
-% Phase 6F additions (v4r1 rebuild). arXiv identifiers and one-line
-% descriptions are taken from the Phase 6F task specification; they were not
-% independently web-verified in the offline manuscript-preparation
-% environment. See paper/citation_audit.md.
+% Phase 6F.1 additions. The four references below were web-verified against
+% their primary arXiv records (author lists, exact titles, submission dates,
+% DOIs) and, for ProtocolBench, the ICML 2026 / PMLR camera-ready. See
+% paper/citation_audit.md for the per-entry verification record.
 % ---------------------------------------------------------------------------
 
 @misc{anthropic-claude,
@@ -259,42 +262,56 @@
 }
 
 @misc{mcphunt2026,
-  title        = {{MCPHunt}: Tracking Cross-Boundary Content Propagation and
-                  Canary Leakage in Multi-Server {MCP} Deployments},
-  author       = {{MCPHunt authors}},
+  title        = {{MCPHunt}: An Evaluation Framework for Cross-Boundary Data
+                  Propagation in Multi-Server {MCP} Agents},
+  author       = {Li, Haonan and Sun, Tianjun and Wang, Yongqing and
+                  Zhang, Qisheng},
   year         = {2026},
   howpublished = {arXiv:2604.27819},
-  note         = {\url{https://arxiv.org/abs/2604.27819}. Studies how content and
-                  provenance canaries propagate across MCP server boundaries in
-                  multi-server deployments. Distinction from this work: our
-                  setting explicitly composes MCP with A2A --- the measured flow
-                  crosses from a local MCP result into a remote A2A message ---
-                  and tests matched confidential/public and remote-approval
-                  interventions rather than enumerating propagation paths within
-                  the MCP layer.}
+  note         = {\url{https://arxiv.org/abs/2604.27819}. Preprint, cs.AI,
+                  submitted 30 April 2026; DOI 10.48550/arXiv.2604.27819.
+                  Evaluation framework for how data propagates across MCP
+                  server boundaries in multi-server MCP agents (cross-boundary
+                  propagation / canary tracking within the MCP layer).
+                  Distinction from this work: our setting explicitly composes
+                  MCP with A2A --- the measured flow crosses from a local MCP
+                  result into a remote A2A message --- and tests matched
+                  confidential/public and remote-approval interventions.}
 }
 
 @misc{agentthread2026,
   title        = {Formal Security Analysis of Agent Protocol Composition},
-  author       = {{AgentThread authors}},
+  author       = {Zheng, Shenghan and Zhang, Qifan and Zhang, Zheng and
+                  Li, Haonan and Hauser, Christophe},
   year         = {2026},
   howpublished = {arXiv:2606.28690},
-  note         = {\url{https://arxiv.org/abs/2606.28690}. Combines TLA+
-                  specification with SDK replay to derive cross-protocol
-                  composition findings and assign composition-responsibility
-                  between protocol layers. Distinction: formal
-                  assurance/composition-responsibility analysis versus our
-                  controlled live-model MCP-to-A2A behavioral experiment.}
+  note         = {\url{https://arxiv.org/abs/2606.28690}. Preprint, cs.CR,
+                  submitted 27 June 2026; DOI 10.48550/arXiv.2606.28690.
+                  Source-linked formal analysis together with SDK replay,
+                  reporting security findings that emerge under protocol
+                  composition; introduces the \emph{AgentThread} framework
+                  (\emph{AgentThread} is the framework, not the paper title).
+                  Distinction: formal / replay assurance versus our controlled
+                  live-model MCP-to-A2A behavioral experiment.}
 }
 
-@misc{protocolbench2026,
-  title        = {{ProtocolBench}: Benchmarking Agent Communication Protocols
-                  for Performance and Reliability},
-  author       = {{ProtocolBench authors}},
-  year         = {2025},
-  howpublished = {arXiv:2510.17149},
-  note         = {\url{https://arxiv.org/abs/2510.17149}. Compares agent
-                  communication protocols on performance and reliability.
-                  Distinction: a question of protocol choice, not cross-protocol
-                  security information flow within a fixed composition.}
+@inproceedings{protocolbench2026,
+  title     = {{ProtocolBench}: Which {LLM} {MultiAgent} Protocol to Choose?},
+  author    = {Du, Hongyi and Su, Jiaqi and Li, Jisen and Ding, Lijie and
+               Yang, Yingxuan and Han, Peixuan and Tang, Xiangru and
+               Zhu, Kunlun and You, Jiaxuan},
+  booktitle = {Proceedings of the 43rd International Conference on Machine
+               Learning (ICML)},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {306},
+  year      = {2026},
+  publisher = {PMLR},
+  note      = {Also arXiv:2510.17149 (v1 20 Oct 2025; v3 2 June 2026;
+               DOI 10.48550/arXiv.2510.17149),
+               \url{https://arxiv.org/abs/2510.17149}. Evaluates which
+               multi-agent communication protocol to choose, primarily
+               through task success, latency, communication overhead, and
+               failure robustness. Distinction: a question of protocol
+               choice, not our MCP-to-A2A cross-protocol information-flow and
+               action-containment experiment.}
 }

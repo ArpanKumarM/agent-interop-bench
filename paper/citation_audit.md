@@ -115,34 +115,53 @@ UNRESOLVED SUBMISSION-BLOCKING ITEMS: NONE
 
 ## Phase 6F addendum (v4r1 manuscript rebuild)
 
-The manuscript was rebuilt from the frozen v4r1 Phase 6 study. Four
-references were **added** to `paper/references.bib` /
-`paper/arxiv/references.bib`, plus one model reference for the
-external-family panel model:
+The manuscript was rebuilt from the frozen v4r1 Phase 6 study. Five
+references were added: one model reference plus four related-work
+references.
 
-| key | claimed identifier / role | verification status |
+## Phase 6F.1 — the four related-work references: WEB-VERIFIED FROM PRIMARY SOURCES
+
+The four related-work references below were **independently web-verified
+against their primary arXiv records** (author lists in the arXiv author
+line, exact titles, primary class, submission dates, DOIs) and, for
+ProtocolBench, the ICML 2026 / PMLR camera-ready. Confidence: **High**.
+
+| key | verified fields | primary source(s) |
 |---|---|---|
-| `anthropic-claude` | Claude Sonnet 5 (`claude-sonnet-5`) via the Anthropic Messages API; external-family robustness model | model id **cross-checked against the frozen v4r1 provenance** (`requested_model == returned_model == claude-sonnet-5` for every Anthropic trial); API/parameter description matches `docs/phase_6b_study_design.md` §12 and the frozen `provider_request_config` |
-| `mcphunt2026` | arXiv:2604.27819 — multi-server MCP cross-boundary propagation / canary tracking | arXiv id, title, and one-line description **taken from the Phase 6F task specification**; **not independently web-verified** in the offline manuscript-preparation environment |
-| `agentthread2026` | arXiv:2606.28690 — "Formal Security Analysis of Agent Protocol Composition" (TLA+ + SDK replay, composition-responsibility) | as above — id/title/description from the Phase 6F task spec; **not independently web-verified offline** |
-| `protocolbench2026` | arXiv:2510.17149 — agent-protocol performance/reliability comparison | as above — id/title/description from the Phase 6F task spec; **not independently web-verified offline** |
+| `mcphunt2026` | **Haonan Li, Tianjun Sun, Yongqing Wang, Qisheng Zhang**; exact title *"MCPHunt: An Evaluation Framework for Cross-Boundary Data Propagation in Multi-Server MCP Agents"*; **cs.AI**; submitted **30 Apr 2026**; DOI **10.48550/arXiv.2604.27819** | arXiv:2604.27819 (arXiv abstract page) |
+| `agentrfc2026` | **Shenghan Zheng, Qifan Zhang** (2 authors, complete); exact title *"AgentRFC: Security Design Principles and Conformance Testing for Agent Protocols"*; **cs.CR**; submitted **25 Mar 2026**; DOI **10.48550/arXiv.2603.23801** | arXiv:2603.23801 (arXiv abstract page); already High from Phase 5C, DOI added |
+| `agentthread2026` | **Shenghan Zheng, Qifan Zhang, Zheng Zhang, Haonan Li, Christophe Hauser** (5 authors); exact title *"Formal Security Analysis of Agent Protocol Composition"* — **AgentThread is the framework this paper introduces, NOT the paper title**; **cs.CR**; submitted **27 Jun 2026**; DOI **10.48550/arXiv.2606.28690** | arXiv:2606.28690 (arXiv abstract page) |
+| `protocolbench2026` | **Hongyi Du, Jiaqi Su, Jisen Li, Lijie Ding, Yingxuan Yang, Peixuan Han, Xiangru Tang, Kunlun Zhu, Jiaxuan You** (9 authors); exact current title *"ProtocolBench: Which LLM MultiAgent Protocol to Choose?"*; **cs.AI**; arXiv:2510.17149 (v1 **20 Oct 2025**, v3 **2 Jun 2026**), DOI 10.48550/arXiv.2510.17149; **accepted to ICML 2026** — camera-ready cites *Proceedings of the 43rd International Conference on Machine Learning, PMLR 306, 2026* | arXiv:2510.17149 (arXiv abstract/versions page); ICML 2026 / PMLR camera-ready |
 
-`agentrfc2026` (arXiv:2603.23801) was already in the bibliography from Phase
-5C and matches the Phase 6F "AgentRFC" reference; it is cited alongside
-`agentthread2026` and `mohiuddin2026mcpsec` for the prior-articulation of
-cross-protocol composition risk.
+`protocolbench2026` is entered as **`@inproceedings` (ICML 2026, PMLR 306)**
+with the arXiv identifier retained in the `note` for traceability, rather
+than a 2026-dated `@misc`. `anthropic-claude` model id is cross-checked
+against the frozen v4r1 provenance (`requested_model == returned_model ==
+claude-sonnet-5` for every Anthropic trial).
 
-Bibliographic note corrections in this phase: the `mcp-spec` entry's SDK
-note was corrected from "MCP Python SDK v1.6.0" to `mcp==2.0.0` (the actual
-version in the frozen v4r1 run environment; resolved dependency lock SHA-256
+Related-work prose accuracy (verified against the above): MCPHunt =
+multi-server MCP cross-boundary propagation / canary tracking; AgentRFC =
+security design principles, TLA+ invariants, conformance checking, and
+protocol-composition safety; Formal Security Analysis / AgentThread =
+source-linked formal analysis plus SDK replay and findings that emerge
+under protocol composition; ProtocolBench = evaluates protocol choice
+primarily through task success, latency, communication overhead, and
+failure robustness — **not our MCP→A2A information-flow experiment**.
+No priority claim is made over any of them.
+
+Bibliographic note corrections: the `mcp-spec` entry's SDK note was
+corrected from "MCP Python SDK v1.6.0" to `mcp==2.0.0` (the actual version
+in the frozen v4r1 run environment; resolved dependency lock SHA-256
 `6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56`).
 
 `wilson1927` remains in the database but is **no longer cited**: the v4r1
 manuscript reports 10-pair descriptive bootstrap intervals (seed
 `20260615`), not Wilson score intervals. All 18 cited keys resolve;
-`pdflatex`+`bibtex` produce 0 undefined citations.
+`pdflatex` + `bibtex` produce 0 undefined citations.
 
 The historical "240 trials" figures elsewhere in this file describe the
 superseded Phase 4B pilot and are retained as a record of that audit; the
 v4r1 study has **320 RQ1 trials, 320 planned / 319 analysable RQ2 trials,
 640 scheduled total**.
+
+UNRESOLVED SUBMISSION-BLOCKING ITEMS: NONE.

@@ -54,7 +54,7 @@ All figures are LaTeX (pgfplots) renderings of the exact frozen numbers in
 | file | role | in source archive? |
 |---|---|---|
 | `main.tex` | the manuscript (LaTeX) | yes |
-| `references.bib` | bibliography database (18 cited entries) | yes |
+| `references.bib` | bibliography database (18 cited entries; all web-verified against primary sources, see `paper/citation_audit.md`) | yes |
 | `main.bbl` | pre-generated bibliography (natbib / `plainnat`) | yes |
 | `README_SUBMISSION.md` | this file | no (not a compile input) |
 

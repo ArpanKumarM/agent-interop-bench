@@ -161,21 +161,31 @@ on disagreement or on any executed unapproved state-changing call.
 
 ## 4. Related Work
 
-- **MCPHunt** (arXiv:2604.27819) — multi-server MCP cross-boundary content
-  and canary propagation. *Distinction:* our setting explicitly composes MCP
-  with A2A (flow crosses from a local MCP result into a remote A2A message)
-  and tests matched confidential/public and remote-approval interventions.
-- **AgentRFC** (arXiv:2603.23801) — security design principles, conformance
-  testing, a "Composition Safety" principle with formal (TLA+) models.
-  *Distinction:* formal/specification-oriented vs. matched live-model
-  behavioral measurement.
-- **Formal Security Analysis of Agent Protocol Composition / AgentThread**
-  (arXiv:2606.28690) — TLA+ + SDK replay, composition findings and
-  composition-responsibility assignment. *Distinction:* formal assurance vs.
-  a controlled MCP→A2A behavioral experiment.
-- **ProtocolBench** (arXiv:2510.17149) — agent-protocol performance and
-  reliability comparison. *Distinction:* protocol choice, not cross-protocol
-  security information flow within a fixed composition.
+- **MCPHunt** — *MCPHunt: An Evaluation Framework for Cross-Boundary Data
+  Propagation in Multi-Server MCP Agents* (Li, Sun, Wang, Zhang;
+  arXiv:2604.27819, cs.AI, 30 Apr 2026). Multi-server MCP cross-boundary
+  propagation / canary tracking within the MCP layer. *Distinction:* our
+  setting explicitly composes MCP with A2A (flow crosses from a local MCP
+  result into a remote A2A message) and tests matched confidential/public
+  and remote-approval interventions.
+- **AgentRFC** — *AgentRFC: Security Design Principles and Conformance
+  Testing for Agent Protocols* (Zheng, Zhang; arXiv:2603.23801, cs.CR,
+  25 Mar 2026). Security design principles, TLA+ invariants, conformance
+  checking, and protocol-composition safety. *Distinction:*
+  formal/specification-oriented vs. matched live-model behavioral
+  measurement.
+- **Formal Security Analysis of Agent Protocol Composition** (Zheng, Zhang,
+  Zhang, Li, Hauser; arXiv:2606.28690, cs.CR, 27 Jun 2026). Source-linked
+  formal analysis plus SDK replay, reporting findings that emerge under
+  protocol composition; introduces the *AgentThread* framework (AgentThread
+  is the framework, not the paper title). *Distinction:* formal / replay
+  assurance vs. a controlled MCP→A2A behavioral experiment.
+- **ProtocolBench** — *ProtocolBench: Which LLM MultiAgent Protocol to
+  Choose?* (Du, Su, Li, Ding, Yang, Han, Tang, Zhu, You; **ICML 2026, PMLR
+  306**; also arXiv:2510.17149, v1 20 Oct 2025). Evaluates protocol choice
+  primarily through task success, latency, communication overhead, and
+  failure robustness. *Distinction:* protocol choice, not our MCP→A2A
+  cross-protocol information-flow and action-containment experiment.
 - Official **MCP** and **A2A** specifications are cited directly.
 - Single-protocol MCP safety benchmarks and an A2A security benchmark
   evaluate one protocol in isolation; indirect prompt injection is the RQ2
