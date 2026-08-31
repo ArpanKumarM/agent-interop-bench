@@ -143,10 +143,18 @@ def model_schedule_sha256(
 # UNCHANGED.
 # ===========================================================================
 
+# Phase 6C: the external-family robustness model `claude-sonnet-5` is
+# APPENDED after the three OpenAI models. Because one `random.Random(seed)`
+# is advanced model-by-model in THIS order, the sol / terra / luna
+# per-model schedules are byte-identical to the 3-model panel -- claude's
+# blocks are the deterministic continuation of the same stream after luna.
+# Only the overall study-schedule hash (a hash over the set of per-model
+# hashes) changes, because the panel now has four entries.
 PHASE_6B_MODEL_PANEL: tuple[str, ...] = (
     "gpt-5.6-sol",
     "gpt-5.6-terra",
     "gpt-5.6-luna",
+    "claude-sonnet-5",
 )
 PHASE_6B_SCHEDULE_SEED: int = 20260615
 PHASE_6B_BLOCKS_PER_MODEL: int = 4

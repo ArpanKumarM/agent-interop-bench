@@ -27,9 +27,18 @@ from tests.integration.test_composed_engine import make_composed_tool_transport
 
 OVERLAYS_V2 = "benchmarks/composed/live_overlays_v2.yaml"
 _SCHEDULE_V4 = "benchmarks/composed/live_canary_v4_schedule.json"
-# Frozen at Phase 6B kickoff; overlay ids + seed are unchanged in 6B.2, so
-# this MUST stay byte-identical.
-_FROZEN_V4_SCHEDULE_SHA256 = "8cdf8e18423d8148a609363966ca96a5da722c58d0cd555885525992c8de066f"
+# Phase 6C appended `claude-sonnet-5` to the panel: the schedule FILE hash
+# changes (four models, new overall study hash) but every EXISTING per-model
+# schedule (sol / terra / luna) stays byte-identical -- asserted in
+# ``tests/unit/test_phase_6c_schedule.py``. The Phase 6B.2 stimulus baseline
+# bytes (overlays + plan) are unchanged.
+_FROZEN_V4_SCHEDULE_SHA256 = "26b9a0cb78d211d09365bdf39b81b5559fd790f2788a33481886be1c5331d9aa"
+# The three per-model schedule hashes that MUST NOT change from Phase 6B.2.
+_FROZEN_EXISTING_MODEL_SCHEDULE_SHA256 = {
+    "gpt-5.6-sol": "11f2c0780491d8048e19d502fabef25f23ef0335b118627c3cc6bea1775332b6",
+    "gpt-5.6-terra": "41dbede5faa1728a8559a8324e6c3cda35cce1c6b9f0f3c740ece6d179f9920b",
+    "gpt-5.6-luna": "c653e2bf8b3f2ba320dd754d12f755c2705d9ef988e8a9a469e812eaa4e6a83c",
+}
 
 
 @pytest.fixture(scope="module")
@@ -159,6 +168,20 @@ def test_v4_schedule_matches_regeneration():
     fresh = build_phase_6b_schedule_artifact()
     assert on_disk == fresh
     assert on_disk["study_schedule_sha256"] == fresh["study_schedule_sha256"]
+
+
+def test_existing_three_per_model_schedule_hashes_unchanged_in_6c():
+    on_disk = json.loads(Path(_SCHEDULE_V4).read_text())
+    for model, expected in _FROZEN_EXISTING_MODEL_SCHEDULE_SHA256.items():
+        assert on_disk["model_schedule_sha256"][model] == expected, model
+    # the panel gained exactly the Anthropic robustness model
+    assert on_disk["model_panel"] == [
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-5.6-luna",
+        "claude-sonnet-5",
+    ]
+    assert on_disk["trials_per_model"] == 160
 
 
 # --------------------------------------------------------------------------- #

@@ -134,6 +134,72 @@ def _decode_tool_arguments(raw: str) -> dict[str, Any]:
     return decoded
 
 
+def build_host_action_spec(
+    name: str | None,
+    parsed: dict[str, Any],
+    *,
+    allowed_action_names: set[str] | None,
+) -> HostActionSpec:
+    """The ONE post-parse path from ``(action name, decoded arguments)`` to a
+    validated ``HostActionSpec`` -- shared by the OpenAI adapter
+    (``RealHostAgentAdapter``) and the Anthropic adapter
+    (``AnthropicHostAgentAdapter``), so both providers compile the identical
+    canonical decision semantics: same names, same required arguments, same
+    validation, same resulting ``HostDecision``.
+
+    A model can never grant its own approval: ``call_tool`` /
+    ``attempt_mutating_tool`` always come back ``approved=False``; only the
+    runner's model-independent mutation gate decides execution.
+
+    Raises ``RealHostAdapterError`` for an unknown / disallowed action, and
+    lets ``pydantic.ValidationError`` / ``RealHostAdapterError`` from
+    argument decoding propagate (the caller records provenance and converts
+    to a controlled failure).
+    """
+    if name not in _VALID_ACTIONS:
+        raise RealHostAdapterError(f"Unknown action {name!r}")
+
+    if allowed_action_names is not None and name not in allowed_action_names:
+        raise RealHostAdapterError(
+            f"Action {name!r} is not permitted at this decision point "
+            f"(allowed: {sorted(allowed_action_names)})"
+        )
+
+    if name == "call_local_tool":
+        args = _CallLocalToolArgs.model_validate(parsed)
+        return HostActionSpec(
+            action="call_local_tool",
+            tool_name=args.tool_name,
+            tool_arguments=_decode_tool_arguments(args.tool_arguments_json),
+        )
+    if name == "call_tool":
+        ct_args = _CallToolArgs.model_validate(parsed)
+        return HostActionSpec(
+            action="call_tool",
+            tool_name=ct_args.tool_name,
+            tool_arguments=_decode_tool_arguments(ct_args.arguments_json),
+            approved=False,
+            trigger_name=None,
+        )
+    if name == "relay_to_remote":
+        args = _RelayToRemoteArgs.model_validate(parsed)
+        return HostActionSpec(
+            action="relay_to_remote",
+            relay_template=args.content,
+            content_type=args.content_type,
+        )
+    if name == "attempt_mutating_tool":
+        args = _AttemptMutatingToolArgs.model_validate(parsed)
+        return HostActionSpec(
+            action="attempt_mutating_tool",
+            tool_name=args.tool_name,
+            tool_arguments=_decode_tool_arguments(args.tool_arguments_json),
+            approved=False,
+            trigger_name=None,
+        )
+    return HostActionSpec(action="stop")
+
+
 def _canonical_history_event(event: Any) -> dict[str, Any]:
     """One model-visible history event. For an ``mcp_tool_result`` the raw
     trace keeps BOTH a structured and a textual protocol representation of
@@ -368,56 +434,9 @@ class RealHostAgentAdapter(HostAgentAdapter):
         return action_spec
 
     def _to_action_spec(self, name: str | None, parsed: dict[str, Any]) -> HostActionSpec:
-        if name not in _VALID_ACTIONS:
-            raise RealHostAdapterError(f"Unknown action {name!r}")
-
-        if self._allowed_action_names is not None and name not in self._allowed_action_names:
-            raise RealHostAdapterError(
-                f"Action {name!r} is not permitted at this decision point "
-                f"(allowed: {sorted(self._allowed_action_names)})"
-            )
-
-        if name == "call_local_tool":
-            args = _CallLocalToolArgs.model_validate(parsed)
-            return HostActionSpec(
-                action="call_local_tool",
-                tool_name=args.tool_name,
-                tool_arguments=_decode_tool_arguments(args.tool_arguments_json),
-            )
-        if name == "call_tool":
-            ct_args = _CallToolArgs.model_validate(parsed)
-            # The model names any discovered tool. It cannot grant approval:
-            # ``approved`` is always False for a real-adapter call. The
-            # trusted host/gate classifies and gates the tool server-side.
-            return HostActionSpec(
-                action="call_tool",
-                tool_name=ct_args.tool_name,
-                tool_arguments=_decode_tool_arguments(ct_args.arguments_json),
-                approved=False,
-                trigger_name=None,
-            )
-        if name == "relay_to_remote":
-            args = _RelayToRemoteArgs.model_validate(parsed)
-            return HostActionSpec(
-                action="relay_to_remote",
-                relay_template=args.content,
-                content_type=args.content_type,
-            )
-        if name == "attempt_mutating_tool":
-            args = _AttemptMutatingToolArgs.model_validate(parsed)
-            # The model can never grant its own mutation approval: `approved`
-            # is always False for a real-adapter-proposed attempt. Only the
-            # mutation gate (fed the tool's real, discovered annotation)
-            # decides whether this executes -- never this adapter, and never
-            # the model.
-            return HostActionSpec(
-                action="attempt_mutating_tool",
-                tool_name=args.tool_name,
-                tool_arguments=_decode_tool_arguments(args.tool_arguments_json),
-                approved=False,
-                trigger_name=None,
-            )
-        return HostActionSpec(action="stop")
+        # Thin delegation to the shared, provider-neutral post-parse path so
+        # OpenAI and Anthropic produce byte-identical HostDecisions.
+        return build_host_action_spec(name, parsed, allowed_action_names=self._allowed_action_names)
 
     def _record_call(
         self,
@@ -451,6 +470,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
 __all__ = [
     "RealHostAdapterError",
     "RealHostAgentAdapter",
+    "build_host_action_spec",
     "build_openai_responses_client",
     "openai_sdk_available",
 ]

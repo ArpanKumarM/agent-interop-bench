@@ -155,6 +155,7 @@ def _combine(
     canonical_action_schema_sha256: str | None = None,
     uv_lock_sha256: str | None = None,
     python_runtime_version: str | None = None,
+    provider_config_sha256: str | None = None,
 ) -> str:
     payload = {
         "config_hash": config_hash,
@@ -175,6 +176,11 @@ def _combine(
         payload["uv_lock_sha256"] = uv_lock_sha256
     if python_runtime_version is not None:
         payload["python_runtime_version"] = python_runtime_version
+    # Phase 6C: the provider inference interface (provider id, exact model
+    # id, provider wire-tool-schema hash, request-param hash, API mode).
+    # Folded in only when provided, so any pre-6C fingerprint is unchanged.
+    if provider_config_sha256 is not None:
+        payload["provider_config_sha256"] = provider_config_sha256
     canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
@@ -228,13 +234,17 @@ def compute_execution_fingerprint_v2(
     schedule_sha256: str | None = None,
     uv_lock_hash: str | None = None,
     py_version: str | None = None,
+    provider_config_sha256: str | None = None,
 ) -> ExecutionFingerprint:
-    """Phase 6B fingerprint. Same six v1 inputs PLUS the canonical
-    action-schema hash, the ``uv.lock`` SHA-256, and the Python runtime
-    version. ``host_policy_text`` (the Phase 6B policy) feeds
+    """Phase 6B/6C fingerprint (v2, finalised). The six v1 inputs PLUS: the
+    canonical provider-neutral action-schema hash, the ``uv.lock`` SHA-256,
+    the Python runtime version, and -- Phase 6C -- the ``provider_config_sha256``
+    (provider id + exact model id + provider wire-tool-schema hash +
+    request-parameter hash + API mode). ``host_policy_text`` feeds
     ``host_policy_sha256``; default keeps ``DEFAULT_HOST_POLICY_TEXT``. v1
-    verification is untouched: a v1 fingerprint (which carries none of the
-    new inputs) still combines to the identical value."""
+    verification is untouched: a v1 fingerprint carries none of the extra
+    inputs, so ``_combine`` still yields the identical value (Phase 4B
+    fingerprints validate byte-for-byte)."""
     commit = source_commit_sha if source_commit_sha is not None else resolve_source_commit_sha()
     tool_hash = (
         tool_schema_sha256 if tool_schema_sha256 is not None else host_action_schema_fingerprint()
@@ -260,6 +270,7 @@ def compute_execution_fingerprint_v2(
         canonical_action_schema_sha256=action_schema_hash,
         uv_lock_sha256=lock_hash,
         python_runtime_version=py_ver,
+        provider_config_sha256=provider_config_sha256,
     )
     return ExecutionFingerprint(
         config_hash=plan.config_hash,
@@ -272,5 +283,6 @@ def compute_execution_fingerprint_v2(
         canonical_action_schema_sha256=action_schema_hash,
         uv_lock_sha256=lock_hash,
         python_runtime_version=py_ver,
+        provider_config_sha256=provider_config_sha256,
         execution_fingerprint_sha256=fingerprint,
     )

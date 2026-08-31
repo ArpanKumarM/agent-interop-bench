@@ -178,6 +178,7 @@ def _execution_fingerprint_for(plan: PilotExperimentPlan, overlays: list[LiveExp
     sched_sha = schedule_sha256(schedule) if schedule is not None else None
     if _is_phase_6b(plan):
         from app.runner.host_adapters import PHASE_6B_HOST_POLICY_TEXT
+        from app.runner.model_panel import provider_config_sha256
 
         fp = compute_execution_fingerprint_v2(
             plan,
@@ -185,18 +186,43 @@ def _execution_fingerprint_for(plan: PilotExperimentPlan, overlays: list[LiveExp
             canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
             host_policy_text=PHASE_6B_HOST_POLICY_TEXT,
             schedule_sha256=sched_sha,
+            # Phase 6C: fold the exact provider inference interface for this
+            # plan's model into the fingerprint (provider id, model id,
+            # provider wire tool-schema hash, request-param hash, API mode).
+            provider_config_sha256=provider_config_sha256(
+                plan.model,
+                canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
+                timeout_seconds=plan.timeout_seconds,
+            ),
         )
         return fp, schedule
     return compute_execution_fingerprint(plan, overlays, schedule_sha256=sched_sha), schedule
 
 
-def require_live_preconditions() -> None:
+def _provider_for(model: str) -> str:
+    from app.runner.model_panel import provider_for_model
+
+    return provider_for_model(model)
+
+
+def require_live_preconditions(model: str | None = None) -> None:
     """Checked before anything else in ``run_live`` -- no client, no
-    adapter, no ledger write happens if either of these fails."""
+    adapter, no ledger write happens if any check fails. The API-key check
+    is per-provider (OpenAI models need ``OPENAI_API_KEY``; the Anthropic
+    robustness model needs ``ANTHROPIC_API_KEY``)."""
     if not settings.enable_real_model_composed_runs:
         raise ComposedLivePilotConfigError(
             "ENABLE_REAL_MODEL_COMPOSED_RUNS is not true; refusing to run a live composed pilot."
         )
+    provider = _provider_for(model) if model is not None else "openai"
+    if provider == "anthropic":
+        import os
+
+        if not (os.environ.get("ANTHROPIC_API_KEY") or "").strip():
+            raise ComposedLivePilotConfigError(
+                "ANTHROPIC_API_KEY is not set; refusing to run the Anthropic robustness model."
+            )
+        return
     if not real_model_api_key_configured():
         raise ComposedLivePilotConfigError(
             "OPENAI_API_KEY is not set; refusing to run a live composed pilot."
@@ -243,12 +269,30 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
         "canonical_action_schema_sha256": fingerprint.canonical_action_schema_sha256,
         "uv_lock_sha256": fingerprint.uv_lock_sha256,
         "python_runtime_version": fingerprint.python_runtime_version,
+        "provider_config_sha256": fingerprint.provider_config_sha256,
         "execution_fingerprint_sha256": fingerprint.execution_fingerprint_sha256,
         "run_directory": str(RUN_DIR_ROOT / run_id),
         "enable_real_model_composed_runs": settings.enable_real_model_composed_runs,
         "openai_api_key_present": real_model_api_key_configured(),
         "provider_calls_made": 0,
     }
+    if _is_phase_6b(plan):
+        import os
+
+        from app.runner.model_panel import (
+            provider_api_surface_for_model,
+            provider_for_model,
+            provider_request_config,
+        )
+
+        report["provider"] = provider_for_model(plan.model)
+        report["provider_api_surface"] = provider_api_surface_for_model(plan.model)
+        report["provider_request_config"] = provider_request_config(
+            plan.model, timeout_seconds=plan.timeout_seconds
+        )
+        report["anthropic_api_key_present"] = bool(
+            (os.environ.get("ANTHROPIC_API_KEY") or "").strip()
+        )
     if schedule is not None:
         report["blocked_schedule"] = {
             "scheduling_seed": (
@@ -339,9 +383,41 @@ def build_real_decision_point_adapter_factory(
     plan: PilotExperimentPlan,
 ) -> DecisionPointAdapterFactory:
     """Only reached from ``run_live`` for a decision_point plan, only after
-    ``require_live_preconditions`` has already passed. Each trial's adapter
-    is restricted on the wire to exactly the ``allowed_actions`` its
-    experiment's decision point permits."""
+    ``require_live_preconditions`` has already passed. Dispatches on the
+    plan's model's provider: OpenAI models -> ``RealHostAgentAdapter``
+    (unchanged, byte-for-byte); ``claude-sonnet-5`` -> the Phase 6C
+    ``AnthropicHostAgentAdapter`` (its own low-effort request config, its
+    own max_tokens). Each trial's adapter is restricted on the wire to
+    exactly the ``allowed_actions`` its experiment's decision point
+    permits."""
+    provider = _provider_for(plan.model)
+
+    if provider == "anthropic":
+        from app.runner.anthropic_host_adapter import AnthropicHostAgentAdapter
+        from app.runner.host_decision_client import build_anthropic_host_decision_client
+        from app.runner.model_panel import ANTHROPIC_MAX_OUTPUT_TOKENS, LOW_EFFORT
+
+        anthropic_client = build_anthropic_host_decision_client(
+            timeout_seconds=plan.timeout_seconds, max_retries=0
+        )
+
+        def anthropic_factory(
+            case_id: str, max_decisions: int, allowed_actions: tuple[str, ...]
+        ) -> HostAgentAdapter:
+            return AnthropicHostAgentAdapter(
+                anthropic_client,
+                model=plan.model,
+                max_output_tokens=ANTHROPIC_MAX_OUTPUT_TOKENS,
+                timeout_seconds=plan.timeout_seconds,
+                reasoning_effort=LOW_EFFORT,
+                max_decisions=max_decisions,
+                case_id=case_id,
+                allowed_actions=allowed_actions,
+                canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
+            )
+
+        return anthropic_factory
+
     from app.runner.real_host_adapter import RealHostAgentAdapter, build_openai_responses_client
 
     responses_client = build_openai_responses_client(
@@ -393,7 +469,7 @@ async def run_dry_run(plan: PilotExperimentPlan, run_id: str) -> dict:
 
 
 async def run_live(plan: PilotExperimentPlan, run_id: str) -> dict:
-    require_live_preconditions()
+    require_live_preconditions(plan.model)
     overlays = resolve_overlays(plan)
     fingerprint, schedule = _execution_fingerprint_for(plan, overlays)
     ledger = TrialLedger(RUN_DIR_ROOT / run_id)

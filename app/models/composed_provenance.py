@@ -38,9 +38,26 @@ class ComposedProviderCallRecord(BaseModel):
     # any hidden reasoning/chain-of-thought content.
     observable_action: dict[str, Any] | None = None
     status: str
-    """"ok" or "error"."""
+    """One of: ``ok`` | ``provider_refusal`` | ``provider_protocol_error`` |
+    ``provider_error`` | ``timeout`` (Phase 6C pre-registered attrition
+    classes). ``error`` (legacy) is still written for any non-ok status."""
     error: str | None = None
     """Sanitized, credential-free error string. None when status == "ok"."""
+    # ---- Phase 6C provider provenance (never any hidden reasoning) -------
+    provider: str | None = None
+    """``openai`` | ``anthropic``."""
+    provider_api_surface: str | None = None
+    """e.g. ``openai.responses`` | ``anthropic.messages``."""
+    stop_reason: str | None = None
+    """Provider-reported stop reason (OpenAI ``incomplete_details.reason`` or
+    completion status; Anthropic ``stop_reason``). Never reasoning content."""
+    refusal: bool | None = None
+    """True iff the provider explicitly refused (Anthropic
+    ``stop_reason == "refusal"`` / a refusal content block; OpenAI refusal
+    output item)."""
+    action_parsed: str | None = None
+    """The canonical action name parsed from the one accepted tool call
+    (``call_tool`` / ``relay_to_remote`` / ``stop``); None on any failure."""
 
 
 class ComposedModelRunProvenance(BaseModel):
@@ -57,7 +74,18 @@ class ComposedModelRunProvenance(BaseModel):
     configured_max_decisions: int | None = None
     reasoning_effort: str | None = None
     """Explicitly frozen (Phase 4A.3c) reasoning effort sent on every
-    request; never left to the provider's default."""
+    request; never left to the provider's default. For Anthropic this is the
+    native ``output_config.effort`` value (``low``)."""
+    provider_api_surface: str | None = None
+    """Phase 6C: ``openai.responses`` | ``anthropic.messages``."""
+    provider_request_config: dict[str, Any] | None = None
+    """Phase 6C: the exact, credential-free provider request configuration
+    actually sent every call (model, effort/thinking mode, max output cap,
+    tool_choice mode, timeout, retries) -- the material behind
+    ``provider_config_sha256``."""
+    provider_config_sha256: str | None = None
+    """Phase 6C: SHA-256 of the canonical provider request configuration +
+    wire tool-schema hash; folded into execution fingerprint v2."""
     restricted_to_actions: list[str] | None = None
     """Phase 4A.3d: when set, the ONLY host-action tool schemas offered to
     the model on every request this run (a subset of the canonical four that

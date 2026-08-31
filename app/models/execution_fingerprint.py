@@ -38,4 +38,10 @@ class ExecutionFingerprint(BaseModel):
     canonical_action_schema_sha256: str | None = None
     uv_lock_sha256: str | None = None
     python_runtime_version: str | None = None
+    # Phase 6C (fingerprint v2, finalised): SHA-256 over the exact
+    # provider-specific inference interface -- provider id, exact model id,
+    # provider wire-tool-schema hash, provider request-parameter hash, and
+    # API mode. None on any pre-6C fingerprint (folded in only when present,
+    # so Phase 4B v1 verification stays byte-identical).
+    provider_config_sha256: str | None = None
     execution_fingerprint_sha256: str

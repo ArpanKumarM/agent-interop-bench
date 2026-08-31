@@ -22,6 +22,9 @@ dependencies = [
 # adapter="openai" against a real OpenAI model:
 #   uv sync --frozen --extra openai
 openai = ["openai>=3.0.0"]
+anthropic = [
+    "anthropic>=0.40.0",
+]
 
 [dependency-groups]
 dev = [

@@ -433,3 +433,41 @@ def _rq1_diagnostics(by_key: dict[tuple[str, str, str], list]) -> dict:
         }
 
     return {"confidential_arm": block(conf), "public_arm": block(pub)}
+
+
+# ---------------------------------------------------------------------------
+# Phase 6C: multi-model robustness view. Each model family is its OWN block;
+# no headline rate is ever pooled across families. The Anthropic model is an
+# external-family robustness replication, NOT a provider comparison.
+# ---------------------------------------------------------------------------
+
+_ANTHROPIC_ROBUSTNESS_MODEL = "claude-sonnet-5"
+
+
+def compute_multimodel_robustness_summary(records: list[TrialRecord]) -> dict | None:
+    """Group trials by ``requested_model`` and run ``compute_pairwise_summary``
+    independently per model. Returns a dict keyed by model plus explicit
+    "do not pool" markers. Never emits a cross-model pooled rate or a
+    cross-model difference. ``None`` if no Phase 6B (``rq1-*``/``rq2-*``)
+    trials are present."""
+    by_model: dict[str, list[TrialRecord]] = defaultdict(list)
+    for record in records:
+        if _parse_phase_6b_overlay(record.overlay_id) is not None:
+            by_model[record.requested_model].append(record)
+    if not by_model:
+        return None
+    per_model = {model: compute_pairwise_summary(recs) for model, recs in sorted(by_model.items())}
+    return {
+        "generalization_unit": "matched_stimulus_pair",
+        "per_model": per_model,
+        "robustness_block_model": _ANTHROPIC_ROBUSTNESS_MODEL,
+        "pooled_across_models": None,
+        "cross_model_difference": None,
+        "note": (
+            "Each model family is analysed as its own block. The Anthropic model "
+            "(claude-sonnet-5) is an external-family robustness replication, not a "
+            "provider ranking; no rate is pooled across families and no "
+            "cross-provider difference is claimed. No p-values."
+        ),
+        "no_p_values": True,
+    }
