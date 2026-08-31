@@ -43,7 +43,7 @@ from __future__ import annotations
 import hashlib
 import json
 import time
-from collections.abc import Iterable
+from collections.abc import Collection, Iterable
 from typing import Any
 
 from pydantic import BaseModel, ValidationError
@@ -88,6 +88,24 @@ class RealHostAdapterError(RuntimeError):
     means here: a malformed or unrecognized model response never becomes an
     executed action; it becomes this exception instead, propagating out of
     ``decide()`` uncaught, exactly like any other adapter failure.
+    """
+
+
+class InvalidToolSelectionError(RealHostAdapterError):
+    """A ``call_tool`` action named a tool that is NOT in the trial's exact
+    model-visible MCP tool set (the Phase 6B 12-tool surface for that
+    trial).
+
+    Provider-neutral: raised from the ONE shared post-parse path
+    (``build_host_action_spec``) so OpenAI and Anthropic treat an
+    out-of-surface tool name identically. Both adapters record it as the
+    pre-registered ``provider_protocol_error`` attrition status. The trial
+    then persists terminally with NO ``tool_invocation`` event stamped, NO
+    MCP execution attempt, and NO taxonomy classification of a nonexistent
+    tool; there is no retry and no replacement; the run continues to the
+    next scheduled trial. Covers a hallucinated name, the ``stop`` sentinel
+    passed as if it were a tool, and a legacy server-only tool that is not
+    in the model-visible surface.
     """
 
 
@@ -139,6 +157,7 @@ def build_host_action_spec(
     parsed: dict[str, Any],
     *,
     allowed_action_names: set[str] | None,
+    available_tool_names: Collection[str] | None = None,
 ) -> HostActionSpec:
     """The ONE post-parse path from ``(action name, decoded arguments)`` to a
     validated ``HostActionSpec`` -- shared by the OpenAI adapter
@@ -150,6 +169,15 @@ def build_host_action_spec(
     A model can never grant its own approval: ``call_tool`` /
     ``attempt_mutating_tool`` always come back ``approved=False``; only the
     runner's model-independent mutation gate decides execution.
+
+    ``available_tool_names`` (when given) is the trial's exact model-visible
+    MCP tool allowlist. A ``call_tool`` naming anything outside it -- a
+    hallucinated name, the ``stop`` sentinel passed as a tool, or a
+    server-only legacy tool that is not model-visible -- raises
+    ``InvalidToolSelectionError`` (a ``RealHostAdapterError``), which the
+    caller records as ``provider_protocol_error``. The name is validated
+    AFTER provider parsing and BEFORE the engine ever dispatches the call,
+    so no ``tool_invocation`` event and no MCP execution occur.
 
     Raises ``RealHostAdapterError`` for an unknown / disallowed action, and
     lets ``pydantic.ValidationError`` / ``RealHostAdapterError`` from
@@ -174,6 +202,12 @@ def build_host_action_spec(
         )
     if name == "call_tool":
         ct_args = _CallToolArgs.model_validate(parsed)
+        if available_tool_names is not None and ct_args.tool_name not in available_tool_names:
+            raise InvalidToolSelectionError(
+                f"call_tool named tool {ct_args.tool_name!r}, which is not in the "
+                f"model-visible tool set for this trial "
+                f"(visible: {sorted(available_tool_names)})"
+            )
         return HostActionSpec(
             action="call_tool",
             tool_name=ct_args.tool_name,
@@ -257,6 +291,10 @@ class RealHostAgentAdapter(HostAgentAdapter):
         self._decisions_made = 0
         self._case_id = case_id
         self._reasoning_effort = reasoning_effort
+        # The trial's exact model-visible MCP tool allowlist, captured from
+        # each decide() context. A call_tool naming anything outside this set
+        # is a provider_protocol_error (see build_host_action_spec).
+        self._visible_tool_names: set[str] = set()
         # allowed_actions=None -> the full canonical four-tool surface. A
         # subset (Phase 4A.3d decision points) filters BOTH what is offered on
         # the wire and what a returned action is allowed to be -- so the model
@@ -313,6 +351,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
             )
         self._decisions_made += 1
 
+        self._visible_tool_names = {tool.name for tool in context.available_tools}
         input_list = _build_input(context)
         started = time.perf_counter()
         try:
@@ -412,6 +451,18 @@ class RealHostAgentAdapter(HostAgentAdapter):
 
         try:
             action_spec = self._to_action_spec(name, parsed)
+        except InvalidToolSelectionError as exc:
+            self._record_call(
+                status="provider_protocol_error",
+                response_id=response_id,
+                returned_model=returned_model,
+                usage=usage,
+                latency_ms=latency_ms,
+                error=f"Invalid tool selection from provider: {exc}",
+            )
+            raise RealHostAdapterError(
+                f"Provider selected a tool outside the model-visible surface: {exc}"
+            ) from None
         except (ValidationError, RealHostAdapterError) as exc:
             self._record_call(
                 status="error",
@@ -436,7 +487,12 @@ class RealHostAgentAdapter(HostAgentAdapter):
     def _to_action_spec(self, name: str | None, parsed: dict[str, Any]) -> HostActionSpec:
         # Thin delegation to the shared, provider-neutral post-parse path so
         # OpenAI and Anthropic produce byte-identical HostDecisions.
-        return build_host_action_spec(name, parsed, allowed_action_names=self._allowed_action_names)
+        return build_host_action_spec(
+            name,
+            parsed,
+            allowed_action_names=self._allowed_action_names,
+            available_tool_names=self._visible_tool_names,
+        )
 
     def _record_call(
         self,
@@ -468,6 +524,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
 
 
 __all__ = [
+    "InvalidToolSelectionError",
     "RealHostAdapterError",
     "RealHostAgentAdapter",
     "build_host_action_spec",

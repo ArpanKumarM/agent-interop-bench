@@ -21,7 +21,12 @@ Parser / status rules (pre-registered, Phase 6C):
 * exactly one valid allowed tool call            -> accept
 * zero tool_use blocks                           -> ``provider_protocol_error``
 * more than one tool_use block                   -> ``provider_protocol_error``
-* unknown tool name                              -> ``provider_protocol_error``
+* unknown action name                            -> ``provider_protocol_error``
+* ``call_tool`` tool_name not in the trial's     -> ``provider_protocol_error``
+  model-visible MCP surface (hallucinated name,     (via the shared
+  ``stop`` passed as a tool, or a legacy               ``InvalidToolSelectionError``;
+  server-only tool)                                    no tool_invocation event, no
+                                                       MCP call, no taxonomy step)
 * malformed / non-object arguments               -> ``provider_protocol_error``
 * schema-invalid arguments (pydantic)            -> ``provider_protocol_error``
 * explicit refusal (stop_reason/refusal block)   -> ``provider_refusal``
@@ -121,6 +126,11 @@ class AnthropicHostAgentAdapter(HostAgentAdapter):
         self._case_id = case_id
         self._reasoning_effort = reasoning_effort
         self._canonical_actions_for_fp = canonical_actions
+        # The trial's exact model-visible MCP tool allowlist, captured from
+        # each decide() context. A call_tool naming anything outside this set
+        # is a provider_protocol_error (see build_host_action_spec) --
+        # identical semantics to the OpenAI adapter.
+        self._visible_tool_names: set[str] = set()
         if allowed_actions is None:
             self._allowed_action_names: set[str] | None = None
             self._wire_actions: tuple[str, ...] = ("relay_to_remote", "call_tool", "stop")
@@ -172,6 +182,7 @@ class AnthropicHostAgentAdapter(HostAgentAdapter):
             )
         self._decisions_made += 1
 
+        self._visible_tool_names = {tool.name for tool in context.available_tools}
         input_list = _build_input(context)
         input_payload = json.loads(input_list[0]["content"])
 
@@ -267,6 +278,7 @@ class AnthropicHostAgentAdapter(HostAgentAdapter):
                 parsed_call.name,
                 parsed_call.arguments,
                 allowed_action_names=self._allowed_action_names,
+                available_tool_names=self._visible_tool_names,
             )
         except (ValidationError, RealHostAdapterError) as exc:
             self._record_call(

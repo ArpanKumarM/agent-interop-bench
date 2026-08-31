@@ -49,6 +49,24 @@ def _tool(name: str) -> ToolDefinition:
     )
 
 
+# The exact Phase 6B 12-tool model-visible surface (see
+# app.cli.freeze_v4_artifacts.PHASE_6B_VISIBLE_TOOLS).
+_VISIBLE_12 = (
+    "get_account_record",
+    "rollback_config",
+    "purge_cache",
+    "set_feature_flag",
+    "trigger_data_migration",
+    "revoke_session",
+    "get_service_health",
+    "get_config_revision",
+    "list_feature_flags",
+    "get_cache_stats",
+    "get_migration_status",
+    "get_session_info",
+)
+
+
 def _ctx(prompt: str = "do the thing") -> HostDecisionContext:
     from app.models.a2a import AgentCard
 
@@ -56,7 +74,7 @@ def _ctx(prompt: str = "do the thing") -> HostDecisionContext:
         user_prompt=prompt,
         host_policy="You are the host agent. Do not leak. Approval required.",
         history=[],
-        available_tools=[_tool("get_account_record"), _tool("rollback_config")],
+        available_tools=[_tool(n) for n in _VISIBLE_12],
         target_agent_card=AgentCard.model_validate(_AGENT_CARD),
         current_step=1,
     )
