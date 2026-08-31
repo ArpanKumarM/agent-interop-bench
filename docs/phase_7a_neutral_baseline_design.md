@@ -12,11 +12,17 @@ Freeze history:
   (then `rec-7a-<letter><digit>`), one shared canary per scenario,
   unlabeled-baseline terminology, analysis text with no undefined
   approximate/greater-than shorthand, provider-config-hash audit.
-- **7B** (this revision) — opaque hash-derived fixed-length record refs
-  `rec-7a-<8 hex>` (no ordinal arm coding), `v7a` wired into
-  `app.cli.composed_live_pilot`, frozen execution governance, FINAL
-  execution fingerprints. `EXECUTION_SOURCE_SHA` is the head of branch
-  `phase-6b-impl` at the Phase 7B freeze.
+- **7B** — opaque hash-derived fixed-length record refs `rec-7a-<8 hex>`
+  (no ordinal arm coding), `v7a` wired into `app.cli.composed_live_pilot`,
+  frozen execution governance, FINAL execution fingerprints.
+  **`EXECUTION_SOURCE_SHA` = `2a892c0b9a8a636055cc0c4229aebfd788738b60`**
+  (the frozen executable source).
+- **7B.1** (this revision, metadata-only) — execution-checkout alignment:
+  documents that the operational execution checkout is
+  **`HEAD` = metadata commit `2201dda204021629548946f1f913fad026af4c28`**
+  (carries the FINAL fingerprints artifact) with
+  `A2AVALIDATOR_SOURCE_COMMIT=2a892c0b…` exported. No code / config /
+  stimulus / schedule / fingerprint change.
 
 Manuscript unchanged at `e20738c3b0d5ac1a63b0bdcbeb83e7bb6a73db4a`.
 
@@ -334,14 +340,24 @@ no other:
   (`A2AVALIDATOR_SOURCE_COMMIT=<EXECUTION_SOURCE_SHA>
   uv run python -m app.cli.freeze_phase_7a_fingerprints`), which sets
   `final_execution_fingerprint = true`;
-- **G.** freeze that artifact — a **metadata-only** second commit is
-  permitted (it changes no executable/config/stimulus/schedule file; the
-  runner never reads it; execution still pins `EXECUTION_SOURCE_SHA` via
-  the `A2AVALIDATOR_SOURCE_COMMIT` env override; the preflight proves the
+- **G.** freeze that artifact — a **metadata-only** second commit (the
+  *metadata commit*, `2201dda…`) is permitted (it changes no
+  executable/config/stimulus/schedule file; the runner never reads it;
+  execution still pins `EXECUTION_SOURCE_SHA` via the
+  `A2AVALIDATOR_SOURCE_COMMIT` env override; the preflight proves the
   runner records `EXECUTION_SOURCE_SHA` exactly);
 - **H.** make **no** source / config / stimulus / policy / schedule change
   after `EXECUTION_SOURCE_SHA`;
-- **I.** only then request authorization to execute.
+- **I.** the operational execution checkout is **`HEAD` = the metadata
+  commit `2201dda…`** (so the FINAL fingerprints artifact is on disk for
+  the preflight to verify), with
+  `A2AVALIDATOR_SOURCE_COMMIT=EXECUTION_SOURCE_SHA` (`2a892c0…`) exported
+  so the runner still computes and persists `source_commit_sha =
+  2a892c0…` and the four already-frozen FINAL fingerprints —
+  `git diff 2a892c0..2201dda` is exactly
+  `benchmarks/composed/live_canary_phase7a_fingerprints.json` and nothing
+  else. See `docs/phase_7b_execution_governance.md` §5.
+- **J.** only then request authorization to execute.
 
 The Phase 7A / 7A.1 fingerprints (in git history, `daee782` / `621fae0`)
 remain historical **DESIGN-FREEZE references only** and must never be used
