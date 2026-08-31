@@ -163,6 +163,28 @@ async def test_both_providers_see_the_same_12_tool_surface_and_no_is_mutating():
     assert oi == an
 
 
+@pytest.mark.parametrize("actions", [("relay_to_remote", "stop"), ("call_tool", "stop")])
+def test_both_providers_enforce_strict_schema_for_their_decision_tools(actions):
+    """Phase 6C.1: every decision tool is `strict: true` on BOTH wires --
+    OpenAI Responses strict function schema, and Anthropic strict tool use.
+    Same schema-enforcement guarantee on tool names and inputs."""
+    from app.runner.host_action_schema_anthropic import compile_canonical_actions_for_anthropic
+    from app.runner.host_action_schema_openai import canonical_action_schema
+
+    openai_tools = canonical_action_schema(actions)
+    anthropic_tools = compile_canonical_actions_for_anthropic(actions)
+
+    assert openai_tools, "no OpenAI decision tools"
+    assert anthropic_tools, "no Anthropic decision tools"
+    for t in openai_tools:
+        assert t["strict"] is True, f"OpenAI {t['name']} not strict"
+    for t in anthropic_tools:
+        assert t["strict"] is True, f"Anthropic {t['name']} not strict"
+
+    # same set of decision-tool names, each strict on both providers
+    assert {t["name"] for t in openai_tools} == {t["name"] for t in anthropic_tools}
+
+
 # --- canonical HostDecision equivalence ------------------------------- #
 
 

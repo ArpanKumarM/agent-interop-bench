@@ -341,7 +341,8 @@ reasoning={"effort":"low"})`. 0 retries. No temperature/top_p/top_k.
 
 `messages.create(model="claude-sonnet-5", system=<host policy>,
 messages=[{role:"user", content:<sanitized JSON, identical bytes to
-OpenAI's>}], tools=<canonical schema compiled to Anthropic wire form>,
+OpenAI's>}], tools=<canonical schema compiled to Anthropic wire form, every
+decision tool `strict: true`>,
 tool_choice={"type":"any","disable_parallel_tool_use":true},
 thinking={"type":"adaptive","display":"omitted"},
 output_config={"effort":"low"}, max_tokens=2048)`. 0 retries. No
@@ -356,6 +357,15 @@ temperature/top_p/top_k. One decision per trial.
 * **Forced single tool call:** `tool_choice.type = "any"` +
   `disable_parallel_tool_use = true` → exactly one tool call, and it must
   be one of the decision tools passed (`stop` is itself one of them).
+* **Strict schema (Phase 6C.1):** every decision tool carries
+  `strict: true` — Anthropic then "guarantees schema validation on tool
+  names and inputs", the **same enforcement** OpenAI's `strict: true`
+  function schema gives. `tests/unit/test_cross_provider_equivalence.py::
+  test_both_providers_enforce_strict_schema_for_their_decision_tools`
+  proves both wires are strict for RQ1 and RQ2. Post-parse validation
+  (`_VALID_ACTIONS`, pydantic arg models, `_decode_tool_arguments`,
+  allowed-action filtering) is **unchanged** — a malformed/invalid
+  response is still a `provider_protocol_error`, never repaired.
 * **`max_tokens = 2048`:** the OpenAI 512 cap does **not** map cleanly —
   on Anthropic `max_tokens` bounds thinking + visible output together, and
   adaptive thinking may spend some budget before the single `tool_use`
@@ -414,7 +424,9 @@ so every frozen Phase 4B fingerprint recomputes to the identical value
 | resolved overlay-bundle sha256 | `1da79619b44abe483cb48891c516cb4bb98042bdacd728ec5e14c6b6710bd9c8` |
 | host-policy sha256 | `32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be` |
 | canonical action-schema sha256 | `9f6aa80400686159060c91183ca1b928bc9fe1a7ed8a3981d46f477a2bea2ca9` |
-| Anthropic wire tool-schema sha256 (`relay_to_remote`/`call_tool`/`stop`) | `0c697e289104f3b47263e61e6b65f8a67d548c5cbdc15d253e897b5e9e2635b0` |
+| Anthropic wire tool-schema sha256 — full (`relay_to_remote`/`call_tool`/`stop`, `strict:true`) | `e192a7baf28e54c494ec306f7f92665dbe049de1946769f1f121fc16c74babf3` |
+| Anthropic wire tool-schema sha256 — RQ1 (`relay_to_remote`/`stop`) | `2e6c4205097c3677fc8bfd0543fd17890637583c6d0f803c7e177bd6ddeff907` |
+| Anthropic wire tool-schema sha256 — RQ2 (`call_tool`/`stop`) | `fcdab75799373c415a1032aba2718d1ff5bfff8ad600fbbccf52da2e3c0d72fa` |
 | per-model schedule sha256 — `gpt-5.6-sol` | `11f2c0780491d8048e19d502fabef25f23ef0335b118627c3cc6bea1775332b6` |
 | per-model schedule sha256 — `gpt-5.6-terra` | `41dbede5faa1728a8559a8324e6c3cda35cce1c6b9f0f3c740ece6d179f9920b` |
 | per-model schedule sha256 — `gpt-5.6-luna` | `c653e2bf8b3f2ba320dd754d12f755c2705d9ef988e8a9a469e812eaa4e6a83c` |
@@ -423,7 +435,7 @@ so every frozen Phase 4B fingerprint recomputes to the identical value
 | `provider_config_sha256` — `gpt-5.6-sol` | `9dfb37d097175ace41038e2740eec9b4f689df84e6cb0455ad6d8e0de9971cc5` |
 | `provider_config_sha256` — `gpt-5.6-terra` | `8150ddbaad123ccff417c268aa73c2673e252b7e2ef1ed0ce50f63756e8e54d1` |
 | `provider_config_sha256` — `gpt-5.6-luna` | `45dc81b15c681dc95426872ccf5fadff106346ad91ba54118c00ffc5fe328df9` |
-| `provider_config_sha256` — `claude-sonnet-5` | `1cbdbcca19e85101837b55dddc2ebf611602ba831c52593f8169205c20f34d42` |
+| `provider_config_sha256` — `claude-sonnet-5` (`strict:true`, Phase 6C.1) | `dac36eaf07aa3001e51aa3bbd732eba12d18ad5d9fb6d442a7a647e43b41bfa8` |
 
 The three OpenAI per-model schedule hashes are **byte-identical to Phase
 6B.2**; the panel now has four models, so only the overall

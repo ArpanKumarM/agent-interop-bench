@@ -39,16 +39,19 @@ __all__ = [
 
 
 def _to_anthropic_tool(openai_tool: dict[str, Any]) -> dict[str, Any]:
-    """One canonical action -> one Anthropic ``ToolParam``. Drops the
-    OpenAI-only ``type``/``strict`` keys and renames ``parameters`` ->
-    ``input_schema``; the JSON-schema body (``type``/``properties``/
-    ``required``) is carried through verbatim, including
-    ``additionalProperties: false`` (harmless and accepted by Anthropic)."""
+    """One canonical action -> one Anthropic ``ToolParam``. Renames
+    ``parameters`` -> ``input_schema`` (the JSON-schema body --
+    ``type``/``properties``/``required``/``additionalProperties: false`` --
+    is carried through verbatim) and sets ``strict: true`` (Phase 6C.1):
+    Anthropic then "guarantees schema validation on tool names and inputs",
+    the same enforcement OpenAI's ``strict: true`` gives. The OpenAI-only
+    outer ``type: "function"`` key is dropped."""
     params = dict(openai_tool.get("parameters", {}))
     return {
         "name": openai_tool["name"],
         "description": openai_tool.get("description", ""),
         "input_schema": params,
+        "strict": True,
     }
 
 

@@ -126,8 +126,9 @@ def test_canonical_actions_translate_to_anthropic_wire_shape():
     # canonical (deterministic) order from canonical_action_schema
     assert sorted(t["name"] for t in tools) == ["call_tool", "stop"]
     for t in tools:
-        assert set(t) == {"name", "description", "input_schema"}
-        assert "type" not in t and "strict" not in t  # OpenAI-only keys dropped
+        assert set(t) == {"name", "description", "input_schema", "strict"}
+        assert "type" not in t  # OpenAI-only outer `type: "function"` dropped
+        assert t["strict"] is True  # Phase 6C.1: strict schema enforcement
         assert t["input_schema"]["type"] == "object"
     call_tool = next(t for t in tools if t["name"] == "call_tool")
     assert call_tool["input_schema"]["required"] == ["tool_name", "arguments_json"]
@@ -139,6 +140,13 @@ def test_relay_action_schema_matches_openai_required_args():
     tools = compile_canonical_actions_for_anthropic(("relay_to_remote", "stop"))
     relay = next(t for t in tools if t["name"] == "relay_to_remote")
     assert relay["input_schema"]["required"] == ["content", "content_type"]
+    assert relay["strict"] is True
+
+
+def test_every_decision_tool_is_strict_for_both_rq1_and_rq2():
+    for actions in (("relay_to_remote", "stop"), ("call_tool", "stop")):
+        for t in compile_canonical_actions_for_anthropic(actions):
+            assert t.get("strict") is True, t["name"]
 
 
 # --- RQ2 call_tool parsing -------------------------------------------------- #
