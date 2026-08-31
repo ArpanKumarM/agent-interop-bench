@@ -1,0 +1,4504 @@
+{
+  "blocks_per_model": 4,
+  "cells": [
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-saas-support-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-saas-support-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-saas-support-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-healthcare-billing-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-healthcare-billing-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-healthcare-billing-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-finance-kyc-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-finance-kyc-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-finance-kyc-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-employee-directory-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-employee-directory-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-employee-directory-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-logistics-shipment-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-logistics-shipment-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-logistics-shipment-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-telecom-subscriber-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-telecom-subscriber-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-telecom-subscriber-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-education-learner-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-education-learner-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-education-learner-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-payroll-employer-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-payroll-employer-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-payroll-employer-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-gaming-player-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-gaming-player-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-gaming-player-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-procurement-vendor-confidential"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-procurement-vendor-neutral"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-procurement-vendor-public"
+    }
+  ],
+  "model_panel": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna",
+    "claude-sonnet-5"
+  ],
+  "model_schedule_sha256": {
+    "claude-sonnet-5": "826ba13ba9b6b659691eaf066f27004e0920675e352b71c9115dc3431bd193e4",
+    "gpt-5.6-luna": "61e1b10a3d2d2c05f830db2c014095fe89f10c7e7c3d4be247ffe0bd155203f0",
+    "gpt-5.6-sol": "2b0d6c27dadb16098b0aafd01831b6dcaf98c861e7c373c2ddac296662a173cf",
+    "gpt-5.6-terra": "ab887ecf3161933c5e0251e1b34b0f24237f50ff91a4e27d5df8a8d29106cc66"
+  },
+  "overlays_per_block": 30,
+  "per_model_schedule": {
+    "claude-sonnet-5": [
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 23,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 24,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 25,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 26,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 27,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 28,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 29,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-luna": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 23,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 24,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 25,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 26,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 27,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 28,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 29,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-sol": [
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 23,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 24,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 25,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 26,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 27,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 28,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 29,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-terra": [
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-neutral",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-neutral",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-neutral",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-neutral",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-neutral",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-neutral",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-neutral",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-neutral",
+        "position_in_block": 23,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 24,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-neutral",
+        "position_in_block": 25,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 26,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-neutral",
+        "position_in_block": 27,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 28,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 29,
+        "trial_index": 3
+      }
+    ]
+  },
+  "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+  "scheduling_seed": 20260831,
+  "study_id": "composed-live-canary-007a",
+  "study_schedule_sha256": "76823fdbbd69a6b5a6a7b3219a5a85525f9f301ed59e6cf1cb188d807551fea5",
+  "study_version": "v7a",
+  "trials_per_model": 120
+}

@@ -260,6 +260,129 @@ def build_phase_6b_schedule_artifact(
     }
 
 
+# ===========================================================================
+# Phase 7A blocked schedule -- the RQ1-ONLY neutral-baseline extension.
+#
+# 10 record scenarios x 3 arms (confidential / neutral / public) = 30
+# overlays; 4 blocks/model; each block contains every pair x arm exactly
+# once => 120 trials/model; the frozen four-model panel => 480 trials.
+#
+# Same one-frozen-seed mechanism as Phase 4B/6B; a DISTINCT seed. All Phase
+# 4B and Phase 6B constants/functions above are UNCHANGED, and Phase 6
+# observations are never pooled into the Phase 7 primary analysis. Every
+# Phase 7A cell is (experiment="sensitive_egress", condition in
+# {treatment, neutral, control}). No RQ2 / adversarial_influence cell.
+# ===========================================================================
+
+PHASE_7A_MODEL_PANEL: tuple[str, ...] = PHASE_6B_MODEL_PANEL
+# The one frozen Phase 7A scheduling seed. Arbitrary, fixed permanently at
+# the Phase 7A design freeze; changing it defines a different study.
+PHASE_7A_SCHEDULE_SEED: int = 20260831
+PHASE_7A_BLOCKS_PER_MODEL: int = 4
+# arm -> (overlay-id suffix, ledger condition)
+PHASE_7A_ARM_CONDITION: tuple[tuple[str, str], ...] = (
+    ("confidential", "treatment"),
+    ("neutral", "neutral"),
+    ("public", "control"),
+)
+
+
+def phase_7a_cells() -> tuple[tuple[str, str, str], ...]:
+    """The 30 (experiment, condition, overlay_id) cells -- 10 RQ1 record
+    pairs x 3 arms -- in a fixed canonical order used only as the per-block
+    pre-shuffle list. Derived from the frozen Phase 6B stimulus source of
+    truth; the neutral arm reuses the same pair ids."""
+    from mock_servers.composed_record_fixtures import RQ1_PAIRS
+
+    cells: list[tuple[str, str, str]] = []
+    for pair in RQ1_PAIRS:
+        for arm, condition in PHASE_7A_ARM_CONDITION:
+            cells.append(("sensitive_egress", condition, f"rq1-{pair.pair_id}-{arm}"))
+    return tuple(cells)
+
+
+PHASE_7A_OVERLAY_IDS: tuple[str, ...] = tuple(o for (_, _, o) in phase_7a_cells())
+
+
+def build_phase_7a_study_schedule(
+    *,
+    models: tuple[str, ...] = PHASE_7A_MODEL_PANEL,
+    seed: int = PHASE_7A_SCHEDULE_SEED,
+    blocks_per_model: int = PHASE_7A_BLOCKS_PER_MODEL,
+) -> dict[str, list[ScheduledTrial]]:
+    """{model -> ordered blocks_per_model*30 trials}. One ``random.Random(
+    seed)`` advanced model-by-model in ``models`` order, block-by-block,
+    shuffling a copy of the 30 cells per block. ``trial_index`` is the
+    per-(model,cell) sequential index 0..blocks-1 (== block_index)."""
+    cells = phase_7a_cells()
+    rng = random.Random(seed)
+    study: dict[str, list[ScheduledTrial]] = {}
+    for model in models:
+        entries: list[ScheduledTrial] = []
+        for block_index in range(blocks_per_model):
+            order = list(cells)
+            rng.shuffle(order)
+            for position, (experiment, condition, overlay_id) in enumerate(order):
+                entries.append(
+                    ScheduledTrial(
+                        model=model,
+                        block_index=block_index,
+                        position_in_block=position,
+                        experiment=experiment,
+                        condition=condition,
+                        overlay_id=overlay_id,
+                        trial_index=block_index,
+                    )
+                )
+        study[model] = entries
+    return study
+
+
+def build_phase_7a_model_schedule(
+    model: str,
+    *,
+    seed: int = PHASE_7A_SCHEDULE_SEED,
+    blocks_per_model: int = PHASE_7A_BLOCKS_PER_MODEL,
+    models: tuple[str, ...] = PHASE_7A_MODEL_PANEL,
+) -> list[ScheduledTrial]:
+    if model not in models:
+        raise ValueError(f"model {model!r} is not in the Phase 7A panel {list(models)}")
+    return build_phase_7a_study_schedule(
+        models=models, seed=seed, blocks_per_model=blocks_per_model
+    )[model]
+
+
+def build_phase_7a_schedule_artifact(
+    *,
+    models: tuple[str, ...] = PHASE_7A_MODEL_PANEL,
+    seed: int = PHASE_7A_SCHEDULE_SEED,
+    blocks_per_model: int = PHASE_7A_BLOCKS_PER_MODEL,
+) -> dict:
+    study = build_phase_7a_study_schedule(
+        models=models, seed=seed, blocks_per_model=blocks_per_model
+    )
+    cells = phase_7a_cells()
+    per_model = {model: [e.model_dump() for e in entries] for model, entries in study.items()}
+    model_hashes = {model: schedule_sha256(entries) for model, entries in study.items()}
+    study_hash = hashlib.sha256(
+        json.dumps(model_hashes, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    return {
+        "study_id": "composed-live-canary-007a",
+        "study_version": "v7a",
+        "scheduling_seed": seed,
+        "model_panel": list(models),
+        "blocks_per_model": blocks_per_model,
+        "overlays_per_block": len(cells),
+        "trials_per_model": blocks_per_model * len(cells),
+        "cells": [{"experiment": e, "condition": c, "overlay_id": o} for (e, c, o) in cells],
+        "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+        "per_model_schedule": per_model,
+        "model_schedule_sha256": model_hashes,
+        "study_schedule_sha256": study_hash,
+    }
+
+
 def build_schedule_artifact(
     *,
     models: tuple[str, ...] = PHASE_4B_MODEL_PANEL,

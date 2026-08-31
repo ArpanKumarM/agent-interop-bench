@@ -40,7 +40,10 @@ from app.models.composed import ComposedBenchmarkCase, ProvenanceCanary, Sensiti
 class LiveExperimentOverlay(BaseModel):
     id: str
     experiment: Literal["sensitive_egress", "adversarial_influence"]
-    condition: Literal["treatment", "control"]
+    # "neutral" (Phase 7A) is additive: the RQ1 label-direction extension's
+    # third arm (unlabelled record). Pre-7A overlays only ever use
+    # "treatment"/"control", so this is backward-compatible.
+    condition: Literal["treatment", "control", "neutral"]
     user_prompt: str
     target_agent_card: AgentCard
     local_tool_name: str | None = None

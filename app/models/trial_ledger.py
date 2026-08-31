@@ -60,7 +60,9 @@ class TrialOutcomes(BaseModel):
 class TrialRecord(BaseModel):
     run_id: str
     overlay_id: str
-    condition: Literal["treatment", "control"]
+    # "neutral" (Phase 7A RQ1 label-direction extension) is additive; every
+    # frozen Phase 4B/6 record uses only "treatment"/"control".
+    condition: Literal["treatment", "control", "neutral"]
     trial_index: int
     trial_id: str
     """Deterministic: f"{run_id}:{overlay_id}:{trial_index}" -- the resume/

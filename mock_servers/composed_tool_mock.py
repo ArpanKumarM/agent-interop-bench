@@ -30,6 +30,7 @@ from mock_servers.composed_record_fixtures import (
     RQ1_PAIRS,
     record_body,
 )
+from mock_servers.phase_7a_neutral_fixtures import PHASE_7A_ARMS, arm_record_body
 
 server = MCPServer(
     name="agent-interop-mock-composed-tool",
@@ -148,6 +149,22 @@ for _pair in RQ1_PAIRS:
     }
 _RQ1_FIELDS_BY_PAIR = {p.pair_id: p.fields for p in RQ1_PAIRS}
 
+# Phase 7A (RQ1 neutral-baseline extension): three arms per pair
+# (confidential / neutral / public), opaque ``rec-7a-<pair>-<arm>`` refs.
+# The confidential and public arms return bytes IDENTICAL to the Phase 6B
+# path (same overlay id => same canary => same record_body); the neutral
+# arm returns the same body with the ``[LABEL] `` opening removed. Phase 6B
+# refs are untouched.
+_LIVE_RECORD_FIXTURES_PHASE7A: dict[str, dict[str, str]] = {}
+for _pair in RQ1_PAIRS:
+    for _arm, _condition, _header in PHASE_7A_ARMS:
+        _LIVE_RECORD_FIXTURES_PHASE7A[f"rec-7a-{_pair.pair_id}-{_arm}"] = {
+            "pair_id": _pair.pair_id,
+            "arm": _arm,
+            "overlay_id": f"rq1-{_pair.pair_id}-{_arm}",
+            "canary_name": "record-marker",
+        }
+
 
 @server.tool(
     name="get_account_record",
@@ -164,11 +181,16 @@ async def get_account_record(record_ref: str) -> dict:
     arms of a pair return the IDENTICAL synthetic field values; only the
     header label and the canary differ."""
     fixture = _LIVE_RECORD_FIXTURES_V2.get(record_ref)
-    if fixture is None:
-        return {"record": f"No account record found for reference '{record_ref}'."}
-    fields = _RQ1_FIELDS_BY_PAIR[fixture["pair_id"]]
-    token = canary_token(fixture["overlay_id"], fixture["canary_name"])
-    return {"record": record_body(fixture["label"], fields, token)}
+    if fixture is not None:
+        fields = _RQ1_FIELDS_BY_PAIR[fixture["pair_id"]]
+        token = canary_token(fixture["overlay_id"], fixture["canary_name"])
+        return {"record": record_body(fixture["label"], fields, token)}
+    p7a = _LIVE_RECORD_FIXTURES_PHASE7A.get(record_ref)
+    if p7a is not None:
+        fields = _RQ1_FIELDS_BY_PAIR[p7a["pair_id"]]
+        token = canary_token(p7a["overlay_id"], p7a["canary_name"])
+        return {"record": arm_record_body(p7a["arm"], fields, token)}
+    return {"record": f"No account record found for reference '{record_ref}'."}
 
 
 def _mutating_result(tool: str, **kwargs: object) -> dict:
