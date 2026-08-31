@@ -1,0 +1,4550 @@
+{
+  "blocks_per_model": 4,
+  "cells": [
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-saas-support-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-saas-support-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-healthcare-billing-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-healthcare-billing-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-finance-kyc-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-finance-kyc-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-employee-directory-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-employee-directory-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-logistics-shipment-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-logistics-shipment-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-telecom-subscriber-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-telecom-subscriber-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-education-learner-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-education-learner-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-payroll-employer-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-payroll-employer-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-gaming-player-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-gaming-player-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-procurement-vendor-confidential"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "rq1-procurement-vendor-public"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-rollback-orders-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-rollback-orders-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-rollback-payments-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-rollback-payments-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-purge-pricing-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-purge-pricing-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-purge-docs-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-purge-docs-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-flag-checkout-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-flag-checkout-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-flag-darkmode-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-flag-darkmode-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-migrate-billing-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-migrate-billing-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-migrate-events-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-migrate-events-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-revoke-u33915-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-revoke-u33915-benign"
+    },
+    {
+      "condition": "treatment",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-revoke-u88240-adversarial"
+    },
+    {
+      "condition": "control",
+      "experiment": "adversarial_influence",
+      "overlay_id": "rq2-revoke-u88240-benign"
+    }
+  ],
+  "model_panel": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna"
+  ],
+  "model_schedule_sha256": {
+    "gpt-5.6-luna": "c653e2bf8b3f2ba320dd754d12f755c2705d9ef988e8a9a469e812eaa4e6a83c",
+    "gpt-5.6-sol": "11f2c0780491d8048e19d502fabef25f23ef0335b118627c3cc6bea1775332b6",
+    "gpt-5.6-terra": "41dbede5faa1728a8559a8324e6c3cda35cce1c6b9f0f3c740ece6d179f9920b"
+  },
+  "overlays_per_block": 40,
+  "per_model_schedule": {
+    "gpt-5.6-luna": [
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 30,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 31,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 32,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 33,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 34,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 35,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 36,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 37,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 38,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 39,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 30,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 31,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 32,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 33,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 34,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 35,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 36,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 37,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 38,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 39,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 30,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 31,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 32,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 33,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 34,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 35,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 36,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 37,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 38,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 39,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 23,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 24,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 25,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 26,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 27,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 28,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 29,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 30,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 31,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 32,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 33,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 34,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 35,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 36,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 37,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 38,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 39,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-sol": [
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 30,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 31,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 32,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 33,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 34,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 35,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 36,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 37,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 38,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 39,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 30,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 31,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 32,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 33,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 34,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 35,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 36,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 37,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 38,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 39,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 30,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 31,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 32,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 33,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 34,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 35,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 36,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 37,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 38,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 39,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 23,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 24,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 25,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 26,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 27,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 28,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 29,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 30,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 31,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 32,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 33,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 34,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 35,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 36,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 37,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 38,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 39,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-terra": [
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 30,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 31,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 32,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 33,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 34,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 35,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 36,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 37,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 38,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 39,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 30,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 31,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 32,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 33,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 34,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 35,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 36,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 37,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 38,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 39,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 30,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 31,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 32,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 33,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 34,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 35,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 36,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 37,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 38,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 39,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-adversarial",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-adversarial",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-adversarial",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-confidential",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-confidential",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-orders-benign",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-benign",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-confidential",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-benign",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u33915-adversarial",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-confidential",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-pricing-adversarial",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-logistics-shipment-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-public",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-benign",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-public",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-purge-docs-benign",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-public",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-benign",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-education-learner-public",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-procurement-vendor-public",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-events-benign",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-saas-support-confidential",
+        "position_in_block": 23,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-healthcare-billing-public",
+        "position_in_block": 24,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-telecom-subscriber-confidential",
+        "position_in_block": 25,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-rollback-payments-adversarial",
+        "position_in_block": 26,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-finance-kyc-confidential",
+        "position_in_block": 27,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-benign",
+        "position_in_block": 28,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-revoke-u88240-adversarial",
+        "position_in_block": 29,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-confidential",
+        "position_in_block": 30,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-payroll-employer-confidential",
+        "position_in_block": 31,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-checkout-adversarial",
+        "position_in_block": 32,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-benign",
+        "position_in_block": 33,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-public",
+        "position_in_block": 34,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-benign",
+        "position_in_block": 35,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-migrate-billing-adversarial",
+        "position_in_block": 36,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-gaming-player-public",
+        "position_in_block": 37,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq1-employee-directory-confidential",
+        "position_in_block": 38,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "treatment",
+        "experiment": "adversarial_influence",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "rq2-flag-darkmode-adversarial",
+        "position_in_block": 39,
+        "trial_index": 3
+      }
+    ]
+  },
+  "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+  "scheduling_seed": 20260615,
+  "study_id": "composed-live-canary-004",
+  "study_schedule_sha256": "12347888f60152b1a8f5aef1d8271ac411b13b4b2ea548190f6ba94175a53ed3",
+  "study_version": "v4",
+  "trials_per_model": 160
+}

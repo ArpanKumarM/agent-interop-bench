@@ -355,6 +355,11 @@ class ComposedBenchmarkRunner:
                             parent_event_ids=[transition_event.event_id],
                         )
 
+                elif action.action == "call_tool":
+                    last_event = await self._handle_tool_invocation(
+                        case, action, available_tools, last_event
+                    )
+
                 elif action.action == "attempt_mutating_tool":
                     arguments = _substitute_arguments(action.tool_arguments, case)
                     tool_def = next(
@@ -374,8 +379,10 @@ class ComposedBenchmarkRunner:
                                 "reason": "unapproved mutation blocked",
                             },
                             parent_event_ids=[last_event.event_id] if last_event else [],
-                            is_mutating=True,
-                            approved=False,
+                            # Phase 6B fix: stamp the DISCOVERED value, never a
+                            # hardcoded True (see docs/phase_4b_errata.md).
+                            is_mutating=is_mutating,
+                            approved=action.approved,
                             executed=False,
                         )
                     else:
@@ -398,9 +405,80 @@ class ComposedBenchmarkRunner:
                                 "is_error": outcome.is_error,
                             },
                             parent_event_ids=[last_event.event_id] if last_event else [],
-                            is_mutating=True,
+                            # Phase 6B fix: DISCOVERED value, not hardcoded True.
+                            is_mutating=is_mutating,
                             approved=action.approved,
                             executed=True,
                         )
 
         return list(self._events)
+
+    async def _handle_tool_invocation(
+        self,
+        case: ComposedBenchmarkCase,
+        action: Any,
+        available_tools: list[Any],
+        last_event: CrossProtocolEvent | None,
+    ) -> CrossProtocolEvent:
+        """Phase 6B unified tool-call path (action == "call_tool").
+
+        The model named a tool from the discovered list; it never saw a
+        "mutation wrapper" and never saw the tool's ``is_mutating`` status.
+        Here (trusted, server-side) we discover that status, apply the
+        mutation gate iff the tool is discovered-mutating, and emit ONE
+        ``tool_invocation`` event whose recorded classification comes from
+        ``app.reporting.composed_taxonomy`` and whose ``is_mutating`` field
+        equals the discovered annotation -- never a hardcode."""
+        from app.reporting.composed_taxonomy import classify_tool_invocation
+
+        arguments = _substitute_arguments(action.tool_arguments, case)
+        tool_def = next((t for t in available_tools if t.name == action.tool_name), None)
+        discovered_is_mutating = bool(tool_def and tool_def.is_mutating)
+        gate_applied = discovered_is_mutating
+        blocked = mutation_blocked(discovered_is_mutating, action.approved)
+
+        text_output: str | None = None
+        is_error: bool | None = None
+        executed = not blocked
+        if executed:
+            async with self._local_transport_factory() as transport:
+                outcome = await transport.call_tool(
+                    action.tool_name or "",
+                    arguments,
+                    timeout_seconds=LOCAL_MCP_CALL_TIMEOUT_SECONDS,
+                )
+            text_output = outcome.text_output
+            is_error = outcome.is_error
+
+        request_class, execution_class = classify_tool_invocation(
+            decision_action="call_tool",
+            requested_tool_name=action.tool_name,
+            discovered_is_mutating=discovered_is_mutating,
+            executed=executed,
+        )
+        gate_decision = None
+        if gate_applied:
+            gate_decision = "blocked" if blocked else "allowed"
+
+        return self._append(
+            case,
+            event_type="tool_invocation",
+            source="host",
+            dest="local_tool",
+            protocol="mcp",
+            payload={
+                "requested_tool_name": action.tool_name,
+                "arguments": arguments,
+                "discovered_is_mutating": discovered_is_mutating,
+                "request_class": request_class.value,
+                "execution_class": execution_class.value if execution_class else None,
+                "gate_applied": gate_applied,
+                "gate_decision": gate_decision,
+                "text_output": text_output,
+                "is_error": is_error,
+            },
+            parent_event_ids=[last_event.event_id] if last_event else [],
+            is_mutating=discovered_is_mutating,
+            approved=action.approved,
+            executed=executed,
+        )

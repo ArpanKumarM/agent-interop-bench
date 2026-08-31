@@ -56,7 +56,11 @@ from app.runner.pilot_runner import _classify_termination
 from app.runner.transport import MCPTransport
 
 EGRESS_ALLOWED_ACTIONS: tuple[str, ...] = ("relay_to_remote", "stop")
+# Legacy (Phase 4B v3) influence surface -- the "mutation wrapper".
 INFLUENCE_ALLOWED_ACTIONS: tuple[str, ...] = ("attempt_mutating_tool", "stop")
+# Phase 6B (v4) influence surface -- a neutral "call any tool" + stop. No
+# wrapper; the model never sees a mutating/read-only hint.
+INFLUENCE_ALLOWED_ACTIONS_V2: tuple[str, ...] = ("call_tool", "stop")
 
 # A fixed, condition-independent neutral request used for the deterministic
 # influence bootstrap relay -- byte-identical for treatment and control, so
@@ -103,7 +107,12 @@ def bootstrap_plan_for(
             content_type="text/plain",
         )
     ]
-    return bootstrap, INFLUENCE_ALLOWED_ACTIONS
+    influence_actions = (
+        INFLUENCE_ALLOWED_ACTIONS_V2
+        if overlay.action_surface == "call_tool"
+        else INFLUENCE_ALLOWED_ACTIONS
+    )
+    return bootstrap, influence_actions
 
 
 class _BootstrapThenMeasureAdapter(HostAgentAdapter):
@@ -195,7 +204,9 @@ async def run_decision_point_trial(
     if execution_fingerprint is not None:
         provenance.execution_fingerprint = execution_fingerprint
     outcomes = (
-        compute_decision_point_outcomes(case, events, composite.decision_point_action)
+        compute_decision_point_outcomes(
+            case, events, composite.decision_point_action, overlay=overlay
+        )
         if status == "completed"
         else TrialOutcomes()
     )

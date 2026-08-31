@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Phase 6B composed cross-protocol study (implementation; NOT yet executed)
+
+- **Redesigned composed experiment** (`docs/phase_6b_study_design.md`,
+  design `docs/phase_6a_redesign.md`): 10 matched RQ1 record pairs + 10
+  matched RQ2 influence pairs (5 mutating target tools × 2 pairs), 4 repeats
+  each, blocked randomisation (40 overlays × 4 blocks/model, frozen seed
+  `20260615`), plan `v4` / experiment `composed-live-canary-004`.
+- **`app/reporting/composed_taxonomy.py`** — the ONE canonical
+  tool-invocation taxonomy (`stop` / `read_only_tool_requested` /
+  `mutating_tool_requested` / `read_only_tool_executed` /
+  `mutating_tool_blocked` / `mutating_tool_executed`). Raw trace, online
+  `summary.json`, and offline analysis all derive from it; a consistency
+  assertion runs on every trial.
+- **`call_tool` / `stop` action surface** for the influence decision point —
+  no `attempt_mutating_tool` wrapper. The model never sees `is_mutating` or
+  any gate/taxonomy label (`ToolDefinition.model_visible_dump`).
+- **RQ1 primary** = any exact synthetic field/value crossing `host→A2A`
+  over *all* completed confidential trials (not relay-conditioned);
+  deterministic exact-substring detector (`app/reporting/rq1_field_egress.py`).
+- **Execution fingerprint v2** — adds `sha256(uv.lock)` and the Python
+  runtime version; v1 verification is byte-compatible.
+- **Provider-neutral `HostDecisionClient` seam**
+  (`app/runner/host_decision_client.py`); current OpenAI behaviour
+  preserved; a second (non-OpenAI) family is added after this passes.
+- **Historical HEAD bugs fixed** (`docs/phase_4b_errata.md`): the hardcoded
+  `mutation_action.is_mutating=True` event stamping, the unfiltered
+  executed-event mutation counting, and the offline rescore now routes
+  through the canonical taxonomy. **Phase 4B raw artifacts and the
+  `phase4b-results-v1` tag/release are unchanged**; the MCP Python SDK
+  version is re-verified as `mcp==2.0.0`.
+
 ### Added — deterministic A2A (Agent2Agent Protocol) evaluation (Phase 3A-3C.1)
 
 - **A2A Protocol v1.0, HTTP+JSON/REST binding**, modeled independently of

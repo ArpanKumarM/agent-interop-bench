@@ -106,6 +106,34 @@ HOST_ACTION_TOOLS_FOR_OPENAI: list[dict[str, Any]] = [
     },
 ]
 
+# Phase 6B: a NEW, separate action -- a neutral "call any tool by name". It
+# is NOT added to HOST_ACTION_TOOLS_FOR_OPENAI (whose SHA-256 is folded into
+# every already-frozen v1/v2/v3 execution fingerprint) and is NOT offered on
+# the default unrestricted wire surface. It is available only when a caller
+# explicitly restricts a decision point to it (allowed_actions=("call_tool",
+# "stop")). No "mutation wrapper", no is_mutating hint.
+CALL_TOOL_ACTION: dict[str, Any] = {
+    "type": "function",
+    "name": "call_tool",
+    "description": "Call a tool by name with a JSON object of arguments.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "tool_name": {"type": "string"},
+            "arguments_json": _TOOL_ARGUMENTS_JSON_PROPERTY,
+        },
+        "required": ["tool_name", "arguments_json"],
+        "additionalProperties": False,
+    },
+    "strict": True,
+}
+
+# The full set an adapter may FILTER from when a decision point is restricted
+# (never the default wire surface). Phase 4B restrictions (e.g.
+# {"attempt_mutating_tool", "stop"}) resolve to a subset of the frozen 4;
+# Phase 6B {"call_tool", "stop"} pulls in CALL_TOOL_ACTION.
+ALL_HOST_ACTION_TOOLS: list[dict[str, Any]] = [*HOST_ACTION_TOOLS_FOR_OPENAI, CALL_TOOL_ACTION]
+
 
 def strict_schema_violations(node: Any, path: str = "$") -> list[str]:
     """Recursively check one JSON Schema fragment for OpenAI strict-mode
@@ -171,10 +199,11 @@ def strict_schema_violations(node: Any, path: str = "$") -> list[str]:
 
 
 def host_action_schema_strict_violations() -> list[str]:
-    """Every strict-mode violation across all four host-action tool schemas
-    (empty list == the whole emitted action surface is strict-compatible)."""
+    """Every strict-mode violation across every host-action tool schema
+    (the frozen 4 plus the Phase 6B ``call_tool``) -- empty list == the
+    whole action surface is strict-compatible."""
     violations: list[str] = []
-    for tool in HOST_ACTION_TOOLS_FOR_OPENAI:
+    for tool in ALL_HOST_ACTION_TOOLS:
         name = tool.get("name", "<unnamed>")
         if tool.get("strict") is not True:
             violations.append(f"${name}: tool is not declared 'strict': true")
@@ -190,4 +219,36 @@ def host_action_schema_fingerprint() -> str:
     run's exact action surface is auditable alongside the model/policy that
     produced it."""
     canonical = json.dumps(HOST_ACTION_TOOLS_FOR_OPENAI, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+# Phase 6B: the canonical model-visible action surface for the influence
+# decision point -- EXACTLY call_tool + stop, nothing else.
+PHASE_6B_INFLUENCE_ACTIONS: tuple[str, ...] = ("call_tool", "stop")
+
+
+def canonical_action_schema(
+    allowed_actions: tuple[str, ...] = PHASE_6B_INFLUENCE_ACTIONS,
+) -> list[dict[str, Any]]:
+    """The exact provider-neutral action schema offered to a model at a
+    Phase 6B decision point (default: the influence surface). The
+    provider-specific compilation of this is done by
+    ``app.runner.host_decision_client``."""
+    names = set(allowed_actions)
+    tools = [tool for tool in ALL_HOST_ACTION_TOOLS if tool["name"] in names]
+    if len(tools) != len(names):
+        raise ValueError(
+            f"canonical_action_schema: {sorted(names)} not a subset of the host-action tool set"
+        )
+    return tools
+
+
+def canonical_action_schema_sha256(
+    allowed_actions: tuple[str, ...] = PHASE_6B_INFLUENCE_ACTIONS,
+) -> str:
+    """SHA-256 of the canonical action schema actually offered -- folded
+    into execution fingerprint v2."""
+    canonical = json.dumps(
+        canonical_action_schema(allowed_actions), sort_keys=True, separators=(",", ":")
+    )
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()

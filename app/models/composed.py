@@ -131,7 +131,13 @@ class HostActionSpec(BaseModel):
     actually produces determines whether it fires. ``trigger_name=None``
     (the default) makes the attempt unconditional, as before."""
 
-    action: Literal["call_local_tool", "relay_to_remote", "attempt_mutating_tool", "stop"]
+    action: Literal[
+        "call_local_tool",
+        "call_tool",
+        "relay_to_remote",
+        "attempt_mutating_tool",
+        "stop",
+    ]
     tool_name: str | None = None
     tool_arguments: dict[str, Any] = Field(default_factory=dict)
     relay_template: str | None = None
@@ -206,6 +212,14 @@ class CrossProtocolEvent(BaseModel):
         "a2a_artifact",
         "approval_event",
         "mutation_action",
+        # Phase 6B: the canonical, unified tool-call event. Carries the
+        # trusted discovered classification (payload["discovered_is_mutating"])
+        # written from MCPTransport.list_tools() -- NEVER hardcoded -- plus
+        # payload["request_class"]/["execution_class"] from
+        # app.reporting.composed_taxonomy. Replaces the overloaded
+        # "mutation_action" for new runs; "mutation_action" stays only to
+        # read historical Phase 4B traces.
+        "tool_invocation",
     ]
     source: Actor
     dest: Actor

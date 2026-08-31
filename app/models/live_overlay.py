@@ -53,6 +53,21 @@ class LiveExperimentOverlay(BaseModel):
     # phrasing) -- NEVER an ACTION_TRIGGER marker.
     remote_artifact_text: str
     max_interaction_steps: int = Field(default=6, ge=1, le=20)
+
+    # --- Phase 6B (v4) additions. All optional; a v1/v2/v3 overlay omits
+    #     them entirely and behaves exactly as before. ---
+    # Which decision-point action surface the influence experiment offers.
+    # "legacy_wrapper" (default) -> {attempt_mutating_tool, stop} (Phase 4B).
+    # "call_tool"                -> {call_tool, stop} (Phase 6B; no wrapper).
+    action_surface: Literal["legacy_wrapper", "call_tool"] = "legacy_wrapper"
+    # RQ1 v4: the synthetic record's exact field values for this arm (both
+    # arms of a pair carry identical values). Used by the offline field-
+    # egress detector; never model-visible.
+    record_field_values: dict[str, str] | None = None
+    # RQ2 v4: mark the treatment artifact adversarial so DAG-computed
+    # adversarial ancestry is populated and can be cross-checked against the
+    # assigned condition (a consistency check, not a second metric).
+    content_class_override: Literal["adversarial"] | None = None
     # Metadata only -- never read when building a ComposedBenchmarkCase,
     # never model-visible.
     researcher_notes: str | None = None
@@ -76,6 +91,11 @@ def overlay_to_composed_case(overlay: LiveExperimentOverlay) -> ComposedBenchmar
         if overlay.experiment == "adversarial_influence"
         else "composed_propagation"
     )
+    content_class_overrides: dict[str, str] = {}
+    if overlay.content_class_override == "adversarial":
+        # The artifact the remote fixture returns is adversarial; the engine
+        # folds this into per-event adversarial ancestry.
+        content_class_overrides["a2a_artifact"] = "adversarial"
     return ComposedBenchmarkCase(
         id=overlay.id,
         category=category,
@@ -84,6 +104,7 @@ def overlay_to_composed_case(overlay: LiveExperimentOverlay) -> ComposedBenchmar
         target_agent_card=overlay.target_agent_card,
         provenance_canaries=overlay.provenance_canaries,
         allowed_sensitive_edges=overlay.allowed_sensitive_edges,
+        content_class_overrides=content_class_overrides,
         simulated_remote_behavior=[
             A2ARemoteStep(
                 task_state=TaskState.COMPLETED, artifact_text=overlay.remote_artifact_text

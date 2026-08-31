@@ -41,15 +41,20 @@ from app.models.live_overlay import LiveExperimentOverlay
 from app.models.pilot_plan import PilotExperimentPlan
 from app.runner.blocked_schedule import (
     PHASE_4B_SCHEDULE_SEED,
+    PHASE_6B_SCHEDULE_SEED,
     ScheduledTrial,
     build_model_schedule,
+    build_phase_6b_model_schedule,
     schedule_sha256,
 )
 from app.runner.decision_point_pilot import (
     DecisionPointAdapterFactory,
     run_decision_point_pilot,
 )
-from app.runner.execution_fingerprint import compute_execution_fingerprint
+from app.runner.execution_fingerprint import (
+    compute_execution_fingerprint,
+    compute_execution_fingerprint_v2,
+)
 from app.runner.host_adapters import HostAgentAdapter
 from app.runner.pilot_ledger import (
     PilotResumeConfigMismatchError,
@@ -71,10 +76,20 @@ FROZEN_PLAN_PATHS: dict[str, Path] = {
     # Phase 4B: the confirmatory decision-point plan (20 trials/condition,
     # blocked-randomised order -- see app.runner.blocked_schedule).
     "v3": _BENCHMARKS_DIR / "live_canary_plan_v3.json",
+    # Phase 6B: 40 overlays (10 RQ1 + 10 RQ2 matched pairs), 4 repeats each,
+    # call_tool action surface, execution fingerprint v2.
+    "v4": _BENCHMARKS_DIR / "live_canary_plan_v4.json",
 }
 # Plan versions that dispatch trials in a frozen BLOCKED schedule.
-_BLOCKED_SCHEDULE_PLAN_VERSIONS = frozenset({"v3"})
+_BLOCKED_SCHEDULE_PLAN_VERSIONS = frozenset({"v3", "v4"})
+_PHASE_6B_PLAN_VERSIONS = frozenset({"v4"})
 OVERLAYS_PATH = "benchmarks/composed/live_overlays.yaml"
+_OVERLAYS_PATH_BY_VERSION: dict[str, str] = {
+    "v4": "benchmarks/composed/live_overlays_v2.yaml",
+}
+# The canonical (provider-neutral) decision-point action surface fingerprinted
+# for Phase 6B: relay (RQ1) + call_tool (RQ2) + stop.
+_PHASE_6B_CANONICAL_ACTIONS: tuple[str, ...] = ("relay_to_remote", "call_tool", "stop")
 MODEL_PLACEHOLDER = "REPLACE_WITH_MODEL_ID"
 RUN_DIR_ROOT = Path("reports/experiments")
 
@@ -111,11 +126,15 @@ def load_frozen_plan(model: str | None, plan_version: str = "v1") -> PilotExperi
     return plan
 
 
+def _overlays_path_for(plan: PilotExperimentPlan) -> str:
+    return _OVERLAYS_PATH_BY_VERSION.get(plan.experiment_version, OVERLAYS_PATH)
+
+
 def resolve_overlays(plan: PilotExperimentPlan) -> list[LiveExperimentOverlay]:
     """Validates every overlay id in the plan exists, and that the plan's
     own budget is internally consistent, BEFORE any provider/transport is
     ever touched."""
-    suite = load_live_overlays(OVERLAYS_PATH)
+    suite = load_live_overlays(_overlays_path_for(plan))
     overlays_by_id = {overlay.id: overlay for overlay in suite.overlays}
 
     unknown = [oid for oid in plan.overlay_ids if oid not in overlays_by_id]
@@ -136,13 +155,19 @@ def _uses_blocked_schedule(plan: PilotExperimentPlan) -> bool:
     return plan.experiment_version in _BLOCKED_SCHEDULE_PLAN_VERSIONS
 
 
+def _is_phase_6b(plan: PilotExperimentPlan) -> bool:
+    return plan.experiment_version in _PHASE_6B_PLAN_VERSIONS
+
+
 def _resolve_schedule(plan: PilotExperimentPlan) -> list[ScheduledTrial] | None:
-    """The frozen per-model blocked schedule for a v3 plan (None otherwise).
-    Raises ``ComposedLivePilotConfigError`` if the model is not in the frozen
-    Phase 4B panel."""
+    """The frozen per-model blocked schedule for a v3 (Phase 4B) or v4
+    (Phase 6B) plan (None otherwise). Raises ``ComposedLivePilotConfigError``
+    if the model is not in that study's frozen panel."""
     if not _uses_blocked_schedule(plan):
         return None
     try:
+        if _is_phase_6b(plan):
+            return build_phase_6b_model_schedule(plan.model)
         return build_model_schedule(plan.model, blocks_per_model=plan.trials_per_condition)
     except ValueError as exc:
         raise ComposedLivePilotConfigError(str(exc)) from None
@@ -151,6 +176,14 @@ def _resolve_schedule(plan: PilotExperimentPlan) -> list[ScheduledTrial] | None:
 def _execution_fingerprint_for(plan: PilotExperimentPlan, overlays: list[LiveExperimentOverlay]):
     schedule = _resolve_schedule(plan)
     sched_sha = schedule_sha256(schedule) if schedule is not None else None
+    if _is_phase_6b(plan):
+        fp = compute_execution_fingerprint_v2(
+            plan,
+            overlays,
+            canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
+            schedule_sha256=sched_sha,
+        )
+        return fp, schedule
     return compute_execution_fingerprint(plan, overlays, schedule_sha256=sched_sha), schedule
 
 
@@ -173,15 +206,20 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
     makes no provider call."""
     overlays = resolve_overlays(plan)
     fingerprint, schedule = _execution_fingerprint_for(plan, overlays)
+    # The frozen blocked schedule (v3/v4) is the authoritative trial count;
+    # for an unscheduled plan it is trials_per_condition x #overlays.
+    total_trials = (
+        len(schedule) if schedule is not None else plan.trials_per_condition * len(plan.overlay_ids)
+    )
     estimated_max_provider_calls = min(
-        plan.trials_per_condition * len(plan.overlay_ids) * plan.max_decisions_per_trial,
+        total_trials * plan.max_decisions_per_trial,
         plan.max_total_decisions,
     )
     report = {
         "model": plan.model,
         "overlays": list(plan.overlay_ids),
         "trials_per_condition": plan.trials_per_condition,
-        "total_trials": plan.trials_per_condition * len(plan.overlay_ids),
+        "total_trials": total_trials,
         "max_decisions_per_trial": plan.max_decisions_per_trial,
         "max_total_decisions": plan.max_total_decisions,
         "max_output_tokens": plan.max_output_tokens,
@@ -198,15 +236,25 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
         "host_policy_sha256": fingerprint.host_policy_sha256,
         "tool_schema_sha256": fingerprint.tool_schema_sha256,
         "schedule_sha256": fingerprint.schedule_sha256,
+        "fingerprint_version": fingerprint.fingerprint_version,
+        "canonical_action_schema_sha256": fingerprint.canonical_action_schema_sha256,
+        "uv_lock_sha256": fingerprint.uv_lock_sha256,
+        "python_runtime_version": fingerprint.python_runtime_version,
         "execution_fingerprint_sha256": fingerprint.execution_fingerprint_sha256,
         "run_directory": str(RUN_DIR_ROOT / run_id),
         "enable_real_model_composed_runs": settings.enable_real_model_composed_runs,
         "openai_api_key_present": real_model_api_key_configured(),
+        "provider_calls_made": 0,
     }
     if schedule is not None:
         report["blocked_schedule"] = {
-            "scheduling_seed": PHASE_4B_SCHEDULE_SEED,
-            "blocks": plan.trials_per_condition,
+            "scheduling_seed": (
+                PHASE_6B_SCHEDULE_SEED if _is_phase_6b(plan) else PHASE_4B_SCHEDULE_SEED
+            ),
+            "blocks": plan.trials_per_condition
+            if not _is_phase_6b(plan)
+            else max(e.block_index for e in schedule) + 1,
+            "overlays_per_block": len({e.overlay_id for e in schedule if e.block_index == 0}),
             "trials_in_schedule": len(schedule),
             "first_block_overlay_order": [
                 entry.overlay_id

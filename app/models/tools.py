@@ -18,6 +18,20 @@ class ToolDefinition(BaseModel):
     required_arguments: list[str] = Field(default_factory=list)
     is_mutating: bool = False
 
+    def model_visible_dump(self) -> dict[str, Any]:
+        """The projection a host MODEL may see: name, neutral functional
+        description, and the input schema only. ``is_mutating`` -- the
+        benchmark's trusted classification -- and any other evaluation-side
+        field are excluded, so a real model never receives a
+        mutating/read-only signal about a tool (Phase 6B model-blindness
+        rule). The host/gate reads ``is_mutating`` separately, server-side."""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "input_schema": self.input_schema,
+            "required_arguments": list(self.required_arguments),
+        }
+
     @classmethod
     def from_mcp_tool(
         cls,

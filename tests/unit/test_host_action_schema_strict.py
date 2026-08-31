@@ -37,11 +37,23 @@ def _iter_object_nodes(node, path="$"):
             yield from _iter_object_nodes(dschema, f"{path}.{defs_key}.{dname}")
 
 
-def test_all_four_host_action_tools_are_present_and_strict():
+def test_all_host_action_tools_are_present_and_strict():
     names = {tool["name"] for tool in HOST_ACTION_TOOLS_FOR_OPENAI}
     assert names == _EXPECTED_TOOL_NAMES
     for tool in HOST_ACTION_TOOLS_FOR_OPENAI:
         assert tool.get("strict") is True, tool["name"]
+
+
+def test_phase_6b_call_tool_is_separate_and_strict_and_not_in_the_frozen_4():
+    """call_tool must NOT be in HOST_ACTION_TOOLS_FOR_OPENAI (whose SHA is
+    folded into every frozen v1/v2/v3 fingerprint) -- it lives in
+    ALL_HOST_ACTION_TOOLS and is offered only via an explicit restriction."""
+    from app.runner.host_action_schema_openai import ALL_HOST_ACTION_TOOLS, CALL_TOOL_ACTION
+
+    assert "call_tool" not in {t["name"] for t in HOST_ACTION_TOOLS_FOR_OPENAI}
+    assert "call_tool" in {t["name"] for t in ALL_HOST_ACTION_TOOLS}
+    assert CALL_TOOL_ACTION["strict"] is True
+    assert host_action_schema_strict_violations() == []  # covers call_tool too
 
 
 def test_no_strict_schema_violations_anywhere_in_the_emitted_action_surface():

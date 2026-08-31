@@ -25,6 +25,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import platform
 import subprocess
 from pathlib import Path
 
@@ -38,13 +39,30 @@ __all__ = [
     "ExecutionFingerprint",
     "ExecutionFingerprintError",
     "compute_execution_fingerprint",
+    "compute_execution_fingerprint_v2",
     "host_policy_sha256",
+    "python_runtime_version",
     "resolve_source_commit_sha",
     "resolved_overlay_bundle_sha256",
+    "uv_lock_sha256",
 ]
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _SOURCE_COMMIT_ENV_VARS = ("A2AVALIDATOR_SOURCE_COMMIT", "SOURCE_COMMIT_SHA")
+
+
+def uv_lock_sha256() -> str:
+    """SHA-256 of the repo's ``uv.lock`` bytes -- pins the exact resolved
+    dependency set (incl. the MCP Python SDK) the run executed under."""
+    lock_path = _REPO_ROOT / "uv.lock"
+    if not lock_path.exists():
+        raise ExecutionFingerprintError("uv.lock not found; cannot fingerprint the environment.")
+    return hashlib.sha256(lock_path.read_bytes()).hexdigest()
+
+
+def python_runtime_version() -> str:
+    """e.g. ``"3.12.2"`` -- the interpreter the run executed under."""
+    return platform.python_version()
 
 
 class ExecutionFingerprintError(RuntimeError):
@@ -86,13 +104,33 @@ def resolve_source_commit_sha() -> str:
     return sha
 
 
+# Phase 6B fields on LiveExperimentOverlay. Excluded from the bundle dump
+# WHEN AT THEIR DEFAULT, so every already-frozen v1/v2/v3 overlay (which
+# never sets any of them) hashes byte-identically to before Phase 6B. A v4
+# overlay that sets them includes them in the hash.
+_PHASE_6B_OVERLAY_DEFAULTS = {
+    "action_surface": "legacy_wrapper",
+    "record_field_values": None,
+    "content_class_override": None,
+}
+
+
+def _overlay_bundle_dump(overlay: LiveExperimentOverlay) -> dict:
+    dumped = overlay.model_dump(mode="json")
+    for key, default in _PHASE_6B_OVERLAY_DEFAULTS.items():
+        if dumped.get(key) == default:
+            dumped.pop(key, None)
+    return dumped
+
+
 def resolved_overlay_bundle_sha256(overlays: list[LiveExperimentOverlay]) -> str:
     """Canonical SHA-256 of the RESOLVED overlay contents, in the given
     order. Two overlays that share an id but differ in any field
     (``remote_artifact_text``, ``local_tool_arguments``, canaries, prompt,
-    ...) produce different bundles."""
+    ...) produce different bundles. Phase 6B-only fields left at their
+    defaults are omitted so pre-6B bundles are byte-unchanged."""
     canonical = json.dumps(
-        [overlay.model_dump(mode="json") for overlay in overlays],
+        [_overlay_bundle_dump(overlay) for overlay in overlays],
         sort_keys=True,
         separators=(",", ":"),
         ensure_ascii=False,
@@ -108,6 +146,9 @@ def _combine(
     host_policy_sha256: str,
     tool_schema_sha256: str,
     schedule_sha256: str | None,
+    canonical_action_schema_sha256: str | None = None,
+    uv_lock_sha256: str | None = None,
+    python_runtime_version: str | None = None,
 ) -> str:
     payload = {
         "config_hash": config_hash,
@@ -120,6 +161,14 @@ def _combine(
     # already-frozen v1/v2 fingerprint stays byte-identical.
     if schedule_sha256 is not None:
         payload["schedule_sha256"] = schedule_sha256
+    # Phase 6B (fingerprint v2): folded in only when provided, so every
+    # already-frozen Phase 4A/4B fingerprint stays byte-identical.
+    if canonical_action_schema_sha256 is not None:
+        payload["canonical_action_schema_sha256"] = canonical_action_schema_sha256
+    if uv_lock_sha256 is not None:
+        payload["uv_lock_sha256"] = uv_lock_sha256
+    if python_runtime_version is not None:
+        payload["python_runtime_version"] = python_runtime_version
     canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
@@ -158,5 +207,57 @@ def compute_execution_fingerprint(
         host_policy_sha256=policy_hash,
         tool_schema_sha256=tool_hash,
         schedule_sha256=schedule_sha256,
+        execution_fingerprint_sha256=fingerprint,
+    )
+
+
+def compute_execution_fingerprint_v2(
+    plan: PilotExperimentPlan,
+    resolved_overlays: list[LiveExperimentOverlay],
+    *,
+    canonical_actions: tuple[str, ...],
+    source_commit_sha: str | None = None,
+    tool_schema_sha256: str | None = None,
+    schedule_sha256: str | None = None,
+    uv_lock_hash: str | None = None,
+    py_version: str | None = None,
+) -> ExecutionFingerprint:
+    """Phase 6B fingerprint. Same six v1 inputs PLUS the canonical
+    action-schema hash, the ``uv.lock`` SHA-256, and the Python runtime
+    version. v1 verification is untouched: a v1 fingerprint (which carries
+    none of the three new inputs) still combines to the identical value."""
+    commit = source_commit_sha if source_commit_sha is not None else resolve_source_commit_sha()
+    tool_hash = (
+        tool_schema_sha256 if tool_schema_sha256 is not None else host_action_schema_fingerprint()
+    )
+    policy_hash = host_policy_sha256()
+    bundle_hash = resolved_overlay_bundle_sha256(resolved_overlays)
+    from app.runner.host_action_schema_openai import canonical_action_schema_sha256
+
+    action_schema_hash = canonical_action_schema_sha256(canonical_actions)
+    lock_hash = uv_lock_hash if uv_lock_hash is not None else uv_lock_sha256()
+    py_ver = py_version if py_version is not None else python_runtime_version()
+    fingerprint = _combine(
+        config_hash=plan.config_hash,
+        source_commit_sha=commit,
+        resolved_overlay_bundle_sha256=bundle_hash,
+        host_policy_sha256=policy_hash,
+        tool_schema_sha256=tool_hash,
+        schedule_sha256=schedule_sha256,
+        canonical_action_schema_sha256=action_schema_hash,
+        uv_lock_sha256=lock_hash,
+        python_runtime_version=py_ver,
+    )
+    return ExecutionFingerprint(
+        config_hash=plan.config_hash,
+        source_commit_sha=commit,
+        resolved_overlay_bundle_sha256=bundle_hash,
+        host_policy_sha256=policy_hash,
+        tool_schema_sha256=tool_hash,
+        schedule_sha256=schedule_sha256,
+        fingerprint_version="v2",
+        canonical_action_schema_sha256=action_schema_hash,
+        uv_lock_sha256=lock_hash,
+        python_runtime_version=py_ver,
         execution_fingerprint_sha256=fingerprint,
     )

@@ -31,4 +31,11 @@ class ExecutionFingerprint(BaseModel):
     # (v1/v2) -- folded into execution_fingerprint_sha256 only when present,
     # so pre-Phase-4B fingerprints are byte-unchanged.
     schedule_sha256: str | None = None
+    # Phase 6B (fingerprint v2). All None on a v1 fingerprint -- folded into
+    # execution_fingerprint_sha256 only when present, so every already-frozen
+    # Phase 4A/4B fingerprint verifies byte-identically.
+    fingerprint_version: str = "v1"
+    canonical_action_schema_sha256: str | None = None
+    uv_lock_sha256: str | None = None
+    python_runtime_version: str | None = None
     execution_fingerprint_sha256: str

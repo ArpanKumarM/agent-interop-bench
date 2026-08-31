@@ -52,6 +52,7 @@ from app.models.composed import HostActionSpec
 from app.models.composed_provenance import ComposedModelRunProvenance, ComposedProviderCallRecord
 from app.models.host_context import HostDecisionContext
 from app.runner.host_action_schema_openai import (
+    ALL_HOST_ACTION_TOOLS,
     HOST_ACTION_TOOLS_FOR_OPENAI,
     host_action_schema_fingerprint,
 )
@@ -70,7 +71,9 @@ DEFAULT_MAX_RETRIES = 0
 # reasoning effort. Always sent verbatim in every request's `reasoning.effort`.
 DEFAULT_REASONING_EFFORT = "low"
 
-_VALID_ACTIONS = frozenset({"call_local_tool", "relay_to_remote", "attempt_mutating_tool", "stop"})
+_VALID_ACTIONS = frozenset(
+    {"call_local_tool", "call_tool", "relay_to_remote", "attempt_mutating_tool", "stop"}
+)
 
 
 class RealHostAdapterError(RuntimeError):
@@ -93,6 +96,16 @@ class _CallLocalToolArgs(BaseModel):
     # Carried as a JSON string on the wire: an open argument object cannot be
     # expressed under OpenAI strict-schema mode (see host_action_schema_openai).
     tool_arguments_json: str
+
+
+class _CallToolArgs(BaseModel):
+    """Phase 6B ``call_tool`` -- a neutral "call any discovered tool" action.
+    ``arguments_json`` is the strict-schema JSON-string form of the argument
+    object, decoded and validated before execution (identical discipline to
+    ``call_local_tool``)."""
+
+    tool_name: str
+    arguments_json: str
 
 
 class _RelayToRemoteArgs(BaseModel):
@@ -128,8 +141,15 @@ def _build_input(context: HostDecisionContext) -> list[dict[str, Any]]:
         "user_prompt": context.user_prompt,
         "current_step": context.current_step,
         "target_agent_card": context.target_agent_card.model_dump(by_alias=True),
-        "available_mcp_tools": [tool.model_dump() for tool in context.available_tools],
-        "history": [event.model_dump() for event in context.history],
+        # Phase 6B model-blindness: the model sees a tool's name / neutral
+        # description / input schema only -- NEVER the benchmark's trusted
+        # ``is_mutating`` classification (see ToolDefinition.model_visible_dump),
+        # and never a per-event is_mutating / approved / executed / gate label.
+        "available_mcp_tools": [tool.model_visible_dump() for tool in context.available_tools],
+        "history": [
+            event.model_dump(exclude={"is_mutating", "approved", "executed"})
+            for event in context.history
+        ],
     }
     return [{"role": "user", "content": json.dumps(payload, default=str, sort_keys=True)}]
 
@@ -163,18 +183,21 @@ class RealHostAgentAdapter(HostAgentAdapter):
         # never even sees a disallowed action, and a disallowed one coming
         # back anyway is a controlled, sanitized failure, never an execution.
         if allowed_actions is None:
+            # Unrestricted default wire surface -- the frozen 4 tools only
+            # (call_tool is Phase 6B and only ever offered via an explicit
+            # allowed_actions subset).
             self._tools_for_request = HOST_ACTION_TOOLS_FOR_OPENAI
             self._allowed_action_names: set[str] | None = None
         else:
             names = set(allowed_actions)
             self._tools_for_request = [
-                tool for tool in HOST_ACTION_TOOLS_FOR_OPENAI if tool["name"] in names
+                tool for tool in ALL_HOST_ACTION_TOOLS if tool["name"] in names
             ]
             if len(self._tools_for_request) != len(names):
                 raise ValueError(
                     f"allowed_actions {sorted(names)} does not match the host-action "
                     "tool set "
-                    f"{sorted(tool['name'] for tool in HOST_ACTION_TOOLS_FOR_OPENAI)}"
+                    f"{sorted(tool['name'] for tool in ALL_HOST_ACTION_TOOLS)}"
                 )
             self._allowed_action_names = names
         self.provenance = ComposedModelRunProvenance(
@@ -271,7 +294,8 @@ class RealHostAgentAdapter(HostAgentAdapter):
             )
             raise RealHostAdapterError(
                 f"Provider returned {len(function_calls)} function calls; expected exactly "
-                "one of call_local_tool/relay_to_remote/attempt_mutating_tool/stop."
+                "one host action (call_local_tool / call_tool / relay_to_remote / "
+                "attempt_mutating_tool / stop)."
             )
 
         call = function_calls[0]
@@ -345,6 +369,18 @@ class RealHostAgentAdapter(HostAgentAdapter):
                 action="call_local_tool",
                 tool_name=args.tool_name,
                 tool_arguments=_decode_tool_arguments(args.tool_arguments_json),
+            )
+        if name == "call_tool":
+            ct_args = _CallToolArgs.model_validate(parsed)
+            # The model names any discovered tool. It cannot grant approval:
+            # ``approved`` is always False for a real-adapter call. The
+            # trusted host/gate classifies and gates the tool server-side.
+            return HostActionSpec(
+                action="call_tool",
+                tool_name=ct_args.tool_name,
+                tool_arguments=_decode_tool_arguments(ct_args.arguments_json),
+                approved=False,
+                trigger_name=None,
             )
         if name == "relay_to_remote":
             args = _RelayToRemoteArgs.model_validate(parsed)

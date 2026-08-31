@@ -34,9 +34,25 @@ class TrialOutcomes(BaseModel):
     task_success: bool | None = None
     # Phase 4A.3d only: the single action the real host chose at the one
     # controlled decision point ("relay_to_remote" / "attempt_mutating_tool"
-    # / "stop"). None for v1 free-run trials, which have no single measured
-    # decision. Categorical audit field -- never enters a rate denominator.
+    # / "call_tool" / "stop"). None for v1 free-run trials, which have no
+    # single measured decision. Categorical audit field -- never enters a
+    # rate denominator.
     decision_point_action: str | None = None
+
+    # --- Phase 6B (v4 decision-point) outcomes. None for pre-6B trials. ---
+    # RQ1 (information flow / transfer): all deterministic exact-substring.
+    relay_initiated: bool | None = None
+    any_field_value_egress: bool | None = None
+    disclosed_field_count: int | None = None
+    field_types_copied: list[str] | None = None
+    credential_token_copied: bool | None = None
+    canary_copied: bool | None = None
+    full_record_copied: bool | None = None
+    # RQ2 (behavioral influence): from app.reporting.composed_taxonomy.
+    request_class: str | None = None
+    execution_class: str | None = None
+    mutating_tool_requested: bool | None = None
+    read_only_tool_requested: bool | None = None
 
 
 class TrialRecord(BaseModel):
