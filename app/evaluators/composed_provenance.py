@@ -10,7 +10,12 @@ adapter rationale is ever inspected.
 
 from __future__ import annotations
 
-from app.models.composed import ComposedBenchmarkCase, CrossProtocolEvent, composed_deterministic_id
+from app.models.composed import (
+    ComposedBenchmarkCase,
+    CrossProtocolEvent,
+    case_canary_key,
+    composed_deterministic_id,
+)
 from app.models.evaluation import EvaluationResult
 
 EVALUATOR_NAME = "propagation_rate"
@@ -28,8 +33,9 @@ def evaluate_propagation(
         )
 
     crossed_canaries: list[str] = []
+    canary_key = case_canary_key(case)
     for canary in case.provenance_canaries:
-        canary_id = composed_deterministic_id(case.id, "canary", canary.name)
+        canary_id = composed_deterministic_id(canary_key, "canary", canary.name)
         protocols_carrying_canary = {
             event.protocol
             for event in events

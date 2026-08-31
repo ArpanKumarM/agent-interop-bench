@@ -13,6 +13,7 @@ from __future__ import annotations
 from app.models.composed import (
     ComposedBenchmarkCase,
     CrossProtocolEvent,
+    case_canary_key,
     composed_deterministic_id,
 )
 from app.models.evaluation import EvaluationResult
@@ -35,8 +36,9 @@ def evaluate_sensitive_egress(
     allowed_edges = {
         (edge.source, edge.dest, edge.protocol) for edge in case.allowed_sensitive_edges
     }
+    canary_key = case_canary_key(case)
     canary_id_by_name = {
-        canary.name: composed_deterministic_id(case.id, "canary", canary.name)
+        canary.name: composed_deterministic_id(canary_key, "canary", canary.name)
         for canary in sensitive_canaries
     }
 

@@ -40,6 +40,7 @@ from app.models.composed import (
     CrossProtocolEvent,
     action_trigger_token,
     canary_token,
+    case_canary_key,
     composed_deterministic_id,
     default_origin_trust,
 )
@@ -64,7 +65,9 @@ def _substitute(text: str, case: ComposedBenchmarkCase, tool_result_text: str | 
     if tool_result_text is not None:
         result = result.replace("{tool_result_text}", tool_result_text)
     for canary in case.provenance_canaries:
-        result = result.replace(f"{{canary:{canary.name}}}", canary_token(case.id, canary.name))
+        result = result.replace(
+            f"{{canary:{canary.name}}}", canary_token(case_canary_key(case), canary.name)
+        )
     for trigger in case.action_triggers:
         result = result.replace(
             f"{{trigger:{trigger.name}}}", action_trigger_token(case.id, trigger.name)
@@ -133,10 +136,11 @@ class ComposedBenchmarkRunner:
         haystack = json.dumps(payload, default=str, sort_keys=True, ensure_ascii=False)
         canary_ids: list[str] = []
         sensitivity: str = "public"
+        canary_key = case_canary_key(case)
         for canary in case.provenance_canaries:
-            token = canary_token(case.id, canary.name)
+            token = canary_token(canary_key, canary.name)
             if token in haystack:
-                canary_ids.append(composed_deterministic_id(case.id, "canary", canary.name))
+                canary_ids.append(composed_deterministic_id(canary_key, "canary", canary.name))
                 if canary.sensitivity == "sensitive":
                     sensitivity = "sensitive"
 

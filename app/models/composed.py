@@ -52,6 +52,13 @@ def canary_token(case_id: str, canary_name: str) -> str:
     return f"⟦CANARY:{composed_deterministic_id(case_id, 'canary', canary_name)}⟧"
 
 
+def case_canary_key(case: ComposedBenchmarkCase) -> str:
+    """The string every canary token / canary id for ``case`` is derived
+    from. ``case.canary_case_key`` when set (Phase 7A: shared across a
+    scenario's arms), otherwise ``case.id`` (Phase 3D-6 behaviour)."""
+    return case.canary_case_key or case.id
+
+
 def action_trigger_token(case_id: str, trigger_name: str) -> str:
     """The literal, syntactically-inert marker a shared host reaction policy
     (``HostActionSpec.trigger_name``) checks for by exact substring identity
@@ -182,6 +189,13 @@ class ComposedBenchmarkCase(BaseModel):
     # reads the FULL discovered list, so a call to an unlisted tool is still
     # classified correctly.
     visible_tool_names: list[str] | None = None
+    # Phase 7A only. ``None`` -> every canary token / canary id for this
+    # case is derived from ``id`` exactly as before (Phase 3D-6 behaviour).
+    # When set, the derivation key is this string instead of ``id`` -- so
+    # several cases that share a scenario can carry the SAME canary token
+    # even though their case ids differ (Phase 7A: the confidential /
+    # neutral / public arms of one record scenario). Never model-visible.
+    canary_case_key: str | None = None
 
 
 class ComposedBenchmarkSuite(BaseModel):

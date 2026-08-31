@@ -118,6 +118,9 @@ _PHASE_6B_OVERLAY_DEFAULTS = {
     "content_class_override": None,
     "host_policy_text": None,
     "visible_tool_names": None,
+    # Phase 7A field: omitted from the bundle dump when at its default, so
+    # every already-frozen v1/v2/v3/v4 overlay bundle hashes byte-identically.
+    "canary_case_key": None,
 }
 
 

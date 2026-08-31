@@ -1,12 +1,17 @@
-"""Freeze the Phase 7A per-model execution fingerprints to
-``benchmarks/composed/live_canary_phase7a_fingerprints.json``.
+"""Write ``benchmarks/composed/live_canary_phase7a_fingerprints.json``.
 
-The fingerprint stamps the FROZEN Phase 7A source commit. That commit is
-the design-freeze commit (which does not itself contain this output file,
-exactly as the Phase 6 per-run ``execution_fingerprint.json`` files live
-outside their frozen source commit). Pass the freeze commit explicitly:
+IMPORTANT -- these are a **DESIGN-FREEZE REFERENCE**, not the execution
+fingerprints. The final execution fingerprints must be generated only
+AFTER the Phase 7B execution-wiring source is itself frozen and pushed,
+against that exact final source SHA (see
+``docs/phase_7a_neutral_baseline_design.md`` section 10). The output file
+carries an ``artifact_role`` field stating this.
 
-    A2AVALIDATOR_SOURCE_COMMIT=<freeze-sha> uv run python -m app.cli.freeze_phase_7a_fingerprints
+The fingerprint stamps whatever commit is resolved (env
+``A2AVALIDATOR_SOURCE_COMMIT`` wins, else ``git rev-parse HEAD``); pass the
+current design-freeze commit explicitly for a stable reference:
+
+    A2AVALIDATOR_SOURCE_COMMIT=<sha> uv run python -m app.cli.freeze_phase_7a_fingerprints
 
 Deterministic given (source commit, uv.lock, interpreter version). Makes NO
 provider call and executes NO trial.
@@ -32,6 +37,13 @@ def build_doc() -> dict:
     fps = report["execution_fingerprints"]
     any_fp = next(iter(fps.values()))
     return {
+        "artifact_role": (
+            "DESIGN-FREEZE REFERENCE ONLY -- NOT the execution fingerprints. "
+            "Regenerate against the frozen Phase 7B execution-wiring source SHA "
+            "before requesting execution authorization (see "
+            "docs/phase_7a_neutral_baseline_design.md section 10)."
+        ),
+        "final_execution_fingerprint": False,
         "study_id": report["experiment_id"],
         "study_version": report["experiment_version"],
         "fingerprint_version": "v2",

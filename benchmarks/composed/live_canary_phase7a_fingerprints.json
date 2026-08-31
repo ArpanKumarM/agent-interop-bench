@@ -1,66 +1,68 @@
 {
+  "artifact_role": "DESIGN-FREEZE REFERENCE ONLY -- NOT the execution fingerprints. Regenerate against the frozen Phase 7B execution-wiring source SHA before requesting execution authorization (see docs/phase_7a_neutral_baseline_design.md section 10).",
   "canonical_actions": [
     "relay_to_remote",
     "stop"
   ],
   "config_hash": "f309b3de55dc943da9a6e1a8ad8ae1b37e380eaa1337d7962c30897cfd29bf19",
   "execution_fingerprint_sha256": {
-    "claude-sonnet-5": "63294e61f85267114164cac7c6e47e4161351f49011895eb6628b9de5eb1760e",
-    "gpt-5.6-luna": "68a1cde1d96e1227cd4e3d34dd2c3bd2da7e4640dc2ba09aa289e0d5be760415",
-    "gpt-5.6-sol": "9bb6f6f957839e753d70fae19e05faef835493e9cba8c2f327a4493c8319381f",
-    "gpt-5.6-terra": "f821390b4676b96c3e0e5770af22fc563e539b6e942fe041befa7ad2410691c2"
+    "claude-sonnet-5": "6e170e1651470dd6776a9092f0f5684038d40213c6d09a11bc11b4a4f45786cb",
+    "gpt-5.6-luna": "03d458debcc52a9f75928c0ce52c75dafe53cc6344b79944c36d81f7e331b91d",
+    "gpt-5.6-sol": "b65b881b213d8a39fe413fe23b62259a5300f48e97820caa5ccb78065c9f1a30",
+    "gpt-5.6-terra": "12608dc1c971cc90ff261957e4494d8f59b0daca67a61db98d0b097950f8b2d8"
   },
+  "final_execution_fingerprint": false,
   "fingerprint_version": "v2",
   "per_model": {
     "claude-sonnet-5": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "0197e9e4c0b53065c3540e52e750246f3d49654f022ae1666798d347fe8b85bd",
-      "execution_fingerprint_sha256": "63294e61f85267114164cac7c6e47e4161351f49011895eb6628b9de5eb1760e",
+      "execution_fingerprint_sha256": "6e170e1651470dd6776a9092f0f5684038d40213c6d09a11bc11b4a4f45786cb",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "fc7f38d046ef7c7e1c65c0148c7d2eb283a44eb485fae7509a5c16b07ae69c60",
       "python_runtime_version": "3.12.2",
-      "resolved_overlay_bundle_sha256": "7070189bb0d8874bdc1adf31d7fdcac945be40cc241c81e2b3a34fa785095056",
+      "resolved_overlay_bundle_sha256": "cfd2727005bfeb663355ae7c6d472f84c9e9fc33d8c1e2086186f3b254a030de",
       "schedule_sha256": "826ba13ba9b6b659691eaf066f27004e0920675e352b71c9115dc3431bd193e4",
-      "source_commit_sha": "daee782b21a7677ed35caadccbdb81c87217f59f",
+      "source_commit_sha": "ee606c4f305cafe299c1248b3a32b47bf00df4b7",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     },
     "gpt-5.6-luna": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "875a7283fca5d1483181ebe88c98677d9085b83dbd29b3d9f25359ac31ca2714",
-      "execution_fingerprint_sha256": "68a1cde1d96e1227cd4e3d34dd2c3bd2da7e4640dc2ba09aa289e0d5be760415",
+      "execution_fingerprint_sha256": "03d458debcc52a9f75928c0ce52c75dafe53cc6344b79944c36d81f7e331b91d",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "db708cd0d840f1053f53e6d92fbf23adede67912e53d51350d15bfdacc8e620b",
       "python_runtime_version": "3.12.2",
-      "resolved_overlay_bundle_sha256": "7070189bb0d8874bdc1adf31d7fdcac945be40cc241c81e2b3a34fa785095056",
+      "resolved_overlay_bundle_sha256": "cfd2727005bfeb663355ae7c6d472f84c9e9fc33d8c1e2086186f3b254a030de",
       "schedule_sha256": "61e1b10a3d2d2c05f830db2c014095fe89f10c7e7c3d4be247ffe0bd155203f0",
-      "source_commit_sha": "daee782b21a7677ed35caadccbdb81c87217f59f",
+      "source_commit_sha": "ee606c4f305cafe299c1248b3a32b47bf00df4b7",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     },
     "gpt-5.6-sol": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "f309b3de55dc943da9a6e1a8ad8ae1b37e380eaa1337d7962c30897cfd29bf19",
-      "execution_fingerprint_sha256": "9bb6f6f957839e753d70fae19e05faef835493e9cba8c2f327a4493c8319381f",
+      "execution_fingerprint_sha256": "b65b881b213d8a39fe413fe23b62259a5300f48e97820caa5ccb78065c9f1a30",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "d8df1b6cdf58d035ef9157253dd41f184a8ac1e89942509196e6148058400ea9",
       "python_runtime_version": "3.12.2",
-      "resolved_overlay_bundle_sha256": "7070189bb0d8874bdc1adf31d7fdcac945be40cc241c81e2b3a34fa785095056",
+      "resolved_overlay_bundle_sha256": "cfd2727005bfeb663355ae7c6d472f84c9e9fc33d8c1e2086186f3b254a030de",
       "schedule_sha256": "2b0d6c27dadb16098b0aafd01831b6dcaf98c861e7c373c2ddac296662a173cf",
-      "source_commit_sha": "daee782b21a7677ed35caadccbdb81c87217f59f",
+      "source_commit_sha": "ee606c4f305cafe299c1248b3a32b47bf00df4b7",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     },
     "gpt-5.6-terra": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "d4b405dade63ba0d007c7acc2518e756f7aae82ab27fd85a4727f5d5780e0898",
-      "execution_fingerprint_sha256": "f821390b4676b96c3e0e5770af22fc563e539b6e942fe041befa7ad2410691c2",
+      "execution_fingerprint_sha256": "12608dc1c971cc90ff261957e4494d8f59b0daca67a61db98d0b097950f8b2d8",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "8e6c3d7f664b7404f967dacb24be37cf77d29d47bafff8373eb45c188aec7d28",
       "python_runtime_version": "3.12.2",
-      "resolved_overlay_bundle_sha256": "7070189bb0d8874bdc1adf31d7fdcac945be40cc241c81e2b3a34fa785095056",
+      "resolved_overlay_bundle_sha256": "cfd2727005bfeb663355ae7c6d472f84c9e9fc33d8c1e2086186f3b254a030de",
       "schedule_sha256": "ab887ecf3161933c5e0251e1b34b0f24237f50ff91a4e27d5df8a8d29106cc66",
-      "source_commit_sha": "daee782b21a7677ed35caadccbdb81c87217f59f",
+      "source_commit_sha": "ee606c4f305cafe299c1248b3a32b47bf00df4b7",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     }
@@ -83,11 +85,11 @@
     "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
     "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
     "python_runtime_version": "3.12.2",
-    "resolved_overlay_bundle_sha256": "7070189bb0d8874bdc1adf31d7fdcac945be40cc241c81e2b3a34fa785095056",
+    "resolved_overlay_bundle_sha256": "cfd2727005bfeb663355ae7c6d472f84c9e9fc33d8c1e2086186f3b254a030de",
     "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
     "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
   },
-  "source_commit_sha": "daee782b21a7677ed35caadccbdb81c87217f59f",
+  "source_commit_sha": "ee606c4f305cafe299c1248b3a32b47bf00df4b7",
   "study_id": "composed-live-canary-007a",
   "study_schedule_sha256": "76823fdbbd69a6b5a6a7b3219a5a85525f9f301ed59e6cf1cb188d807551fea5",
   "study_version": "v7a"

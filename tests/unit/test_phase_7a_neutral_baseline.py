@@ -42,9 +42,14 @@ from mock_servers.phase_7a_neutral_fixtures import (
     NEUTRAL_RECORD_OPENING,
     PHASE_7A_ARMS,
     arm_record_body,
+    identifier_findings,
     neutral_language_findings,
     neutral_record_body,
+    phase7a_canary_key,
+    phase7a_record_ref,
 )
+
+_DESIGN_DOC = Path("docs/phase_7a_neutral_baseline_design.md")
 
 _ARMS = ("confidential", "neutral", "public")
 _SUITE = load_live_overlays(str(OVERLAYS_PATH))
@@ -111,17 +116,151 @@ def test_six_substantive_values_byte_identical_across_arms():
         }
 
 
-def test_record_body_is_labelled_body_minus_prefix_except_ref_line():
+def test_labelled_body_is_exactly_neutral_body_plus_prefix():
+    """With the shared per-scenario canary the labelled body is byte-for-byte
+    the neutral body with the '[LABEL] ' prefix -- ref line included."""
     for pair in RQ1_PAIRS:
-        f = pair.fields
-        canary = "⟦CANARY:x⟧"
-        conf = arm_record_body("confidential", f, canary)
-        pub = arm_record_body("public", f, canary)
-        neu = neutral_record_body(f, canary)
-        assert conf == "[CONFIDENTIAL - INTERNAL ONLY] " + neu
-        assert pub == "[PUBLIC - OK TO SHARE] " + neu
+        arms = {a: _BY_ID[f"rq1-{pair.pair_id}-{a}"].record_field_values for a in _ARMS}
+        neu = arms["neutral"]["full_record_text"]
+        assert arms["confidential"]["full_record_text"] == "[CONFIDENTIAL - INTERNAL ONLY] " + neu
+        assert arms["public"]["full_record_text"] == "[PUBLIC - OK TO SHARE] " + neu
         assert neu.startswith(NEUTRAL_RECORD_OPENING)
         assert not neu.startswith("[")
+        # helper parity (fixed canary -> identical bodies mod prefix)
+        f = pair.fields
+        c = "⟦CANARY:x⟧"
+        assert arm_record_body("confidential", f, c) == "[CONFIDENTIAL - INTERNAL ONLY] " + (
+            neutral_record_body(f, c)
+        )
+
+
+def test_no_arm_semantics_leak_through_record_ref():
+    banned = (
+        "confidential",
+        "neutral",
+        "public",
+        "treatment",
+        "control",
+        "sensitive",
+        "share",
+        "permission",
+    )
+    for pair in RQ1_PAIRS:
+        refs = {}
+        for arm in _ARMS:
+            r = _BY_ID[f"rq1-{pair.pair_id}-{arm}"].local_tool_arguments["record_ref"]
+            refs[arm] = r
+            assert r == phase7a_record_ref(pair.pair_id, arm)
+            low = r.lower()
+            for w in banned:
+                assert w not in low, f"{arm} record_ref {r!r} leaks {w!r}"
+            assert identifier_findings(r) == []
+        assert len(set(refs.values())) == 3  # distinct opaque ids
+
+
+def test_no_arm_semantics_leak_through_canary_or_metadata():
+    for pair in RQ1_PAIRS:
+        key = phase7a_canary_key(pair.pair_id)
+        assert identifier_findings(key) == []
+        tokens = set()
+        for arm in _ARMS:
+            ov = _BY_ID[f"rq1-{pair.pair_id}-{arm}"]
+            assert ov.canary_case_key == key
+            tok = ov.record_field_values["canary_token"]
+            tokens.add(tok)
+            assert identifier_findings(tok) == []
+        # ONE shared canary token across all three arms
+        assert len(tokens) == 1
+
+
+def test_serialized_provider_input_diff_limited_to_preregistered_differences():
+    """The EXACT model-visible provider input, serialized as the real
+    adapter would, is byte-identical across the three arms of every scenario
+    once (a) the opening label prefix and (b) the opaque record_ref are
+    normalised. No provider call is made."""
+    from app.cli.phase_7a_input_audit import run
+
+    report = run()
+    assert report["provider_calls_made"] == 0
+    assert report["overlays_audited"] == 30
+    assert len(report["per_scenario"]) == 10
+    for pid, r in report["per_scenario"].items():
+        assert r["identical_after_normalising_label_and_record_ref"] is True, pid
+        assert r["canary_token_shared_across_arms"] is True, pid
+        diffs = r["remaining_model_visible_differences"]
+        assert diffs["opening_label_line"] == {
+            "confidential": "[CONFIDENTIAL - INTERNAL ONLY]",
+            "neutral": "<no label>",
+            "public": "[PUBLIC - OK TO SHARE]",
+        }
+        # the only other residual is the opaque, structurally-identical ref
+        refs = diffs["opaque_record_ref"]
+        assert set(refs) == set(_ARMS)
+        assert all(v.startswith("rec-7a-") for v in refs.values())
+        assert len(set(refs.values())) == 3
+
+
+def test_analysis_prereg_has_no_undefined_approx_or_gt_shorthand():
+    text = _DESIGN_DOC.read_text()
+    # the vague notation removed in 7A.1 must not reappear anywhere
+    for token in ("≈", "≫", "≪", " ~ ", ">>", "<<", "N≈P", "N≫C", "N ≈", "≈ P"):
+        assert token not in text, f"design doc still uses undefined shorthand {token!r}"
+    # the three contrasts are named explicitly
+    for c in ("C - N", "P - N", "C - P"):
+        assert c in text
+    # the guardrail against categorical / causal mechanism claims is present
+    low = text.lower()
+    assert "do not" in low and "categorical mechanism claim" in low
+    assert "never" in low and "causal mechanism claim" in low
+    assert "consistent with" in low  # the strongest permitted direction language
+
+
+def test_provider_request_config_identical_phase6_vs_phase7():
+    """The provider inference PARAMETERS are byte-identical between the
+    Phase 6 (RQ1+RQ2) run and Phase 7A (RQ1-only). Only the action surface
+    -- folded into provider_config_sha256 -- differs."""
+    from app.runner.model_panel import provider_config_sha256, provider_request_config
+
+    p6 = ("relay_to_remote", "call_tool", "stop")
+    p7 = ("relay_to_remote", "stop")
+    for m in PHASE_7A_MODEL_PANEL:
+        assert provider_request_config(m, timeout_seconds=20.0) == provider_request_config(
+            m, timeout_seconds=20.0
+        )
+        h6 = provider_config_sha256(m, canonical_actions=p6, timeout_seconds=20.0)
+        h7 = provider_config_sha256(m, canonical_actions=p7, timeout_seconds=20.0)
+        assert h6 != h7  # action surface differs by design (RQ1-only)
+
+
+def test_fingerprint_artifact_is_design_freeze_reference_not_final():
+    from app.cli.freeze_phase_7a_fingerprints import build_doc
+
+    doc = build_doc()
+    assert doc["final_execution_fingerprint"] is False
+    assert "DESIGN-FREEZE REFERENCE" in doc["artifact_role"]
+    assert doc["provider_calls_made"] == 0
+    assert doc["phase7_executed"] is False
+    p = Path("benchmarks/composed/live_canary_phase7a_fingerprints.json")
+    if p.exists():
+        on_disk = json.loads(p.read_text())
+        assert on_disk.get("final_execution_fingerprint") is False
+        assert "DESIGN-FREEZE REFERENCE" in on_disk.get("artifact_role", "")
+
+
+def test_shared_canary_key_leaves_phase6_derivation_unchanged():
+    """A ComposedBenchmarkCase with canary_case_key unset derives its canary
+    token / id from case.id exactly as before (Phase 3D-6)."""
+    from app.models.composed import canary_token, case_canary_key
+    from app.models.live_overlay import overlay_to_composed_case
+
+    v4 = load_live_overlays("benchmarks/composed/live_overlays_v2.yaml")
+    rq1 = next(o for o in v4.overlays if o.id.startswith("rq1-"))
+    case = overlay_to_composed_case(rq1)
+    assert case.canary_case_key is None
+    assert case_canary_key(case) == case.id
+    assert canary_token(case_canary_key(case), "record-marker") == canary_token(
+        case.id, "record-marker"
+    )
 
 
 # --------------------------------------------------------------------------- #

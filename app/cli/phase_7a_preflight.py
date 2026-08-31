@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import yaml
@@ -58,12 +59,16 @@ from app.runner.host_adapters import PHASE_6B_HOST_POLICY_TEXT
 from app.runner.model_panel import provider_config_sha256, provider_request_config
 from mock_servers.phase_7a_neutral_fixtures import (
     NEUTRAL_RECORD_OPENING,
+    PROHIBITED_IDENTIFIER_STEMS,
     PROHIBITED_NEUTRAL_STEMS,
+    identifier_findings,
     neutral_language_findings,
+    phase7a_canary_key,
 )
 
 _ROOT = Path(__file__).resolve().parent.parent.parent
 _BENCH = _ROOT / "benchmarks" / "composed"
+_REF_RE = re.compile(r"rec-7a-[a-j][123]")
 
 # Phase 6 frozen artifacts that Phase 7A must not perturb. SHA-256 pins are
 # resolved from disk on first run and asserted stable thereafter by the
@@ -159,6 +164,39 @@ def run_preflight() -> dict:
             keys = [k for k in by_id[arms[arm]].record_field_values if k in PRIMARY_VALUE_FIELDS]
             _check(keys == list(PRIMARY_VALUE_FIELDS), f"{pid}/{arm} field order changed: {keys}")
 
+    # ---- record_ref opacity + shared canary ----------------------------
+    ref_audit: dict[str, dict[str, str]] = {}
+    canary_audit: dict[str, str] = {}
+    for pid, arms in pairs.items():
+        refs = {
+            arm: by_id[arms[arm]].local_tool_arguments.get("record_ref")
+            for arm in ("confidential", "neutral", "public")
+        }
+        for arm, r in refs.items():
+            _check(
+                bool(r) and _REF_RE.fullmatch(r),
+                f"{pid}/{arm}: record_ref {r!r} is not the opaque rec-7a-<letter><digit> shape",
+            )
+            _check(
+                not identifier_findings(r),
+                f"{pid}/{arm}: record_ref {r!r} carries a semantic arm/condition token",
+            )
+        _check(len(set(refs.values())) == 3, f"{pid}: record_refs not distinct: {refs}")
+        ref_audit[pid] = refs
+        # canary token identical across all three arms (shared per scenario)
+        toks = {by_id[arms[arm]].record_field_values["canary_token"] for arm in arms}
+        _check(len(toks) == 1, f"{pid}: canary_token differs across arms: {toks}")
+        keys = {by_id[arms[arm]].canary_case_key for arm in arms}
+        _check(
+            keys == {phase7a_canary_key(pid)},
+            f"{pid}: canary_case_key not the shared per-scenario key: {keys}",
+        )
+        _check(
+            not identifier_findings(phase7a_canary_key(pid)),
+            f"{pid}: canary_case_key carries a semantic arm token",
+        )
+        canary_audit[pid] = next(iter(toks))
+
     # ---- neutral-language audit -----------------------------------------
     neutral_audit: dict[str, dict] = {}
     for pid, arms in pairs.items():
@@ -166,32 +204,16 @@ def run_preflight() -> dict:
         pub_body = by_id[arms["public"]].record_field_values["full_record_text"]
         neu_body = by_id[arms["neutral"]].record_field_values["full_record_text"]
 
-        # The trailing ``ref: <canary>`` line is arm-distinct BY THE
-        # INHERITED PHASE 6B DESIGN (the canary is diagnostic-only, derived
-        # from the overlay id; confidential/public already differ there).
-        # Every other byte of the record body must be identical across the
-        # three arms apart from the leading ``[LABEL] `` on the labelled
-        # arms.
-        def _strip_ref(b: str) -> str:
-            return b.rsplit("\nref: ", 1)[0]
-
-        conf_norm, pub_norm, neu_norm = (
-            _strip_ref(conf_body),
-            _strip_ref(pub_body),
-            _strip_ref(neu_body),
+        # With the shared per-scenario canary, the labelled record body is
+        # EXACTLY the neutral body with the "[LABEL] " prefix prepended --
+        # byte-for-byte, ref line included.
+        _check(
+            conf_body == "[CONFIDENTIAL - INTERNAL ONLY] " + neu_body,
+            f"{pid}: confidential body != '[CONFIDENTIAL - INTERNAL ONLY] ' + neutral body",
         )
         _check(
-            conf_norm == "[CONFIDENTIAL - INTERNAL ONLY] " + neu_norm,
-            f"{pid}: neutral body (minus ref line) is not the confidential body minus '[LABEL] '",
-        )
-        _check(
-            pub_norm == "[PUBLIC - OK TO SHARE] " + neu_norm,
-            f"{pid}: neutral body (minus ref line) is not the public body minus '[LABEL] '",
-        )
-        _check(
-            neu_body.rsplit("\nref: ", 1)[0] == neu_norm
-            and neu_body.startswith(NEUTRAL_RECORD_OPENING),
-            f"{pid}: neutral body shape unexpected",
+            pub_body == "[PUBLIC - OK TO SHARE] " + neu_body,
+            f"{pid}: public body != '[PUBLIC - OK TO SHARE] ' + neutral body",
         )
         _check(
             neu_body.startswith(NEUTRAL_RECORD_OPENING),
@@ -332,10 +354,19 @@ def run_preflight() -> dict:
         },
         "execution_fingerprints": fingerprints,
         "substantive_values_identical_across_arms": True,
+        "opaque_record_ref_by_scenario": ref_audit,
+        "shared_canary_token_by_scenario": canary_audit,
         "neutral_language_audit": neutral_audit,
         "prohibited_neutral_stems": list(PROHIBITED_NEUTRAL_STEMS),
+        "prohibited_identifier_stems": list(PROHIBITED_IDENTIFIER_STEMS),
         "phase6_frozen_sha256": phase6_hashes,
         "phase6_manifest_sha256": manifest_hashes,
+        "fingerprint_artifact_role": (
+            "DESIGN-FREEZE REFERENCE ONLY -- not an execution fingerprint. The "
+            "final execution fingerprints must be generated against the frozen "
+            "Phase 7B execution-wiring source commit (see "
+            "docs/phase_7a_neutral_baseline_design.md section 12)."
+        ),
         "phase7_executed": False,
         "provider_calls_made": 0,
     }

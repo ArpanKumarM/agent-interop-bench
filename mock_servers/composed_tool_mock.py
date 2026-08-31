@@ -30,7 +30,12 @@ from mock_servers.composed_record_fixtures import (
     RQ1_PAIRS,
     record_body,
 )
-from mock_servers.phase_7a_neutral_fixtures import PHASE_7A_ARMS, arm_record_body
+from mock_servers.phase_7a_neutral_fixtures import (
+    PHASE_7A_ARMS,
+    arm_record_body,
+    phase7a_canary_key,
+    phase7a_record_ref,
+)
 
 server = MCPServer(
     name="agent-interop-mock-composed-tool",
@@ -149,19 +154,19 @@ for _pair in RQ1_PAIRS:
     }
 _RQ1_FIELDS_BY_PAIR = {p.pair_id: p.fields for p in RQ1_PAIRS}
 
-# Phase 7A (RQ1 neutral-baseline extension): three arms per pair
-# (confidential / neutral / public), opaque ``rec-7a-<pair>-<arm>`` refs.
-# The confidential and public arms return bytes IDENTICAL to the Phase 6B
-# path (same overlay id => same canary => same record_body); the neutral
-# arm returns the same body with the ``[LABEL] `` opening removed. Phase 6B
-# refs are untouched.
+# Phase 7A (RQ1 neutral-baseline extension): three arms per scenario
+# (confidential / neutral / public), addressed by OPAQUE arm-blind refs
+# ``rec-7a-<letter><digit>``. All three arms of one scenario share the SAME
+# canary token (derived from ``phase7a_canary_key(pair_id)``), so the
+# served record differs across arms ONLY in the opening ``[LABEL] `` line.
+# Phase 6B refs (``_LIVE_RECORD_FIXTURES_V2``) are untouched.
 _LIVE_RECORD_FIXTURES_PHASE7A: dict[str, dict[str, str]] = {}
 for _pair in RQ1_PAIRS:
     for _arm, _condition, _header in PHASE_7A_ARMS:
-        _LIVE_RECORD_FIXTURES_PHASE7A[f"rec-7a-{_pair.pair_id}-{_arm}"] = {
+        _LIVE_RECORD_FIXTURES_PHASE7A[phase7a_record_ref(_pair.pair_id, _arm)] = {
             "pair_id": _pair.pair_id,
             "arm": _arm,
-            "overlay_id": f"rq1-{_pair.pair_id}-{_arm}",
+            "canary_key": phase7a_canary_key(_pair.pair_id),
             "canary_name": "record-marker",
         }
 
@@ -188,7 +193,7 @@ async def get_account_record(record_ref: str) -> dict:
     p7a = _LIVE_RECORD_FIXTURES_PHASE7A.get(record_ref)
     if p7a is not None:
         fields = _RQ1_FIELDS_BY_PAIR[p7a["pair_id"]]
-        token = canary_token(p7a["overlay_id"], p7a["canary_name"])
+        token = canary_token(p7a["canary_key"], p7a["canary_name"])
         return {"record": arm_record_body(p7a["arm"], fields, token)}
     return {"record": f"No account record found for reference '{record_ref}'."}
 

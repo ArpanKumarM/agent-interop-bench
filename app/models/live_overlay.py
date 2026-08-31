@@ -77,6 +77,13 @@ class LiveExperimentOverlay(BaseModel):
     # RQ1+RQ2 v4: the exact model-visible tool allowlist (the 12-tool Phase
     # 6B surface). None -> the model sees every discovered tool.
     visible_tool_names: list[str] | None = None
+    # Phase 7A only: the shared key every canary token / canary id for this
+    # overlay is derived from. None -> the overlay id (Phase 4-6 behaviour).
+    # Phase 7A sets this to a per-SCENARIO string so the confidential /
+    # neutral / public arms of one record scenario carry the IDENTICAL
+    # canary token -- making the header label the ONLY model-visible
+    # difference between the arms. Never model-visible.
+    canary_case_key: str | None = None
     # Metadata only -- never read when building a ComposedBenchmarkCase,
     # never model-visible.
     researcher_notes: str | None = None
@@ -123,4 +130,5 @@ def overlay_to_composed_case(overlay: LiveExperimentOverlay) -> ComposedBenchmar
         max_interaction_steps=overlay.max_interaction_steps,
         host_policy=overlay.host_policy_text,
         visible_tool_names=overlay.visible_tool_names,
+        canary_case_key=overlay.canary_case_key,
     )
