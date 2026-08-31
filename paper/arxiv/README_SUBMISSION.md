@@ -1,9 +1,16 @@
 # arXiv submission package — Agent Interop Bench cross-protocol pilot
 
-This directory is a self-contained arXiv-ready LaTeX source package. It is a
-faithful conversion of `paper/main.md` into LaTeX; **no experiment, provider
-call, or model inference was run** to produce it, and every number is
-verbatim from the frozen public release `phase4b-results-v1`.
+This directory is a self-contained arXiv-ready LaTeX source package. It
+renders the manuscript `paper/main.md` as a conventional single-column
+research paper. **Manuscript preparation introduced no new experimental runs
+or provider calls; all empirical results are reproduced from the frozen
+public release `phase4b-results-v1`.**
+
+The `main.tex` here is the **v2 (compressed) layout**: the earlier v1
+technical-report styling (numbered/bulleted lists, 14 sections, 19 pages)
+was rewritten into cohesive academic prose and a nine-section structure.
+No scientific result, number, Wilson interval, citation, or claim was
+changed; low-value per-cell detail moved to appendices.
 
 ## Final title
 
@@ -14,57 +21,70 @@ verbatim from the frozen public release `phase4b-results-v1`.
 
 Deployed AI agents increasingly speak two protocols at once: the Model
 Context Protocol (MCP) for local tool use, and the Agent2Agent Protocol
-(A2A) for delegating work to other agents. Each protocol has begun to
-attract dedicated safety benchmarks, but those benchmarks evaluate a single
-protocol in isolation. We study what happens *at the seam*: a real-model
-host that reads content from an MCP tool and, in the same task, exchanges
-messages with an A2A agent. We introduce Agent Interop Bench's composed
-harness, which drives one real-model host across both protocol legs ---
-implemented here as local deterministic MCP and A2A protocol fixtures, not
-external services --- within a single ordered event trace, and attaches an
-observable cross-protocol provenance model (deterministic content canaries
-with a sensitivity label, an explicit allowed-edge policy, and per-event
-causal ancestry) so that information flow and behavioral influence across
-the protocol boundary can be measured by exact rule-based checks without an
-LLM-based judge or evaluator.
+(A2A) for delegating work to other agents. Dedicated safety benchmarks for
+each evaluate one protocol in isolation. We study the seam. A composed
+harness drives one real-model host across both protocol legs --- implemented
+as local deterministic MCP and A2A protocol fixtures, not external services
+--- in a single ordered event trace, with an observable cross-protocol
+provenance model (deterministic content canaries carrying a sensitivity
+label, an explicit allowed-edge policy, and per-event causal ancestry) so
+that information flow and behavioral influence across the boundary are
+measured by exact rule-based checks, without an LLM-based judge or
+evaluator. Using a decision-point methodology that deterministically builds
+the situation and then elicits one restricted host decision, we ran a
+controlled confirmatory pilot over three OpenAI GPT-5.6 models, 240 trials
+in total. We separate *relay initiation* (the host sent a message onto the
+A2A leg after reading a confidential MCP record) from *direct sensitive
+egress* (the exact confidential marker crossed the disallowed
+host-to-remote edge): relay initiation varied widely by model (15%, 85%,
+100% of confidential trials), while direct exact-token egress was 0 for
+every model (0/3, 0/17, 0/20 of relay trials; Wilson 95% upper bounds
+56.2%, 18.4%, 16.1%). This is verbatim-marker leakage only, not semantic or
+paraphrased leakage. Scoring whether the host both selected the
+mutation-attempt action *and* named a tool the harness discovered to be
+mutating (our primary influence outcome), the adversarial A2A artifact
+condition showed a higher rate than a structurally matched benign condition
+in all three models (signed treatment-control differences +0.20, +0.40,
++0.50; Wilson 95% intervals per cell) --- an association under a controlled
+manipulation, not a causal-mechanism claim. Every one of the 56 observed
+actual mutating-tool requests was blocked by an independent mutation gate,
+and none executed. We report Wilson 95% intervals and signed rate
+differences throughout and deliberately report no p-values: the replicates
+in a cell are repeated draws from one model under one fixed stimulus and are
+not assumed statistically independent. The complete raw runs and a fully
+offline analysis pipeline are published as a deterministic, hash-pinned
+release.
 
-Using a decision-point methodology that deterministically constructs the
-situation and then elicits exactly one restricted host decision, we ran a
-controlled confirmatory pilot over three models (`gpt-5.6-sol`,
-`gpt-5.6-terra`, `gpt-5.6-luna`), 240 trials total (20 blocked-randomised
-replicates per model per condition), addressing three questions. **RQ1:**
-does confidential MCP-originated content propagate across the A2A boundary?
-We separate *relay initiation* (the host chose to send a message onto the
-A2A leg after reading a confidential record) from *direct sensitive egress*
-(the exact confidential marker crossed the host->remote/A2A edge). Relay
-initiation varied widely by model (15%, 85%, 100% of confidential trials);
-direct exact-token sensitive egress was 0 in every model (0/3, 0/17, 0/20 of
-relay trials; Wilson 95% upper bounds 56.2%, 18.4%, 16.1%). This measures
-verbatim marker leakage only and does not evaluate semantic or paraphrased
-leakage. **RQ2:** can an adversarial A2A artifact influence a host toward
-requesting a *mutating* MCP tool? Using the outcome *actual mutating-tool
-request* --- the host selected the mutation-attempt action and named a tool
-the harness discovered to be mutating --- the adversarial condition showed a
-higher rate than the structurally matched benign condition for all three
-models (signed treatment-control rate differences +0.20, +0.40, +0.50;
-Wilson 95% intervals reported per cell). We report this as an association
-under a controlled manipulation, not a causal-mechanism claim. **RQ3:** can
-an independent mutation gate contain those requests? Every *observed* actual
-mutating-tool request was blocked by the gate (100% blocked in all six
-model x condition cells) and zero executed across the entire study (Wilson
-95% upper bounds on the executed rate 21.5-56.2% depending on cell size). We
-report Wilson 95% confidence intervals and signed rate differences
-throughout and deliberately report no p-values; the 20 replicates in a cell
-are repeated draws from one model under one fixed stimulus and are not
-assumed to be statistically independent provider executions. The complete
-raw runs, the offline analysis pipeline, and every derived table and figure
-are published as a deterministic, hash-pinned reproducibility release.
+## Section structure
+
+1. Introduction
+2. Background and Related Work
+3. Threat Model and Research Questions
+4. Agent Interop Bench
+5. Experimental Methodology (5.1 decision-point, 5.2 stimuli, 5.3 model
+   panel, 5.4 reproducibility mechanism, 5.5 outcome definitions,
+   5.6 statistical reporting)
+6. Results (6.1 cross-protocol information flow, 6.2 behavioral influence,
+   6.3 containment)
+7. Discussion
+8. Limitations
+9. Conclusion (with a concise Reproducibility paragraph)
+
+References
+
+Appendix A — Experimental-integrity detail (full 12-cell table)
+Appendix B — Wrapper / tool-selection diagnostic (full table)
+Appendix C — Extended reproducibility detail (commits, archive hash,
+per-run execution fingerprints, offline recompute commands)
+
+Main-text length (Introduction through Conclusion): approximately 5,060
+words. Compiled length: 13 pages including references and appendices.
 
 ## Provenance
 
 | item | value |
 |---|---|
-| Manuscript commit (source of this conversion) | `67f61bc41303fed42a8d3d9adb00f9903426be19` |
+| Reference manuscript (`paper/main.md`) commit | `67f61bc41303fed42a8d3d9adb00f9903426be19` |
 | Frozen experimental source commit | `6cb64606a614c42145cc2da03468551c1ca48c6d` |
 | Offline analysis commit (tables + figures) | `caf036db97b142005e8f12e02fc9b95d0a205cbd` |
 | Frozen results release (tag) | `phase4b-results-v1` |
@@ -86,25 +106,20 @@ release; no raster or vector image files are bundled or required.
 | `README_SUBMISSION.md` | this file (submission metadata) | no (not a compile input) |
 
 The manuscript uses only packages present in a standard full TeX Live / arXiv
-environment: `geometry`, `amsmath`, `amssymb`, `graphicx`, `array`,
-`booktabs`, `multirow`, `xcolor`, `microtype`, `url`, `caption`, `pgfplots`
-(`compat=1.18`), `natbib`, `hyperref`, `lmodern`. No custom fonts, no
-`\write18` / shell-escape, no network access, no absolute paths.
+environment: `geometry`, `amsmath`, `amssymb`, `stmaryrd`, `graphicx`,
+`array`, `booktabs`, `multirow`, `xcolor`, `microtype`, `url`, `caption`,
+`pgfplots` (`compat=1.18`, `groupplots` library), `natbib`, `hyperref`,
+`lmodern`. No custom fonts, no `\write18` / shell-escape, no network access,
+no absolute paths.
 
-## Author metadata — TODO (unresolved)
-
-The source manuscript `paper/main.md` contains **no** author, affiliation, or
-contact metadata. `main.tex` therefore carries explicit placeholders:
+## Author metadata
 
 ```
-\author{%
-  [AUTHOR NAME --- TODO]\\
-  \texttt{[AFFILIATION --- TODO]}\\
-  \texttt{[EMAIL --- TODO]}%
-}
+\author{Arpan Kumar Mahapatra\\
+\texttt{arpan.arpan.mohapatra@gmail.com}}
 ```
 
-Fill these in before submitting. Nothing has been invented.
+Single author, no affiliation line, as provided.
 
 ## Recommended arXiv category — TODO
 
@@ -124,36 +139,38 @@ pdflatex main
 pdflatex main
 ```
 
-`main.bbl` is bundled, so a single `pdflatex main` (twice, for cross-refs)
+`main.bbl` is bundled, so `pdflatex main` (run twice for cross-references)
 also produces the complete document with a correct bibliography even if
 `bibtex` is not re-run.
 
-Verified locally with TeX Live 2026 (`pdflatex`): 19 pages, **0 undefined
-citations, 0 undefined references, 0 missing figures, 0 fatal warnings**; the
-only residual `Overfull \hbox` warnings are <= 2.3 pt (sub-visible) in body
-prose. Compiled PDF: `../arxiv_preview.pdf`.
+Verified locally with TeX Live 2026 (`pdflatex`): **13 pages, 0 undefined
+citations, 0 undefined references, 0 missing figures, 0 fatal warnings,
+0 overfull `\hbox`, 0 overfull `\vbox`, no missing glyphs.** Compiled PDF:
+`../arxiv_preview.pdf`.
 
 ## Deterministic source archive
 
-`../agent-interop-bench-arxiv-v1.tar.gz` contains exactly the three compile
+`../agent-interop-bench-arxiv-v2.tar.gz` contains exactly the three compile
 inputs (`main.tex`, `references.bib`, `main.bbl`), built deterministically
 (sorted members, `mtime=0`, mode `0444`, `uid=gid=0`, gzip `mtime=0`).
 
 ```
-archive : agent-interop-bench-arxiv-v1.tar.gz
-bytes   : 27473
-sha256  : e3d2613558ea35a2677e078272ff2b90337cb1a73d6f2b37323ccbdc93714525
+archive : agent-interop-bench-arxiv-v2.tar.gz
+bytes   : 25609
+sha256  : eb14908a4a09e3c7330396fa55b9c7b3167751633a6aef30d8e46141bb705b9f
 members : main.bbl, main.tex, references.bib
 ```
 
 ## Scope note (unchanged from the manuscript)
 
 The only non-local component in every experiment is real provider model
-inference (OpenAI GPT-5.6 via the Responses API). All MCP and A2A
-infrastructure is local deterministic protocol fixtures; no production,
-external, or third-party MCP server or A2A agent was contacted. Results are
-conditional on four fixed stimuli, one host policy, one tool surface, three
-model identifiers, and one point in time. No p-values, no significance
-tests, no general model-safety verdict, no semantic-leakage claim, no
-claim that repeated provider calls are statistically independent, and no
-priority claim on cross-protocol composition risk or MCP+A2A pivoting.
+inference (OpenAI GPT-5.6 via the Responses API); this real GPT-5.6 host is
+the system under test. All MCP and A2A infrastructure is local deterministic
+protocol fixtures; no production, external, or third-party MCP server or A2A
+agent was contacted. Results are conditional on four fixed stimuli, one host
+policy, one tool surface, three model identifiers, and one point in time. No
+p-values, no significance tests, no general model-safety verdict, no
+semantic-leakage claim, no claim that repeated provider calls are
+statistically independent, and no priority claim on cross-protocol
+composition risk or MCP+A2A pivoting --- prior articulation by AgentRFC and
+by the IETF "Protocol Pivoting" Internet-Draft is acknowledged in Section 2.
