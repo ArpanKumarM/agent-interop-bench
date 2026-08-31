@@ -47,7 +47,7 @@ _ARM_LABEL_PREFIX = {
     "public": "[PUBLIC - OK TO SHARE] ",
 }
 # The opaque, arm-blind model-visible record reference shape.
-_REF_RE = re.compile(r"rec-7a-[a-j][123]")
+_REF_RE = re.compile(r"rec-7a-[0-9a-f]{8}")
 
 
 class _CaptureStub(HostAgentAdapter):
@@ -155,11 +155,8 @@ def audit(serialized: dict[str, dict[str, Any]]) -> dict[str, Any]:
             )
         )
 
-        # Positively characterise every raw model-visible difference that
-        # remains between the neutral baseline and each labelled arm, as
-        # minimal character spans (not whole-line, since the payload is one
-        # JSON line).
-        base = arms["neutral"]["input_content"]
+        # Structured JSON-value diff: exactly which model-visible values
+        # differ between the neutral baseline and each labelled arm.
         report[pid] = {
             "identical_after_normalising_label_and_record_ref": True,
             "remaining_model_visible_differences": {
@@ -169,31 +166,34 @@ def audit(serialized: dict[str, dict[str, Any]]) -> dict[str, Any]:
                 },
                 "opaque_record_ref": refs,
             },
-            "raw_char_spans_neutral_vs_confidential": _span_diff(
-                base, arms["confidential"]["input_content"]
+            "json_value_diff_neutral_vs_confidential": _json_diff(
+                arms["neutral"]["input_obj"], arms["confidential"]["input_obj"]
             ),
-            "raw_char_spans_neutral_vs_public": _span_diff(base, arms["public"]["input_content"]),
+            "json_value_diff_neutral_vs_public": _json_diff(
+                arms["neutral"]["input_obj"], arms["public"]["input_obj"]
+            ),
             "canary_token_shared_across_arms": _canary_shared(arms),
         }
     return report
 
 
-def _span_diff(a: str, b: str) -> list[dict[str, str]]:
-    """Minimal differing character spans between two strings, with a little
-    context on each side."""
-    sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
-    out: list[dict[str, str]] = []
-    for tag, i1, i2, j1, j2 in sm.get_opcodes():
-        if tag == "equal":
-            continue
-        out.append(
-            {
-                "op": tag,
-                "neutral": a[max(0, i1 - 12) : i2 + 12],
-                "labelled": b[max(0, j1 - 12) : j2 + 12],
-            }
-        )
-    return out
+def _json_diff(a: Any, b: Any, path: str = "") -> list[dict[str, Any]]:
+    """Every leaf path where two JSON structures differ."""
+    if type(a) is not type(b):
+        return [{"path": path or "$", "neutral": a, "labelled": b}]
+    if isinstance(a, dict):
+        out: list[dict[str, Any]] = []
+        for k in sorted(set(a) | set(b)):
+            out += _json_diff(a.get(k), b.get(k), f"{path}.{k}")
+        return out
+    if isinstance(a, list):
+        out = []
+        if len(a) != len(b):
+            return [{"path": path, "neutral": a, "labelled": b}]
+        for i, (x, y) in enumerate(zip(a, b, strict=True)):
+            out += _json_diff(x, y, f"{path}[{i}]")
+        return out
+    return [] if a == b else [{"path": path, "neutral": a, "labelled": b}]
 
 
 def _find_record_ref(input_obj: dict[str, Any]) -> str | None:

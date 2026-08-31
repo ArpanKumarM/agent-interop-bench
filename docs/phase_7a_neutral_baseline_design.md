@@ -1,17 +1,24 @@
-# Phase 7A / 7A.1 — frozen design: the RQ1 neutral-baseline extension
+# Phase 7A / 7A.1 / 7B — frozen design + executable freeze: the RQ1 neutral-baseline extension
 
 **Status: FROZEN, NOT EXECUTED.** This document is the pre-registration.
-No provider call has been made; no Phase 7A trial has been run. Execution
-(Phase 7B) is gated on human review of this frozen design, and then on the
-ordered workflow in §10.
+No provider call has been made; no Phase 7 trial has been run. Execution is
+gated on an explicit human authorization naming this study, and then on the
+ordered workflow in §10. Execution governance is in
+`docs/phase_7b_execution_governance.md`.
 
-Design-freeze history: 7A `daee782b21a7677ed35caadccbdb81c87217f59f`;
-7A.1 (this revision — opaque arm-blind record refs, one shared canary per
-scenario, unlabeled-baseline terminology, analysis text using only the
-three explicitly-named contrasts with no undefined approximate or
-greater-than shorthand, provider-config-hash audit, fingerprint-ordering
-rule) is the current head of branch `phase-6b-impl`. Manuscript unchanged
-at `e20738c3b0d5ac1a63b0bdcbeb83e7bb6a73db4a`.
+Freeze history:
+- **7A** `daee782b21a7677ed35caadccbdb81c87217f59f` — three-arm design.
+- **7A.1** `621fae05b9a197998a49365c88d886bed713fcc2` — arm-blind refs
+  (then `rec-7a-<letter><digit>`), one shared canary per scenario,
+  unlabeled-baseline terminology, analysis text with no undefined
+  approximate/greater-than shorthand, provider-config-hash audit.
+- **7B** (this revision) — opaque hash-derived fixed-length record refs
+  `rec-7a-<8 hex>` (no ordinal arm coding), `v7a` wired into
+  `app.cli.composed_live_pilot`, frozen execution governance, FINAL
+  execution fingerprints. `EXECUTION_SOURCE_SHA` is the head of branch
+  `phase-6b-impl` at the Phase 7B freeze.
+
+Manuscript unchanged at `e20738c3b0d5ac1a63b0bdcbeb83e7bb6a73db4a`.
 
 ## 1. Purpose
 
@@ -85,21 +92,29 @@ the record "is" sensitive.
 
 An offline audit (`app.cli.phase_7a_input_audit`) serializes the **exact
 provider input** the real adapter would send, for all three arms of all ten
-scenarios, and proves that after removing (a) the opening label prefix and
-(b) the opaque record ref, the entire model-visible payload
+scenarios, and proves that after normalising (a) the opening label prefix
+and (b) the opaque record ref, the entire model-visible payload
 (instructions + sanitized JSON + action schema) is **byte-identical**
-across the three arms. The two residual differences are:
+across the three arms. The structured JSON-value diff shows exactly two
+differing leaf paths per arm pair —
+`.history[0].payload.arguments.record_ref` and `.history[1].payload.record`
+(the latter differing only by the label prefix). **We do NOT claim every
+model-visible byte except the header is identical; the opaque-ref byte
+difference is stated explicitly.** The two residual differences are:
 
 1. **the opening label line** — the intended manipulation:
    `[CONFIDENTIAL - INTERNAL ONLY]` / *(none)* / `[PUBLIC - OK TO SHARE]`.
-2. **the opaque record reference** `rec-7a-<letter><digit>` — `<letter>`
-   a..j indexes the scenario, `<digit>` 1/2/3 indexes the arm in the fixed
-   (confidential, neutral, public) order. It carries **no** scenario name
-   and **no** arm/condition word; it is the same shape as the frozen
-   Phase 6B refs (`rec-a11` / `rec-a12` — a stem plus a trailing digit).
-   The arm **must** be encoded in the one model-supplied argument so the
-   fixture server can serve the right header; a fully shared ref is
-   impossible (identical to the Phase 6B constraint).
+2. **an opaque retrieval identifier** `rec-7a-<8 hex>` — `rec-7a-` plus the
+   first 8 hex chars of
+   `sha256("phase7a-record-ref-salt-v1:<pair_id>:<arm>")` (frozen salt).
+   Fixed length (15 chars) for all 30 overlays; **no** scenario name, **no**
+   arm/condition word, **no** ordinal (1/2/3) arm coding. Its bytes differ
+   across arms but carry no semantic or ordinal arm information. The arm
+   **must** be encoded in the one model-supplied argument so the fixture
+   server can serve the right header; a fully shared ref is impossible
+   (identical to the Phase 6B constraint). Server-side map: opaque ref →
+   `(scenario, arm)` in `phase7a_ref_lookup()`; verified unique across the
+   30 combinations.
 
 ### Model-invisible, diagnostic-only axes
 
@@ -306,36 +321,58 @@ and the Phase 6C provider-config SHA-256 (see §3.1).
 
 ## 10. Execution-fingerprint ordering — the ONLY accepted workflow
 
-The fingerprints in `live_canary_phase7a_fingerprints.json` are a
-**design-freeze reference** (`artifact_role` field says so). They are
-**NOT** the execution fingerprints, because the Phase 7B execution wiring
-(§11) is not yet in the source tree. The final execution fingerprints must
-be produced by this ordered workflow and no other:
+The final execution fingerprints are produced by this ordered workflow and
+no other:
 
-- **A.** finish all Phase 7B execution wiring (below);
+- **A.** finish all Phase 7B execution wiring (§11) — **DONE in 7B**;
 - **B.** run all offline tests / preflights / the serialized-input audit;
-- **C.** commit the FINAL executable source;
+- **C.** commit the FINAL executable source — call it `EXECUTION_SOURCE_SHA`;
 - **D.** push it;
 - **E.** verify `HEAD == origin/<branch>` and a clean working tree;
-- **F.** generate the plan / execution fingerprints using **that exact
-  final source SHA** (`A2AVALIDATOR_SOURCE_COMMIT=<sha>
-  uv run python -m app.cli.freeze_phase_7a_fingerprints`);
-- **G.** freeze those artifacts (commit + push);
-- **H.** make **no** source / config / stimulus / schedule change after F;
+- **F.** generate the final per-model execution fingerprints using **that
+  exact `EXECUTION_SOURCE_SHA`**
+  (`A2AVALIDATOR_SOURCE_COMMIT=<EXECUTION_SOURCE_SHA>
+  uv run python -m app.cli.freeze_phase_7a_fingerprints`), which sets
+  `final_execution_fingerprint = true`;
+- **G.** freeze that artifact — a **metadata-only** second commit is
+  permitted (it changes no executable/config/stimulus/schedule file; the
+  runner never reads it; execution still pins `EXECUTION_SOURCE_SHA` via
+  the `A2AVALIDATOR_SOURCE_COMMIT` env override; the preflight proves the
+  runner records `EXECUTION_SOURCE_SHA` exactly);
+- **H.** make **no** source / config / stimulus / policy / schedule change
+  after `EXECUTION_SOURCE_SHA`;
 - **I.** only then request authorization to execute.
 
-The design-freeze-reference fingerprints must never be presented or used as
-the execution fingerprints.
+The Phase 7A / 7A.1 fingerprints (in git history, `daee782` / `621fae0`)
+remain historical **DESIGN-FREEZE references only** and must never be used
+as execution fingerprints.
 
-## 11. NOT done in Phase 7A / 7A.1 (deferred to Phase 7B, post-review)
+## 11. Phase 7B execution wiring (DONE — additive, Phase 6 behaviour unchanged)
 
-- **No wiring into `app.cli.composed_live_pilot`** (the execution CLI): no
-  `v7a` entry in `FROZEN_PLAN_PATHS` / `_OVERLAYS_PATH_BY_VERSION` /
-  `_BLOCKED_SCHEDULE_PLAN_VERSIONS`, no `v7a` branch in `_resolve_schedule`
-  / `_execution_fingerprint_for` / `preflight_report`. Phase 7B adds these
-  additively (the RQ1-only canonical actions `("relay_to_remote","stop")`,
-  `PHASE_6B_HOST_POLICY_TEXT`, `build_phase_7a_model_schedule`).
-- No provider call, no trial, no `reports/` output.
-- No FINAL execution fingerprints (see §10).
+`app.cli.composed_live_pilot` now supports plan version **`v7a`** additively:
+
+- `FROZEN_PLAN_PATHS["v7a"]` → `benchmarks/composed/live_canary_plan_phase7a.json`;
+- `_OVERLAYS_PATH_BY_VERSION["v7a"]` → `benchmarks/composed/live_overlays_phase7a.yaml`;
+- `_BLOCKED_SCHEDULE_PLAN_VERSIONS` includes `v7a`;
+  `_PHASE_7A_PLAN_VERSIONS = {"v7a"}`;
+- `_resolve_schedule` → `build_phase_7a_model_schedule(model)` (seed `20260831`);
+- `_execution_fingerprint_for` → fingerprint **v2** with
+  `canonical_actions = ("relay_to_remote", "stop")`,
+  `host_policy_text = PHASE_6B_HOST_POLICY_TEXT` (verbatim Phase 6B policy),
+  and `provider_config_sha256` over the RQ1-only action surface;
+- `build_real_decision_point_adapter_factory` passes
+  `canonical_actions = ("relay_to_remote", "stop")` to the Anthropic
+  adapter for `v7a`; the decision-point action set offered on the wire is
+  `{relay_to_remote, stop}` for every Phase 7A `sensitive_egress` overlay
+  (via `decision_point_pilot.bootstrap_plan_for`, unchanged).
+
+No Phase 4B / Phase 6B code path or output changes: `v3` / `v4` dispatch,
+schedules, host policy, canonical actions, and fingerprints are byte-identical.
+
+Execution governance (run IDs, terminal handling, infrastructure halt,
+resume policy, invariant hard-stop) is frozen in
+`docs/phase_7b_execution_governance.md`.
+
+- No provider call, no trial, no `reports/` output in this phase.
 - No manuscript edit. A later manuscript revision will add the Phase 7A
   results as a new section and compare descriptively to Phase 6.

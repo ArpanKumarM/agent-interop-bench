@@ -1,17 +1,20 @@
 """Write ``benchmarks/composed/live_canary_phase7a_fingerprints.json``.
 
-IMPORTANT -- these are a **DESIGN-FREEZE REFERENCE**, not the execution
-fingerprints. The final execution fingerprints must be generated only
-AFTER the Phase 7B execution-wiring source is itself frozen and pushed,
-against that exact final source SHA (see
-``docs/phase_7a_neutral_baseline_design.md`` section 10). The output file
-carries an ``artifact_role`` field stating this.
+Two modes:
 
-The fingerprint stamps whatever commit is resolved (env
-``A2AVALIDATOR_SOURCE_COMMIT`` wins, else ``git rev-parse HEAD``); pass the
-current design-freeze commit explicitly for a stable reference:
+* default -> a **DESIGN-FREEZE REFERENCE** (``final_execution_fingerprint =
+  false``).
+* ``--final`` -> the **FINAL execution fingerprints**
+  (``final_execution_fingerprint = true``). Requires
+  ``A2AVALIDATOR_SOURCE_COMMIT=<EXECUTION_SOURCE_SHA>`` to be set
+  explicitly; run only AFTER the Phase 7B executable source is committed
+  and pushed (``docs/phase_7a_neutral_baseline_design.md`` section 10).
 
+    # design-freeze reference
     A2AVALIDATOR_SOURCE_COMMIT=<sha> uv run python -m app.cli.freeze_phase_7a_fingerprints
+    # FINAL
+    A2AVALIDATOR_SOURCE_COMMIT=<EXECUTION_SOURCE_SHA> \
+        uv run python -m app.cli.freeze_phase_7a_fingerprints --final
 
 Deterministic given (source commit, uv.lock, interpreter version). Makes NO
 provider call and executes NO trial.
@@ -20,6 +23,8 @@ provider call and executes NO trial.
 from __future__ import annotations
 
 import json
+import os
+import sys
 from pathlib import Path
 
 from app.cli.phase_7a_preflight import run_preflight
@@ -32,18 +37,34 @@ OUT = (
 )
 
 
-def build_doc() -> dict:
+def build_doc(*, final: bool = False) -> dict:
+    if final and not (os.environ.get("A2AVALIDATOR_SOURCE_COMMIT") or "").strip():
+        raise SystemExit(
+            "--final requires A2AVALIDATOR_SOURCE_COMMIT=<EXECUTION_SOURCE_SHA> to be set "
+            "explicitly (see docs/phase_7a_neutral_baseline_design.md section 10)."
+        )
     report = run_preflight()
     fps = report["execution_fingerprints"]
     any_fp = next(iter(fps.values()))
-    return {
-        "artifact_role": (
+    role = (
+        (
+            "FINAL execution fingerprints -- generated against EXECUTION_SOURCE_SHA "
+            f"{any_fp['source_commit_sha']}. The runner records this SHA into "
+            "execution_fingerprint.json and every trial's provenance when the study "
+            "is run with A2AVALIDATOR_SOURCE_COMMIT set to it. The Phase 7A/7A.1 "
+            "fingerprints in git history remain design-freeze references only."
+        )
+        if final
+        else (
             "DESIGN-FREEZE REFERENCE ONLY -- NOT the execution fingerprints. "
-            "Regenerate against the frozen Phase 7B execution-wiring source SHA "
+            "Regenerate with --final against the frozen EXECUTION_SOURCE_SHA "
             "before requesting execution authorization (see "
             "docs/phase_7a_neutral_baseline_design.md section 10)."
-        ),
-        "final_execution_fingerprint": False,
+        )
+    )
+    return {
+        "artifact_role": role,
+        "final_execution_fingerprint": bool(final),
         "study_id": report["experiment_id"],
         "study_version": report["experiment_version"],
         "fingerprint_version": "v2",
@@ -71,12 +92,15 @@ def build_doc() -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
-    doc = build_doc()
+    args = list(sys.argv[1:] if argv is None else argv)
+    final = "--final" in args
+    doc = build_doc(final=final)
     OUT.write_text(json.dumps(doc, indent=2, sort_keys=True) + "\n")
     print(
         json.dumps(
             {
                 "wrote": str(OUT),
+                "final_execution_fingerprint": doc["final_execution_fingerprint"],
                 "source_commit_sha": doc["source_commit_sha"],
                 "execution_fingerprint_sha256": doc["execution_fingerprint_sha256"],
             },

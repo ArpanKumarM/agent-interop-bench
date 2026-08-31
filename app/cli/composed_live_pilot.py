@@ -42,9 +42,11 @@ from app.models.pilot_plan import PilotExperimentPlan
 from app.runner.blocked_schedule import (
     PHASE_4B_SCHEDULE_SEED,
     PHASE_6B_SCHEDULE_SEED,
+    PHASE_7A_SCHEDULE_SEED,
     ScheduledTrial,
     build_model_schedule,
     build_phase_6b_model_schedule,
+    build_phase_7a_model_schedule,
     schedule_sha256,
 )
 from app.runner.decision_point_pilot import (
@@ -79,17 +81,28 @@ FROZEN_PLAN_PATHS: dict[str, Path] = {
     # Phase 6B: 40 overlays (10 RQ1 + 10 RQ2 matched pairs), 4 repeats each,
     # call_tool action surface, execution fingerprint v2.
     "v4": _BENCHMARKS_DIR / "live_canary_plan_v4.json",
+    # Phase 7A/7B: RQ1-ONLY neutral-baseline extension. 30 overlays (10
+    # scenarios x 3 arms), 4 repeats, {relay_to_remote, stop} action
+    # surface, Phase 6B host policy, execution fingerprint v2.
+    "v7a": _BENCHMARKS_DIR / "live_canary_plan_phase7a.json",
 }
 # Plan versions that dispatch trials in a frozen BLOCKED schedule.
-_BLOCKED_SCHEDULE_PLAN_VERSIONS = frozenset({"v3", "v4"})
+_BLOCKED_SCHEDULE_PLAN_VERSIONS = frozenset({"v3", "v4", "v7a"})
 _PHASE_6B_PLAN_VERSIONS = frozenset({"v4"})
+# Phase 7A plan versions -- fingerprint v2 + Phase 6B host policy, but the
+# RQ1-only {relay_to_remote, stop} action surface (never call_tool) and the
+# Phase 7A blocked schedule.
+_PHASE_7A_PLAN_VERSIONS = frozenset({"v7a"})
 OVERLAYS_PATH = "benchmarks/composed/live_overlays.yaml"
 _OVERLAYS_PATH_BY_VERSION: dict[str, str] = {
     "v4": "benchmarks/composed/live_overlays_v2.yaml",
+    "v7a": "benchmarks/composed/live_overlays_phase7a.yaml",
 }
 # The canonical (provider-neutral) decision-point action surface fingerprinted
 # for Phase 6B: relay (RQ1) + call_tool (RQ2) + stop.
 _PHASE_6B_CANONICAL_ACTIONS: tuple[str, ...] = ("relay_to_remote", "call_tool", "stop")
+# Phase 7A: RQ1-only -- relay + stop, never call_tool.
+_PHASE_7A_CANONICAL_ACTIONS: tuple[str, ...] = ("relay_to_remote", "stop")
 MODEL_PLACEHOLDER = "REPLACE_WITH_MODEL_ID"
 RUN_DIR_ROOT = Path("reports/experiments")
 
@@ -159,13 +172,28 @@ def _is_phase_6b(plan: PilotExperimentPlan) -> bool:
     return plan.experiment_version in _PHASE_6B_PLAN_VERSIONS
 
 
+def _is_phase_7a(plan: PilotExperimentPlan) -> bool:
+    return plan.experiment_version in _PHASE_7A_PLAN_VERSIONS
+
+
+def _uses_fingerprint_v2(plan: PilotExperimentPlan) -> bool:
+    return _is_phase_6b(plan) or _is_phase_7a(plan)
+
+
+def _canonical_actions_for(plan: PilotExperimentPlan) -> tuple[str, ...]:
+    return _PHASE_7A_CANONICAL_ACTIONS if _is_phase_7a(plan) else _PHASE_6B_CANONICAL_ACTIONS
+
+
 def _resolve_schedule(plan: PilotExperimentPlan) -> list[ScheduledTrial] | None:
-    """The frozen per-model blocked schedule for a v3 (Phase 4B) or v4
-    (Phase 6B) plan (None otherwise). Raises ``ComposedLivePilotConfigError``
-    if the model is not in that study's frozen panel."""
+    """The frozen per-model blocked schedule for a v3 (Phase 4B), v4
+    (Phase 6B), or v7a (Phase 7A) plan (None otherwise). Raises
+    ``ComposedLivePilotConfigError`` if the model is not in that study's
+    frozen panel."""
     if not _uses_blocked_schedule(plan):
         return None
     try:
+        if _is_phase_7a(plan):
+            return build_phase_7a_model_schedule(plan.model)
         if _is_phase_6b(plan):
             return build_phase_6b_model_schedule(plan.model)
         return build_model_schedule(plan.model, blocks_per_model=plan.trials_per_condition)
@@ -176,14 +204,16 @@ def _resolve_schedule(plan: PilotExperimentPlan) -> list[ScheduledTrial] | None:
 def _execution_fingerprint_for(plan: PilotExperimentPlan, overlays: list[LiveExperimentOverlay]):
     schedule = _resolve_schedule(plan)
     sched_sha = schedule_sha256(schedule) if schedule is not None else None
-    if _is_phase_6b(plan):
+    if _uses_fingerprint_v2(plan):
         from app.runner.host_adapters import PHASE_6B_HOST_POLICY_TEXT
         from app.runner.model_panel import provider_config_sha256
 
+        canonical_actions = _canonical_actions_for(plan)
         fp = compute_execution_fingerprint_v2(
             plan,
             overlays,
-            canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
+            canonical_actions=canonical_actions,
+            # Phase 7A reuses the frozen Phase 6B host policy verbatim.
             host_policy_text=PHASE_6B_HOST_POLICY_TEXT,
             schedule_sha256=sched_sha,
             # Phase 6C: fold the exact provider inference interface for this
@@ -191,7 +221,7 @@ def _execution_fingerprint_for(plan: PilotExperimentPlan, overlays: list[LiveExp
             # provider wire tool-schema hash, request-param hash, API mode).
             provider_config_sha256=provider_config_sha256(
                 plan.model,
-                canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
+                canonical_actions=canonical_actions,
                 timeout_seconds=plan.timeout_seconds,
             ),
         )
@@ -276,7 +306,7 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
         "openai_api_key_present": real_model_api_key_configured(),
         "provider_calls_made": 0,
     }
-    if _is_phase_6b(plan):
+    if _uses_fingerprint_v2(plan):
         import os
 
         from app.runner.model_panel import (
@@ -290,16 +320,22 @@ def preflight_report(plan: PilotExperimentPlan, run_id: str) -> dict:
         report["provider_request_config"] = provider_request_config(
             plan.model, timeout_seconds=plan.timeout_seconds
         )
+        report["canonical_actions"] = list(_canonical_actions_for(plan))
         report["anthropic_api_key_present"] = bool(
             (os.environ.get("ANTHROPIC_API_KEY") or "").strip()
         )
     if schedule is not None:
+        _blocked = _is_phase_6b(plan) or _is_phase_7a(plan)
         report["blocked_schedule"] = {
             "scheduling_seed": (
-                PHASE_6B_SCHEDULE_SEED if _is_phase_6b(plan) else PHASE_4B_SCHEDULE_SEED
+                PHASE_7A_SCHEDULE_SEED
+                if _is_phase_7a(plan)
+                else PHASE_6B_SCHEDULE_SEED
+                if _is_phase_6b(plan)
+                else PHASE_4B_SCHEDULE_SEED
             ),
             "blocks": plan.trials_per_condition
-            if not _is_phase_6b(plan)
+            if not _blocked
             else max(e.block_index for e in schedule) + 1,
             "overlays_per_block": len({e.overlay_id for e in schedule if e.block_index == 0}),
             "trials_in_schedule": len(schedule),
@@ -413,7 +449,9 @@ def build_real_decision_point_adapter_factory(
                 max_decisions=max_decisions,
                 case_id=case_id,
                 allowed_actions=allowed_actions,
-                canonical_actions=_PHASE_6B_CANONICAL_ACTIONS,
+                # Phase 7A folds the RQ1-only {relay_to_remote, stop} surface
+                # into provider_config_sha256; Phase 6B keeps the 3-action set.
+                canonical_actions=_canonical_actions_for(plan),
             )
 
         return anthropic_factory

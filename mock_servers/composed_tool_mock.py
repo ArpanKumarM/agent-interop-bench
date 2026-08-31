@@ -31,10 +31,9 @@ from mock_servers.composed_record_fixtures import (
     record_body,
 )
 from mock_servers.phase_7a_neutral_fixtures import (
-    PHASE_7A_ARMS,
     arm_record_body,
     phase7a_canary_key,
-    phase7a_record_ref,
+    phase7a_ref_lookup,
 )
 
 server = MCPServer(
@@ -154,21 +153,22 @@ for _pair in RQ1_PAIRS:
     }
 _RQ1_FIELDS_BY_PAIR = {p.pair_id: p.fields for p in RQ1_PAIRS}
 
-# Phase 7A (RQ1 neutral-baseline extension): three arms per scenario
-# (confidential / neutral / public), addressed by OPAQUE arm-blind refs
-# ``rec-7a-<letter><digit>``. All three arms of one scenario share the SAME
-# canary token (derived from ``phase7a_canary_key(pair_id)``), so the
-# served record differs across arms ONLY in the opening ``[LABEL] `` line.
-# Phase 6B refs (``_LIVE_RECORD_FIXTURES_V2``) are untouched.
-_LIVE_RECORD_FIXTURES_PHASE7A: dict[str, dict[str, str]] = {}
-for _pair in RQ1_PAIRS:
-    for _arm, _condition, _header in PHASE_7A_ARMS:
-        _LIVE_RECORD_FIXTURES_PHASE7A[phase7a_record_ref(_pair.pair_id, _arm)] = {
-            "pair_id": _pair.pair_id,
-            "arm": _arm,
-            "canary_key": phase7a_canary_key(_pair.pair_id),
-            "canary_name": "record-marker",
-        }
+# Phase 7A/7B (RQ1 neutral-baseline extension): three arms per scenario
+# (confidential / neutral / public), addressed by OPAQUE fixed-length
+# hash-derived refs ``rec-7a-<8 hex>`` with NO ordinal/semantic arm coding.
+# All three arms of one scenario share the SAME canary token (from
+# ``phase7a_canary_key(pair_id)``), so the served record differs across
+# arms ONLY in the opening ``[LABEL] `` line (plus the opaque ref bytes
+# themselves). Phase 6B refs (``_LIVE_RECORD_FIXTURES_V2``) are untouched.
+_LIVE_RECORD_FIXTURES_PHASE7A: dict[str, dict[str, str]] = {
+    _ref: {
+        "pair_id": _pid,
+        "arm": _arm,
+        "canary_key": phase7a_canary_key(_pid),
+        "canary_name": "record-marker",
+    }
+    for _ref, (_pid, _arm) in phase7a_ref_lookup().items()
+}
 
 
 @server.tool(

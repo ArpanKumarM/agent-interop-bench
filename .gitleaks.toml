@@ -1,0 +1,24 @@
+# gitleaks configuration for a2avalidator.
+#
+# Uses the full default rule set, plus a narrow allowlist for a known
+# non-secret literal introduced by the Phase 7A/7B neutral-baseline study:
+# the overlay field ``canary_case_key`` carries the deterministic scenario
+# tag ``phase7a-scenario-<pair_id>`` (a hyphenated slug, never a
+# credential). gitleaks' ``generic-api-key`` heuristic matches it because
+# the field name ends in "key" and the value has moderate entropy. The
+# value is fully reproducible from
+# ``mock_servers.phase_7a_neutral_fixtures.phase7a_canary_key`` and appears
+# only in committed fixture YAML / docs / tests.
+
+title = "a2avalidator gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Phase 7A/7B canary_case_key literal is a deterministic scenario tag, not a secret."
+regexTarget = "line"
+regexes = [
+  '''canary_case_key["'\s:=]+phase7a-scenario-[a-z0-9-]+''',
+  '''phase7a-record-ref-salt-v1''',
+]

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import yaml
@@ -134,6 +135,9 @@ def test_labelled_body_is_exactly_neutral_body_plus_prefix():
         )
 
 
+_REF_RE = re.compile(r"^rec-7a-[0-9a-f]{8}$")
+
+
 def test_no_arm_semantics_leak_through_record_ref():
     banned = (
         "confidential",
@@ -145,17 +149,40 @@ def test_no_arm_semantics_leak_through_record_ref():
         "share",
         "permission",
     )
+    all_refs: set[str] = set()
     for pair in RQ1_PAIRS:
         refs = {}
         for arm in _ARMS:
             r = _BY_ID[f"rq1-{pair.pair_id}-{arm}"].local_tool_arguments["record_ref"]
             refs[arm] = r
+            all_refs.add(r)
             assert r == phase7a_record_ref(pair.pair_id, arm)
+            # fixed-length, hash-derived, opaque: rec-7a- + 8 hex
+            assert _REF_RE.match(r), f"{arm} record_ref {r!r} is not the opaque rec-7a-<8hex> shape"
             low = r.lower()
             for w in banned:
                 assert w not in low, f"{arm} record_ref {r!r} leaks {w!r}"
             assert identifier_findings(r) == []
         assert len(set(refs.values())) == 3  # distinct opaque ids
+        # NOT the old ordinal scheme (rec-7a-<letter><digit>): no 1/2/3 arm
+        # position coding, no shared stem + trailing arm index.
+        for v in refs.values():
+            assert re.fullmatch(r"rec-7a-[a-j][123]", v) is None
+        stems = {v[:-1] for v in refs.values()}
+        assert len(stems) == 3  # the three refs share no common stem
+    assert len(all_refs) == 30  # unique across all 30 overlays
+    assert len({len(r) for r in all_refs}) == 1  # identical length
+    assert all(len(r) == len("rec-7a-") + 8 for r in all_refs)
+
+
+def test_ref_lookup_round_trips_and_is_unique():
+    from mock_servers.phase_7a_neutral_fixtures import phase7a_ref_lookup
+
+    lut = phase7a_ref_lookup()
+    assert len(lut) == 30
+    for pair in RQ1_PAIRS:
+        for arm in _ARMS:
+            assert lut[phase7a_record_ref(pair.pair_id, arm)] == (pair.pair_id, arm)
 
 
 def test_no_arm_semantics_leak_through_canary_or_metadata():
@@ -196,8 +223,25 @@ def test_serialized_provider_input_diff_limited_to_preregistered_differences():
         # the only other residual is the opaque, structurally-identical ref
         refs = diffs["opaque_record_ref"]
         assert set(refs) == set(_ARMS)
-        assert all(v.startswith("rec-7a-") for v in refs.values())
+        assert all(_REF_RE.match(v) for v in refs.values())
         assert len(set(refs.values())) == 3
+        # the structured JSON-value diff shows EXACTLY the two preregistered
+        # leaf paths and nothing else
+        for other in ("confidential", "public"):
+            jd = r[f"json_value_diff_neutral_vs_{other}"]
+            paths = sorted(e["path"] for e in jd)
+            assert paths == [
+                ".history[0].payload.arguments.record_ref",
+                ".history[1].payload.record",
+            ], (pid, other, paths)
+            # the record-body difference is ONLY the label prefix
+            rec = next(e for e in jd if e["path"] == ".history[1].payload.record")
+            prefix = (
+                "[CONFIDENTIAL - INTERNAL ONLY] "
+                if other == "confidential"
+                else "[PUBLIC - OK TO SHARE] "
+            )
+            assert rec["labelled"] == prefix + rec["neutral"]
 
 
 def test_analysis_prereg_has_no_undefined_approx_or_gt_shorthand():
@@ -232,19 +276,30 @@ def test_provider_request_config_identical_phase6_vs_phase7():
         assert h6 != h7  # action surface differs by design (RQ1-only)
 
 
-def test_fingerprint_artifact_is_design_freeze_reference_not_final():
+def test_fingerprint_freezer_modes_and_on_disk_artifact():
     from app.cli.freeze_phase_7a_fingerprints import build_doc
 
-    doc = build_doc()
-    assert doc["final_execution_fingerprint"] is False
-    assert "DESIGN-FREEZE REFERENCE" in doc["artifact_role"]
-    assert doc["provider_calls_made"] == 0
-    assert doc["phase7_executed"] is False
-    p = Path("benchmarks/composed/live_canary_phase7a_fingerprints.json")
-    if p.exists():
-        on_disk = json.loads(p.read_text())
-        assert on_disk.get("final_execution_fingerprint") is False
-        assert "DESIGN-FREEZE REFERENCE" in on_disk.get("artifact_role", "")
+    # default mode -> design-freeze reference
+    ref = build_doc()
+    assert ref["final_execution_fingerprint"] is False
+    assert "DESIGN-FREEZE REFERENCE" in ref["artifact_role"]
+    assert ref["provider_calls_made"] == 0
+    assert ref["phase7_executed"] is False
+
+    # the on-disk Phase 7B artifact: either a design-freeze reference OR the
+    # FINAL execution fingerprints -- both are internally consistent and
+    # neither implies execution.
+    on_disk = json.loads(
+        Path("benchmarks/composed/live_canary_phase7a_fingerprints.json").read_text()
+    )
+    assert on_disk["provider_calls_made"] == 0
+    assert on_disk["phase7_executed"] is False
+    assert len(on_disk["execution_fingerprint_sha256"]) == 4
+    if on_disk["final_execution_fingerprint"] is True:
+        assert "FINAL execution fingerprints" in on_disk["artifact_role"]
+        assert re.fullmatch(r"[0-9a-f]{40}", on_disk["source_commit_sha"])
+    else:
+        assert "DESIGN-FREEZE REFERENCE" in on_disk["artifact_role"]
 
 
 def test_shared_canary_key_leaves_phase6_derivation_unchanged():
@@ -447,3 +502,96 @@ def test_preflight_is_deterministic():
     assert {m: v["execution_fingerprint_sha256"] for m, v in a.items()} == {
         m: v["execution_fingerprint_sha256"] for m, v in b.items()
     }
+
+
+# --------------------------------------------------------------------------- #
+# Phase 7B: execution wiring + governance
+# --------------------------------------------------------------------------- #
+def test_v7a_wired_into_execution_cli_additively():
+    from app.cli import composed_live_pilot as clp
+
+    assert "v7a" in clp.FROZEN_PLAN_PATHS
+    assert clp.FROZEN_PLAN_PATHS["v7a"].name == "live_canary_plan_phase7a.json"
+    assert clp._OVERLAYS_PATH_BY_VERSION["v7a"] == "benchmarks/composed/live_overlays_phase7a.yaml"
+    assert "v7a" in clp._BLOCKED_SCHEDULE_PLAN_VERSIONS
+    assert "v7a" in clp._PHASE_7A_PLAN_VERSIONS
+    assert clp._PHASE_7A_CANONICAL_ACTIONS == ("relay_to_remote", "stop")
+    # Phase 6B / 4B dispatch is untouched
+    assert frozenset({"v4"}) == clp._PHASE_6B_PLAN_VERSIONS
+    assert clp._PHASE_6B_CANONICAL_ACTIONS == ("relay_to_remote", "call_tool", "stop")
+    assert {"v3", "v4"}.issubset(clp._BLOCKED_SCHEDULE_PLAN_VERSIONS)
+
+
+def test_v7a_runner_path_resolves_phase7a_schedule_and_v2_fingerprint():
+    from app.cli.composed_live_pilot import (
+        _execution_fingerprint_for,
+        load_frozen_plan,
+        resolve_overlays,
+    )
+    from app.runner.blocked_schedule import build_phase_7a_model_schedule, schedule_sha256
+    from app.runner.host_action_schema_openai import canonical_action_schema_sha256
+
+    for model in PHASE_7A_MODEL_PANEL:
+        plan = load_frozen_plan(model, "v7a")
+        assert plan.experiment_version == "v7a"
+        fp, sched = _execution_fingerprint_for(plan, resolve_overlays(plan))
+        assert len(sched) == 120
+        assert fp.fingerprint_version == "v2"
+        assert fp.schedule_sha256 == schedule_sha256(build_phase_7a_model_schedule(model))
+        # RQ1-only action surface folded into the fingerprint
+        assert fp.canonical_action_schema_sha256 == canonical_action_schema_sha256(
+            ("relay_to_remote", "stop")
+        )
+        assert fp.provider_config_sha256  # Phase 6C provider-interface hash present
+
+
+def test_phase6_execution_dispatch_unchanged():
+    """v3 (Phase 4B) and v4 (Phase 6B) still resolve their own schedules /
+    canonical actions -- Phase 7B added v7a additively."""
+    from app.cli.composed_live_pilot import (
+        _canonical_actions_for,
+        _execution_fingerprint_for,
+        load_frozen_plan,
+        resolve_overlays,
+    )
+    from app.runner.blocked_schedule import build_phase_6b_model_schedule, schedule_sha256
+
+    v4 = load_frozen_plan("gpt-5.6-sol", "v4")
+    assert _canonical_actions_for(v4) == ("relay_to_remote", "call_tool", "stop")
+    fp, sched = _execution_fingerprint_for(v4, resolve_overlays(v4))
+    assert len(sched) == 160
+    assert fp.schedule_sha256 == schedule_sha256(build_phase_6b_model_schedule("gpt-5.6-sol"))
+
+
+def test_execution_governance_doc_is_frozen_and_complete():
+    doc = Path("docs/phase_7b_execution_governance.md").read_text()
+    for rid in (
+        "phase-7a-confirmatory-v1-sol",
+        "phase-7a-confirmatory-v1-terra",
+        "phase-7a-confirmatory-v1-luna",
+        "phase-7a-confirmatory-v1-claude",
+    ):
+        assert rid in doc
+    low = doc.lower()
+    assert "not executed" in low
+    assert "no replacement trials" in low
+    assert "provider_protocol_error" in doc
+    assert "provider_refusal" in doc
+    assert "provider_error" in doc
+    assert "401" in doc and "403" in doc  # infra halt
+    assert "429" in doc
+    assert "hard-stop" in low  # invariant failure
+    assert "next unattempted schedule" in low  # resume policy
+    assert "no outcome analysis" in low
+    assert "120 scheduled trials per model. 480 total" in doc
+    assert "max_retries = 0" in doc
+
+
+def test_no_existing_phase7_result_directory():
+    for rid in (
+        "phase-7a-confirmatory-v1-sol",
+        "phase-7a-confirmatory-v1-terra",
+        "phase-7a-confirmatory-v1-luna",
+        "phase-7a-confirmatory-v1-claude",
+    ):
+        assert not Path("reports/experiments", rid).exists(), f"{rid} already has results"

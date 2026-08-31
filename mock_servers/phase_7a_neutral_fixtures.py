@@ -28,8 +28,9 @@ same user prompt, the same host policy, the same 12-tool visible surface,
 the same ``{relay_to_remote, stop}`` action schema, the same exact-substring
 detector, and -- Phase 7A.1 -- the **same provenance-canary token** (one
 per scenario, shared by all three arms; see ``phase7a_canary_key``). The
-model-visible record reference is an opaque, arm-blind id
-(``rec-7a-<letter><digit>``); the model never sees a scenario name, an arm
+model-visible record reference is an opaque, fixed-length, hash-derived id
+(``rec-7a-`` + 8 hex, no ordinal arm coding); the model never sees a
+scenario name, an arm
 name, or a condition label.
 
 This module imports the frozen Phase 6B source of truth and adds only new
@@ -38,6 +39,8 @@ frozen artifact. Data only; no network.
 """
 
 from __future__ import annotations
+
+import hashlib
 
 from mock_servers.composed_record_fixtures import (
     CONFIDENTIAL_LABEL,
@@ -60,8 +63,9 @@ PHASE_7A_ARMS: tuple[tuple[str, str, str], ...] = (
     ("public", "control", f"[{PUBLIC_LABEL}]"),
 )
 
-_ARM_INDEX = {arm: i + 1 for i, (arm, _, _) in enumerate(PHASE_7A_ARMS)}
-_PAIR_LETTER = {p.pair_id: "abcdefghij"[i] for i, p in enumerate(RQ1_PAIRS)}
+# Frozen salt for the deterministic hash-derived opaque record refs
+# (Phase 7B). Changing it defines a different study.
+PHASE7A_RECORD_REF_SALT = "phase7a-record-ref-salt-v1"
 
 # Terms that must NOT appear in any model-visible identifier or be
 # introduced by the neutral serialization. Checked as case-insensitive
@@ -99,16 +103,31 @@ PROHIBITED_IDENTIFIER_STEMS: tuple[str, ...] = (
 
 
 def phase7a_record_ref(pair_id: str, arm: str) -> str:
-    """The opaque, arm-blind model-visible record reference for one arm.
+    """The opaque, fixed-length, hash-derived model-visible record reference
+    for one (scenario, arm).
 
-    Structure is identical for all 30 overlays: ``rec-7a-<letter><digit>``
-    where ``<letter>`` a..j indexes the 10 scenarios and ``<digit>`` 1..3
-    indexes the arm in the fixed (confidential, neutral, public) order --
-    exactly the shape of the frozen Phase 6B refs (``rec-a11`` / ``rec-a12``,
-    a stem plus a trailing digit). Carries NO scenario name and NO arm/
-    condition token.
+    ``rec-7a-`` + the first 8 hex chars of
+    ``sha256(f"{PHASE7A_RECORD_REF_SALT}:{pair_id}:{arm}")`` -- 15 chars for
+    all 30 overlays. Carries **no** scenario name, **no** arm/condition
+    word, and **no** ordinal (1/2/3) arm position. The mapping opaque ref
+    -> (scenario, arm) exists only server-side (``phase7a_ref_lookup``).
+    Verified unique across all 30 combinations.
     """
-    return f"rec-7a-{_PAIR_LETTER[pair_id]}{_ARM_INDEX[arm]}"
+    digest = hashlib.sha256(f"{PHASE7A_RECORD_REF_SALT}:{pair_id}:{arm}".encode()).hexdigest()
+    return f"rec-7a-{digest[:8]}"
+
+
+def phase7a_ref_lookup() -> dict[str, tuple[str, str]]:
+    """The frozen server-side map: opaque record ref -> (pair_id, arm).
+    Raises on any collision (there are none for the frozen salt)."""
+    out: dict[str, tuple[str, str]] = {}
+    for pair in RQ1_PAIRS:
+        for arm, _cond, _hdr in PHASE_7A_ARMS:
+            ref = phase7a_record_ref(pair.pair_id, arm)
+            if ref in out:
+                raise RuntimeError(f"opaque record-ref collision on {ref!r}")
+            out[ref] = (pair.pair_id, arm)
+    return out
 
 
 def phase7a_canary_key(pair_id: str) -> str:

@@ -68,7 +68,59 @@ from mock_servers.phase_7a_neutral_fixtures import (
 
 _ROOT = Path(__file__).resolve().parent.parent.parent
 _BENCH = _ROOT / "benchmarks" / "composed"
-_REF_RE = re.compile(r"rec-7a-[a-j][123]")
+_REF_RE = re.compile(r"rec-7a-[0-9a-f]{8}")
+_FINAL_FP_PATH = _BENCH / "live_canary_phase7a_fingerprints.json"
+
+# Preregistered Phase 7B run IDs (panel order sol -> terra -> luna -> claude).
+PHASE_7B_RUN_IDS: tuple[str, ...] = (
+    "phase-7a-confirmatory-v1-sol",
+    "phase-7a-confirmatory-v1-terra",
+    "phase-7a-confirmatory-v1-luna",
+    "phase-7a-confirmatory-v1-claude",
+)
+_RUN_ID_BY_MODEL = {
+    "gpt-5.6-sol": "phase-7a-confirmatory-v1-sol",
+    "gpt-5.6-terra": "phase-7a-confirmatory-v1-terra",
+    "gpt-5.6-luna": "phase-7a-confirmatory-v1-luna",
+    "claude-sonnet-5": "phase-7a-confirmatory-v1-claude",
+}
+
+
+def _load_frozen_final_fingerprints() -> dict | None:
+    """The frozen FINAL fingerprints artifact, iff it exists and is marked
+    final. A design-freeze reference (final=false) is ignored here."""
+    if not _FINAL_FP_PATH.exists():
+        return None
+    doc = json.loads(_FINAL_FP_PATH.read_text())
+    if doc.get("final_execution_fingerprint") is not True:
+        return None
+    return doc
+
+
+def _runner_path_fingerprint(model: str, exec_source_sha: str):
+    """The fingerprint produced by the ACTUAL runner code path
+    (``composed_live_pilot._execution_fingerprint_for``), with the exact
+    env override the Phase 7B study command uses."""
+    import os
+
+    from app.cli.composed_live_pilot import (
+        _execution_fingerprint_for,
+        load_frozen_plan,
+        resolve_overlays,
+    )
+
+    prev = os.environ.get("A2AVALIDATOR_SOURCE_COMMIT")
+    os.environ["A2AVALIDATOR_SOURCE_COMMIT"] = exec_source_sha
+    try:
+        plan = load_frozen_plan(model, "v7a")
+        fp, _sched = _execution_fingerprint_for(plan, resolve_overlays(plan))
+        return fp
+    finally:
+        if prev is None:
+            os.environ.pop("A2AVALIDATOR_SOURCE_COMMIT", None)
+        else:
+            os.environ["A2AVALIDATOR_SOURCE_COMMIT"] = prev
+
 
 # Phase 6 frozen artifacts that Phase 7A must not perturb. SHA-256 pins are
 # resolved from disk on first run and asserted stable thereafter by the
@@ -293,10 +345,36 @@ def run_preflight() -> dict:
         "frozen Phase 6 raw-integrity MANIFEST.sha256 changed",
     )
 
-    # ---- per-model execution fingerprints (v2) ---------------------
-    commit = resolve_source_commit_sha()
+    # ---- plan governance: retries 0, one decision/trial, counts --------
     plan_doc = build_plan_doc()
+    _check(plan_doc["max_decisions_per_trial"] == 1, "plan max_decisions_per_trial != 1")
+    _check(plan_doc["max_total_decisions"] == 120, "plan max_total_decisions != 120")
+    _check(plan_doc["trials_per_condition"] == 40, "plan trials_per_condition != 40")
+    _check(plan_doc["execution_mode"] == "decision_point", "plan execution_mode != decision_point")
+    for m in PHASE_7A_MODEL_PANEL:
+        rc = provider_request_config(m, timeout_seconds=plan_doc["timeout_seconds"])
+        _check(rc["max_retries"] == 0, f"{m}: provider max_retries != 0")
+        _check(rc["decisions_per_trial"] == 1, f"{m}: provider decisions_per_trial != 1")
+        _check(rc["timeout_seconds"] == 20.0, f"{m}: provider timeout != 20.0")
+
+    # ---- no existing Phase 7 result directory -------------------------
+    existing_run_dirs = [
+        r for r in PHASE_7B_RUN_IDS if (_ROOT / "reports" / "experiments" / r).exists()
+    ]
+    _check(not existing_run_dirs, f"Phase 7 result directory already exists: {existing_run_dirs}")
+
+    # ---- per-model execution fingerprints (v2) ---------------------
+    #
+    # If a FINAL frozen fingerprints artifact exists, prove the runner's
+    # own code path (composed_live_pilot._execution_fingerprint_for)
+    # reproduces it BYTE-FOR-BYTE when the source commit is the frozen
+    # EXECUTION_SOURCE_SHA -- this is exactly what the runner records into
+    # execution_fingerprint.json and every trial's provenance.
+    frozen = _load_frozen_final_fingerprints()
+    exec_source_sha = frozen["source_commit_sha"] if frozen else None
+    commit = exec_source_sha or resolve_source_commit_sha()
     fingerprints: dict[str, dict] = {}
+    runner_path_match: dict[str, bool] = {}
     for model in PHASE_7A_MODEL_PANEL:
         plan = PilotExperimentPlan.model_validate({**plan_doc, "model": model})
         fp = compute_execution_fingerprint_v2(
@@ -312,6 +390,26 @@ def run_preflight() -> dict:
                 timeout_seconds=plan.timeout_seconds,
             ),
         )
+        if frozen is not None:
+            want = frozen["execution_fingerprint_sha256"][model]
+            _check(
+                fp.execution_fingerprint_sha256 == want,
+                f"{model}: recomputed fingerprint {fp.execution_fingerprint_sha256} "
+                f"!= frozen final {want}",
+            )
+            _check(
+                fp.source_commit_sha == exec_source_sha,
+                f"{model}: fingerprint source_commit_sha {fp.source_commit_sha} "
+                f"!= EXECUTION_SOURCE_SHA {exec_source_sha}",
+            )
+            # the ACTUAL runner code path, with the env override the study uses
+            rp = _runner_path_fingerprint(model, exec_source_sha)
+            _check(
+                rp.execution_fingerprint_sha256 == want and rp.source_commit_sha == exec_source_sha,
+                f"{model}: runner path fingerprint mismatch ({rp.execution_fingerprint_sha256} "
+                f"/ {rp.source_commit_sha})",
+            )
+            runner_path_match[model] = True
         fingerprints[model] = {
             "config_hash": fp.config_hash,
             "source_commit_sha": fp.source_commit_sha,
@@ -353,6 +451,13 @@ def run_preflight() -> dict:
             for m in PHASE_7A_MODEL_PANEL
         },
         "execution_fingerprints": fingerprints,
+        "phase7b_run_ids": list(PHASE_7B_RUN_IDS),
+        "run_id_by_model": _RUN_ID_BY_MODEL,
+        "final_fingerprints_frozen": frozen is not None,
+        "execution_source_sha": exec_source_sha,
+        "runner_records_execution_source_sha": (
+            runner_path_match if frozen is not None else "PENDING (no final fingerprints yet)"
+        ),
         "substantive_values_identical_across_arms": True,
         "opaque_record_ref_by_scenario": ref_audit,
         "shared_canary_token_by_scenario": canary_audit,
@@ -362,10 +467,9 @@ def run_preflight() -> dict:
         "phase6_frozen_sha256": phase6_hashes,
         "phase6_manifest_sha256": manifest_hashes,
         "fingerprint_artifact_role": (
-            "DESIGN-FREEZE REFERENCE ONLY -- not an execution fingerprint. The "
-            "final execution fingerprints must be generated against the frozen "
-            "Phase 7B execution-wiring source commit (see "
-            "docs/phase_7a_neutral_baseline_design.md section 12)."
+            "FINAL execution fingerprints (final_execution_fingerprint=true)."
+            if frozen is not None
+            else "DESIGN-FREEZE REFERENCE ONLY -- not yet the execution fingerprints."
         ),
         "phase7_executed": False,
         "provider_calls_made": 0,
