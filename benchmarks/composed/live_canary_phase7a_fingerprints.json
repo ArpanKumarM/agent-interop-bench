@@ -1,68 +1,68 @@
 {
-  "artifact_role": "DESIGN-FREEZE REFERENCE ONLY -- NOT the execution fingerprints. Regenerate with --final against the frozen EXECUTION_SOURCE_SHA before requesting execution authorization (see docs/phase_7a_neutral_baseline_design.md section 10).",
+  "artifact_role": "FINAL execution fingerprints -- generated against EXECUTION_SOURCE_SHA 2a892c0b9a8a636055cc0c4229aebfd788738b60. The runner records this SHA into execution_fingerprint.json and every trial's provenance when the study is run with A2AVALIDATOR_SOURCE_COMMIT set to it. The Phase 7A/7A.1 fingerprints in git history remain design-freeze references only.",
   "canonical_actions": [
     "relay_to_remote",
     "stop"
   ],
   "config_hash": "f309b3de55dc943da9a6e1a8ad8ae1b37e380eaa1337d7962c30897cfd29bf19",
   "execution_fingerprint_sha256": {
-    "claude-sonnet-5": "4a1f4c08343013d6a94a3105a15ad3d14acad41ba2d62ae29acc14dfd503b1e7",
-    "gpt-5.6-luna": "ebd907157af64a481575707f506ce0f10ddb4d3994089623fec534dd72dab1c8",
-    "gpt-5.6-sol": "ab7f338569d3c5b3ab02f95a86000410acbd9b91953a637628b1ca560928ad12",
-    "gpt-5.6-terra": "105240158533eed4ea645cd96d6770b6c3f55e2f5e3590a97c90c9bebd44e60c"
+    "claude-sonnet-5": "ec5d5e613b5672b43016877287ae18ec58213bafdce88c50e498a62918709ed9",
+    "gpt-5.6-luna": "3fac8f5629ee5d29b5b9530ce7fdf0cedc790f33a211c04adde1c0a3640e0be6",
+    "gpt-5.6-sol": "5357ed45fb1bd98f15a1c7eae62cc266ea13a6138fe1367d66a8af8d15fb7e1d",
+    "gpt-5.6-terra": "ece089cd7d3b8f645ae27b551e3f7743d20fc72d40d62eb13f5c7623db7459b4"
   },
-  "final_execution_fingerprint": false,
+  "final_execution_fingerprint": true,
   "fingerprint_version": "v2",
   "per_model": {
     "claude-sonnet-5": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "0197e9e4c0b53065c3540e52e750246f3d49654f022ae1666798d347fe8b85bd",
-      "execution_fingerprint_sha256": "4a1f4c08343013d6a94a3105a15ad3d14acad41ba2d62ae29acc14dfd503b1e7",
+      "execution_fingerprint_sha256": "ec5d5e613b5672b43016877287ae18ec58213bafdce88c50e498a62918709ed9",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "fc7f38d046ef7c7e1c65c0148c7d2eb283a44eb485fae7509a5c16b07ae69c60",
       "python_runtime_version": "3.12.2",
       "resolved_overlay_bundle_sha256": "9661309635c2913c6436c5421f48388727f7f3bfe2f5fc62fbe6e60fc460d155",
       "schedule_sha256": "826ba13ba9b6b659691eaf066f27004e0920675e352b71c9115dc3431bd193e4",
-      "source_commit_sha": "8f8c8c1fd3a09393ee86dd9a20abe6b8ee67dd12",
+      "source_commit_sha": "2a892c0b9a8a636055cc0c4229aebfd788738b60",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     },
     "gpt-5.6-luna": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "875a7283fca5d1483181ebe88c98677d9085b83dbd29b3d9f25359ac31ca2714",
-      "execution_fingerprint_sha256": "ebd907157af64a481575707f506ce0f10ddb4d3994089623fec534dd72dab1c8",
+      "execution_fingerprint_sha256": "3fac8f5629ee5d29b5b9530ce7fdf0cedc790f33a211c04adde1c0a3640e0be6",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "db708cd0d840f1053f53e6d92fbf23adede67912e53d51350d15bfdacc8e620b",
       "python_runtime_version": "3.12.2",
       "resolved_overlay_bundle_sha256": "9661309635c2913c6436c5421f48388727f7f3bfe2f5fc62fbe6e60fc460d155",
       "schedule_sha256": "61e1b10a3d2d2c05f830db2c014095fe89f10c7e7c3d4be247ffe0bd155203f0",
-      "source_commit_sha": "8f8c8c1fd3a09393ee86dd9a20abe6b8ee67dd12",
+      "source_commit_sha": "2a892c0b9a8a636055cc0c4229aebfd788738b60",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     },
     "gpt-5.6-sol": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "f309b3de55dc943da9a6e1a8ad8ae1b37e380eaa1337d7962c30897cfd29bf19",
-      "execution_fingerprint_sha256": "ab7f338569d3c5b3ab02f95a86000410acbd9b91953a637628b1ca560928ad12",
+      "execution_fingerprint_sha256": "5357ed45fb1bd98f15a1c7eae62cc266ea13a6138fe1367d66a8af8d15fb7e1d",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "d8df1b6cdf58d035ef9157253dd41f184a8ac1e89942509196e6148058400ea9",
       "python_runtime_version": "3.12.2",
       "resolved_overlay_bundle_sha256": "9661309635c2913c6436c5421f48388727f7f3bfe2f5fc62fbe6e60fc460d155",
       "schedule_sha256": "2b0d6c27dadb16098b0aafd01831b6dcaf98c861e7c373c2ddac296662a173cf",
-      "source_commit_sha": "8f8c8c1fd3a09393ee86dd9a20abe6b8ee67dd12",
+      "source_commit_sha": "2a892c0b9a8a636055cc0c4229aebfd788738b60",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     },
     "gpt-5.6-terra": {
       "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
       "config_hash": "d4b405dade63ba0d007c7acc2518e756f7aae82ab27fd85a4727f5d5780e0898",
-      "execution_fingerprint_sha256": "105240158533eed4ea645cd96d6770b6c3f55e2f5e3590a97c90c9bebd44e60c",
+      "execution_fingerprint_sha256": "ece089cd7d3b8f645ae27b551e3f7743d20fc72d40d62eb13f5c7623db7459b4",
       "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
       "provider_config_sha256": "8e6c3d7f664b7404f967dacb24be37cf77d29d47bafff8373eb45c188aec7d28",
       "python_runtime_version": "3.12.2",
       "resolved_overlay_bundle_sha256": "9661309635c2913c6436c5421f48388727f7f3bfe2f5fc62fbe6e60fc460d155",
       "schedule_sha256": "ab887ecf3161933c5e0251e1b34b0f24237f50ff91a4e27d5df8a8d29106cc66",
-      "source_commit_sha": "8f8c8c1fd3a09393ee86dd9a20abe6b8ee67dd12",
+      "source_commit_sha": "2a892c0b9a8a636055cc0c4229aebfd788738b60",
       "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
       "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
     }
@@ -89,7 +89,7 @@
     "tool_schema_sha256": "efa354c3b7ba9bf5050d32f152ed29f583c7348063184dfb5a8989cf26304b85",
     "uv_lock_sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
   },
-  "source_commit_sha": "8f8c8c1fd3a09393ee86dd9a20abe6b8ee67dd12",
+  "source_commit_sha": "2a892c0b9a8a636055cc0c4229aebfd788738b60",
   "study_id": "composed-live-canary-007a",
   "study_schedule_sha256": "76823fdbbd69a6b5a6a7b3219a5a85525f9f301ed59e6cf1cb188d807551fea5",
   "study_version": "v7a"
