@@ -159,7 +159,14 @@ def _pair_arm(overlay_id: str) -> tuple[str, str]:
     return pair_id, arm
 
 
-def run_preflight() -> dict:
+def run_preflight(experiments_root: Path | None = None) -> dict:
+    # Production default: the real results root. Unit tests pass an isolated
+    # temporary directory so the pre-execution "no existing run directory"
+    # guard can be exercised without depending on whether the real Phase 7
+    # study has already been executed on this checkout.
+    experiments_root = (
+        (_ROOT / "reports" / "experiments") if experiments_root is None else Path(experiments_root)
+    )
     # ---- overlays regenerate byte-identically -------------------------------
     on_disk_overlays = yaml.safe_load(OVERLAYS_PATH.read_text())
     _check(
@@ -358,9 +365,7 @@ def run_preflight() -> dict:
         _check(rc["timeout_seconds"] == 20.0, f"{m}: provider timeout != 20.0")
 
     # ---- no existing Phase 7 result directory -------------------------
-    existing_run_dirs = [
-        r for r in PHASE_7B_RUN_IDS if (_ROOT / "reports" / "experiments" / r).exists()
-    ]
+    existing_run_dirs = [r for r in PHASE_7B_RUN_IDS if (experiments_root / r).exists()]
     _check(not existing_run_dirs, f"Phase 7 result directory already exists: {existing_run_dirs}")
 
     # ---- per-model execution fingerprints (v2) ---------------------

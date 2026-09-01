@@ -37,13 +37,13 @@ OUT = (
 )
 
 
-def build_doc(*, final: bool = False) -> dict:
+def build_doc(*, final: bool = False, experiments_root: Path | None = None) -> dict:
     if final and not (os.environ.get("A2AVALIDATOR_SOURCE_COMMIT") or "").strip():
         raise SystemExit(
             "--final requires A2AVALIDATOR_SOURCE_COMMIT=<EXECUTION_SOURCE_SHA> to be set "
             "explicitly (see docs/phase_7a_neutral_baseline_design.md section 10)."
         )
-    report = run_preflight()
+    report = run_preflight(experiments_root=experiments_root)
     fps = report["execution_fingerprints"]
     any_fp = next(iter(fps.values()))
     role = (

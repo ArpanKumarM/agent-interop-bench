@@ -276,11 +276,11 @@ def test_provider_request_config_identical_phase6_vs_phase7():
         assert h6 != h7  # action surface differs by design (RQ1-only)
 
 
-def test_fingerprint_freezer_modes_and_on_disk_artifact():
+def test_fingerprint_freezer_modes_and_on_disk_artifact(tmp_path):
     from app.cli.freeze_phase_7a_fingerprints import build_doc
 
     # default mode -> design-freeze reference
-    ref = build_doc()
+    ref = build_doc(experiments_root=tmp_path)
     assert ref["final_execution_fingerprint"] is False
     assert "DESIGN-FREEZE REFERENCE" in ref["artifact_role"]
     assert ref["provider_calls_made"] == 0
@@ -475,8 +475,10 @@ def test_phase6b_schedule_hash_unchanged():
 # --------------------------------------------------------------------------- #
 # offline preflight
 # --------------------------------------------------------------------------- #
-def test_preflight_passes_and_makes_no_provider_call():
-    report = run_preflight()
+def test_preflight_passes_and_makes_no_provider_call(tmp_path):
+    # isolated results root: the pre-execution guard is exercised without
+    # depending on whether the real Phase 7 study has been executed here.
+    report = run_preflight(experiments_root=tmp_path)
     assert report["provider_calls_made"] == 0
     assert report["phase7_executed"] is False
     assert report["total_trials"] == 480
@@ -496,9 +498,9 @@ def test_preflight_passes_and_makes_no_provider_call():
     assert len(set(sha.values())) == 4
 
 
-def test_preflight_is_deterministic():
-    a = run_preflight()["execution_fingerprints"]
-    b = run_preflight()["execution_fingerprints"]
+def test_preflight_is_deterministic(tmp_path):
+    a = run_preflight(experiments_root=tmp_path / "a")["execution_fingerprints"]
+    b = run_preflight(experiments_root=tmp_path / "b")["execution_fingerprints"]
     assert {m: v["execution_fingerprint_sha256"] for m, v in a.items()} == {
         m: v["execution_fingerprint_sha256"] for m, v in b.items()
     }
@@ -587,11 +589,64 @@ def test_execution_governance_doc_is_frozen_and_complete():
     assert "max_retries = 0" in doc
 
 
-def test_no_existing_phase7_result_directory():
-    for rid in (
-        "phase-7a-confirmatory-v1-sol",
-        "phase-7a-confirmatory-v1-terra",
-        "phase-7a-confirmatory-v1-luna",
-        "phase-7a-confirmatory-v1-claude",
-    ):
-        assert not Path("reports/experiments", rid).exists(), f"{rid} already has results"
+_PHASE7_RUN_IDS = (
+    "phase-7a-confirmatory-v1-sol",
+    "phase-7a-confirmatory-v1-terra",
+    "phase-7a-confirmatory-v1-luna",
+    "phase-7a-confirmatory-v1-claude",
+)
+
+
+def test_preflight_rejects_existing_run_directory(tmp_path):
+    """The pre-execution guard still refuses to proceed when a Phase 7 run
+    directory already exists under the results root -- proven here against
+    an isolated root so it does not depend on the real study state."""
+    import pytest
+
+    from app.cli.phase_7a_preflight import Phase7APreflightError
+
+    # clean isolated root -> preflight passes
+    run_preflight(experiments_root=tmp_path)
+
+    # create one run directory -> preflight must refuse
+    (tmp_path / "phase-7a-confirmatory-v1-sol").mkdir(parents=True)
+    with pytest.raises(Phase7APreflightError, match="result directory already exists"):
+        run_preflight(experiments_root=tmp_path)
+
+
+def test_production_preflight_guard_is_not_weakened():
+    """``run_preflight()`` with no argument still points at the real
+    ``reports/experiments`` root (production behaviour unchanged)."""
+    import inspect
+
+    from app.cli import phase_7a_preflight as pf
+
+    src = inspect.getsource(pf.run_preflight)
+    assert '_ROOT / "reports" / "experiments"' in src
+    assert "if experiments_root is None" in src
+
+
+def test_phase7_post_execution_state():
+    """Post-execution state check: the four real Phase 7 run directories now
+    exist, each with exactly 120 completed TrialRecords pinned to the frozen
+    EXECUTION_SOURCE_SHA. (This replaces the old pre-execution
+    'no result directory yet' assertion, which is now covered against an
+    isolated root by ``test_preflight_rejects_existing_run_directory``.)"""
+    exec_root = Path("reports/experiments")
+    if not all((exec_root / rid / "trials.jsonl").exists() for rid in _PHASE7_RUN_IDS):
+        import pytest
+
+        pytest.skip("Phase 7 study not executed on this checkout")
+    for rid in _PHASE7_RUN_IDS:
+        lines = [
+            ln for ln in (exec_root / rid / "trials.jsonl").read_text().splitlines() if ln.strip()
+        ]
+        assert len(lines) == 120, rid
+        for ln in lines:
+            rec = json.loads(ln)
+            assert rec["status"] == "completed"
+            assert rec["run_id"] == "composed-live-canary-007a"
+            assert (
+                rec["provenance"]["execution_fingerprint"]["source_commit_sha"]
+                == "2a892c0b9a8a636055cc0c4229aebfd788738b60"
+            )
