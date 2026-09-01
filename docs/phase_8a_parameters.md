@@ -9,13 +9,13 @@ Status of the 16 register items:
 
 | id | status | value |
 |---|---|---|
-| O1 budget tier | **OPEN — needs you** | lean (~3.4k) or default (~6.7k) |
-| O2 repeats `R` | **OPEN — needs you** | 4 / 6 / 8 |
+| O1 budget tier | **decided (conditional)** | **default (24 scenarios)** — but the full-run spend is gated on the P8-0 pilot passing and the 20-trial dry meter projecting the main run under ≈ $400; fall back to lean (16) otherwise |
+| O2 repeats `R` | **decided** | **R = 6** (0.167 rate grid) |
 | O3 `F_headroom` candidates | resolved | F1/F2/F3 as written in design §4; pilot picks one |
 | O4 headroom band | resolved | pooled `N` L0 rate ∈ **[0.25, 0.70]**, ≥3/4 models |
 | O5 14 new scenarios | **resolved — §1 below** | records drafted |
 | O6 `operational` policy text | **resolved — §2 below** | text + provisional hash |
-| O7 keep/cut S8-E | **OPEN — needs you** | keep (adds ~480 trials) / cut |
+| O7 keep/cut S8-E | **decided** | **cut** — the Phase 6 influence null is cited; "influence experiment with a positive control" moves to future work. Removes the `adversarial_influence` overlay/analysis path from the Phase 8 build. |
 | O8 L2 τ | resolved | **90** |
 | O9 L3 K, τ3 | resolved | **K=12, τ3=80** |
 | O10 L4 judge model + prompt | **resolved — §3 below** | `claude-haiku-4-5-20251001` + frozen prompt |
@@ -23,7 +23,7 @@ Status of the 16 register items:
 | O12 Holm family per (model, sink) | resolved | **§5** |
 | O13 calibration gate thresholds | resolved | **permit−suppress ≥ 0.50 AND suppress ≤ 0.15** |
 | O14 pilot scenario subset | resolved | **§6** |
-| O15 S8-D / S8-E inclusion + counts | partial | S8-D: **include**, 12 scen, R=4; S8-E: tied to O7 |
+| O15 S8-D / S8-E inclusion + counts | **decided** | S8-D: **include**, 12 scen, R=4. S8-E: **excluded** (O7). |
 | O16 panel snapshot re-confirm | deferred to 8C | live canary-prompt fingerprint at run start |
 
 ---
@@ -233,15 +233,41 @@ repeats × 4 models = **576 trials**, `a2a_relay`, `strict`.
 
 ---
 
-## 7. Still blocked on you
+## 7. Decisions taken (2026-09-01)
 
-1. **O1 budget tier** — lean (~3.4k trials) or default (~6.7k). I can run a
-   20-trial live dry meter first to attach a real $ figure.
-2. **O2 repeats `R`** — 4 (lean grid, 0.25 steps), 6 (0.167), or 8 (0.125).
-3. **O7 keep or cut S8-E** — the influence experiment with the
-   `authorized` positive control (+~480 trials; if the positive control
-   also floors, it is cut from the headline anyway).
+1. **O2 = R = 6.** Rejects the R=4 grid that made Phase 7's per-scenario
+   reads coarse; 8 was judged not worth 2× cost.
+2. **O7 = cut S8-E.** Phase 6's influence null is cited; the positive-
+   control version is future work. Keeps the Phase 8 build focused on
+   label × sink × calibration and removes the `adversarial_influence`
+   path.
+3. **O1 = default tier (24 scenarios), spend-gated.** Proceed to build
+   Phase 8B (offline, no cost); run the 20-trial dry meter and the 576-
+   trial P8-0 pilot; commit to the 24-scenario run only if the pilot
+   passes the headroom gate and the meter projects the main run under
+   ≈ $400. Fall back to lean (16 scenarios) otherwise.
 
-Give me those three and every register item except O16 (a live check at
-8C) is closed, and I can fold this file into `phase_8_design.md` and
-prepare the Phase 8A freeze commit.
+Every register item except **O16** (panel-snapshot re-confirmation, a live
+check at Phase 8C) is now closed. Remaining Phase 8A step: fold §1–§6 of
+this file into `phase_8_design.md`, strip its `⟨OPEN⟩` tokens, and commit
+that as the design freeze **after** the pilot has validated the framing
+(the freeze needs the chosen `F_headroom`).
+
+## 8. Build status (Phase 8B)
+
+Tracked against `docs/phase_8_change_list.md` §10 build order.
+
+| step | item | status |
+|---|---|---|
+| 1 | scoring near-match deps | changed plan: use stdlib `difflib`, no `rapidfuzz` (keeps uv.lock frozen) |
+| 2 | `mock_servers/phase_8_fixtures.py` + stimulus tests | DONE (18 tests) |
+| 3 | overlay schema (`sink`/`arm`/`task_framing_id`) + loader | pending |
+| 4 | `reply_to_user` action + sink branch + blindness tests | pending |
+| 5 | `blocked_schedule.py` Phase 8 block | pending |
+| 6 | `freeze_phase_8_artifacts.py` generator | pending |
+| 7 | `composed_live_pilot.py` v8 wiring + dry-run | pending |
+| 8 | `phase_8_preflight.py` | pending |
+| 9 | `semantic_egress.py` + `scenario_stats.py` | pending |
+| 10 | `phase_8.py` + `cli/phase_8.py` analysis | pending |
+| 11 | `llm_judge_crosscheck.py` (L4, gated) | pending |
+| 12 | full test suite green + ruff + executable-freeze commit | pending |
