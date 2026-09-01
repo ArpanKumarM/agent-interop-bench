@@ -39,7 +39,7 @@ Edoardo Debenedetti, Ilia Shumailov, Tianqi Fan, Jamie Hayes, Nicholas Carlini, 
 Hongyi Du, Jiaqi Su, Jisen Li, Lijie Ding, Yingxuan Yang, Peixuan Han, Xiangru Tang, Kunlun Zhu, and Jiaxuan You.
 \newblock {ProtocolBench}: Which {LLM} {MultiAgent} {Protocol to Choose?}
 \newblock In \emph{Proceedings of the 43rd International Conference on Machine Learning (ICML)}, volume 306 of \emph{Proceedings of Machine Learning Research}. PMLR, 2026.
-\newblock Also arXiv:2510.17149 (v1 20 Oct 2025; v3 2 June 2026; DOI 10.48550/arXiv.2510.17149), \url{https://arxiv.org/abs/2510.17149}. Evaluates which multi-agent communication protocol to choose, primarily through task success, latency, communication overhead, and failure robustness. Distinction: a question of protocol choice, not our MCP-to-A2A cross-protocol information-flow and action-containment experiment.
+\newblock Also arXiv:2510.17149 (v1 20 Oct 2025; v3 2 June 2026; DOI 10.48550/arXiv.2510.17149), \url{https://arxiv.org/abs/2510.17149}. Evaluates which multi-agent communication protocol to choose, primarily through task success, latency, communication overhead, and failure robustness. Distinction: a question of protocol choice, not our label-conditioned egress measurement in one MCP-to-A2A configuration.
 
 \bibitem[Greshake et~al.(2023)Greshake, Abdelnabi, Mishra, Endres, Holz, and Fritz]{greshake2023indirect}
 Kai Greshake, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten Holz, and Mario Fritz.

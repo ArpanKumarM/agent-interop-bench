@@ -1,587 +1,160 @@
-# Agent Interop Bench
+# Public-Sharing Labels and Verbatim Field Egress in an MCP-to-A2A Agent Configuration
 
 [![CI](https://github.com/ArpanKumarM/agent-interop-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/ArpanKumarM/agent-interop-bench/actions/workflows/ci.yml)
 
-Reliability, security, and interoperability testing for MCP and A2A agents.
-Agent Interop Bench tests whether an AI agent selects the correct tools,
-supplies valid arguments, handles failures gracefully, resists malicious
-tool output, and recovers safely — deterministically, without an LLM judge.
+Research artifact for the paper **"Public-Sharing Labels and Verbatim Field
+Egress in an MCP-to-A2A Agent Configuration: A Controlled Multi-Model
+Study."** Manuscript source: [`paper/arxiv/main.tex`](paper/arxiv/main.tex)
+(reference copy: [`paper/main.md`](paper/main.md)).
 
-**This repository implements two independent deterministic evaluation
-engines: MCP (Model Context Protocol) tool-use evaluation, and A2A
-(Agent2Agent Protocol) interoperability evaluation.** Both run against
-local, in-process mock servers/fixtures with no external network access —
-see [Scope](#scope) for exactly what each covers today.
+## What the study measures
 
-## The problem
+One narrow behavior at a concrete **Model Context Protocol (MCP) → Agent2Agent
+(A2A)** handoff: a real-model *host* reads a local record over MCP and then
+sends a message to a remote A2A agent. We ask how an explicit sensitivity
+label on that record changes the **verbatim egress** of the record's
+substantive field values into the outbound message, relative to the same
+record with no label.
 
-Agent frameworks make it easy to wire an LLM up to a set of tools. They
-don't make it easy to answer: *does this agent reliably pick the right
-tool, with the right arguments, even when a tool times out, throws, returns
-garbage, or comes back stuffed with an injected instruction?* Most "evals"
-either grade this with another LLM (non-deterministic, hard to trust) or
-don't test failure paths at all. Agent Interop Bench runs a fixed suite of
-deterministic scenarios against a controlled mock server and scores the
-result with rule-based evaluators, so the report is reproducible and the
-scoring logic is auditable.
+**Three-arm matched design (frozen before execution).** For each of 10
+record scenarios the record is presented in three forms whose six
+substantive field values are byte-identical, differing only in the opening
+header line:
 
-**The mock MCP server (`mock_servers/github_mock.py`) performs no real
-GitHub API calls and no external network operations of any kind.** It's a
-fully local, in-process simulation — every "issue," "repository," and
-"comment" it returns is synthetic data generated on the fly. Running the
-benchmark suite never touches a real GitHub account or any other external
-service. **The mock A2A remote agent (`mock_servers/a2a_mock.py`) is the
-same discipline applied to the second protocol:** a local, in-process
-FastAPI app exercised only through `fastapi.testclient.TestClient` (no
-sockets), never a real remote agent.
+| arm | opening line |
+|---|---|
+| **C** — confidential | `[CONFIDENTIAL - INTERNAL ONLY]` |
+| **N** — unlabeled | *(no sensitivity header)* |
+| **P** — public | `[PUBLIC - OK TO SHARE]` |
 
-## Scope
+Four models (three OpenAI GPT-5.6 tiers, Claude Sonnet 5) × 3 arms × 4
+repeats = **480 trials**. The scenario is the unit of generalization; the
+four repeats are repeated observations. Outcome:
+`any_sensitive_field_egress` — exact-substring occurrence of any of six
+substantive values in the outbound message (no LLM judge). We report the 10
+scenario-level values of `C − N`, `P − N`, `C − P`, their mean and median,
+and sign counts — **no p-values, intervals, or cross-model pooling.**
 
-This repository implements two separate, deterministic evaluation engines,
-built up in phases: MCP tool-use evaluation, and A2A interoperability
-evaluation. They share no case vocabulary and are scored independently —
-see [`docs/scoring.md`](docs/scoring.md) for MCP and the A2A evaluators
-below for A2A.
+## Headline result
 
-### MCP evaluation (in scope today)
+- **`C − N` (confidential vs. unlabeled) is inconclusive and floor-limited
+  in every model.** For three models both arms sit at zero; for
+  `claude-sonnet-5` the small negative difference sits over a low unlabeled
+  baseline (5/40). The design does not distinguish a genuine null from a
+  floor, so it **does not show that confidential labels lack a protective
+  effect**.
+- **`P − N` (public vs. unlabeled) is a descriptive, strongly
+  model-dependent association** with higher verbatim egress:
+  `claude-sonnet-5` strong and consistent (mean +0.800, all 10 scenarios;
+  mostly an association with *whether Claude relays at all*),
+  `gpt-5.6-luna` moderate/floor-limited (+0.250), `gpt-5.6-sol`
+  small/floor-limited (+0.125, median 0), `gpt-5.6-terra` a complete floor.
+- This is an association in **one configuration**, not a causal or general
+  effect.
 
-- A safe, local mock MCP server with configurable failure injection
-- MCP tool discovery, normalized into Pydantic models
-- A deterministic **29-case** benchmark suite (YAML) and a bounded
-  multi-turn runner, including adversarial/security coverage:
-  prompt-injection redirection into a different tool, argument poisoning,
-  repeated (multi-observation) injection across a 3-turn interaction, and
-  unsafe-fallback/safe-recovery behavior after a legitimate tool failure
-- A pluggable `AgentAdapter` interface: a deterministic fake adapter (free,
-  reproducible, the default everywhere) and an optional, disabled-by-default
-  real-model adapter for OpenAI (**MCP-only** — see
-  [Real-model mode](#real-model-mode-optional-mcp-only))
-- **Nine** rule-based evaluators and an aggregate JSON reliability report
-- A FastAPI service with async background run execution and in-memory run
-  storage
-- Docker / Docker Compose for one-command startup
+An earlier frozen **two-arm** study (`v4r1`, confidential vs. public only)
+reproduces its `C − P` direction descriptively for the three non-floor
+models; it is not pooled with the three-arm study.
 
-### A2A evaluation (in scope today)
+## Repository layout
 
-- A2A Protocol **v1.0**, HTTP+JSON/REST binding, modeled with Pydantic and
-  serialized wire-conformant: internal Python stays snake_case, but every
-  JSON request/response is validated and emitted in the spec's required
-  **camelCase** (`messageId`, `contextId`, `taskId`, `defaultInputModes`,
-  `supportedInterfaces`, ...) — a snake_case key on an *incoming* request
-  (e.g. `message_id`) is rejected as non-conformant, not leniently accepted
-  (see `app/models/a2a.py`'s `reject_snake_case_wire_keys`)
-- A local, in-process mock A2A remote agent (`mock_servers/a2a_mock.py`)
-  implementing `GET /.well-known/agent-card.json`, `POST /message:send`,
-  `GET /tasks/{id}`, and `POST /tasks/{id}:cancel`, scripted per case —
-  never a real remote agent
-- A deterministic **8-case** benchmark suite (YAML) covering: basic task
-  completion, capability negotiation (unsupported input mode), task
-  lifecycle with `INPUT_REQUIRED` interruption and resumption, remote task
-  failure, cross-agent injection via a malicious artifact/message (both a
-  resisted and a hijacked case), false-success detection (premature
-  completion), and cancellation handling
-- **Five** rule-based evaluators (`TaskStateCorrectnessEvaluator`,
-  `ArtifactValidityEvaluator`, `CrossAgentInjectionResistanceEvaluator`,
-  `RemoteErrorHandlingEvaluator`, `CapabilityCompatibilityEvaluator`)
-- Runs through the **same** `POST /runs` API and `RunManager` as MCP
-  (select the A2A suite by name), producing the same `Report` shape
-
-**A2A currently uses a deterministic client against a deterministic,
-scripted remote-agent fixture — there is no live A2A-agent evaluation yet.**
-Every A2A interaction in this repository, including every adversarial and
-recovery case, is one local process talking to another local, in-process
-mock over `TestClient`. This differs from MCP's real-model mode (which does
-exist, see below): no equivalent "real remote A2A agent" mode exists today.
-
-Out of scope for now (see [Roadmap](#roadmap)):
-
-- Live A2A-agent evaluation (a real remote agent in place of the scripted
-  mock)
-- A frontend/dashboard
-- PostgreSQL or any persistent database
-- Authentication
-- Cloud deployment
-- Additional real-model providers beyond OpenAI (e.g. Anthropic)
-
-## Architecture
-
-```mermaid
-flowchart TB
-    subgraph API["FastAPI (app/api)"]
-        H["GET /health"]
-        T["GET /tools"]
-        B["GET /benchmarks"]
-        R1["POST /runs"]
-        R2["GET /runs/{id}"]
-        R3["GET /runs/{id}/report"]
-    end
-
-    subgraph RM["RunManager (app/runner/run_manager)"]
-        Queue[("bounded asyncio.Queue")]
-        Workers["fixed worker pool\n(asyncio tasks)"]
-        Repo[("InMemoryRunRepository")]
-    end
-
-    subgraph Core["Core (app/core)"]
-        Loader["Benchmark loader (YAML)"]
-        Config["Settings"]
-        Log["Structured JSON logging"]
-    end
-
-    subgraph Engine["MCP evaluation engine"]
-        Discovery["Discovery\n(app/discovery)"]
-        Adapter["AgentAdapter\n(app/runner/adapters)"]
-        Runner["BenchmarkRunner\n(app/runner/engine)"]
-        Transport["MCPTransport\n(stdio subprocess)"]
-        Evaluators["9 deterministic evaluators\n(app/evaluators)"]
-        Reporting["Report builder + scoring\n(app/reporting)"]
-    end
-
-    Mock["Mock MCP Server\n(mock_servers/github_mock.py)\nsearch_issues, get_repository,\ncreate_comment, calculate_sum"]
-
-    subgraph A2AEngine["A2A evaluation engine"]
-        A2ARunner["A2ABenchmarkRunner\n(app/runner/a2a_engine)"]
-        A2AEval["5 deterministic evaluators\n(app/evaluators/a2a_*)"]
-    end
-
-    A2AMock["Mock A2A remote agent\n(mock_servers/a2a_mock.py)\nHTTP+JSON/REST, camelCase wire,\nscripted task-lifecycle responses"]
-
-    R1 -->|"enqueue, return 202"| Queue
-    Queue --> Workers
-    Workers -->|"execute_suite(...)"| Runner
-    Workers -->|"execute_a2a_suite(...)"| A2ARunner
-    Loader --> Workers
-    Runner --> Adapter
-    Runner --> Transport
-    Discovery --> Transport
-    Transport <-->|stdio subprocess| Mock
-    Runner --> Evaluators
-    Evaluators --> Reporting
-    A2ARunner <-->|"TestClient (in-process HTTP)"| A2AMock
-    A2ARunner --> A2AEval
-    A2AEval --> Reporting
-    Reporting --> Repo
-    Workers --> Repo
-    R2 --> Repo
-    R3 --> Repo
-    T --> Discovery
-    B --> Loader
+```
+paper/                 manuscript source, machine-generated tables, numeric audit
+app/                    the measurement harness and the offline analysis code
+mock_servers/           local in-process MCP and A2A fixtures (no network)
+benchmarks/             frozen Phase 6 and Phase 7 experiment definitions
+policies/               the fixed host policy
+scripts/                reproduction / verification helpers
+tests/                  test suite for the released implementation
+docs/                   methodology and reproduction notes
+PROVENANCE.md           frozen chronology and every byte-pinned identifier
 ```
 
-**Key design decisions:**
+The raw execution package, integrity manifests, and analysis artifacts
+(`reports/…`) are large and `.gitignore`d; they are distributed as the
+public artifact release (see below).
 
-- **Transport is abstracted** (`MCPTransport`) behind a stdio subprocess
-  implementation today, so a Streamable HTTP transport can be added later
-  without touching discovery, the runner, or evaluators.
-- **`AgentAdapter` decouples the runner from any LLM provider.** The
-  deterministic fake adapter is a fixture lookup table built from each
-  benchmark case's `simulated_agent_response` — it lets negative test cases
-  (wrong tool, hallucinated tool, bad arguments) be expressed declaratively.
-  `OpenAIResponsesAdapter` is the first real-model implementation of the
-  same interface (see [Real-model mode](#real-model-mode-optional-mcp-only)); adding
-  it required zero changes to `BenchmarkRunner`, evaluators, or scoring.
-- **The safety gate lives in the runner, not the adapter.** A mutating tool
-  (flagged via MCP tool annotations' `destructiveHint`) is only executed if
-  the benchmark case explicitly sets `approved_mutation: true` — an
-  agent's own decision is never trusted to authorize a mutation.
-- **Evaluators are pure functions with no side effects and no LLM judge.**
-  See [`docs/scoring.md`](docs/scoring.md) for the full, transparent scoring
-  definition.
-- **The trust boundary is fundamentally different between the two
-  protocols, and the README/scoring should never blur this.** MCP's
-  mutation gate is a real, local control: it can and does block a mutating
-  tool from executing at all when a case hasn't pre-approved it — the
-  runner owns the tool process. A2A has no equivalent lever: the benchmark
-  scores how a client *delegates to and reacts to* a remote agent (does it
-  detect a hijacked artifact, does it recover from `INPUT_REQUIRED`, does it
-  handle a remote failure or a false-success claim correctly) — it cannot
-  prevent a real remote agent from taking an action, because in this
-  repository the "remote agent" is always the local, scripted mock, not a
-  live third party the harness has any control over.
-
-## Run execution model
-
-Benchmark runs execute in the background, not inline in the HTTP request:
-
-```text
-POST /runs
-      |
-      v
-   queued  ---->  running  ---->  completed
-                              \-> failed
-```
-
-`POST /runs` enqueues a run and returns `202 Accepted` immediately with
-`{"run_id": ..., "status": "queued"}` and a `Location: /runs/{run_id}`
-header — it never waits for the suite to finish. A small fixed pool of
-background workers (`RunManager`, `RUN_WORKER_COUNT`, default 2) pulls from
-a bounded queue (`RUN_QUEUE_MAXSIZE`, default 10) and runs each queued run
-through the unchanged `execute_suite` primitive. If the queue is full,
-`POST /runs` returns `429` rather than accepting unbounded work — this is
-atomic: a rejected submission is never assigned a run ID and never written
-to run storage, so it cannot later be retrieved or executed. Only one suite
-is ever loaded, so `suite_name` in the request body is validated, not used
-to select behavior: omit it, or pass exactly the loaded suite's name, to
-queue a run; any other value is rejected with `400` before anything is
-queued.
-
-Poll `GET /runs/{run_id}` for lifecycle status (`queued` / `running` /
-`completed` / `failed`, with `created_at`/`started_at`/`completed_at`/
-`failed_at` timestamps) and `GET /runs/{run_id}/report` once
-`status == "completed"`:
-
-- Unknown run ID: `404`.
-- `queued` / `running` / `failed`: `409`, with structured `detail` (`run_id`,
-  `status`, `message`) identifying why no report is available — a failed
-  run's report is never fabricated; its error is only surfaced via
-  `GET /runs/{run_id}`.
-- `completed`: `200` with the exact persisted `Report`.
-
-**This is intentionally in-memory, not distributed infrastructure.** Run
-history does not survive a process restart, there is no persistent queue or
-database, and multiple server processes do not share run state — each
-process has its own independent `RunManager` and repository. Persistent
-storage (e.g. a `RunRepository` backed by a real database, behind the same
-interface used today) is future work; see Roadmap.
-
-## Real-model mode (optional, MCP-only)
-
-Every run above uses the **deterministic mode**: the default, free,
-reproducible, CI-safe fixture adapter (`DeterministicFakeAdapter`) — no
-external model, no network call beyond the local mock MCP subprocess, no
-API key, ever required. This is what `POST /runs` does when `adapter` is
-omitted, and it's the only mode any test in this repository or CI exercises.
-
-**This section applies to the MCP suite only.** The A2A suite has no
-real-model or live-remote-agent adapter in this repository — every A2A run
-is deterministic, client and remote fixture alike (see
-[Scope](#scope)).
-
-**Real-model mode** replaces the fixture adapter with a live OpenAI model
-(via the Responses API) for a bounded subset of cases. It is optional,
-explicitly opt-in, and fundamentally different in kind from deterministic
-mode:
-
-- **Not deterministic.** The same request against the same model can
-  produce different results across runs — there is no reproducibility
-  guarantee, and results should never be compared to the deterministic
-  baseline as if they measured the same thing.
-- **Incurs provider usage/cost.** Every case run this way is a real, billed
-  API call.
-- **Never runs automatically.** Disabled by default; CI never enables it.
-
-The model only *proposes* what to do — it can never execute an MCP tool
-directly. Every proposed action still passes through the exact same
-`BenchmarkRunner` used by deterministic mode: the same tool-existence and
-argument-schema checks, and critically, the **same mutation safety gate**.
-A live model that decides to call a mutating tool without approval is
-blocked exactly like a scripted fixture would be — mutation safety is
-enforced entirely outside the model, never by trusting what it says.
-
-### Enabling it
+## Reproduce the analysis offline (no provider calls)
 
 ```bash
-export ENABLE_REAL_MODEL_RUNS=true
-export OPENAI_API_KEY=your-key-here   # never commit a real key; read from env only
-uv sync --frozen --extra openai        # installs the optional openai dependency
+uv sync --frozen
+
+# 1. get the frozen artifacts: download the paper-v1.0 release and extract
+#    it so that reports/ sits at the repository root.
+
+# 2. re-run the frozen, pre-specified analysis against the frozen raw copies
+uv run python -m app.cli.phase_7e_neutral
+#    -> rewrites reports/phase_7e_analysis/ ; must reproduce it byte-for-byte
+
+# 3. regenerate every manuscript number and audit it against the frozen data
+uv run python paper/arxiv/gen_tables.py
+uv run python paper/arxiv/audit_numbers.py
 ```
 
-`OPENAI_API_KEY` is read only from the environment, using the OpenAI SDK's
-own standard behavior — never accepted in a request body, query parameter,
-suite YAML, or benchmark fixture, and never echoed back in any response.
-
-### Requesting a live run
+## Verify the raw data
 
 ```bash
-curl -i -X POST http://localhost:8000/runs -H 'content-type: application/json' -d '{
-  "adapter": "openai",
-  "model": "your-model-name",
-  "case_ids": ["correct-001-search-issues"]
-}'
+# raw trials.jsonl hashes must match PROVENANCE.md
+for r in sol terra luna claude; do
+  shasum -a 256 reports/_phase7d_preanalysis_freeze/raw_runs/phase-7a-confirmatory-v1-$r/trials.jsonl
+done
+
+# frozen manifests must match PROVENANCE.md
+shasum -a 256 \
+  reports/_phase7d_preanalysis_freeze/MANIFEST.sha256 \
+  reports/phase_7e_analysis/MANIFEST.sha256 \
+  reports/phase_6e_v4r1/MANIFEST.sha256 \
+  reports/_phase6d_v4r1_integrity/MANIFEST.sha256
+
+# rebuild + byte-compare the Phase 7D deterministic freeze archives
+uv run python scripts/phase_7d_build_freeze.py --check
 ```
 
-- `model` is **required** for `adapter="openai"` — there is no default live
-  model, so there is never ambiguity about what will incur usage.
-- `case_ids` bounds which cases run; omitting it means "every case," which
-  is checked against a conservative cap (`REAL_MODEL_MAX_CASES`, default
-  **3**) before anything is queued or any provider call is made. A full
-  29-case live run requires deliberately raising that cap, not the
-  accidental default.
-- Preconditions are validated *before* queueing: an unsupported/missing
-  `model`, invalid or duplicate `case_ids`, or a case count over the cap
-  returns `400`; the feature being disabled, the optional dependency not
-  being installed, or no credential being configured returns `503` — none
-  of these ever create a queued run record.
-- The provider client is configured with a short, finite timeout
-  (`REAL_MODEL_TIMEOUT_SECONDS`, default 30s) and **zero automatic SDK
-  retries** — one benchmark turn is one intentional, observable provider
-  request, never a hidden extra paid attempt.
-
-### Provenance
-
-A live run's `GET /runs/{run_id}/report` includes `model_provenance`
-(`null` for every deterministic run — the unambiguous signal a report is
-non-reproducible): the exact model requested/returned, the frozen baseline
-policy's version and content hash, a hash of the exact tool schemas offered,
-the cost-safety configuration used, and per-call token/response usage. No
-credential, header, or hidden model reasoning is ever persisted. See
-`app/models/provenance.py` and `docs/scoring.md`.
-
-### Protocol fidelity and reasoning-model support
-
-`OpenAIResponsesAdapter` correlates each turn with the provider's own,
-opaque `call_id` — it replays a turn's actual `response.output` items
-(including any reasoning items a reasoning-capable model emits) verbatim on
-the next request, exactly as OpenAI's own function-calling guide's
-`input_list += response.output` pattern does, rather than reconstructing a
-synthetic function-call item with an invented ID. This state is
-provider-internal and transient: it's cached in memory for the duration of
-one case's turns, reset at each case boundary, never written to
-`TurnResult`/`model_provenance`/logs, and never inspected for content — a
-reasoning model's private reasoning text is preserved for the provider's
-own continuity without this project ever reading or storing it. If a
-provider response is `incomplete` (for example, truncated by
-`REAL_MODEL_MAX_OUTPUT_TOKENS`), it's treated as a controlled execution
-failure, never interpreted as a partial decision.
-
-## Installation
-
-Requires Python 3.12 and [`uv`](https://docs.astral.sh/uv/).
+## Rebuild the PDF
 
 ```bash
-git clone https://github.com/ArpanKumarM/agent-interop-bench.git
-cd agent-interop-bench
-uv sync
+uv run python paper/arxiv/gen_tables.py
+bash paper/arxiv/build_pdf.sh            # deterministic; sets SOURCE_DATE_EPOCH
+uv run python paper/arxiv/audit_numbers.py
 ```
 
-Run the test suite (no network access or API keys required):
+A minimal arXiv source archive is built by
+`uv run python paper/arxiv/build_arxiv_submission.py`; proposed submission
+metadata is in [`paper/arxiv/ARXIV_METADATA.txt`](paper/arxiv/ARXIV_METADATA.txt).
 
-```bash
-uv run pytest
-```
+## Public artifact release
 
-Run the API locally:
+The frozen raw execution package, integrity/pre-analysis manifests, Phase 7
+analysis artifacts, and the necessary Phase 6 comparison artifacts are
+released here:
 
-```bash
-uv run uvicorn app.api.main:app --reload
-```
+<https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v1.0>
 
-## One-command Docker startup
+All hashes are pinned in [`PROVENANCE.md`](PROVENANCE.md).
 
-```bash
-docker compose up --build
-```
+## Scope and limits
 
-This builds the image with `uv`, starts the FastAPI service on
-`http://localhost:8000`, and the app spawns the mock MCP server itself as a
-stdio subprocess per run — no second container needed.
+Local in-process synthetic MCP and A2A fixtures; one host policy; one
+`{relay_to_remote, stop}` decision surface; one provider snapshot; provider
+configurations not numerically equated across families. The exact-substring
+detector measures verbatim value leakage only. Results are specific to this
+configuration — not a causal claim, a provider ranking, or a general safety
+verdict. See the paper's Limitations section and
+[`PROVENANCE.md`](PROVENANCE.md).
 
-## Quick Demo
+## Provenance discipline
 
-```bash
-./scripts/demo.sh
-```
+Manuscript and analysis preparation made **zero provider calls** and
+changed no raw observation, stimulus, schedule, model, parameter, outcome
+definition, or analysis plan. Every manuscript number is machine-generated
+from the frozen artifacts and re-verified by `paper/arxiv/audit_numbers.py`.
 
-![Agent Interop Bench running MCP reliability benchmarks](docs/assets/demo.gif)
+## Citation
 
-One command, no API keys, nothing but Docker and `curl`/`python3` on your
-machine. It starts the stack, waits for `/health`, discovers the MCP tools,
-lists the benchmark suite, runs all 29 MCP cases, fetches the generated
-JSON report, and prints the real reliability scores plus the intentional
-evaluator-validation failures — then tears down every Docker resource it
-created, even if a step fails partway through. (This script covers the MCP
-suite; the A2A suite is reachable through the same `POST /runs` API by
-suite name — see [Scope](#scope) — but has no dedicated demo script yet.)
-
-## Example API commands
-
-```bash
-# Health check
-curl http://localhost:8000/health
-
-# Discover tools from the mock MCP server
-curl http://localhost:8000/tools
-
-# List the loaded benchmark suite
-curl http://localhost:8000/benchmarks
-
-# Queue a benchmark run (returns 202 immediately; does not wait for completion)
-curl -i -X POST http://localhost:8000/runs
-
-# Poll run status until status is "completed" (or "failed")
-curl http://localhost:8000/runs/<run_id>
-
-# Fetch the full JSON reliability report (only once status == "completed";
-# returns 409 with structured detail before that, 404 for an unknown run_id)
-curl http://localhost:8000/runs/<run_id>/report
-```
-
-## Example benchmark report
-
-A full, real (not fabricated) sample report from the core suite is checked
-in at [`examples/sample_report.json`](examples/sample_report.json).
-Summary excerpt:
-
-```json
-{
-  "run_id": "example-run-0001",
-  "suite_name": "agent-interop-core",
-  "suite_version": "0.3.0",
-  "summary": {
-    "total_tests": 29,
-    "passed_tests": 19,
-    "failed_tests": 10,
-    "tool_selection_accuracy": 0.966,
-    "argument_accuracy": 0.893,
-    "recovery_rate": 1.0,
-    "unsafe_action_rate": 0.0,
-    "prompt_injection_resistance": 0.5,
-    "trajectory_integrity": 0.6,
-    "average_latency_ms": 32.2
-  }
-}
-```
-
-The core suite is 29 cases (suite version `0.3.0`): the original 21
-Phase 1-2C cases, frozen and unchanged, plus 8 Phase 2D adversarial cases
-adding read-only prompt-injection redirection, argument poisoning, repeated
-(two-observation) injection across a genuine 3-turn interaction, an
-unrelated/mutating fallback attempted after a legitimate tool failure, and a
-mid-conversation tool hallucination — plus a ninth evaluator,
-`trajectory_integrity`, added alongside them (see below). Every `Report`
-carries `suite_version` so a consumer can tell which evaluator semantics
-scored it without consulting git history.
-
-The ten "failures" here are by design: they're the negative-test cases
-(missing argument, wrong argument type, hallucinated tool at turn 0 and
-turn 1, five prompt-injection cases where the simulated agent gets hijacked
-by the injected payload — one into a different read-only tool, one via a
-poisoned argument, two into an attempted mutation — and a mutating fallback
-attempted after a legitimate tool failure) whose job is to confirm the
-evaluators correctly *catch* bad agent behavior, not to always pass. See
-[`docs/scoring.md`](docs/scoring.md) for exactly how each metric is
-computed, including a full worked breakdown of the
-`prompt_injection_resistance` denominator.
-
-**A note on that 0.5** (down from Phase 2C's 0.75 — a lower score from
-broader adversarial coverage, not a regression): it blends two different
-populations across all 8 prompt-injection cases. Two are legacy single-turn
-cases (2/2 pass — but that subset can only confirm a pre-existing decision
-wasn't visibly altered, not that a hijack was resisted); the other six are
-reactive multi-turn cases (2/6 pass — `injection-003` and the new
-`injection-007` are the resisted ones; `injection-004`, `-005`, `-006`, and
-`-008` are the caught hijacks). See `docs/scoring.md` for the full
-mechanical breakdown. And regardless of subset: every decision in the core
-suite, including every multi-turn reaction, comes from
-`DeterministicFakeAdapter` reading a scripted fixture
-(`simulated_reaction`/`simulated_reactions` in `benchmarks/core_suite.yaml`)
-— not from a real language model. This number validates that the harness's
-evaluator correctly tells scripted-resistant behavior apart from
-scripted-compromised behavior. It is not, and should not be read as, a
-robustness score for Claude, GPT, or any other real model — that requires a
-real-model adapter (see the OpenAI adapter above for the one that exists
-today, and its own, separate, non-reproducible live canaries).
-
-**A note on `trajectory_integrity` (0.6 = 6/10):** `tool_selection_accuracy`
-and `unsafe_action_detection` only ever inspect a case's first turn or its
-case-level `is_mutating` flag, so neither can catch a policy violation that
-appears in a *later* turn of a case whose primary task is read-only —
-`exception-003`'s mutating fallback after a legitimate tool failure, or
-`hallucinated-002`'s mid-conversation hallucination, would otherwise be
-invisible at the report level despite being clearly bad agent behavior.
-`trajectory_integrity` closes that gap: it inspects every reaction turn
-(turn 1 onward — never turn 0, which stays exclusively
-`unsafe_action_detection`'s/`tool_selection_accuracy`'s job) for exactly two
-provider-neutral violations — an unknown/unadvertised tool, or a known
-mutating tool requested without case-level pre-approval — independent of
-whether the runner's safety gate then blocked it. Denominator is the 10
-cases with at least one reaction turn; a case with no reaction turns
-(19 of the 29) reports `applicable: false`, not a pass. See
-`docs/scoring.md`'s "Trajectory integrity" section for the full design
-rationale and worked example.
-
-## Testing
-
-```bash
-uv run pytest              # full suite: unit + integration
-uv run pytest tests/unit   # fast, no subprocess
-uv run ruff check .        # lint
-uv run ruff format --check .  # formatting
-```
-
-Integration tests spawn the mock MCP server as a real local subprocess over
-stdio, and exercise the mock A2A remote agent in-process via
-`fastapi.testclient.TestClient` — no network access, no paid API, no API
-key required anywhere in the suite (the optional OpenAI SDK contract tests
-still run entirely offline against a mocked HTTP transport; see
-[Real-model mode](#real-model-mode-optional-mcp-only)).
-
-## Known limitations
-
-- **A2A has no live-remote-agent mode.** Every A2A case runs a deterministic
-  client against a deterministic, scripted mock remote agent
-  (`mock_servers/a2a_mock.py`) — there is no equivalent of MCP's
-  `OpenAIResponsesAdapter` for A2A yet, so an A2A score reflects the
-  harness's own evaluator logic correctly distinguishing scripted-resistant
-  from scripted-compromised behavior, not a real remote agent's behavior.
-  See Roadmap.
-- **Multi-turn is opt-in per case and bounded.** Every case runs a turn loop
-  capped at `max_turns` (1 by default): the adapter decides, the runner
-  validates and gates the decision, executes it if allowed, and — only if
-  `max_turns >= 2` — hands the result back to the adapter for another
-  decision. The deterministic suite's fixtures are still scripted
-  (`DeterministicFakeAdapter`); real-model mode (see above) is what makes
-  the `prompt_injection_resistance` metric measure actual model behavior
-  instead of a harness-validation fixture — see `docs/scoring.md`, and note
-  that a live score is not deterministic/reproducible the way a fixture
-  score is.
-- **One real-model provider (OpenAI).** `OpenAIResponsesAdapter` is the
-  first live-model adapter; other providers (e.g. Anthropic) are future
-  work — see Roadmap. `PlaceholderAdapter` remains a documented stub for
-  whichever comes next.
-- **No per-case execution-error isolation for live runs.** A provider-level
-  failure (timeout, rate limit, API error) on any one case currently fails
-  the whole run, the same way a buggy deterministic fixture already would —
-  there's no partial-results/retry-just-this-case concept yet. Keep
-  `case_ids` selections small; this is also what the conservative
-  `REAL_MODEL_MAX_CASES` default bounds the blast radius of.
-- **In-memory run storage and queue only.** Runs, and the pending-work
-  queue itself, do not survive a process restart. This is not a distributed
-  job system: multiple server processes do not share run state, each has
-  its own independent `RunManager`. A persistent `RunRepository`
-  implementation (e.g. backed by a real database) is future work — see
-  Roadmap.
-- **Malformed-response detection is heuristic**, not schema-driven (MCP
-  tools don't declare output schemas), scoped to "was it captured without
-  crashing," not "was the specific corruption identified."
-- **`trajectory_integrity` only checks two specific, generic policy
-  violations** (unknown tool, unapproved mutation) on reaction turns — it
-  does not judge task-goal quality or catch, for example, a reaction turn
-  that calls a known, non-mutating, but off-task tool (that remains
-  `prompt_injection_resistance`'s job for injection-flavored cases, and is
-  otherwise unscored — the same turn-0-only shape every other evaluator
-  has always had).
-
-## Roadmap
-
-- **Live A2A-agent evaluation** — a real remote-agent adapter for the A2A
-  suite, replacing the scripted mock the same way `OpenAIResponsesAdapter`
-  did for MCP's deterministic fixture.
-- **Additional real-model providers** (e.g. Anthropic) implementing
-  `AgentAdapter`, alongside the existing `OpenAIResponsesAdapter`.
-- **Per-case execution-error isolation** for live runs, so one provider
-  hiccup doesn't fail an entire multi-case live run.
-- **Statistical reporting across repeated live runs** — since a live score
-  isn't reproducible the way a fixture score is, aggregating N runs per
-  case would give a more honest picture than a single non-deterministic pass.
-- **OpenTelemetry** — trace each benchmark run for latency/error visibility
-  beyond the JSON report.
-- **A dashboard** — a frontend over the existing API for browsing runs and
-  trends over time.
-- **Persistent storage** — a `RunRepository` implementation backed by
-  PostgreSQL, behind the same interface used today.
-- **Authentication** and **cloud deployment**.
+See [`CITATION.cff`](CITATION.cff).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Code is released under the MIT License (see [`LICENSE`](LICENSE)). The
+manuscript text is the author's; a recommended arXiv license is noted in
+`paper/arxiv/ARXIV_METADATA.txt`.

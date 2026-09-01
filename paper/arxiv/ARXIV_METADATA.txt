@@ -1,0 +1,76 @@
+========================================================================
+PROPOSED arXiv SUBMISSION METADATA  (preprint; not yet submitted)
+========================================================================
+
+Title:
+Public-Sharing Labels and Verbatim Field Egress in an MCP-to-A2A Agent
+Configuration: A Controlled Multi-Model Study
+
+Authors:
+Arpan Kumar Mahapatra
+
+Primary category:
+cs.CR
+
+Cross-list category:
+cs.AI
+
+Comments:
+12 pages, 1 figure. Code and reproducibility artifacts:
+https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v1.0
+
+Journal-ref:
+(none -- preprint)
+
+DOI:
+(none -- preprint)
+
+License (recommendation, not a silent choice):
+Recommended: arXiv.org perpetual, non-exclusive license (arXiv-1.0). This
+grants arXiv a perpetual non-exclusive right to distribute the article
+while leaving copyright with the author and preserving maximum future
+publisher flexibility. If the author prefers to permit downstream reuse,
+CC BY 4.0 is a reasonable alternative; the repository itself is under the
+MIT License (see LICENSE), which covers the code but not the manuscript
+text.
+
+------------------------------------------------------------------------
+ABSTRACT  (ASCII-only; arXiv metadata form; hard limit 1920 characters)
+------------------------------------------------------------------------
+Safety properties assessed separately for Model Context Protocol (MCP)
+tool use and Agent2Agent (A2A) delegation need not describe behavior when
+one agent uses both. We measure one such behavior in a single controlled
+MCP-to-A2A configuration: a testbed drives a real-model host across a
+local MCP and a local A2A leg into an ordered event trace scored by exact
+deterministic rules (no LLM judge), one restricted decision per trial. In
+a pre-specified, frozen three-arm design, each of 10 record scenarios
+appears with a CONFIDENTIAL header, with no header, and with
+PUBLIC - OK TO SHARE; the six substantive record values are byte-identical
+across arms, and the outcome is verbatim occurrence of any of them in the
+outbound message. Four models x 3 arms x 4 repeats give 480
+trials; the scenario is the unit of generalization, and we report the 10
+scenario-level values (mean, median, sign counts), with no p-values or
+intervals. The confidential-minus-unlabeled contrast is inconclusive and
+floor-limited in every model (both arms at or near zero), so it does not
+show that confidential labels lack a protective effect. Adding
+PUBLIC - OK TO SHARE is descriptively associated with higher verbatim
+egress relative to the unlabeled baseline, with strong model dependence:
+strong and consistent for Claude Sonnet 5 (public-minus-unlabeled mean
++0.800, all 10 scenarios; mostly an association with whether Claude
+relays at all), moderate but floor-limited for one GPT-5.6 tier, small
+(median 0) for another, and a complete floor for the third. This is an
+association in one configuration, not a causal or general effect. Code,
+byte-pinned traces, and the offline analysis pipeline are released as a
+public artifact.
+------------------------------------------------------------------------
+END ABSTRACT
+------------------------------------------------------------------------
+
+Notes:
+- The exact ASCII abstract above is the region between the two
+  "END ABSTRACT" / dashed markers; tests/unit/test_arxiv_metadata.py
+  extracts it and asserts it is pure ASCII and <= 1920 characters.
+- The PDF abstract (paper/arxiv/main.tex) carries the same content with
+  LaTeX markup and model identifiers spelled out.
+- Page count in "Comments" is kept in sync with the compiled PDF by
+  paper/arxiv/audit_numbers.py.

@@ -323,31 +323,64 @@ scan_forbidden(MAIN_TEX, "main.tex")
 scan_forbidden(MAIN_MD, "main.md")
 
 tex_head = MAIN_TEX.split("\\begin{document}")[0]
-check(
-    "Public-Sharing Labels and Verbatim Field Egress at the MCP" in MAIN_TEX,
-    "main.tex title is not the reframed Phase 7F title",
+FINAL_TITLE = (
+    "Public-Sharing Labels and Verbatim Field Egress in an\nMCP-to-A2A Agent Configuration"
 )
-check("Public-Sharing Labels and Verbatim Field Egress" in MAIN_MD, "main.md title not reframed")
+check(FINAL_TITLE in MAIN_TEX, "main.tex title is not the final MCP-to-A2A-configuration title")
+check(
+    "Public-Sharing Labels and Verbatim Field Egress in an MCP-to-A2A Agent Configuration"
+    in MAIN_MD,
+    "main.md title is not the final MCP-to-A2A-configuration title",
+)
 check(
     "Action Containment" not in MAIN_TEX and "Action Containment" not in MAIN_MD,
     "'Action Containment' framing reappeared",
 )
-check(
-    "Cross-Protocol Information Flow in MCP" not in tex_head,
-    "old title 'Cross-Protocol Information Flow in MCP' still in the title block",
+_STALE_TITLE_BITS = (
+    "Cross-Protocol Information Flow in MCP",
+    "at the MCP--A2A Seam",
+    "at the MCP-A2A Seam",
 )
+for stale in _STALE_TITLE_BITS:
+    check(stale not in tex_head, f"stale title fragment still in the title block: {stale}")
 # the enforcement property must not be numbered as a research question
 for bad in ["RQ3:", "\\textbf{RQ3}", "Research Question 3", "**RQ3**"]:
     check(bad not in MAIN_TEX and bad not in MAIN_MD, f"RQ3-as-question marker present: {bad}")
+# the enforcement result is framed as a harness property, not an RQ or safety rate
+_ftex, _fmd = _flat(MAIN_TEX), _flat(MAIN_MD)
 check(
-    "verified property" in MAIN_TEX.lower() and "verified property" in MAIN_MD.lower(),
-    "'verified property' framing for the enforcement result missing",
+    "not a model-safety rate" in _ftex and "not a model-safety rate" in _fmd,
+    "enforcement result not framed as 'not a model-safety rate'",
+)
+check(
+    "property of the harness" in _ftex and "property of the harness" in _fmd,
+    "enforcement result not framed as a harness property",
 )
 # RQ2 must be secondary, not co-headline
 check(
     "secondary null experiment" in MAIN_TEX.lower()
     and "secondary null experiment" in MAIN_MD.lower(),
     "RQ2 not framed as a secondary null experiment",
+)
+# C-N must be framed as inconclusive / floor-limited, not as a proven null
+check(
+    "inconclusive" in _ftex and "floor-limited" in _ftex,
+    "C-N not framed as inconclusive / floor-limited in main.tex",
+)
+check(
+    "do not show that confidential labels lack a protective effect" in _ftex
+    and "do not show that confidential labels lack a protective effect" in _fmd,
+    "manuscript missing the explicit 'absence of evidence is not evidence of absence' line for C-N",
+)
+# Claude's relay-conditional explanation must be present
+check(
+    "downstream of the relay decision" in _ftex and "downstream of the relay decision" in _fmd,
+    "manuscript missing the 'egress is downstream of the relay decision' explanation for Claude",
+)
+# no "independent [human] review" language
+check(
+    "independent review" not in _ftex and "independent review" not in _fmd,
+    "'independent review' language still present (use 'the earlier two-arm study exposed ...')",
 )
 
 
@@ -415,6 +448,30 @@ for banned in [
                     f"{banned!r} (...{ctx[-40:]})"
                 )
             start = i + len(banned)
+
+# --------------------------------------------------------------------------- #
+# 7. arXiv metadata: ASCII abstract within the hard limit; Comments page
+#    count matches the compiled PDF (when main.log is present).
+# --------------------------------------------------------------------------- #
+META = HERE / "ARXIV_METADATA.txt"
+if META.is_file():
+    meta = META.read_text()
+    m = re.search(r"hard limit 1920 characters\)\n-+\n(.*?)\n-+\nEND ABSTRACT", meta, re.S)
+    check(m is not None, "ARXIV_METADATA.txt: delimited abstract block not found")
+    if m:
+        ab = re.sub(r"\s*\n\s*", " ", m.group(1)).strip()
+        check(ab.isascii(), "ARXIV_METADATA.txt abstract is not pure ASCII")
+        check(len(ab) <= 1920, f"ARXIV_METADATA.txt abstract is {len(ab)} chars (> 1920)")
+    log = HERE / "main.log"
+    if log.is_file():
+        pm = re.search(r"Output written on main\.pdf \((\d+) pages", log.read_text())
+        cm = re.search(r"Comments:\s*\n\s*(\d+) pages", meta)
+        if pm and cm:
+            check(
+                pm.group(1) == cm.group(1),
+                f"ARXIV_METADATA.txt Comments says {cm.group(1)} pages "
+                f"but the compiled PDF has {pm.group(1)}",
+            )
 
 # --------------------------------------------------------------------------- #
 if fails:

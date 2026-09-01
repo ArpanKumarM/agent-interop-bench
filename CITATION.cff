@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite the paper."
+title: >-
+  Public-Sharing Labels and Verbatim Field Egress in an MCP-to-A2A Agent
+  Configuration: A Controlled Multi-Model Study
+authors:
+  - family-names: Mahapatra
+    given-names: Arpan Kumar
+    email: arpan.arpan.mohapatra@gmail.com
+abstract: >-
+  A controlled measurement of one behavior at a Model Context Protocol
+  (MCP) to Agent2Agent (A2A) handoff: a real-model host reads a local
+  record over MCP and sends a message to a remote A2A agent. A
+  pre-specified, frozen three-arm matched design presents each of 10
+  record scenarios with a CONFIDENTIAL header, with no header, and with a
+  PUBLIC - OK TO SHARE header, holding the six substantive record values
+  byte-identical across arms; the outcome is verbatim occurrence of any of
+  them in the outbound message. Across four models x 3 arms x 4 repeats
+  (480 trials), the confidential-minus-unlabeled contrast is inconclusive
+  and floor-limited in every model, while adding PUBLIC - OK TO SHARE is
+  descriptively (not causally) associated with higher verbatim egress
+  relative to the unlabeled baseline, with strong model dependence.
+version: "1.0"
+date-released: "2026-09-01"
+license: MIT
+repository-code: "https://github.com/ArpanKumarM/agent-interop-bench"
+url: "https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v1.0"
+keywords:
+  - MCP
+  - A2A
+  - agent security
+  - information flow
+  - LLM evaluation
+  - reproducibility
