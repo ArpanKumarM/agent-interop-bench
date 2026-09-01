@@ -140,3 +140,31 @@ uv run python paper/arxiv/audit_numbers.py
 
 The Phase 7D deterministic freeze archives can additionally be rebuilt and
 byte-compared with `uv run python scripts/phase_7d_build_freeze.py --check`.
+
+---
+
+## 4. Note on removed planning documents
+
+The paper-release tree does not carry every internal planning /
+provenance note written during development. The following were removed
+because their content is superseded by, or summarized in, this file and
+the frozen design documents that remain
+(`docs/phase_7a_neutral_baseline_design.md`,
+`docs/phase_7b_execution_governance.md`, `docs/phase_6b_study_design.md`):
+
+`docs/phase_4b_study_design.md`, `docs/phase_6a_redesign.md`,
+`docs/phase_6b_stimulus_review.md`, `docs/phase_6d_execution_deviation.md`,
+`docs/phase_6e_v4r1_results.md`, `docs/phase_7d_preanalysis_freeze.md`,
+`docs/phase_7e_analysis.md`, `docs/phase_7e1_interpretation_clarification.md`,
+`docs/releases/v0.1.0.md`.
+
+A few frozen or historical documents that remain
+(`docs/phase_6b_study_design.md`, `CHANGELOG.md`,
+`docs/phase_4b_errata.md`) contain links or prose references to some of
+those removed files, and to a since-removed duplicate
+`paper/references.bib` (the single bibliography database is
+`paper/arxiv/references.bib`). Those documents are left unmodified on
+purpose: `CHANGELOG.md` entries accurately describe past releases, and the
+frozen design/errata documents must not be edited for cosmetic link
+cleanup. No removed file is needed to build the PDF, run the offline
+analysis, verify a hash, or reproduce a published number.

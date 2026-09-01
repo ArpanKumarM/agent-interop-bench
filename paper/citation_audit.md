@@ -1,6 +1,8 @@
 # Citation audit — Phase 5C (final)
 
-Verification record for every reference in `paper/references.bib`. All
+Verification record for every reference in `paper/arxiv/references.bib`
+(the single bibliography database; a duplicate `paper/references.bib` was
+removed in the paper-release cleanup). All
 checks used public web search and page fetches only; **no experiment,
 provider call, or model inference was run**, and no frozen result was
 touched. **No bibliographic data was invented** — every author list and
@@ -168,8 +170,8 @@ v4r1 study has **320 RQ1 trials, 320 planned / 319 analysable RQ2 trials,
 
 - **Brace-protection for `plainnat` title lowercasing.** `plainnat`
   lowercases every title word not inside braces. Proper nouns that would
-  otherwise render lowercased were brace-protected in **both**
-  `paper/references.bib` and `paper/arxiv/references.bib` (identical files):
+  otherwise render lowercased were brace-protected in
+  `paper/arxiv/references.bib`:
   `mcp-spec` and `mohiuddin2026mcpsec` → `{Model Context Protocol}`;
   `anthropic-claude` → `{Anthropic}`; `protocolbench2026` →
   `{Protocol to Choose?}`. No author list, title wording, venue, DOI, year,
