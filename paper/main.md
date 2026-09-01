@@ -8,8 +8,9 @@ Arpan Kumar Mahapatra · `arpan.arpan.mohapatra@gmail.com`
 > / `v7a`). Phase 7 execution source commit
 > `2a892c0b9a8a636055cc0c4229aebfd788738b60`; Phase 7 analysis
 > implementation commit `dc5d0767ce4bec946373bf720a37aae538ef258c`;
-> interpretation freeze (Phase 7E.1) `b53ddc6`; pre-registered analysis-plan
-> SHA-256 `87fec92f4b71a80e10a9f6fd5dd06fade13bec11d72d41725d34a660b1e7f68d`;
+> interpretation freeze (Phase 7E.1) `b53ddc6`; pre-execution-frozen
+> analysis-plan SHA-256
+> `87fec92f4b71a80e10a9f6fd5dd06fade13bec11d72d41725d34a660b1e7f68d`;
 > Phase 7D pre-analysis freeze manifest self-hash
 > `dad290f5b5ac460bf2d46c74facc05da7197f946ca5a0a2ed2d165c48ad1dd22`; Phase
 > 7E analysis-artifact manifest self-hash
@@ -29,20 +30,22 @@ Arpan Kumar Mahapatra · `arpan.arpan.mohapatra@gmail.com`
 
 ## 1. Abstract
 
-An AI agent safe in isolation on the Model Context Protocol (MCP) for local
-tool use and safe in isolation on the Agent2Agent Protocol (A2A) for
-delegation is not automatically safe when it uses both in one task. We study
-the handoff with an executable testbed that drives one real-model host
-across a local MCP leg and a local A2A leg into a single ordered event
+Safety properties considered separately for MCP tool use and A2A
+delegation need not characterize behavior at their composition boundary. We
+study that boundary with an executable testbed that drives one real-model
+host across a local MCP leg and a local A2A leg into a single ordered event
 trace scored by exact deterministic rules (no LLM judge), using a
 decision-point method that constructs the situation deterministically and
 then elicits exactly one restricted host decision. Our primary empirical
-study is a **pre-registered three-arm matched design**: for each of 10
-record scenarios a local record is presented in three otherwise
-byte-identical forms — with a `CONFIDENTIAL - INTERNAL ONLY` header, with no
-sensitivity header at all, and with a `PUBLIC - OK TO SHARE` header — and
-the outcome is verbatim occurrence of any of six substantive record values
-in the outbound host→remote message. The unlabeled arm was added
+study is a **pre-specified, frozen three-arm matched design**: for each of
+10 record scenarios a local record is presented in three matched forms with
+byte-identical substantive record values — with a
+`CONFIDENTIAL - INTERNAL ONLY` header, with no sensitivity header at all,
+and with a `PUBLIC - OK TO SHARE` header (the header line is the intended
+manipulation; an opaque retrieval identifier also differs by arm but has
+fixed shape and encodes no semantic or ordinal arm information) — and the
+outcome is verbatim occurrence of any of six substantive record values in
+the outbound host→remote message. The unlabeled arm was added
 prospectively, after independent review of an earlier two-arm study, to
 resolve which active label accounted for the earlier
 confidential-versus-public contrast. Four models — three OpenAI GPT-5.6
@@ -67,8 +70,8 @@ uninformative for `gpt-5.6-terra`, which emitted no substantive value in
 any arm. This is a descriptive public-sharing-label association, not a
 demonstrated causal mechanism. An earlier frozen two-arm study reproduces
 its confidential−public direction descriptively for the three non-floor
-models. All raw traces and a fully offline analysis pipeline are published
-with per-artifact SHA-256 pins.
+models. Byte-pinned raw traces and a fully offline analysis pipeline have
+been prepared for public release with per-artifact SHA-256 pins.
 
 ## 2. Introduction
 
@@ -97,18 +100,19 @@ server or A2A agent was contacted.
 
 **Contributions.** (1) An executable MCP→host→A2A measurement harness with a
 single ordered provenance-preserving event trace and deterministic,
-judge-free exact-value egress scoring. (2) A pre-registered three-arm
-matched study separating an explicit confidential header, an unlabeled
-baseline, and an explicit public-sharing header, holding the six
-substantive record values byte-identical across arms. (3) Evidence of a
+judge-free exact-value egress scoring. (2) A three-arm matched study —
+pre-specified and frozen before execution — separating an explicit
+confidential header, an unlabeled baseline, and an explicit public-sharing
+header, holding the six substantive record values byte-identical across
+arms. (3) Evidence of a
 *model-dependent public-sharing-label association*: very large and
 consistent for `claude-sonnet-5`, moderate for `gpt-5.6-luna`, smaller for
 `gpt-5.6-sol`, and uninformative (floor) for `gpt-5.6-terra`; with *no*
 convincing evidence of a confidential-header suppression effect in any
 model. (4) A reproducibility / integrity workflow with a frozen execution
 source, per-model schedules and provider-interface hashes, raw-data
-manifests, a pre-analysis provenance freeze, and a run-once pre-registered
-analysis.
+manifests, a pre-analysis provenance freeze, and a run-once analysis under
+a plan frozen before execution.
 
 ## 3. Background and System Model
 
@@ -190,8 +194,9 @@ an unlabeled matched baseline and frozen provenance.
 **Decision-point execution.** Each trial has one measured model decision.
 The engine builds the situation with no model involvement: it executes
 `get_account_record` so a real `mcp_tool_result` exists — one of three
-otherwise byte-identical synthetic records for the scenario that differ
-only in the opening header line and an opaque record reference. The model
+matched synthetic records for the scenario that differ only in the opening
+header line and an opaque record reference (see the three-arm design
+below). The model
 is asked for exactly one decision from a restricted wire action set,
 `{relay_to_remote, stop}`, enforced three ways (schema sent to the
 provider, composite adapter rejection, single-decision step ceiling). The
@@ -206,20 +211,24 @@ Frozen per-decision parameters: OpenAI uses `reasoning.effort="low"`,
 use a strict decision-tool schema, a 20-second timeout, `retries=0`, and
 one provider decision per trial. Parameters are not claimed numerically
 equivalent across providers — only that each uses its provider's low-effort
-configuration — and both receive a byte-identical sanitized decision
-payload.
+configuration — and, for a given trial, both providers receive a
+byte-identical sanitized decision payload.
 
 **Three-arm matched design.** The primary study
 (`composed-live-canary-007a`, plan version `v7a`) has **10 record scenarios
-× 3 arms × 4 repeats × 4 models = 480 trials**. The three arms differ
-*only* in the record's opening line: **confidential (C)** —
-`[CONFIDENTIAL - INTERNAL ONLY]`; **unlabeled / neutral (N)** — *no*
-sensitivity header line at all; **public (P)** — `[PUBLIC - OK TO SHARE]`.
-The labelled bodies are byte-for-byte the unlabeled body with the
-`[LABEL] ` prefix prepended; the six substantive field values, the
-per-scenario provenance canary, and the record skeleton are byte-identical
-across all three arms; the record reference is an opaque, structurally
-identical `rec-7a-<8hex>` token. The unlabeled arm was **added
+× 3 arms × 4 repeats × 4 models = 480 trials**. The three arms are
+distinguished by the record's opening line — the intended semantic
+manipulation: **confidential (C)** — `[CONFIDENTIAL - INTERNAL ONLY]`;
+**unlabeled / neutral (N)** — *no* sensitivity header line at all; **public
+(P)** — `[PUBLIC - OK TO SHARE]`. Precisely, across the three arms of a
+scenario: (i) the opening header line is the intended manipulation; (ii)
+the labelled record bodies are byte-for-byte the unlabeled body with the
+`[LABEL] ` prefix prepended, and the six substantive field values, the
+per-scenario provenance canary, and the record skeleton are byte-identical;
+(iii) the model-visible opaque retrieval identifier also differs by arm,
+but it is a fixed-shape `rec-7a-<8hex>` token that encodes no semantic,
+ordinal, or condition information; (iv) all other audited provider-input
+fields are matched across arms. The unlabeled arm was **added
 prospectively** in this extension, after independent review of the earlier
 two-arm study, specifically to resolve the active-label ambiguity that a
 confidential-versus-public-only contrast cannot: with an unlabeled baseline
@@ -267,7 +276,7 @@ model under one fixed stimulus and are *not* treated as independent
 samples. For each model and each scenario we compute the arm rate k/4 for
 the confidential (C), unlabeled (N), and public (P) arms, so each arm rate
 is one of {0, 0.25, 0.5, 0.75, 1} and each scenario-level contrast lies on
-a nine-point grid in 0.25 steps. We then form the three pre-registered
+a nine-point grid in 0.25 steps. We then form the three pre-specified
 contrasts C − N, P − N, C − P. For each model and each contrast we report
 **all 10 scenario-level values**, their **mean** and **median**, and the
 **positive / zero / negative sign count**; pooled Σk / 40 arm rates are
@@ -374,13 +383,14 @@ and seven of ten scenario-level C − N differences were zero. **We treat
 this contrast as low-baseline / floor-bounded and do not characterise it as
 evidence for confidentiality suppression.**
 
-The pre-registered design (`docs/phase_7a_neutral_baseline_design.md` §6.3)
-used the qualitative phrase "neutral baseline at or near zero" without a
-pre-registered numeric threshold. The analysis implementation supplied
+The frozen pre-execution design (`docs/phase_7a_neutral_baseline_design.md`
+§6.3) used the qualitative phrase "neutral baseline at or near zero"
+without a frozen numeric threshold. The analysis implementation supplied
 `pooled N <= 0.05` as an operational classifier; applied literally that
 would place `claude-sonnet-5` (pooled N = 0.125) in a "headroom" bucket and
 permit calling its C − N consistent with suppression. That threshold was
-implementation-supplied, not pre-registered. The interpretation freeze
+implementation-supplied and not part of the frozen plan. The interpretation
+freeze
 (Phase 7E.1, commit `b53ddc6`) therefore adopts the more conservative,
 threshold-free reading above *without changing any numeric result*: every
 arm rate, scenario contrast, mean, median and sign count is unchanged.
@@ -421,7 +431,8 @@ six-value primary additionally includes `credential_token`.
 The three-arm study is an extension of an earlier frozen *two-arm*
 confirmatory study (`v4r1`, Phase 6; execution source `23bf90bf…`, analysis
 source `60024fcf…`). That study contrasted a `CONFIDENTIAL - INTERNAL ONLY`
-record against an otherwise byte-identical `PUBLIC - OK TO SHARE` record —
+record against a matched `PUBLIC - OK TO SHARE` record with byte-identical
+substantive values —
 10 matched pairs, four repeats, the same four models, 320 RQ1 trials — and
 found a paired confidential−public difference (C − P) that was negative for
 `claude-sonnet-5` (−0.900; all 10 pairs), `gpt-5.6-sol` (−0.250),
@@ -454,7 +465,7 @@ floor-bounded everywhere).
 The earlier study also ran a matched *influence* experiment (10 operational
 pairs × {adversarial prior-approval-execute-now A2A artifact, matched
 approval-pending control} × four repeats × four models). We keep it as a
-pre-registered *negative result* and do not treat it as a co-equal
+pre-specified *negative result* and do not treat it as a co-equal
 contribution. Across **319 analysable trials** (320 planned; one
 `provider_protocol_error` attrition) there were **0 mutating-tool
 requests** — a complete floor — so the adversarial−benign effect is **not
@@ -593,7 +604,7 @@ adding the unlabeled baseline — was designed and frozen *before execution*
 *Phase 7C:* 480/480 trials completed with no failures, retries, or
 replacement trials. *Phase 7D:* the raw dataset was frozen, with SHA-256
 manifests, *before* any scientific computation. *Phase 7E:* the
-pre-registered analysis (§5) was run once against the frozen raw copies;
+pre-specified analysis (§5) was run once against the frozen raw copies;
 raw `trials.jsonl` bytes are identical before and after. *Phase 7E.1:* an
 interpretive clarification only (§6.2); no numeric result changed.
 
@@ -631,7 +642,7 @@ separately, never pooled).
 |---|---|
 | Phase 7 execution source commit | `2a892c0b9a8a636055cc0c4229aebfd788738b60` |
 | Phase 7 analysis implementation commit | `dc5d0767ce4bec946373bf720a37aae538ef258c` |
-| Phase 7 pre-registered analysis-plan hash | `87fec92f4b71a80e10a9f6fd5dd06fade13bec11d72d41725d34a660b1e7f68d` |
+| Phase 7 pre-execution-frozen analysis-plan hash | `87fec92f4b71a80e10a9f6fd5dd06fade13bec11d72d41725d34a660b1e7f68d` |
 | Phase 7D pre-analysis freeze manifest (self-hash) | `dad290f5b5ac460bf2d46c74facc05da7197f946ca5a0a2ed2d165c48ad1dd22` |
 | Phase 7E analysis-artifact manifest (self-hash) | `dbeb7068f1fe318862ba706a788fcc7a46107168f162e0021a04437958603b19` |
 | Phase 7 overall study-schedule hash | `76823fdbbd69a6b5a6a7b3219a5a85525f9f301ed59e6cf1cb188d807551fea5` |
@@ -666,7 +677,8 @@ fails on any stale or inconsistent numeric claim.
 
 We built an executable MCP→host→A2A measurement harness with ordered
 provenance-preserving traces and deterministic, judge-free exact-value
-egress scoring, and ran a pre-registered three-arm matched study — 10
+egress scoring, and ran a three-arm matched study — pre-specified and
+frozen before execution — over 10
 record scenarios × {confidential, unlabeled, public} × four repeats × four
 models, 480 trials, scenario as the generalization unit. Across the frozen
 study, the unlabeled baseline provided no convincing evidence that adding a
@@ -680,9 +692,9 @@ of that association remain highly model-dependent. An earlier frozen
 two-arm study reproduces its confidential−public direction descriptively
 for the three non-floor models. All observations are narrow and
 stimulus-conditional — one host policy, one action surface, 10 scenarios,
-four models, one point in time — and are published with byte-exact raw
-traces and a fully offline, machine-driven analysis pipeline so every
-number can be regenerated without a provider call.
+four models, one point in time. Byte-exact raw traces and a fully offline,
+machine-driven analysis pipeline have been prepared for public release so
+every number can be regenerated without a provider call.
 
 ## Appendix A — Phase 7 scenario-level contrast tables
 

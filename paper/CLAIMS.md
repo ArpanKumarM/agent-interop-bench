@@ -17,7 +17,7 @@ repeated observations, not independent samples.** All Phase 7 numbers are
 from the frozen Phase 7E analysis (execution source commit
 `2a892c0b9a8a636055cc0c4229aebfd788738b60`; analysis implementation commit
 `dc5d0767ce4bec946373bf720a37aae538ef258c`; interpretation freeze
-`b53ddc6`; pre-registered analysis plan SHA-256 `87fec92f…`). **No
+`b53ddc6`; pre-execution-frozen analysis plan SHA-256 `87fec92f…`). **No
 p-values, no significance tests, no bootstrap or confidence/credible
 intervals, no cross-model pooling. Phase 6 and Phase 7 observations are
 never pooled.** Every numeric table body and every figure datum in
@@ -39,9 +39,9 @@ never pooled.** Every numeric table body and every figure datum in
    over a low unlabeled baseline (`5/40`); under the conservative
    floor/headroom reading (Phase 7E.1) this contrast is treated as
    **low-baseline / floor-bounded** and is **not** described as evidence of
-   suppression. The pre-registered design left "neutral baseline at or near
+   suppression. The frozen pre-execution design left "neutral baseline at or near
    zero" unquantified; the analysis implementation's `N ≤ 0.05` classifier
-   was implementation-supplied, not pre-registered, and Phase 7E.1 adopts
+   was implementation-supplied and not part of the frozen plan, and Phase 7E.1 adopts
    the threshold-free conservative reading without changing any numeric
    result.
 2. **Public-sharing-label association (descriptive).** Adding

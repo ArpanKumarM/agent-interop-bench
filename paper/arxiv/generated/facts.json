@@ -100,7 +100,7 @@
       3
     ],
     "impl_classifier": "pooled N <= 0.05",
-    "impl_classifier_was_not_preregistered": true,
+    "impl_classifier_not_in_frozen_plan": true,
     "phase7e1_commit": "b53ddc6"
   },
   "n_scenarios": 10,

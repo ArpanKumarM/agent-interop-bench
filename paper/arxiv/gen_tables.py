@@ -143,7 +143,7 @@ CLASS_LABEL = {
 }
 # Phase 7E.1 conservative override: claude C-N is treated as low-baseline /
 # floor-bounded for interpretation regardless of the implementation's
-# (non-preregistered) N<=0.05 headroom classifier.
+# (implementation-supplied, not-in-the-frozen-plan) N<=0.05 headroom classifier.
 CN_TREATMENT = {
     "gpt-5.6-sol": "floor-bounded",
     "gpt-5.6-terra": "complete floor",
@@ -430,7 +430,7 @@ p7_raw = {m: sha256_file(P7D / "raw_runs" / P7_RUN[m] / "trials.jsonl") for m in
 pin = [
     ("Phase 7 execution source commit", EXECUTION_SOURCE_SHA_P7),
     ("Phase 7 analysis implementation commit", ANALYSIS_IMPL_COMMIT_P7),
-    ("Phase 7 pre-registered analysis-plan hash", ANALYSIS_PLAN_SHA_P7),
+    ("Phase 7 pre-execution-frozen analysis-plan hash", ANALYSIS_PLAN_SHA_P7),
     ("Phase 7D pre-analysis freeze manifest (self-hash)", P7D_MANIFEST_SELF_HASH),
     ("Phase 7E analysis-artifact manifest (self-hash)", p7_ana_manifest),
     ("Phase 7 overall study-schedule hash", P7_STUDY_SCHEDULE_SHA),
@@ -507,7 +507,7 @@ facts["primary_value_fields"] = a7["primary_value_fields"]
 facts["structured_fields"] = a7["structured_fields_for_disclosed_field_count"]
 facts["p7_structure"] = a7["structure"]
 facts["interp_clarification"] = {
-    "impl_classifier_was_not_preregistered": True,
+    "impl_classifier_not_in_frozen_plan": True,
     "impl_classifier": "pooled N <= 0.05",
     "phase7e1_commit": INTERP_FREEZE_COMMIT_P7E1,
     "claude_cn_mean": r3(

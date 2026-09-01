@@ -18,7 +18,8 @@ Checks:
      LaTeX manuscript (main.tex + fragments) and in main.md.
   5. Forbidden over-claims (confidential-suppression, causal
      public-permission, "first", provider ranking, RQ3-as-question,
-     restored "Action Containment") do not appear.
+     restored "Action Containment", and present-tense "published" /
+     external-"preregistration" claims) do not appear.
   6. The Phase 7 primary contrast table and the descriptive C-P table in
      main.md match the machine-generated fragments.
 
@@ -163,7 +164,7 @@ check(
 )
 # the interpretation clarification is surfaced, not hidden
 ic = facts["interp_clarification"]
-check(ic["impl_classifier_was_not_preregistered"] is True, "interp clarification not recorded")
+check(ic["impl_classifier_not_in_frozen_plan"] is True, "interp clarification not recorded")
 check(ic["claude_cn_mean"] == -0.1 and ic["claude_cn_signs"] == [0, 7, 3], "claude C-N facts wrong")
 
 # --------------------------------------------------------------------------- #

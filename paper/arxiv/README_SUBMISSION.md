@@ -27,7 +27,7 @@ Phase 6E.2 artifacts; they are not hand-transcribed and are audited by
 5. Experimental Method (decision-point execution; three-arm matched design;
    stimuli/host policy/panel; frozen outcome definition; statistical
    presentation — scenario is the generalization unit, `n = 10`)
-6. Results (6.1 RQ1: the three pre-registered contrasts C-N, P-N, C-P;
+6. Results (6.1 RQ1: the three pre-specified contrasts C-N, P-N, C-P;
    6.2 Claude C-N conservative floor-bounded reading; 6.3 secondary
    diagnostics; 6.4 the earlier two-arm study + descriptive C-P
    reproducibility; 6.5 secondary null experiment)
@@ -48,8 +48,8 @@ references, 0 overfull `\hbox`. The date is a literal
 (`\date{August 2026}`, no `\today`). Build with `build_pdf.sh`, which sets
 `SOURCE_DATE_EPOCH=1451606400` and `FORCE_SOURCE_DATE=1` so the PDF is
 byte-reproducible (SHA-256
-`a6ffb1a2812ef8b54ccf02e04f3722ef32210bad9f292a3fd8a28e53d43183b5`,
-529020 bytes).
+`c04d522950ff3ee1db7dc061cb449971dcc2effd2dce9e689cfd0b8ca0c8d7d4`,
+530873 bytes).
 
 ## Provenance
 
@@ -57,7 +57,7 @@ byte-reproducible (SHA-256
 |---|---|
 | Phase 7 execution source commit | `2a892c0b9a8a636055cc0c4229aebfd788738b60` |
 | Phase 7 analysis implementation commit | `dc5d0767ce4bec946373bf720a37aae538ef258c` |
-| Phase 7 pre-registered analysis-plan SHA-256 | `87fec92f4b71a80e10a9f6fd5dd06fade13bec11d72d41725d34a660b1e7f68d` |
+| Phase 7 pre-execution-frozen analysis-plan SHA-256 | `87fec92f4b71a80e10a9f6fd5dd06fade13bec11d72d41725d34a660b1e7f68d` |
 | Phase 7D pre-analysis freeze manifest (self-hash) | `dad290f5b5ac460bf2d46c74facc05da7197f946ca5a0a2ed2d165c48ad1dd22` |
 | Phase 7E analysis-artifact manifest (self-hash) | `dbeb7068f1fe318862ba706a788fcc7a46107168f162e0021a04437958603b19` |
 | Phase 6 execution source commit | `23bf90bf379654f0afc2fadaa5a16ade30ae3439` |
@@ -112,8 +112,8 @@ pdflatex main
 
 ## Deterministic source archive
 
-`../agent-interop-bench-arxiv-v2.tar.gz` (43022 bytes, SHA-256
-`5761d84acc10b78402ca9a09bb0a1ed39a376b4208fb027bdb72dde1566dca69`) is
+`../agent-interop-bench-arxiv-v2.tar.gz` (43462 bytes, SHA-256
+`fd581231a971ef9c1ceb418ff9ab3e0e031b3a52c62a61be326f23aed6357d23`) is
 built deterministically by `build_arxiv_tar.py` (sorted members,
 `mtime=0`, mode `0444`, `uid=gid=0`, empty owner/group, gzip `mtime=0`). It
 extracts and compiles with the four-command sequence above using only the
