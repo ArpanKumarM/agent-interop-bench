@@ -121,6 +121,13 @@ _PHASE_6B_OVERLAY_DEFAULTS = {
     # Phase 7A field: omitted from the bundle dump when at its default, so
     # every already-frozen v1/v2/v3/v4 overlay bundle hashes byte-identically.
     "canary_case_key": None,
+    # Phase 8 fields: omitted at their defaults so every already-frozen
+    # v1..v7a overlay bundle hashes byte-identically to before Phase 8. A
+    # Phase 8 overlay that sets them includes them in the hash.
+    "sink": "a2a_relay",
+    "arm": None,
+    "task_framing_id": None,
+    "prompt_suffix_kind": "none",
 }
 
 

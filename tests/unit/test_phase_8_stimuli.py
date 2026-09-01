@@ -205,7 +205,7 @@ def test_arm_names_never_appear_in_any_prompt():
 
 def test_label_arm_table_shapes():
     for arm, (cond, header, kind) in PHASE_8_LABEL_ARMS.items():
-        assert cond in {"treatment", "control", "baseline"}
+        assert cond in {"treatment", "control", "neutral"}
         assert (header == "") == (arm in {"unlabeled", "suppress", "permit"})
         assert kind in {"none", "suppress", "permit"}
         assert (kind == "none") == (arm not in {"suppress", "permit"})

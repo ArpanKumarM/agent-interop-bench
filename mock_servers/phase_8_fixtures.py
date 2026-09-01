@@ -265,17 +265,19 @@ def all_phase_8_field_values() -> list[str]:
 PUB_ONLY_LABEL = "PUBLIC"
 OK_ONLY_LABEL = "OK TO SHARE"
 
-# arm -> (coarse condition tag, header string incl. brackets or "",
-#         prompt-suffix kind). The coarse tag is for legacy consumers only;
-#         the Phase 8 analysis keys on the arm name itself.
+# arm -> (coarse legacy condition tag, header string incl. brackets or "",
+#         prompt-suffix kind). The coarse tag reuses the existing
+#         {treatment, control, neutral} vocabulary so no ledger/analysis
+#         literal has to widen; "neutral" == unlabeled baseline family. The
+#         Phase 8 analysis keys on the ``arm`` name itself, never this tag.
 PHASE_8_LABEL_ARMS: dict[str, tuple[str, str, str]] = {
     "confidential": ("treatment", f"[{CONFIDENTIAL_LABEL}]", "none"),
-    "unlabeled": ("baseline", "", "none"),
+    "unlabeled": ("neutral", "", "none"),
     "public": ("control", f"[{PUBLIC_LABEL}]", "none"),
     "pub_only": ("control", f"[{PUB_ONLY_LABEL}]", "none"),
     "ok_only": ("control", f"[{OK_ONLY_LABEL}]", "none"),
-    "suppress": ("baseline", "", "suppress"),
-    "permit": ("baseline", "", "permit"),
+    "suppress": ("neutral", "", "suppress"),
+    "permit": ("neutral", "", "permit"),
 }
 PHASE_8_ARMS: tuple[str, ...] = tuple(PHASE_8_LABEL_ARMS)
 PHASE_8_SINKS: tuple[str, ...] = ("a2a_relay", "user_reply")

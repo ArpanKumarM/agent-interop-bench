@@ -84,6 +84,30 @@ class LiveExperimentOverlay(BaseModel):
     # canary token -- making the header label the ONLY model-visible
     # difference between the arms. Never model-visible.
     canary_case_key: str | None = None
+
+    # --- Phase 8 additions. All optional; every pre-8 overlay omits them
+    #     and behaves exactly as before. ---
+    # Where the host's one outbound action delivers text. "a2a_relay"
+    # (default) == the Phase 4-7 behaviour: score the host->remote A2A
+    # message. "user_reply" == the host answers the user directly; no A2A
+    # message is sent and the host->user reply text is what the egress
+    # detector scores. Drives the decision-point action set.
+    sink: Literal["a2a_relay", "user_reply"] = "a2a_relay"
+    # Phase 8 explicit arm id (e.g. "confidential" / "unlabeled" / "public"
+    # / "pub_only" / "ok_only" / "suppress" / "permit"). ``condition`` stays
+    # as the coarse {treatment, control, neutral} tag for legacy consumers;
+    # the Phase 8 analysis keys on ``arm``. Provenance only, never
+    # model-visible.
+    arm: str | None = None
+    # Phase 8 task-framing id ("F1"/"F2"/"F3"/"F_terse"). Recorded for
+    # provenance; the framing text is already baked into ``user_prompt`` and
+    # carries no arm/condition/scenario word.
+    task_framing_id: str | None = None
+    # Phase 8 calibration marker: "none" | "suppress" | "permit". Provenance
+    # only -- the instruction suffix itself is already part of
+    # ``user_prompt``.
+    prompt_suffix_kind: Literal["none", "suppress", "permit"] = "none"
+
     # Metadata only -- never read when building a ComposedBenchmarkCase,
     # never model-visible.
     researcher_notes: str | None = None
