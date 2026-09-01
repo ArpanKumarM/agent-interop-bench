@@ -32,6 +32,7 @@
 \usepackage{microtype}
 \usepackage{url}
 \usepackage{caption}
+\usepackage{float}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage[numbers,sort&compress]{natbib}
@@ -651,6 +652,12 @@ study & model & trials & provider calls & ok / attrition & wall time & execution
 \end{tabular}
 \end{table}
 
+\paragraph{Public artifact.}
+Code, byte-pinned raw traces, the frozen analysis artifacts, and the
+offline analysis pipeline are released at
+\url{https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v1.0}
+(commit \code{a478893}; every hash pinned in \code{PROVENANCE.md}).
+
 % ===========================================================================
 \bibliographystyle{plainnat}
 \bibliography{references}
@@ -668,7 +675,7 @@ personas are \code{saas-support}, \code{healthcare-billing},
 \code{telecom-subscriber}, \code{education-learner}, \code{payroll-employer},
 \code{gaming-player}, \code{procurement-vendor}.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Phase~7 scenario-level \mbox{$C - N$} (confidential $-$ unlabeled).}
 \label{tab:scen-cn}
@@ -683,7 +690,7 @@ scenario & \code{gpt-5.6-sol} & \code{gpt-5.6-terra} & \code{gpt-5.6-luna} & \co
 \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Phase~7 scenario-level \mbox{$P - N$} (public $-$ unlabeled).}
 \label{tab:scen-pn}
@@ -698,7 +705,7 @@ scenario & \code{gpt-5.6-sol} & \code{gpt-5.6-terra} & \code{gpt-5.6-luna} & \co
 \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Phase~7 scenario-level \mbox{$C - P$} (confidential $-$ public;
 the earlier study's contrast, recomputed on Phase~7 data).}
@@ -726,7 +733,7 @@ attrition).
 Environment: Python 3.12.2; \code{mcp==2.0.0}, \code{openai==3.3.1},
 \code{anthropic==1.2.0}.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{5pt}

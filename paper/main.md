@@ -450,6 +450,11 @@ table and figure regenerates offline with zero provider calls via
 (table bodies); `paper/arxiv/audit_numbers.py` fails on any stale or
 inconsistent number.
 
+**Public artifact.** Code, byte-pinned raw traces, the frozen analysis
+artifacts, and the offline analysis pipeline are released at
+<https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v1.0>
+(commit `a478893`; every hash pinned in `PROVENANCE.md`).
+
 **Execution and integrity summary** (Phase 6 and Phase 7 reported
 separately, never pooled).
 
