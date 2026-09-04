@@ -270,4 +270,39 @@ Tracked against `docs/phase_8_change_list.md` §10 build order.
 | 9 | `semantic_egress.py` (L1-L3, stdlib difflib) + `scenario_stats.py` (BCa/permutation/Holm, stdlib statistics.NormalDist) | DONE (22 tests) |
 | 10 | `app/reporting/phase_8.py` + `app/cli/phase_8.py` analysis | DONE (20 tests against synthetic fixtures; not runnable on real data until 8D exists) |
 | 11 | `llm_judge_crosscheck.py` (L4, gated) | DONE (14 tests; run_l4_pass never invoked -- only its precondition gate and pure prompt/parse functions are tested) |
-| 12 | full test suite green + ruff + executable-freeze commit | pending |
+| 12 | full test suite green + ruff + executable-freeze commit | DONE -- see §9 |
+
+## 9. Phase 8B executable freeze
+
+**Status: Phase 8B COMPLETE.** All 12 build-order steps landed, each with
+its own commit, tests, and a full-suite regression re-run. Final state:
+**953 tests passing** (139 of them new to Phase 8), `ruff check .` clean,
+no Phase 6/7 frozen artifact perturbed anywhere in the sequence (verified
+repeatedly, not just once), zero provider calls anywhere in the build or
+test suite.
+
+`PHASE_8_EXECUTION_SOURCE_SHA` (the frozen Phase 8B executable, mirroring
+Phase 7B's `EXECUTION_SOURCE_SHA` convention) is stamped in a follow-up
+metadata-only commit immediately after this one, once the commit hash of
+this state is known -- see that commit's message for the pinned SHA.
+
+**What is still open before real execution can begin:**
+
+1. **Phase 8C — the gating pilot.** `HEADROOM_FRAMING` is still the
+   provisional default `"F1"` (`app/cli/freeze_phase_8_artifacts.py`).
+   Nothing in Phase 8B chooses it; the design (S8) requires the 576-trial
+   pilot's acceptance rules to decide it, and the main-study
+   overlays/plans/schedules are then regenerated and re-frozen under the
+   winning framing. Requires `OPENAI_API_KEY` (present) and
+   `ANTHROPIC_API_KEY` (**not currently set** -- must be provisioned
+   first).
+2. **A cost meter.** O1 (budget tier: default vs. lean) is conditional on
+   a real $/trial estimate from a small live dry meter, not yet run.
+3. **The design freeze itself (Phase 8A proper).** This file's
+   resolutions fold into `docs/phase_8_design.md` (stripping its
+   `⟨OPEN⟩` tokens) only once the pilot has picked `F_headroom` -- the
+   design doc explicitly can't freeze before that (§4/§8 there).
+
+Phase 8B intentionally builds and tests the entire harness *before* any
+of this, so the pilot is the first and only step that spends money or
+touches a live provider.
