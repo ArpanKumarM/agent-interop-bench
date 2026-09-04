@@ -308,3 +308,19 @@ pilot EXECUTED -- result: NO FRAMING ACCEPTED.** See
 4. **The design freeze itself (Phase 8A proper) is still blocked** -- it
    folds this file into `docs/phase_8_design.md` only once a pilot
    actually accepts a framing, which has not happened yet.
+
+**Round 2 update: F4/F5/F6 also rejected. STOP RULE TRIGGERED --
+`docs/phase_8a2_pilot_result.md`.** Per the pre-registered failure branch
+(`docs/phase_8a2_pilot_design.md` §1a), no round 3 is attempted, no new
+framing is written, and the main study does not run under any framing
+piloted so far. Total pilot spend: $6.34 across both rounds (575/576 +
+575/576 trials completed). The project's honest empirical result, as of
+this pilot exercise, is that task-framing sensitivity in this decision
+surface dominates any measurable confidentiality/public-sharing label
+effect for 3 of 4 models (`gpt-5.6-sol/terra/luna` swing between a
+complete floor and a near-complete ceiling across six piloted framings,
+finding no stable middle ground); `claude-sonnet-5` is the sole exception,
+varying continuously rather than switching. This is now the project's
+reportable finding pending a manuscript rewrite -- not a "try again"
+situation. See `docs/phase_8a2_pilot_result.md` for the full table and
+next-steps list.
