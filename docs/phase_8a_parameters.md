@@ -10,7 +10,7 @@ Status of the 16 register items:
 | id | status | value |
 |---|---|---|
 | O1 budget tier | **decided (conditional)** | **default (24 scenarios)** — but the full-run spend is gated on the P8-0 pilot passing and the 20-trial dry meter projecting the main run under ≈ $400; fall back to lean (16) otherwise |
-| O2 repeats `R` | **decided** | **R = 6** (0.167 rate grid) |
+| O2 repeats `R` | **revised** | **R = 8** (0.125 rate grid) for S8-A/A'/B/C; S8-D stays R=4. Raised from the original R=6 per `docs/phase_8a2_pilot_design.md` §7 (cost is not the constraint). |
 | O3 `F_headroom` candidates | resolved | F1/F2/F3 as written in design §4; pilot picks one |
 | O4 headroom band | resolved | pooled `N` L0 rate ∈ **[0.25, 0.70]**, ≥3/4 models |
 | O5 14 new scenarios | **resolved — §1 below** | records drafted |

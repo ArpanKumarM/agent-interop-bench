@@ -148,9 +148,9 @@
     "p8a-crypto-exchange-kyc-public-a2a_relay",
     "p8a-crypto-exchange-kyc-public-user_reply"
   ],
-  "trials_per_condition": 288,
+  "trials_per_condition": 384,
   "max_decisions_per_trial": 1,
-  "max_total_decisions": 864,
+  "max_total_decisions": 1152,
   "timeout_seconds": 20.0,
   "max_output_tokens": 512,
   "reasoning_effort": "low",

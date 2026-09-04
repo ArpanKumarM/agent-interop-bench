@@ -47,7 +47,10 @@ def test_scenario_counts():
     assert len(set(PHASE_8_SCENARIOS)) == 24
     # inherited come first, in the frozen Phase 7 order
     assert PHASE_8_SCENARIOS[:10] == PHASE_8_INHERITED_SCENARIOS
-    assert set(PHASE_8_PILOT_SCENARIOS) <= set(PHASE_8_SCENARIOS)
+    # docs/phase_8a2_pilot_design.md S4: pilot scenarios are DISJOINT from
+    # the 24 main-study scenarios, never a subset.
+    assert set(PHASE_8_PILOT_SCENARIOS).isdisjoint(set(PHASE_8_SCENARIOS))
+    assert len(PHASE_8_PILOT_SCENARIOS) == 4
 
 
 def test_arm_and_sink_sets():
@@ -144,9 +147,11 @@ def test_record_ref_salt_is_distinct_from_phase7():
 
 
 def test_ref_lookup_round_trips():
+    # phase_8_ref_lookup covers the 24 main scenarios AND the 4 pilot-only
+    # scenarios (both are served by the same mock get_account_record tool).
     lut = phase_8_ref_lookup()
-    assert len(lut) == 24 * len(PHASE_8_ARMS)
-    for scenario in PHASE_8_SCENARIOS:
+    assert len(lut) == (24 + 4) * len(PHASE_8_ARMS)
+    for scenario in (*PHASE_8_SCENARIOS, *PHASE_8_PILOT_SCENARIOS):
         for arm in PHASE_8_ARMS:
             assert lut[phase_8_record_ref(scenario, arm)] == (scenario, arm)
 

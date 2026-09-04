@@ -115,10 +115,19 @@ def contrast(
     arm_a: str,
     arm_b: str,
     sink: str,
+    *,
+    status: str = "exploratory",
 ) -> dict:
     """The pre-registered scenario-level contrast ``arm_a - arm_b`` for one
     model + sink: all per-scenario differences, mean, median, sign counts,
-    BCa CI, permutation p (design S7.2)."""
+    BCa CI, permutation p (design S7.2).
+
+    ``status`` is ``"primary"`` or ``"exploratory"`` (design
+    docs/phase_8a2_pilot_design.md S6: exactly one primary contrast --
+    ``P - N`` under ``a2a_relay`` -- is declared; every other contrast is
+    exploratory and must carry that label through to any table it
+    populates). Callers other than ``analyze_s8a``'s P-N/a2a_relay cell
+    must not pass ``status="primary"``."""
     rates_a = scenario_rates(trials, scenarios, arm_a, sink)
     rates_b = scenario_rates(trials, scenarios, arm_b, sink)
     diffs = [rates_a[s] - rates_b[s] for s in scenarios]
@@ -127,6 +136,7 @@ def contrast(
     return {
         "contrast": f"{arm_a}_minus_{arm_b}",
         "sink": sink,
+        "status": status,
         "scenarios": list(scenarios),
         "diffs": diffs,
         "mean": statistics.mean(diffs),
@@ -142,11 +152,19 @@ def contrast(
 
 
 def sink_interaction(
-    trials: list[dict], scenarios: tuple[str, ...], arm_a: str, arm_b: str
+    trials: list[dict],
+    scenarios: tuple[str, ...],
+    arm_a: str,
+    arm_b: str,
+    *,
+    status: str = "exploratory",
 ) -> dict:
     """``Delta = (arm_a - arm_b | a2a_relay) - (arm_a - arm_b | user_reply)``
     per scenario, then the same mean/median/sign/CI/permutation-p summary
-    (design S7.3)."""
+    (design S7.3). ``status`` -- see ``contrast()``: the P-N sink
+    interaction is the ONE declared primary channel comparison
+    (docs/phase_8a2_pilot_design.md S6); every other interaction is
+    exploratory."""
     a2a = contrast(trials, scenarios, arm_a, arm_b, "a2a_relay")
     reply = contrast(trials, scenarios, arm_a, arm_b, "user_reply")
     deltas = [x - y for x, y in zip(a2a["diffs"], reply["diffs"], strict=True)]
@@ -154,6 +172,7 @@ def sink_interaction(
     lo, hi = bca_ci(deltas)
     return {
         "interaction": f"({arm_a}_minus_{arm_b})_a2a_vs_user_reply",
+        "status": status,
         "scenarios": list(scenarios),
         "deltas": deltas,
         "mean": statistics.mean(deltas),
@@ -218,9 +237,15 @@ def analyze_s8a(trials_by_model: dict[str, list[dict]], scenarios=PHASE_8_SCENAR
     for model, trials in trials_by_model.items():
         by_sink: dict[str, dict] = {}
         for sink in SINKS:
+            # The ONE declared primary contrast (docs/phase_8a2_pilot_
+            # design.md S6): P-N under a2a_relay. Every other cell here,
+            # including P-N under user_reply, is exploratory.
+            p_minus_n_status = "primary" if sink == "a2a_relay" else "exploratory"
             contrasts = {
                 "C_minus_N": contrast(trials, scenarios, "confidential", "unlabeled", sink),
-                "P_minus_N": contrast(trials, scenarios, "public", "unlabeled", sink),
+                "P_minus_N": contrast(
+                    trials, scenarios, "public", "unlabeled", sink, status=p_minus_n_status
+                ),
                 "C_minus_P": contrast(trials, scenarios, "confidential", "public", sink),
             }
             adjusted = holm_family(contrasts)
@@ -229,8 +254,9 @@ def analyze_s8a(trials_by_model: dict[str, list[dict]], scenarios=PHASE_8_SCENAR
             by_sink[sink] = contrasts
         out[model] = {
             "by_sink": by_sink,
+            # The ONE declared primary channel comparison.
             "sink_interaction_P_minus_N": sink_interaction(
-                trials, scenarios, "public", "unlabeled"
+                trials, scenarios, "public", "unlabeled", status="primary"
             ),
         }
     return out

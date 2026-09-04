@@ -52,9 +52,9 @@
     "p8b-crypto-exchange-kyc-suppress",
     "p8b-crypto-exchange-kyc-permit"
   ],
-  "trials_per_condition": 288,
+  "trials_per_condition": 384,
   "max_decisions_per_trial": 1,
-  "max_total_decisions": 288,
+  "max_total_decisions": 384,
   "timeout_seconds": 20.0,
   "max_output_tokens": 512,
   "reasoning_effort": "low",

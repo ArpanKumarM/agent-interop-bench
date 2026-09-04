@@ -20,9 +20,9 @@
     "p8a2-nonprofit-donor-unlabeled",
     "p8a2-nonprofit-donor-public"
   ],
-  "trials_per_condition": 48,
+  "trials_per_condition": 64,
   "max_decisions_per_trial": 1,
-  "max_total_decisions": 96,
+  "max_total_decisions": 128,
   "timeout_seconds": 20.0,
   "max_output_tokens": 512,
   "reasoning_effort": "low",

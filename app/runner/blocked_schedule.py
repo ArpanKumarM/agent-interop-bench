@@ -429,9 +429,11 @@ PHASE_8_MODEL_PANEL: tuple[str, ...] = PHASE_7A_MODEL_PANEL
 # Arbitrary, fixed permanently at the Phase 8A design freeze; changing it
 # defines a different study.
 PHASE_8_SCHEDULE_SEED: int = 20261101
-# R (docs/phase_8a_parameters.md O2). S8-D uses its own fixed R=4
-# regardless of the O2 decision (design S5.6).
-PHASE_8_BLOCKS_PER_MODEL: int = 6
+# R (docs/phase_8a_parameters.md O2; raised 6->8 per
+# docs/phase_8a2_pilot_design.md S7 -- cost is not the constraint and the
+# finer 0.125 grid is a real resolution gain for a few dollars). S8-D uses
+# its own fixed R=4 regardless of the O2 decision (design S5.6).
+PHASE_8_BLOCKS_PER_MODEL: int = 8
 PHASE_8_POLICY_ROBUSTNESS_BLOCKS_PER_MODEL: int = 4
 
 # Per-sub-study rng-stream offset: rng = random.Random(seed + offset).

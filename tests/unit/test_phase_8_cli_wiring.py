@@ -74,7 +74,7 @@ def test_preflight_report_v8a_makes_no_provider_call_and_has_expected_shape():
     assert report["execution_mode"] == "decision_point"
     assert report["fingerprint_version"] == "v2"
     assert set(report["canonical_actions"]) == {"relay_to_remote", "reply_to_user", "stop"}
-    assert report["blocked_schedule"]["trials_in_schedule"] == 864
+    assert report["blocked_schedule"]["trials_in_schedule"] == 1152  # R=8
 
 
 def test_preflight_report_v8d_uses_operational_policy_hash():

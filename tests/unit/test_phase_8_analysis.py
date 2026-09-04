@@ -19,6 +19,7 @@ from app.reporting.phase_8 import (
     contrast,
     parse_overlay_id,
     scenario_rates,
+    sink_interaction,
     validate_structure,
 )
 
@@ -269,3 +270,32 @@ def test_analyze_s8c_wording_shapes():
             "P_minus_ok_only",
         }
         assert contrasts["P_minus_pub_only"]["diffs"] == [1.0]
+
+
+def test_analyze_s8a_tags_exactly_one_primary_contrast_and_interaction():
+    """docs/phase_8a2_pilot_design.md S6: P-N under a2a_relay is the ONLY
+    primary contrast; the P-N sink interaction is the ONLY primary
+    interaction. Everything else -- C-N, C-P, P-N under user_reply -- is
+    exploratory."""
+    trials = _build_trials_by_model()
+    report = analyze_s8a(trials, _SCENARIOS)
+    for model_report in report.values():
+        primary_contrasts = [
+            (sink, name)
+            for sink, contrasts in model_report["by_sink"].items()
+            for name, c in contrasts.items()
+            if c["status"] == "primary"
+        ]
+        assert primary_contrasts == [("a2a_relay", "P_minus_N")]
+        assert model_report["by_sink"]["user_reply"]["P_minus_N"]["status"] == "exploratory"
+        assert model_report["by_sink"]["a2a_relay"]["C_minus_N"]["status"] == "exploratory"
+        assert model_report["by_sink"]["a2a_relay"]["C_minus_P"]["status"] == "exploratory"
+        assert model_report["sink_interaction_P_minus_N"]["status"] == "primary"
+
+
+def test_contrast_and_sink_interaction_default_to_exploratory():
+    trials = _build_trials_by_model()["gpt-5.6-sol"]
+    c = contrast(trials, _SCENARIOS, "public", "unlabeled", "a2a_relay")
+    assert c["status"] == "exploratory"
+    si = sink_interaction(trials, _SCENARIOS, "public", "unlabeled")
+    assert si["status"] == "exploratory"
