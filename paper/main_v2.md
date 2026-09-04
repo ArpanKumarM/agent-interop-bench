@@ -2,18 +2,29 @@
 
 Arpan Kumar Mahapatra · `arpan.arpan.mohapatra@gmail.com`
 
-> **DRAFT v2 — section content, not yet audited or number-generated from
-> frozen artifacts.** This is a v2 revision of `arXiv:2609.01693`
-> ("Public-Sharing Labels and Verbatim Field Egress..."). **v2 substantially
-> revises v1.** Two additional pre-registered pilot studies (Phase 8)
-> changed the central claim from a measured label effect to a
-> framing-dominance finding; v1's Phase 6/7 results are retained in full
-> and recontextualized, not deleted or altered. Every number in this draft
-> is manually verified against `docs/phase_8c_pilot_result.md`,
-> `docs/phase_8a2_pilot_result.md`, and the original v1 manuscript; the
-> automated `gen_tables.py`/`audit_numbers.py` pipeline has not yet been
-> extended to Phase 8 and must re-verify every number below before this
-> becomes camera-ready.
+> **DRAFT v2.** This is a v2 revision of `arXiv:2609.01693` ("Public-Sharing
+> Labels and Verbatim Field Egress..."). **v2 substantially revises v1.**
+> Two additional pre-registered pilot studies (Phase 8) changed the
+> central claim from a measured label effect to a framing-dominance
+> finding. **Correction to an earlier draft of this note:** it previously
+> said v1's Phase 6/7 results are "retained in full." That was not
+> accurate and is corrected here. Every Phase 6/7 *number* v1 reports is
+> retained and reconciled against the same frozen analysis artifacts v1
+> used (§5.1, §5.2; machine-checked by `paper/arxiv/audit_phase8_numbers.py`,
+> which fails the build if v2's numbers drift from those artifacts or from
+> v1's text). What is **not** carried forward is v1's full presentation of
+> them: the per-model contrast-summary table with sign counts and medians
+> (v1 §5.1), the secondary-diagnostics table (v1 §5.3), and the per-scenario
+> Appendix A tables (v1 Appendix A) are condensed to prose here and are not
+> reproduced in v2. Restoring them, or explicitly deciding they stay
+> v1-only with a cross-reference, is open and tracked as a to-do before
+> this is camera-ready. Every Phase 8 number in this draft is machine-audited
+> against the frozen pilot artifacts and a live recomputation from raw
+> trial data where raw data still exists
+> (`paper/arxiv/audit_phase8_numbers.py`,
+> `scripts/verify_phase_8_round2_from_raw.py`); v1's own
+> `gen_tables.py`/`audit_numbers.py` pipeline has not been extended to
+> generate v2's LaTeX and is a separate, later step.
 
 ## Abstract
 
@@ -279,16 +290,18 @@ permission increasing it, or both at once.
 
 480 trials, adding an `unlabeled` baseline to the same 10 scenarios and
 four models, so that `C − N`, `P − N`, and `C − P` can each be read
-separately. Three of four models (`sol`, `terra`, `luna`) produced a
+separately. Pooled arm rates: `sol` C=0/40, N=0/40, P=5/40; `terra`
+C=0/40, N=0/40, P=0/40; `luna` C=0/40, N=0/40, P=10/40; `claude` C=1/40,
+N=5/40, P=37/40. Three of four models (`sol`, `terra`, `luna`) produced a
 pooled rate of exactly 0/40 on **both** the confidential and the
 unlabeled arms — a complete floor, not a partial one — leaving the
 confidentiality-vs-unlabeled contrast structurally unreadable for those
 models: the confidential arm has no room below zero to show a
 suppression effect even if one exists. `claude-sonnet-5`'s unlabeled arm
-was low but nonzero (5/40); its `P − N` contrast was strongly positive
-(mean +0.800, all 10 scenarios), the only model for which the public
-label's association with increased disclosure was clearly measurable
-against a non-floor baseline.
+was 5/40, its confidential arm 1/40 — both low, neither an exact floor —
+and its `P − N` contrast was +0.800 (mean, all 10 scenarios positive),
+the only model for which the public label's association with increased
+disclosure was measurable against a non-floor baseline.
 
 ### 5.3 Phase 8 — the framing sweep: ceiling, then floor, then stop
 
@@ -426,8 +439,9 @@ researcher, task framing dominated any confidentiality-label effect
 large enough for this instrument to detect.** This is not evidence that
 sensitivity labels are ineffective in agent systems generally. It is
 evidence that, in the specific decision surface studied here, the
-variable this instrument was able to move — reliably, and by a large
-margin, in both directions — was the wording of the task, not the
+variable this instrument was able to move — from an exact 0.000 floor to
+an exact or near-exact 1.000 ceiling, in both directions (Table 1) — was
+the wording of the task, not the
 record's label.
 
 Two things this finding does not claim. First, it does not claim the
