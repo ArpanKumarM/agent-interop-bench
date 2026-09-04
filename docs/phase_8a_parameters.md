@@ -281,10 +281,9 @@ no Phase 6/7 frozen artifact perturbed anywhere in the sequence (verified
 repeatedly, not just once), zero provider calls anywhere in the build or
 test suite.
 
-`PHASE_8_EXECUTION_SOURCE_SHA` (the frozen Phase 8B executable, mirroring
-Phase 7B's `EXECUTION_SOURCE_SHA` convention) is stamped in a follow-up
-metadata-only commit immediately after this one, once the commit hash of
-this state is known -- see that commit's message for the pinned SHA.
+**`PHASE_8_EXECUTION_SOURCE_SHA` = `66150c247b9d9d81e9ae85b778fb14662f7bb52c`** (mirrors Phase 7B's
+`EXECUTION_SOURCE_SHA` convention: the frozen Phase 8B executable, pinned
+by this metadata-only follow-up commit).
 
 **What is still open before real execution can begin:**
 
