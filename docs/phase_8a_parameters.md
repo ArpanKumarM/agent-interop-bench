@@ -265,7 +265,7 @@ Tracked against `docs/phase_8_change_list.md` §10 build order.
 | 4 | `reply_to_user` action + sink branch + blindness tests | DONE (23 tests; full 868-test suite green) |
 | 5 | `blocked_schedule.py` Phase 8 block (5 sub-studies) | DONE (8 tests; trial counts match design S5.1 exactly) |
 | 6 | `freeze_phase_8_artifacts.py` generator + committed artifacts | DONE (7 tests; 280 overlays; PROVISIONAL headroom_framing=F1 until 8C pilot) |
-| 7 | `composed_live_pilot.py` v8 wiring + dry-run | pending |
+| 7 | `composed_live_pilot.py` v8 wiring + dry-run | DONE (9 tests incl. end-to-end both-sink dispatch; full 864-trial dry-run in progress separately) |
 | 8 | `phase_8_preflight.py` | pending |
 | 9 | `semantic_egress.py` + `scenario_stats.py` | pending |
 | 10 | `phase_8.py` + `cli/phase_8.py` analysis | pending |
