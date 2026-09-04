@@ -285,23 +285,26 @@ test suite.
 `EXECUTION_SOURCE_SHA` convention: the frozen Phase 8B executable, pinned
 by this metadata-only follow-up commit).
 
-**What is still open before real execution can begin:**
+**Update (post-pilot): both providers verified, cost meter run, Phase 8C
+pilot EXECUTED -- result: NO FRAMING ACCEPTED.** See
+`docs/phase_8c_pilot_result.md` for the full record. Summary:
 
-1. **Phase 8C — the gating pilot.** `HEADROOM_FRAMING` is still the
-   provisional default `"F1"` (`app/cli/freeze_phase_8_artifacts.py`).
-   Nothing in Phase 8B chooses it; the design (S8) requires the 576-trial
-   pilot's acceptance rules to decide it, and the main-study
-   overlays/plans/schedules are then regenerated and re-frozen under the
-   winning framing. Requires `OPENAI_API_KEY` (present) and
-   `ANTHROPIC_API_KEY` (**not currently set** -- must be provisioned
-   first).
-2. **A cost meter.** O1 (budget tier: default vs. lean) is conditional on
-   a real $/trial estimate from a small live dry meter, not yet run.
-3. **The design freeze itself (Phase 8A proper).** This file's
-   resolutions fold into `docs/phase_8_design.md` (stripping its
-   `⟨OPEN⟩` tokens) only once the pilot has picked `F_headroom` -- the
-   design doc explicitly can't freeze before that (§4/§8 there).
-
-Phase 8B intentionally builds and tests the entire harness *before* any
-of this, so the pilot is the first and only step that spends money or
-touches a live provider.
+1. ~~A cost meter.~~ **Done.** Measured (not estimated): sol $0.00945/
+   trial, terra $0.00506, luna $0.00049, claude-sonnet-5 $0.00587.
+   Projected full study: lean ≈$18, default ≈$35 -- cost is a non-issue.
+2. ~~Provision `ANTHROPIC_API_KEY`.~~ **Done**, verified live.
+3. **Phase 8C pilot: run, 575/576 completed, $3.32 actual spend.** All
+   three `F_headroom` candidates (F1/F2/F3) **failed the headroom
+   acceptance rule** -- the unlabeled baseline saturates near 1.0 for 3 of
+   4 models under every candidate (the opposite failure mode from Phase
+   7's floor). The calibration/sensitivity rule passed cleanly for all
+   three, validating the instrument and the whole harness end-to-end
+   against live models. Per the pre-registered rule (design §8), **the
+   main study does not freeze**; `HEADROOM_FRAMING` stays a non-usable
+   placeholder in code. Next: design a Phase 8A.2 candidate set that
+   targets `gpt-5.6-terra`'s demonstrated mid-range sensitivity (N ranged
+   0.50-0.92 across F1-F3, unlike sol's flat 1.0) rather than reusing
+   these three wordings, then re-run P8-0.
+4. **The design freeze itself (Phase 8A proper) is still blocked** -- it
+   folds this file into `docs/phase_8_design.md` only once a pilot
+   actually accepts a framing, which has not happened yet.
