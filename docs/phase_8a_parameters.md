@@ -263,7 +263,7 @@ Tracked against `docs/phase_8_change_list.md` §10 build order.
 | 2 | `mock_servers/phase_8_fixtures.py` + stimulus tests | DONE (18 tests) |
 | 3 | overlay schema (`sink`/`arm`/`task_framing_id`/`prompt_suffix_kind`) + fingerprint default-strip | DONE (4 tests; frozen Phase 7 fingerprints verified intact) |
 | 4 | `reply_to_user` action + sink branch + blindness tests | DONE (23 tests; full 868-test suite green) |
-| 5 | `blocked_schedule.py` Phase 8 block | pending |
+| 5 | `blocked_schedule.py` Phase 8 block (5 sub-studies) | DONE (8 tests; trial counts match design S5.1 exactly) |
 | 6 | `freeze_phase_8_artifacts.py` generator | pending |
 | 7 | `composed_live_pilot.py` v8 wiring + dry-run | pending |
 | 8 | `phase_8_preflight.py` | pending |

@@ -31,6 +31,7 @@ from __future__ import annotations
 import hashlib
 import json
 import random
+from collections.abc import Callable
 
 from pydantic import BaseModel
 
@@ -404,6 +405,240 @@ def build_schedule_artifact(
         "blocks_per_model": blocks_per_model,
         "trials_per_model": blocks_per_model * len(CELLS),
         "cells": [{"experiment": e, "condition": c, "overlay_id": o} for (e, c, o) in CELLS],
+        "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+        "per_model_schedule": per_model,
+        "model_schedule_sha256": model_hashes,
+        "study_schedule_sha256": study_hash,
+    }
+
+
+# ===========================================================================
+# Phase 8 blocked schedules -- the journal-track re-study
+# (docs/phase_8_design.md, docs/phase_8a_parameters.md). FIVE independent
+# sub-studies (S8-A / S8-A' / S8-B / S8-C / S8-D; S8-E was cut -- see
+# docs/phase_8a_parameters.md O7), each with its own cell set and its own
+# rng stream derived from ONE frozen seed family
+# (PHASE_8_SCHEDULE_SEED + a small fixed per-sub-study offset), so a
+# change to one sub-study's scenarios/blocks never perturbs another's
+# draw order. Same one-frozen-seed blocked-randomization mechanism as
+# Phase 4B/6B/7A; Phase 8 observations are never pooled with Phase 6/7.
+# ===========================================================================
+
+PHASE_8_MODEL_PANEL: tuple[str, ...] = PHASE_7A_MODEL_PANEL
+# The Phase 8 scheduling seed family (docs/phase_8a_parameters.md S4).
+# Arbitrary, fixed permanently at the Phase 8A design freeze; changing it
+# defines a different study.
+PHASE_8_SCHEDULE_SEED: int = 20261101
+# R (docs/phase_8a_parameters.md O2). S8-D uses its own fixed R=4
+# regardless of the O2 decision (design S5.6).
+PHASE_8_BLOCKS_PER_MODEL: int = 6
+PHASE_8_POLICY_ROBUSTNESS_BLOCKS_PER_MODEL: int = 4
+
+# Per-sub-study rng-stream offset: rng = random.Random(seed + offset).
+PHASE_8_SUBSTUDY_SEED_OFFSET: dict[str, int] = {
+    "v8a": 0,
+    "v8a2": 1,
+    "v8b": 2,
+    "v8c": 3,
+    "v8d": 4,
+}
+PHASE_8_SUBSTUDY_BLOCKS_PER_MODEL: dict[str, int] = {
+    "v8a": PHASE_8_BLOCKS_PER_MODEL,
+    "v8a2": PHASE_8_BLOCKS_PER_MODEL,
+    "v8b": PHASE_8_BLOCKS_PER_MODEL,
+    "v8c": PHASE_8_BLOCKS_PER_MODEL,
+    "v8d": PHASE_8_POLICY_ROBUSTNESS_BLOCKS_PER_MODEL,
+}
+
+
+def phase_8a_cells() -> tuple[tuple[str, str, str], ...]:
+    """S8-A -- core label x sink study: 24 scenarios x 3 label arms
+    (confidential/unlabeled/public) x 2 sinks (a2a_relay/user_reply) = 144
+    cells, in a fixed canonical order used only as the per-block
+    pre-shuffle list."""
+    from mock_servers.phase_8_fixtures import PHASE_8_SCENARIOS, arm_condition
+
+    cells: list[tuple[str, str, str]] = []
+    for scenario in PHASE_8_SCENARIOS:
+        for arm in ("confidential", "unlabeled", "public"):
+            for sink in ("a2a_relay", "user_reply"):
+                cells.append(
+                    ("sensitive_egress", arm_condition(arm), f"p8a-{scenario}-{arm}-{sink}")
+                )
+    return tuple(cells)
+
+
+def phase_8a_prime_cells() -> tuple[tuple[str, str, str], ...]:
+    """S8-A' -- the F_terse robustness mini-cell: the fixed 8-scenario
+    subset x {unlabeled, public}, a2a_relay only (F_terse is not defined
+    for user_reply) = 16 cells."""
+    from mock_servers.phase_8_fixtures import PHASE_8_TERSE_MINI_CELL_SCENARIOS, arm_condition
+
+    cells: list[tuple[str, str, str]] = []
+    for scenario in PHASE_8_TERSE_MINI_CELL_SCENARIOS:
+        for arm in ("unlabeled", "public"):
+            cells.append(("sensitive_egress", arm_condition(arm), f"p8a2-{scenario}-{arm}"))
+    return tuple(cells)
+
+
+def phase_8b_cells() -> tuple[tuple[str, str, str], ...]:
+    """S8-B -- calibration: 24 scenarios x {suppress, permit}, a2a_relay
+    only = 48 cells. Contrasts against S8-A's unlabeled cells for the same
+    (model, scenario), joined in the analysis layer -- never re-run here."""
+    from mock_servers.phase_8_fixtures import PHASE_8_SCENARIOS, arm_condition
+
+    cells: list[tuple[str, str, str]] = []
+    for scenario in PHASE_8_SCENARIOS:
+        for arm in ("suppress", "permit"):
+            cells.append(("sensitive_egress", arm_condition(arm), f"p8b-{scenario}-{arm}"))
+    return tuple(cells)
+
+
+def phase_8c_cells() -> tuple[tuple[str, str, str], ...]:
+    """S8-C -- PUBLIC/OK-TO-SHARE wording ablation: 24 scenarios x
+    {pub_only, ok_only}, a2a_relay only = 48 cells."""
+    from mock_servers.phase_8_fixtures import PHASE_8_SCENARIOS, arm_condition
+
+    cells: list[tuple[str, str, str]] = []
+    for scenario in PHASE_8_SCENARIOS:
+        for arm in ("pub_only", "ok_only"):
+            cells.append(("sensitive_egress", arm_condition(arm), f"p8c-{scenario}-{arm}"))
+    return tuple(cells)
+
+
+def phase_8d_cells() -> tuple[tuple[str, str, str], ...]:
+    """S8-D -- host-policy robustness: the fixed 12-scenario subset x
+    {unlabeled, public}, a2a_relay only, under the `operational` policy
+    (selected at overlay-generation time, not encoded in the cell) = 24
+    cells."""
+    from mock_servers.phase_8_fixtures import PHASE_8_POLICY_ROBUSTNESS_SCENARIOS, arm_condition
+
+    cells: list[tuple[str, str, str]] = []
+    for scenario in PHASE_8_POLICY_ROBUSTNESS_SCENARIOS:
+        for arm in ("unlabeled", "public"):
+            cells.append(("sensitive_egress", arm_condition(arm), f"p8d-{scenario}-{arm}"))
+    return tuple(cells)
+
+
+PHASE_8_SUBSTUDY_CELL_FNS: dict[str, Callable[[], tuple[tuple[str, str, str], ...]]] = {
+    "v8a": phase_8a_cells,
+    "v8a2": phase_8a_prime_cells,
+    "v8b": phase_8b_cells,
+    "v8c": phase_8c_cells,
+    "v8d": phase_8d_cells,
+}
+
+
+def phase_8_cells(substudy: str) -> tuple[tuple[str, str, str], ...]:
+    if substudy not in PHASE_8_SUBSTUDY_CELL_FNS:
+        raise ValueError(
+            f"unknown Phase 8 sub-study {substudy!r}; expected one of "
+            f"{sorted(PHASE_8_SUBSTUDY_CELL_FNS)}"
+        )
+    return PHASE_8_SUBSTUDY_CELL_FNS[substudy]()
+
+
+PHASE_8_OVERLAY_IDS: dict[str, tuple[str, ...]] = {
+    substudy: tuple(o for (_, _, o) in fn()) for substudy, fn in PHASE_8_SUBSTUDY_CELL_FNS.items()
+}
+
+
+def build_phase_8_study_schedule(
+    substudy: str,
+    *,
+    models: tuple[str, ...] = PHASE_8_MODEL_PANEL,
+    seed: int = PHASE_8_SCHEDULE_SEED,
+    blocks_per_model: int | None = None,
+) -> dict[str, list[ScheduledTrial]]:
+    """{model -> ordered blocks_per_model*len(cells) trials} for one Phase 8
+    sub-study. One ``random.Random(seed + PHASE_8_SUBSTUDY_SEED_OFFSET[
+    substudy])`` advanced model-by-model in ``models`` order, block-by-
+    block, shuffling a copy of that sub-study's cells per block.
+    ``trial_index`` is the per-(model,cell) sequential index
+    0..blocks-1 (== block_index)."""
+    cells = phase_8_cells(substudy)
+    blocks = (
+        blocks_per_model
+        if blocks_per_model is not None
+        else PHASE_8_SUBSTUDY_BLOCKS_PER_MODEL[substudy]
+    )
+    rng = random.Random(seed + PHASE_8_SUBSTUDY_SEED_OFFSET[substudy])
+    study: dict[str, list[ScheduledTrial]] = {}
+    for model in models:
+        entries: list[ScheduledTrial] = []
+        for block_index in range(blocks):
+            order = list(cells)
+            rng.shuffle(order)
+            for position, (experiment, condition, overlay_id) in enumerate(order):
+                entries.append(
+                    ScheduledTrial(
+                        model=model,
+                        block_index=block_index,
+                        position_in_block=position,
+                        experiment=experiment,
+                        condition=condition,
+                        overlay_id=overlay_id,
+                        trial_index=block_index,
+                    )
+                )
+        study[model] = entries
+    return study
+
+
+def build_phase_8_model_schedule(
+    substudy: str,
+    model: str,
+    *,
+    seed: int = PHASE_8_SCHEDULE_SEED,
+    blocks_per_model: int | None = None,
+    models: tuple[str, ...] = PHASE_8_MODEL_PANEL,
+) -> list[ScheduledTrial]:
+    if model not in models:
+        raise ValueError(f"model {model!r} is not in the Phase 8 panel {list(models)}")
+    return build_phase_8_study_schedule(
+        substudy, models=models, seed=seed, blocks_per_model=blocks_per_model
+    )[model]
+
+
+PHASE_8_STUDY_IDS: dict[str, str] = {
+    "v8a": "composed-live-canary-008a",
+    "v8a2": "composed-live-canary-008a2",
+    "v8b": "composed-live-canary-008b",
+    "v8c": "composed-live-canary-008c",
+    "v8d": "composed-live-canary-008d",
+}
+
+
+def build_phase_8_schedule_artifact(
+    substudy: str,
+    *,
+    models: tuple[str, ...] = PHASE_8_MODEL_PANEL,
+    seed: int = PHASE_8_SCHEDULE_SEED,
+    blocks_per_model: int | None = None,
+) -> dict:
+    blocks = (
+        blocks_per_model
+        if blocks_per_model is not None
+        else PHASE_8_SUBSTUDY_BLOCKS_PER_MODEL[substudy]
+    )
+    study = build_phase_8_study_schedule(
+        substudy, models=models, seed=seed, blocks_per_model=blocks
+    )
+    cells = phase_8_cells(substudy)
+    per_model = {model: [e.model_dump() for e in entries] for model, entries in study.items()}
+    model_hashes = {model: schedule_sha256(entries) for model, entries in study.items()}
+    study_hash = hashlib.sha256(
+        json.dumps(model_hashes, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    return {
+        "study_id": PHASE_8_STUDY_IDS[substudy],
+        "study_version": substudy,
+        "scheduling_seed": seed + PHASE_8_SUBSTUDY_SEED_OFFSET[substudy],
+        "model_panel": list(models),
+        "blocks_per_model": blocks,
+        "overlays_per_block": len(cells),
+        "trials_per_model": blocks * len(cells),
+        "cells": [{"experiment": e, "condition": c, "overlay_id": o} for (e, c, o) in cells],
         "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
         "per_model_schedule": per_model,
         "model_schedule_sha256": model_hashes,

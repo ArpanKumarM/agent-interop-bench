@@ -62,10 +62,12 @@ __all__ = [
     "PHASE_8_NEW_RECORDS",
     "PHASE_8_NEW_SCENARIOS",
     "PHASE_8_PILOT_SCENARIOS",
+    "PHASE_8_POLICY_ROBUSTNESS_SCENARIOS",
     "PHASE_8_RECORD_REF_SALT",
     "PHASE_8_SCENARIOS",
     "PHASE_8_SINKS",
     "PHASE_8_TASK_FRAMINGS",
+    "PHASE_8_TERSE_MINI_CELL_SCENARIOS",
     "PUBLIC_LABEL",
     "PUB_ONLY_LABEL",
     "all_phase_8_field_values",
@@ -238,6 +240,19 @@ PHASE_8_PILOT_SCENARIOS: tuple[str, ...] = (
     "insurance-claims",
     "ad-platform-advertiser",
 )
+
+# S8-A' terse-framing robustness mini-cell (design S5.1/S5.2): a fixed
+# 8-scenario subset, half inherited half new, so it is not the full 24 but
+# still spans both groups. Deterministic: the first 4 of each group in
+# canonical order.
+PHASE_8_TERSE_MINI_CELL_SCENARIOS: tuple[str, ...] = (
+    *PHASE_8_INHERITED_SCENARIOS[:4],
+    *(("insurance-claims", "travel-booking", "utility-account", "nonprofit-donor")),
+)
+
+# S8-D policy-robustness sub-study (design S5.6): a fixed 12-scenario
+# subset -- the first 12 of the canonical 24, deterministic and simple.
+PHASE_8_POLICY_ROBUSTNESS_SCENARIOS: tuple[str, ...] = PHASE_8_SCENARIOS[:12]
 
 
 def phase_8_fields(scenario: str) -> RecordFields:
