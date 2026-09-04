@@ -292,11 +292,10 @@ permission increasing it, or both at once.
 
 480 trials, adding an `unlabeled` baseline to the same 10 scenarios and
 four models, so that `C − N`, `P − N`, and `C − P` can each be read
-separately. Pooled arm rates: `sol` C=0/40, N=0/40, P=5/40; `terra`
-C=0/40, N=0/40, P=0/40; `luna` C=0/40, N=0/40, P=10/40; `claude` C=1/40,
-N=5/40, P=37/40. Three of four models (`sol`, `terra`, `luna`) produced a
-pooled rate of exactly 0/40 on **both** the confidential and the
-unlabeled arms — a complete floor, not a partial one — leaving the
+separately (pooled arm rates below). Three of four models (`sol`,
+`terra`, `luna`) produced a pooled rate of exactly 0/40 on **both** the
+confidential and the unlabeled arms — a complete floor, not a partial
+one — leaving the
 confidentiality-vs-unlabeled contrast structurally unreadable for those
 models: the confidential arm has no room below zero to show a
 suppression effect even if one exists. `claude-sonnet-5`'s unlabeled arm
