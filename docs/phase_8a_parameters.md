@@ -267,7 +267,7 @@ Tracked against `docs/phase_8_change_list.md` §10 build order.
 | 6 | `freeze_phase_8_artifacts.py` generator + committed artifacts | DONE (7 tests; 280 overlays; PROVISIONAL headroom_framing=F1 until 8C pilot) |
 | 7 | `composed_live_pilot.py` v8 wiring + dry-run | DONE (9 tests incl. end-to-end both-sink dispatch; full 864-trial dry-run in progress separately) |
 | 8 | `phase_8_preflight.py` | DONE (5 tests; live-verified: 20 fingerprints, all distinct, 0 provider calls); full 864-trial v8a dry-run completed cleanly (864/864 completed, both sinks exercised) |
-| 9 | `semantic_egress.py` + `scenario_stats.py` | pending |
+| 9 | `semantic_egress.py` (L1-L3, stdlib difflib) + `scenario_stats.py` (BCa/permutation/Holm, stdlib statistics.NormalDist) | DONE (22 tests) |
 | 10 | `phase_8.py` + `cli/phase_8.py` analysis | pending |
 | 11 | `llm_judge_crosscheck.py` (L4, gated) | pending |
 | 12 | full test suite green + ruff + executable-freeze commit | pending |
