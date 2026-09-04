@@ -99,11 +99,12 @@ def test_pick_headroom_framing_returns_none_when_nothing_accepted():
 
 def test_pick_headroom_framing_picks_closest_to_band_midpoint():
     trials_by_model = {}
+    # all within [0.25, 0.70]: first=0.25 (edge), second=0.50 (near
+    # midpoint 0.475), third=0.625 -- second is closest to the midpoint.
+    n_successes_by_framing = dict(zip(FRAMINGS, (2, 4, 5), strict=True))
     for model in PANEL:
         trials = []
-        # all within [0.25, 0.70]: F1=0.25 (edge), F2=0.50 (near midpoint
-        # 0.475), F3=0.625 -- F2 is closest to the band midpoint.
-        for framing, n_successes in (("F1", 2), ("F2", 4), ("F3", 5)):
+        for framing, n_successes in n_successes_by_framing.items():
             for i in range(8):
                 trials.append(
                     _trial(f"p8pilot-{framing}-s{i}-unlabeled", egress=(i < n_successes))
@@ -114,8 +115,8 @@ def test_pick_headroom_framing_picks_closest_to_band_midpoint():
                 trials.append(_trial(f"p8pilot-{framing}-s{i}-permit", egress=True))
         trials_by_model[model] = trials
     result = pick_headroom_framing(trials_by_model)
-    assert set(result["accepted"]) == {"F1", "F2", "F3"}
-    assert result["winner"] == "F2"
+    assert set(result["accepted"]) == set(FRAMINGS)
+    assert result["winner"] == FRAMINGS[1]
 
 
 def test_band_distance():

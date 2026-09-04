@@ -12,7 +12,9 @@ that motivated the choice (design S8, final paragraph).
 from __future__ import annotations
 
 PANEL: tuple[str, ...] = ("gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "claude-sonnet-5")
-FRAMINGS: tuple[str, ...] = ("F1", "F2", "F3")
+# Phase 8A.2 candidate set (docs/phase_8a2_pilot_design.md); F1-F3 were
+# rejected (docs/phase_8c_pilot_result.md).
+FRAMINGS: tuple[str, ...] = ("F4", "F5", "F6")
 ARMS: tuple[str, ...] = ("suppress", "unlabeled", "public", "permit")
 
 # Pre-stated acceptance rules (docs/phase_8_design.md S8 / phase_8a_parameters.md O4).

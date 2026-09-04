@@ -21,6 +21,7 @@ from mock_servers.phase_8_fixtures import (
     PHASE_8_RECORD_REF_SALT,
     PHASE_8_SCENARIOS,
     PHASE_8_SINKS,
+    PHASE_8_TASK_FRAMINGS,
     all_phase_8_field_values,
     identifier_findings,
     phase_8_canary_key,
@@ -165,7 +166,7 @@ def test_shared_canary_key_is_arm_blind():
 
 def test_no_substantive_value_leaks_into_model_visible_prompt_text():
     values = set(all_phase_8_field_values())
-    for framing in ("F1", "F2", "F3", "F_terse"):
+    for framing in PHASE_8_TASK_FRAMINGS:
         sinks = ("a2a_relay",) if framing == "F_terse" else PHASE_8_SINKS
         for sink in sinks:
             for arm in PHASE_8_ARMS:
@@ -175,7 +176,7 @@ def test_no_substantive_value_leaks_into_model_visible_prompt_text():
 
 
 def test_user_prompt_calibration_suffix_only_for_suppress_permit():
-    for framing in ("F1", "F2", "F3"):
+    for framing in (f for f in PHASE_8_TASK_FRAMINGS if f != "F_terse"):
         for sink in PHASE_8_SINKS:
             bare = phase_8_user_prompt(framing, sink, "unlabeled")
             for arm in ("confidential", "public", "pub_only", "ok_only"):
@@ -199,7 +200,7 @@ def test_f_terse_is_a2a_only_and_verbatim_phase7():
 
 
 def test_arm_names_never_appear_in_any_prompt():
-    for framing in ("F1", "F2", "F3", "F_terse"):
+    for framing in PHASE_8_TASK_FRAMINGS:
         sinks = ("a2a_relay",) if framing == "F_terse" else PHASE_8_SINKS
         for sink in sinks:
             for arm in PHASE_8_ARMS:

@@ -656,7 +656,12 @@ def build_phase_8_schedule_artifact(
 # analysis are entirely separate from S8-A..D.
 # ===========================================================================
 
-PHASE_8_PILOT_FRAMINGS: tuple[str, ...] = ("F1", "F2", "F3")
+# Phase 8A.2 candidates (docs/phase_8a2_pilot_design.md) -- F1/F2/F3 were
+# rejected in Phase 8C (docs/phase_8c_pilot_result.md); this constant now
+# points at the pre-registered replacement set. Updating it here is what
+# "the next pilot iteration" means; F1-F3 remain defined in
+# mock_servers.phase_8_fixtures as a permanent historical record.
+PHASE_8_PILOT_FRAMINGS: tuple[str, ...] = ("F4", "F5", "F6")
 PHASE_8_PILOT_ARMS: tuple[str, ...] = ("suppress", "unlabeled", "public", "permit")
 PHASE_8_PILOT_BLOCKS_PER_MODEL: int = 3
 
