@@ -435,6 +435,10 @@ PHASE_8_SCHEDULE_SEED: int = 20261101
 # its own fixed R=4 regardless of the O2 decision (design S5.6).
 PHASE_8_BLOCKS_PER_MODEL: int = 8
 PHASE_8_POLICY_ROBUSTNESS_BLOCKS_PER_MODEL: int = 4
+# S8-A carries the one primary contrast and the one primary interaction
+# (docs/phase_8a2_pilot_design.md S6/S7): a finer 0.0625 grid there, the
+# coarser 0.125 grid everywhere else that is exploratory only.
+PHASE_8_PRIMARY_BLOCKS_PER_MODEL: int = 16
 
 # Per-sub-study rng-stream offset: rng = random.Random(seed + offset).
 PHASE_8_SUBSTUDY_SEED_OFFSET: dict[str, int] = {
@@ -445,7 +449,7 @@ PHASE_8_SUBSTUDY_SEED_OFFSET: dict[str, int] = {
     "v8d": 4,
 }
 PHASE_8_SUBSTUDY_BLOCKS_PER_MODEL: dict[str, int] = {
-    "v8a": PHASE_8_BLOCKS_PER_MODEL,
+    "v8a": PHASE_8_PRIMARY_BLOCKS_PER_MODEL,
     "v8a2": PHASE_8_BLOCKS_PER_MODEL,
     "v8b": PHASE_8_BLOCKS_PER_MODEL,
     "v8c": PHASE_8_BLOCKS_PER_MODEL,

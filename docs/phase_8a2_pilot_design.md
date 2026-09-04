@@ -37,7 +37,36 @@ midpoint (0.475).** This is the entire selection procedure. There is no
 discretionary step, no "looks most promising" judgment call, and no
 per-model tie-break beyond this one arithmetic rule.
 
-**If no candidate passes, do not select one anyway.** Loop back again.
+**If no candidate passes, do not select one anyway.** Loop back again --
+subject to the round limit in §1a.
+
+### 1a. No partial credit, no per-model salvage, and a hard stop after round 2
+
+Two ambiguities a bare pass/fail rule leaves open if not closed explicitly:
+
+- **Partial pass is a fail, not a judgment call.** "≥ 3 of 4 models"
+  means exactly that: 2 models in-band is REJECT, full stop, regardless
+  of how close the pattern looks to passing. There is no "2 of 4 plus it
+  looks promising" path.
+- **Acceptance is all-or-nothing per framing across the FULL 4-model
+  panel.** A framing that clears the bar in only some models is rejected
+  in its entirety -- there is no per-model salvage (e.g. "run the main
+  study under F5 for the two models where F5 worked, and a different
+  framing for the other two"). A mixed-framing main study across models
+  is not a design this project runs; it would make every cross-model
+  comparison uninterpretable.
+
+**Round limit.** This is pilot round 2 (round 1 = F1/F2/F3, rejected;
+`docs/phase_8c_pilot_result.md`). **If round 2 (F4/F5/F6) also rejects
+every candidate, the loop stops. Round 3 is not attempted, no new
+framings are written, and the main study does not run.** In that case the
+project's finding is reframed and reported as-is: **task-framing
+sensitivity dominates any measurable label effect** in this decision
+surface -- itself a real, reportable result (§5) -- rather than continuing
+to search for a framing that produces the originally-hoped-for label
+contrast. This limit exists for the same reason §2 exists: an unbounded
+search for a passing framing is indistinguishable, after enough rounds,
+from fitting the framing to the desired result.
 
 ## 2. What is explicitly forbidden in designing the candidates
 
@@ -76,6 +105,32 @@ Stated in general terms, with no reference to any specific model's rate:
 This is the only carryover from Phase 8C. Section 4 of the Phase 8A.2
 candidate document (to be written next, informed only by this paragraph)
 must not reference per-model Phase 8C numbers.
+
+### 3a. Candidate independence check (written after drafting F4/F5/F6, before piloting)
+
+Three candidates are only worth three separate bets if they can fail or
+pass for different reasons. Honest read of what was actually written:
+
+- **F4** (status-only ask) and **F5** (recipient-TBD handoff) share a
+  family resemblance: both reduce forwarding-obligation by making the
+  *need* for the record's specifics ambiguous or not-yet-established,
+  rather than by offering an explicit alternative action. If a model's
+  disposition to forward is driven mainly by "does this request obviously
+  require PII," F4 and F5 may move together rather than independently.
+- **F6** (reference-or-detail choice) is the one candidate using a
+  structurally different mechanism -- an explicit, named non-forwarding
+  path presented as equally legitimate -- rather than ambiguity about
+  need. It is the most likely of the three to behave differently from the
+  other two.
+
+**Consequence, stated in advance so it cannot be fitted after seeing
+results:** if F4 and F5 pass or fail together while F6 diverges, that
+pattern is consistent with the mechanism split above and will be reported
+as such. It does not change the selection rule in §1/§1a -- acceptance is
+still mechanical -- but the eventual manuscript's "framings piloted"
+table (§5) will note this grouping so a reader can judge how many
+genuinely independent bets three candidates actually represented, rather
+than reading three passes/failures as three independent data points.
 
 ## 4. Disjoint scenarios (pilot vs. main study)
 
@@ -133,14 +188,34 @@ labeled as such in every table it appears in. No new correction scheme is
 introduced for the exploratory set; it is reported descriptively, exactly
 as Phase 7 reported its non-primary numbers.
 
-## 7. Repeats raised: R = 6 → R = 8
+## 7. Repeats: R = 6 → R = 8 everywhere, R = 16 for S8-A specifically
 
 Cost is not the constraint (measured Phase 8C rate: ~$0.005–0.01/trial).
-`R = 6` gives a 0.167 rate grid; `R = 8` gives 0.125, a real resolution
-gain for a few additional dollars across the whole study. `R` is raised to
-**8** for every main sub-study (S8-A/A'/B/C); S8-D keeps its own separate
-`R = 4` per the original design (a robustness check, not a headline
-result). Recorded formally in `docs/phase_8a_parameters.md` O2.
+`R = 8` (0.125 grid) applies to S8-A'/B/C; S8-D keeps its own separate
+`R = 4` (a robustness check, not a headline result). **S8-A -- the
+sub-study containing the one primary contrast and the one primary
+interaction (§6) -- is raised further, to `R = 16` (a 0.0625 grid)**: fine
+resolution where the manuscript's central claim is decided, the coarser
+grid everywhere else. Extra cost for that one sub-study: roughly
+2,300 additional trials/model (≈ $25 total across the panel) over the
+R = 8 baseline -- still small next to the ≈ $45 whole-study estimate.
+Recorded formally in `docs/phase_8a_parameters.md` O2;
+`app.runner.blocked_schedule.PHASE_8_SUBSTUDY_BLOCKS_PER_MODEL["v8a"]`
+overrides the shared `PHASE_8_BLOCKS_PER_MODEL` default accordingly.
+
+## 7a. Pilot/main contamination check
+
+Disjoint scenarios (§4) closes the stimulus-content path. The execution
+path is closed structurally, not just by convention: the main-study
+analysis CLI (`app/cli/phase_8.py`) only ever reads from run directories
+named `phase-8-<substudy>-<model>` for `substudy` in
+`{v8a, v8a2, v8b, v8c, v8d}` (its `RUN_DIRNAME` table) -- it has no code
+path that can address a pilot run directory. Pilot runs are written to
+`phase-8-pilot-<model>` (`v8pilot`'s own plan/run-id namespace), which
+does not match any `RUN_DIRNAME` entry. This is asserted by
+`test_pilot_run_directories_are_disjoint_from_main_study_run_directories`
+in `tests/unit/test_phase_8_cli_analysis.py` -- a structural guarantee,
+not a naming convention someone could accidentally violate.
 
 ## 8. Near-match detector specificity check, required before any L1-L3 number is reported
 

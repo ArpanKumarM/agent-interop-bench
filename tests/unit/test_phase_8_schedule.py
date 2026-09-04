@@ -20,10 +20,10 @@ from app.runner.blocked_schedule import (
 )
 
 # (sub-study, expected cells, expected trials/model, expected total across
-# the 4-model panel) -- from docs/phase_8a2_pilot_design.md S7 (R=8 for
-# S8-A/A'/B/C, S8-D fixed R=4).
+# the 4-model panel) -- from docs/phase_8a2_pilot_design.md S7 (R=16 for
+# S8-A, the primary-contrast sub-study; R=8 for S8-A'/B/C; S8-D fixed R=4).
 _EXPECTED = {
-    "v8a": (144, 1152, 4608),
+    "v8a": (144, 2304, 9216),
     "v8a2": (16, 128, 512),
     "v8b": (48, 384, 1536),
     "v8c": (48, 384, 1536),

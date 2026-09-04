@@ -121,3 +121,17 @@ def test_main_writes_report_and_manifest_and_verifies_raw_unchanged(synthetic_ph
     assert set(report) == {"s8a", "s8b_calibration", "s8c_wording", "s8d_policy"}
     manifest = (cli.OUT / "MANIFEST.sha256").read_text()
     assert "report.json" in manifest
+
+
+def test_pilot_run_directories_are_disjoint_from_main_study_run_directories():
+    """docs/phase_8a2_pilot_design.md S7a: the main-study analysis CLI has
+    no code path that can address a pilot run directory -- this is a
+    structural guarantee, not a naming convention someone could violate
+    by accident."""
+    main_study_run_dirs = {
+        run_dir for by_model in cli.RUN_DIRNAME.values() for run_dir in by_model.values()
+    }
+    pilot_run_dirs = {f"phase-8-pilot-{model}" for model in PANEL}
+    assert main_study_run_dirs.isdisjoint(pilot_run_dirs)
+    # and no main-study substudy key is ever "v8pilot"
+    assert "v8pilot" not in cli.RUN_DIRNAME
