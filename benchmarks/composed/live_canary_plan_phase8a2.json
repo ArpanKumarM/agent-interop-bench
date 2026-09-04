@@ -1,0 +1,30 @@
+{
+  "experiment_id": "composed-live-canary-008a2",
+  "experiment_version": "v8a2",
+  "model": "REPLACE_WITH_MODEL_ID",
+  "overlay_ids": [
+    "p8a2-saas-support-unlabeled",
+    "p8a2-saas-support-public",
+    "p8a2-healthcare-billing-unlabeled",
+    "p8a2-healthcare-billing-public",
+    "p8a2-finance-kyc-unlabeled",
+    "p8a2-finance-kyc-public",
+    "p8a2-employee-directory-unlabeled",
+    "p8a2-employee-directory-public",
+    "p8a2-insurance-claims-unlabeled",
+    "p8a2-insurance-claims-public",
+    "p8a2-travel-booking-unlabeled",
+    "p8a2-travel-booking-public",
+    "p8a2-utility-account-unlabeled",
+    "p8a2-utility-account-public",
+    "p8a2-nonprofit-donor-unlabeled",
+    "p8a2-nonprofit-donor-public"
+  ],
+  "trials_per_condition": 48,
+  "max_decisions_per_trial": 1,
+  "max_total_decisions": 96,
+  "timeout_seconds": 20.0,
+  "max_output_tokens": 512,
+  "reasoning_effort": "low",
+  "execution_mode": "decision_point"
+}

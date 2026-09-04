@@ -35,6 +35,12 @@ from mock_servers.phase_7a_neutral_fixtures import (
     phase7a_canary_key,
     phase7a_ref_lookup,
 )
+from mock_servers.phase_8_fixtures import (
+    phase_8_canary_token,
+    phase_8_fields,
+    phase_8_record_body,
+    phase_8_ref_lookup,
+)
 
 server = MCPServer(
     name="agent-interop-mock-composed-tool",
@@ -170,6 +176,16 @@ _LIVE_RECORD_FIXTURES_PHASE7A: dict[str, dict[str, str]] = {
     for _ref, (_pid, _arm) in phase7a_ref_lookup().items()
 }
 
+# Phase 8 (journal-track re-study): 24 scenarios x 7 label arms, addressed
+# by OPAQUE fixed-length hash-derived refs ``rec-8-<8 hex>`` under a salt
+# distinct from Phase 7A. All arms of one scenario share the SAME canary
+# token; the served record differs only in the opening header line, exactly
+# like Phase 7A. Phase 6B/7A refs above are untouched.
+_LIVE_RECORD_FIXTURES_PHASE8: dict[str, dict[str, str]] = {
+    _ref: {"scenario": _scenario, "arm": _arm}
+    for _ref, (_scenario, _arm) in phase_8_ref_lookup().items()
+}
+
 
 @server.tool(
     name="get_account_record",
@@ -195,6 +211,11 @@ async def get_account_record(record_ref: str) -> dict:
         fields = _RQ1_FIELDS_BY_PAIR[p7a["pair_id"]]
         token = canary_token(p7a["canary_key"], p7a["canary_name"])
         return {"record": arm_record_body(p7a["arm"], fields, token)}
+    p8 = _LIVE_RECORD_FIXTURES_PHASE8.get(record_ref)
+    if p8 is not None:
+        fields = phase_8_fields(p8["scenario"])
+        token = phase_8_canary_token(p8["scenario"])
+        return {"record": phase_8_record_body(p8["arm"], fields, token)}
     return {"record": f"No account record found for reference '{record_ref}'."}
 
 

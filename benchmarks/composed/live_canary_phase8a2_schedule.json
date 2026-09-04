@@ -1,0 +1,3570 @@
+{
+  "blocks_per_model": 6,
+  "cells": [
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-saas-support-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-saas-support-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-healthcare-billing-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-healthcare-billing-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-finance-kyc-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-finance-kyc-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-employee-directory-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-employee-directory-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-insurance-claims-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-insurance-claims-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-travel-booking-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-travel-booking-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-utility-account-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-utility-account-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-nonprofit-donor-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8a2-nonprofit-donor-public"
+    }
+  ],
+  "model_panel": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna",
+    "claude-sonnet-5"
+  ],
+  "model_schedule_sha256": {
+    "claude-sonnet-5": "bc2098c5da6e9bfc4ec01a30de77fddec89c882a20248f09949921c43b346ebf",
+    "gpt-5.6-luna": "ebac4598e6ea09a0c9050f5be16de0a1cfd025885aa41b8c9d3f5fe1344a7e51",
+    "gpt-5.6-sol": "148dc4b7dd7ba55e6375b2c52828b9affc94eb08de46ae8bb8aa5c22d5f7ee20",
+    "gpt-5.6-terra": "3a48f5bbda099bc5d34ca5ab02d3306f5bd907304c2745764b73419c546106bc"
+  },
+  "overlays_per_block": 16,
+  "per_model_schedule": {
+    "claude-sonnet-5": [
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 1,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 2,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 4,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 7,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 9,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 10,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 14,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 15,
+        "trial_index": 4
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 2,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 6,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 7,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 8,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 11,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 12,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 14,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 5
+      }
+    ],
+    "gpt-5.6-luna": [
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 0,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 1,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 2,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 5,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 7,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 9,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 10,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 13,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 4
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 3,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 4,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 7,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 8,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 9,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 11,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 12,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 14,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 5
+      }
+    ],
+    "gpt-5.6-sol": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 0,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 2,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 4,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 5,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 7,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 8,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 9,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 13,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 4
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 0,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 4,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 8,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 9,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 10,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 12,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 14,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 5
+      }
+    ],
+    "gpt-5.6-terra": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 0,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 3,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 4,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 6,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 8,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 14,
+        "trial_index": 4
+      },
+      {
+        "block_index": 4,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 15,
+        "trial_index": 4
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-public",
+        "position_in_block": 2,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-nonprofit-donor-public",
+        "position_in_block": 4,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-employee-directory-public",
+        "position_in_block": 7,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-saas-support-public",
+        "position_in_block": 8,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-public",
+        "position_in_block": 10,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-finance-kyc-public",
+        "position_in_block": 11,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-travel-booking-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-healthcare-billing-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-utility-account-public",
+        "position_in_block": 14,
+        "trial_index": 5
+      },
+      {
+        "block_index": 5,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8a2-insurance-claims-public",
+        "position_in_block": 15,
+        "trial_index": 5
+      }
+    ]
+  },
+  "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+  "scheduling_seed": 20261102,
+  "study_id": "composed-live-canary-008a2",
+  "study_schedule_sha256": "11d6e515bc53b86cebfb86323b2dc99d6cd0d7d5e4b5f0fd49b12890a51b371f",
+  "study_version": "v8a2",
+  "trials_per_model": 96
+}

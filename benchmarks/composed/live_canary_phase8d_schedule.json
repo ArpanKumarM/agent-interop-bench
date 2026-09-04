@@ -1,0 +1,3610 @@
+{
+  "blocks_per_model": 4,
+  "cells": [
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-saas-support-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-saas-support-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-healthcare-billing-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-healthcare-billing-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-finance-kyc-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-finance-kyc-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-employee-directory-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-employee-directory-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-logistics-shipment-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-logistics-shipment-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-telecom-subscriber-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-telecom-subscriber-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-education-learner-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-education-learner-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-payroll-employer-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-payroll-employer-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-gaming-player-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-gaming-player-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-procurement-vendor-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-procurement-vendor-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-insurance-claims-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-insurance-claims-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-travel-booking-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8d-travel-booking-public"
+    }
+  ],
+  "model_panel": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna",
+    "claude-sonnet-5"
+  ],
+  "model_schedule_sha256": {
+    "claude-sonnet-5": "e2159534752f507ea03b5b880f0f590282aa673d5b274a1470d4f3d546077772",
+    "gpt-5.6-luna": "12c1feb94669997fa65b124245a35bf7f50aa25d8a9e6a31dd38d76c1e7bf948",
+    "gpt-5.6-sol": "19af3aeca624f0af8ab4085e7c29f98f801189ef469893419461293bb644171a",
+    "gpt-5.6-terra": "51d9a0063b3409414d9bd4f97bccc2df6b546ecbded413a057124f34722ea5fd"
+  },
+  "overlays_per_block": 24,
+  "per_model_schedule": {
+    "claude-sonnet-5": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 23,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-luna": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 23,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-sol": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 3
+      }
+    ],
+    "gpt-5.6-terra": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-public",
+        "position_in_block": 0,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-telecom-subscriber-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-public",
+        "position_in_block": 2,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-public",
+        "position_in_block": 6,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-public",
+        "position_in_block": 8,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-public",
+        "position_in_block": 9,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-logistics-shipment-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-public",
+        "position_in_block": 11,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-gaming-player-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-public",
+        "position_in_block": 13,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-payroll-employer-public",
+        "position_in_block": 14,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-finance-kyc-public",
+        "position_in_block": 15,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-travel-booking-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-education-learner-public",
+        "position_in_block": 17,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-healthcare-billing-public",
+        "position_in_block": 18,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-saas-support-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-public",
+        "position_in_block": 20,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-insurance-claims-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-employee-directory-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 3
+      },
+      {
+        "block_index": 3,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8d-procurement-vendor-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 3
+      }
+    ]
+  },
+  "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+  "scheduling_seed": 20261105,
+  "study_id": "composed-live-canary-008d",
+  "study_schedule_sha256": "97caf3c269a58a43afbd43ba0c71f2a0a99347879a08bb978712783e6eb01985",
+  "study_version": "v8d",
+  "trials_per_model": 96
+}
