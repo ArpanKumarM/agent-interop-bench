@@ -139,16 +139,21 @@ messaged). The `mcp_tool_result` pre-step is unchanged. Add an ordered
 trace event `host_user_reply` alongside the existing `host` action events
 so the trace stays single-ordered and provenance-preserving.
 
-### 3.3 MOD `app/runner/host_decision_client.py` / `host_adapters.py` (verify)
+### 3.3 `HostDecisionContext` parity — IMPLEMENTED as designed, decision made
 
-Ensure the sanitized `HostDecisionContext` for a `user_reply` trial is
-byte-identical to the matching `a2a_relay` trial **except** the action
-list and any addressee wording already in `user_prompt`. The target Agent
-Card is still shown (the host still *could* have an A2A option conceptually
-— we just don't offer the relay action), OR the card is withheld for
-`user_reply`. **Decision (O-new):** withhold the card for `user_reply` so
-the two sinks differ only in "who am I answering"; record the choice in
-design §5.2. Add a test.
+`overlay_to_composed_case` never reads `overlay.sink` at all, so
+`ComposedBenchmarkCase` (and therefore `HostDecisionContext`: policy,
+history, model-visible tool list, target Agent Card) is **structurally
+identical** between the two sinks of a scenario+arm — the Agent Card is
+shown in both. The only differences are (i) the action set the decision
+point is restricted to (`bootstrap_plan_for` in `decision_point_pilot.py`,
+keyed on `overlay.sink`) and (ii) the addressee wording already baked into
+`user_prompt` (`phase_8_user_prompt`, `mock_servers/phase_8_fixtures.py`).
+No card-withholding needed or done. Verified by
+`tests/unit/test_phase_8_model_blindness.py::test_overlay_to_composed_case_never_reads_sink_arm_or_framing`
+(every `ComposedBenchmarkCase` field except `user_prompt` is byte-identical
+across sinks) and
+`test_agent_card_shown_identically_regardless_of_sink`.
 
 ### 3.4 Scoring haystack selection
 
@@ -321,7 +326,7 @@ copies, must reproduce `reports/phase_8_analysis/` byte-for-byte, asserts
 |---|---|
 | `test_phase_8_stimuli.py` | 24 scenarios; 6 values unique & example-safe across all; byte-identity of values+canary+skeleton across a scenario's arms; labelled body == unlabeled body + `"[<hdr>] "`; opaque ref shape + no arm coding; new salt ≠ Phase 7 salt |
 | `test_phase_8_neutral_language.py` | `unlabeled`/`suppress`/`permit` bodies introduce no confidentiality/permission/sharing term absent from C and P |
-| `test_phase_8_model_blindness.py` | no `HostDecisionContext` for any Phase 8 trial contains a scenario name, arm id, sink id, framing id, condition, or policy id; `user_reply` context == `a2a_relay` context except the action list (+ addressee wording) (+ card presence per O-new) |
+| `test_phase_8_model_blindness.py` | no `ComposedBenchmarkCase`/`HostDecisionContext` field contains a sink/arm/framing word; `user_reply` case == `a2a_relay` case for the same scenario+arm except `user_prompt`; Agent Card identical across sinks |
 | `test_phase_8_user_reply_sink.py` | `reply_to_user` action compiles to both providers; out-of-set action rejected per sink; trace has `host_user_reply`, no `a2a_message`; scoring haystack == reply text; `stop` still scores 0 |
 | `test_phase_8_schedule.py` | blocked schedule: each block has every cell once; deterministic under the frozen seed; per-sub-study hash stable; N-cell reuse join is well-defined |
 | `test_phase_8_plan_generator.py` | `freeze_phase_8_artifacts` output matches on-disk overlays/plans/schedules (drift guard, mirrors `phase_7a_preflight`) |

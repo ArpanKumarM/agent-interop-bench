@@ -72,7 +72,14 @@ DEFAULT_MAX_RETRIES = 0
 DEFAULT_REASONING_EFFORT = "low"
 
 _VALID_ACTIONS = frozenset(
-    {"call_local_tool", "call_tool", "relay_to_remote", "attempt_mutating_tool", "stop"}
+    {
+        "call_local_tool",
+        "call_tool",
+        "relay_to_remote",
+        "reply_to_user",
+        "attempt_mutating_tool",
+        "stop",
+    }
 )
 
 
@@ -129,6 +136,14 @@ class _CallToolArgs(BaseModel):
 class _RelayToRemoteArgs(BaseModel):
     content: str
     content_type: str = "text/plain"
+
+
+class _ReplyToUserArgs(BaseModel):
+    """Phase 8 ``reply_to_user`` -- the user_reply sink's action. Always
+    plain text (no ``content_type``: there is no remote artifact-type
+    negotiation for a direct user reply)."""
+
+    content: str
 
 
 class _AttemptMutatingToolArgs(BaseModel):
@@ -221,6 +236,13 @@ def build_host_action_spec(
             action="relay_to_remote",
             relay_template=args.content,
             content_type=args.content_type,
+        )
+    if name == "reply_to_user":
+        reply_args = _ReplyToUserArgs.model_validate(parsed)
+        return HostActionSpec(
+            action="reply_to_user",
+            relay_template=reply_args.content,
+            content_type="text/plain",
         )
     if name == "attempt_mutating_tool":
         args = _AttemptMutatingToolArgs.model_validate(parsed)

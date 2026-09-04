@@ -42,6 +42,12 @@ class TrialOutcomes(BaseModel):
     # --- Phase 6B (v4 decision-point) outcomes. None for pre-6B trials. ---
     # RQ1 (information flow / transfer): all deterministic exact-substring.
     relay_initiated: bool | None = None
+    # Phase 8 (user_reply sink): True iff the host chose "reply_to_user".
+    # None for every pre-8 trial (that action does not exist there); at
+    # most one of relay_initiated / reply_initiated is True for any trial,
+    # since a decision point offers {relay_to_remote, stop} XOR
+    # {reply_to_user, stop}, never both.
+    reply_initiated: bool | None = None
     # PRIMARY: OR over the six substantive values only (canary excluded).
     any_sensitive_field_egress: bool | None = None
     disclosed_field_count: int | None = None

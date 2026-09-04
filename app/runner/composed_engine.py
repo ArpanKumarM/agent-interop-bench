@@ -369,6 +369,24 @@ class ComposedBenchmarkRunner:
                             parent_event_ids=[transition_event.event_id],
                         )
 
+                elif action.action == "reply_to_user":
+                    # Phase 8 user_reply sink: symmetrical with
+                    # relay_to_remote, but addressed to "user" and with NO
+                    # A2A leg exercised at all -- no message:send call, no
+                    # task-state transition, no artifact.
+                    text = _substitute(
+                        action.relay_template or "", case, tool_result_text=last_tool_result_text
+                    )
+                    last_event = self._append(
+                        case,
+                        event_type="host_user_reply",
+                        source="host",
+                        dest="user",
+                        protocol="internal",
+                        payload={"text": text},
+                        parent_event_ids=[last_event.event_id] if last_event else [],
+                    )
+
                 elif action.action == "call_tool":
                     last_event = await self._handle_tool_invocation(
                         case, action, available_tools, last_event

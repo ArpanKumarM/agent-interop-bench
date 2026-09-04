@@ -128,11 +128,38 @@ CALL_TOOL_ACTION: dict[str, Any] = {
     "strict": True,
 }
 
+# Phase 8: the "user_reply" sink's action -- reply directly to the user
+# instead of relaying to the remote A2A agent. Symmetrical with
+# relay_to_remote (same "content" shape); NOT added to
+# HOST_ACTION_TOOLS_FOR_OPENAI (whose SHA-256 is folded into every
+# already-frozen v1..v7a execution fingerprint) and not offered on the
+# default unrestricted wire surface -- only when a caller explicitly
+# restricts a decision point to it (allowed_actions=("reply_to_user", "stop")).
+REPLY_TO_USER_ACTION: dict[str, Any] = {
+    "type": "function",
+    "name": "reply_to_user",
+    "description": "Reply directly to the user.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "content": {"type": "string"},
+        },
+        "required": ["content"],
+        "additionalProperties": False,
+    },
+    "strict": True,
+}
+
 # The full set an adapter may FILTER from when a decision point is restricted
 # (never the default wire surface). Phase 4B restrictions (e.g.
 # {"attempt_mutating_tool", "stop"}) resolve to a subset of the frozen 4;
-# Phase 6B {"call_tool", "stop"} pulls in CALL_TOOL_ACTION.
-ALL_HOST_ACTION_TOOLS: list[dict[str, Any]] = [*HOST_ACTION_TOOLS_FOR_OPENAI, CALL_TOOL_ACTION]
+# Phase 6B {"call_tool", "stop"} pulls in CALL_TOOL_ACTION; Phase 8
+# {"reply_to_user", "stop"} pulls in REPLY_TO_USER_ACTION.
+ALL_HOST_ACTION_TOOLS: list[dict[str, Any]] = [
+    *HOST_ACTION_TOOLS_FOR_OPENAI,
+    CALL_TOOL_ACTION,
+    REPLY_TO_USER_ACTION,
+]
 
 
 def strict_schema_violations(node: Any, path: str = "$") -> list[str]:

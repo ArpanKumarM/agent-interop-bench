@@ -142,11 +142,16 @@ class HostActionSpec(BaseModel):
         "call_local_tool",
         "call_tool",
         "relay_to_remote",
+        "reply_to_user",
         "attempt_mutating_tool",
         "stop",
     ]
     tool_name: str | None = None
     tool_arguments: dict[str, Any] = Field(default_factory=dict)
+    # Phase 8: also carries the free-text content of a ``reply_to_user``
+    # action -- the sink's user-facing reply, substituted the same way as a
+    # relay template. No separate field: a reply is symmetrical with a
+    # relay, just addressed to "user" instead of "remote".
     relay_template: str | None = None
     content_type: str = "text/plain"
     approved: bool = False
@@ -245,6 +250,9 @@ class CrossProtocolEvent(BaseModel):
         # "mutation_action" for new runs; "mutation_action" stays only to
         # read historical Phase 4B traces.
         "tool_invocation",
+        # Phase 8: the host's reply-to-user sink. source="host", dest="user",
+        # protocol="internal" -- no A2A leg is exercised for this action.
+        "host_user_reply",
     ]
     source: Actor
     dest: Actor

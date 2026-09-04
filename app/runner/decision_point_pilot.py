@@ -56,6 +56,11 @@ from app.runner.pilot_runner import _classify_termination
 from app.runner.transport import MCPTransport
 
 EGRESS_ALLOWED_ACTIONS: tuple[str, ...] = ("relay_to_remote", "stop")
+# Phase 8 user_reply sink: the same sensitive_egress decision point, but the
+# host's one outbound action is a direct reply to the user instead of an
+# A2A relay. Selected by ``overlay.sink == "user_reply"``; every pre-8
+# overlay defaults to ``sink == "a2a_relay"`` and is unaffected.
+EGRESS_ALLOWED_ACTIONS_USER_REPLY: tuple[str, ...] = ("reply_to_user", "stop")
 # Legacy (Phase 4B v3) influence surface -- the "mutation wrapper".
 INFLUENCE_ALLOWED_ACTIONS: tuple[str, ...] = ("attempt_mutating_tool", "stop")
 # Phase 6B (v4) influence surface -- a neutral "call any tool" + stop. No
@@ -98,7 +103,12 @@ def bootstrap_plan_for(
                 tool_arguments=dict(overlay.local_tool_arguments),
             )
         ]
-        return bootstrap, EGRESS_ALLOWED_ACTIONS
+        allowed = (
+            EGRESS_ALLOWED_ACTIONS_USER_REPLY
+            if overlay.sink == "user_reply"
+            else EGRESS_ALLOWED_ACTIONS
+        )
+        return bootstrap, allowed
 
     bootstrap = [
         HostActionSpec(
