@@ -1,0 +1,5458 @@
+{
+  "blocks_per_model": 3,
+  "cells": [
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-healthcare-billing-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-healthcare-billing-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-healthcare-billing-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-logistics-shipment-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-logistics-shipment-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-logistics-shipment-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-insurance-claims-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-insurance-claims-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-insurance-claims-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-insurance-claims-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-ad-platform-advertiser-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-healthcare-billing-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-healthcare-billing-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-healthcare-billing-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-logistics-shipment-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-logistics-shipment-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-logistics-shipment-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-insurance-claims-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-insurance-claims-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-insurance-claims-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-insurance-claims-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-ad-platform-advertiser-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-healthcare-billing-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-healthcare-billing-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-healthcare-billing-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-logistics-shipment-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-logistics-shipment-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-logistics-shipment-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-insurance-claims-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-insurance-claims-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-insurance-claims-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-insurance-claims-permit"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled"
+    },
+    {
+      "condition": "control",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-ad-platform-advertiser-public"
+    },
+    {
+      "condition": "neutral",
+      "experiment": "sensitive_egress",
+      "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit"
+    }
+  ],
+  "model_panel": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna",
+    "claude-sonnet-5"
+  ],
+  "model_schedule_sha256": {
+    "claude-sonnet-5": "4f5a9c40e9913a24c1eb00c26017285d0503d409e22f6a67e0baf6e7c2dbb9c6",
+    "gpt-5.6-luna": "93057c83a069607831d8624444f5c25a4ae571e21c83066c8d4ec8a993f3462c",
+    "gpt-5.6-sol": "81cbf2c81dfede6613bdd972d21aecbb05e44ba616227c9fdb88287494d0766a",
+    "gpt-5.6-terra": "5a0399e6d67b968bb7a4221b44873e38e5768cc9b147a642ffda76036ae04a60"
+  },
+  "overlays_per_block": 48,
+  "per_model_schedule": {
+    "claude-sonnet-5": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 30,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 31,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 32,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 33,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 34,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 35,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 36,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 37,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 38,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 39,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 40,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 41,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 42,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 43,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 44,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 45,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 46,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 47,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 30,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 31,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 32,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 33,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 34,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 35,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 36,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 37,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 38,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 39,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 40,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 41,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 42,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 43,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 44,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 45,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 46,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 47,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 30,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 31,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 32,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 33,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 34,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 35,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 36,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 37,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 38,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 39,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 40,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 41,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 42,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 43,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 44,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 45,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 46,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "claude-sonnet-5",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 47,
+        "trial_index": 2
+      }
+    ],
+    "gpt-5.6-luna": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 30,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 31,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 32,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 33,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 34,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 35,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 36,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 37,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 38,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 39,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 40,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 41,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 42,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 43,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 44,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 45,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 46,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 47,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 30,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 31,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 32,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 33,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 34,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 35,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 36,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 37,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 38,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 39,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 40,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 41,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 42,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 43,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 44,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 45,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 46,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 47,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 30,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 31,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 32,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 33,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 34,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 35,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 36,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 37,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 38,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 39,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 40,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 41,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 42,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 43,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 44,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 45,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 46,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-luna",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 47,
+        "trial_index": 2
+      }
+    ],
+    "gpt-5.6-sol": [
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 30,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 31,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 32,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 33,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 34,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 35,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 36,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 37,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 38,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 39,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 40,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 41,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 42,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 43,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 44,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 45,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 46,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 47,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 30,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 31,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 32,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 33,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 34,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 35,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 36,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 37,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 38,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 39,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 40,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 41,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 42,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 43,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 44,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 45,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 46,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 47,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 30,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 31,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 32,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 33,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 34,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 35,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 36,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 37,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 38,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 39,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 40,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 41,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 42,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 43,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 44,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 45,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 46,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-sol",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 47,
+        "trial_index": 2
+      }
+    ],
+    "gpt-5.6-terra": [
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 0,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 1,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 2,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 3,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 4,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 5,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 6,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 7,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 8,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 9,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 11,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 12,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 13,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 14,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 16,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 17,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 18,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 19,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 20,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 22,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 23,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 24,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 25,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 26,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 27,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 28,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 29,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 30,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 31,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 32,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 33,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 34,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 35,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 36,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 37,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 38,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 39,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 40,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 41,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 42,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 43,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 44,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 45,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 46,
+        "trial_index": 0
+      },
+      {
+        "block_index": 0,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 47,
+        "trial_index": 0
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 0,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 1,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 2,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 3,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 4,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 5,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 6,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 7,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 8,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 9,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 10,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 12,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 13,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 14,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 15,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 16,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 17,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 18,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 19,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 20,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 21,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 22,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 23,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 24,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 25,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 26,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 27,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 28,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 29,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 30,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 31,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 32,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 33,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 34,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 35,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 36,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 37,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 38,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 39,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 40,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 41,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 42,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 43,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 44,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 45,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 46,
+        "trial_index": 1
+      },
+      {
+        "block_index": 1,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 47,
+        "trial_index": 1
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-suppress",
+        "position_in_block": 0,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-public",
+        "position_in_block": 1,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-unlabeled",
+        "position_in_block": 2,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-public",
+        "position_in_block": 3,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-suppress",
+        "position_in_block": 4,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-suppress",
+        "position_in_block": 5,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-suppress",
+        "position_in_block": 6,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-public",
+        "position_in_block": 7,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-public",
+        "position_in_block": 8,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-permit",
+        "position_in_block": 9,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-permit",
+        "position_in_block": 10,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-unlabeled",
+        "position_in_block": 11,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-public",
+        "position_in_block": 12,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-permit",
+        "position_in_block": 13,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-insurance-claims-permit",
+        "position_in_block": 14,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-unlabeled",
+        "position_in_block": 15,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-suppress",
+        "position_in_block": 16,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-suppress",
+        "position_in_block": 17,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-unlabeled",
+        "position_in_block": 18,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-unlabeled",
+        "position_in_block": 19,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-unlabeled",
+        "position_in_block": 20,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-unlabeled",
+        "position_in_block": 21,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-permit",
+        "position_in_block": 22,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-public",
+        "position_in_block": 23,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-suppress",
+        "position_in_block": 24,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-public",
+        "position_in_block": 25,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-permit",
+        "position_in_block": 26,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-permit",
+        "position_in_block": 27,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-permit",
+        "position_in_block": 28,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-unlabeled",
+        "position_in_block": 29,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-unlabeled",
+        "position_in_block": 30,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-unlabeled",
+        "position_in_block": 31,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-permit",
+        "position_in_block": 32,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-healthcare-billing-suppress",
+        "position_in_block": 33,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-ad-platform-advertiser-unlabeled",
+        "position_in_block": 34,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-public",
+        "position_in_block": 35,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-ad-platform-advertiser-public",
+        "position_in_block": 36,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-permit",
+        "position_in_block": 37,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-logistics-shipment-public",
+        "position_in_block": 38,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-ad-platform-advertiser-suppress",
+        "position_in_block": 39,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-healthcare-billing-suppress",
+        "position_in_block": 40,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-public",
+        "position_in_block": 41,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-healthcare-billing-permit",
+        "position_in_block": 42,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-suppress",
+        "position_in_block": 43,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F3-logistics-shipment-permit",
+        "position_in_block": 44,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "control",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F1-insurance-claims-public",
+        "position_in_block": 45,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-logistics-shipment-unlabeled",
+        "position_in_block": 46,
+        "trial_index": 2
+      },
+      {
+        "block_index": 2,
+        "condition": "neutral",
+        "experiment": "sensitive_egress",
+        "model": "gpt-5.6-terra",
+        "overlay_id": "p8pilot-F2-insurance-claims-suppress",
+        "position_in_block": 47,
+        "trial_index": 2
+      }
+    ]
+  },
+  "randomization": "blocked; within-block order shuffled by one random.Random(seed)",
+  "scheduling_seed": 20261106,
+  "study_id": "composed-live-canary-008pilot",
+  "study_schedule_sha256": "9b74c9a9c0b02a19348a937559b586c562691f07e6176d770791b8943e01409b",
+  "study_version": "v8pilot",
+  "trials_per_model": 144
+}

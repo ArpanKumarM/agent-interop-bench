@@ -644,3 +644,41 @@ def build_phase_8_schedule_artifact(
         "model_schedule_sha256": model_hashes,
         "study_schedule_sha256": study_hash,
     }
+
+
+# ===========================================================================
+# Phase 8C gating pilot (P8-0) -- docs/phase_8_design.md S8. NOT part of any
+# S8-* sub-study's manuscript effect number: its only job is to pick
+# F_headroom against the pre-stated acceptance rules and report the
+# N/calibration rates that motivated the choice. Its own schedule/overlay/
+# analysis are entirely separate from S8-A..D.
+# ===========================================================================
+
+PHASE_8_PILOT_FRAMINGS: tuple[str, ...] = ("F1", "F2", "F3")
+PHASE_8_PILOT_ARMS: tuple[str, ...] = ("suppress", "unlabeled", "public", "permit")
+PHASE_8_PILOT_BLOCKS_PER_MODEL: int = 3
+
+
+def phase_8_pilot_cells() -> tuple[tuple[str, str, str], ...]:
+    """3 framings x 4 arms x 4 pilot scenarios = 48 cells, a2a_relay only."""
+    from mock_servers.phase_8_fixtures import PHASE_8_PILOT_SCENARIOS, arm_condition
+
+    cells: list[tuple[str, str, str]] = []
+    for framing in PHASE_8_PILOT_FRAMINGS:
+        for scenario in PHASE_8_PILOT_SCENARIOS:
+            for arm in PHASE_8_PILOT_ARMS:
+                cells.append(
+                    (
+                        "sensitive_egress",
+                        arm_condition(arm),
+                        f"p8pilot-{framing}-{scenario}-{arm}",
+                    )
+                )
+    return tuple(cells)
+
+
+PHASE_8_SUBSTUDY_CELL_FNS["v8pilot"] = phase_8_pilot_cells
+PHASE_8_SUBSTUDY_SEED_OFFSET["v8pilot"] = 5
+PHASE_8_SUBSTUDY_BLOCKS_PER_MODEL["v8pilot"] = PHASE_8_PILOT_BLOCKS_PER_MODEL
+PHASE_8_STUDY_IDS["v8pilot"] = "composed-live-canary-008pilot"
+PHASE_8_OVERLAY_IDS["v8pilot"] = tuple(o for (_, _, o) in phase_8_pilot_cells())

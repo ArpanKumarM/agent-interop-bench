@@ -65,6 +65,12 @@ SCHEDULE_PATHS: dict[str, Path] = {
     "v8c": _BENCH / "live_canary_phase8c_schedule.json",
     "v8d": _BENCH / "live_canary_phase8d_schedule.json",
 }
+# P8-0 gating pilot (design S8) -- a separate overlay file (never mixed
+# into the main sub-studies' shared file, since it sweeps all 3 framing
+# candidates, not HEADROOM_FRAMING).
+PILOT_OVERLAYS_PATH = _BENCH / "live_overlays_phase8_pilot.yaml"
+PILOT_PLAN_PATH = _BENCH / "live_canary_plan_phase8_pilot.json"
+PILOT_SCHEDULE_PATH = _BENCH / "live_canary_phase8_pilot_schedule.json"
 
 # PROVISIONAL default -- see module docstring. Re-pinned once the Phase 8C
 # pilot (docs/phase_8_design.md S8) selects F_headroom.
@@ -210,6 +216,63 @@ def _substudy_overlays(substudy: str) -> list[dict]:
     return overlays
 
 
+def _pilot_overlays() -> list[dict]:
+    """P8-0 gating pilot (design S8): overlay id
+    ``p8pilot-<framing>-<scenario>-<arm>``, a2a_relay only, strict policy.
+    Unlike the main sub-studies, ``framing`` here is NOT
+    ``HEADROOM_FRAMING`` -- the pilot is what DECIDES that value, so it
+    sweeps all three candidates."""
+    from app.runner.blocked_schedule import phase_8_pilot_cells
+
+    overlays: list[dict] = []
+    for _experiment, _condition, overlay_id in phase_8_pilot_cells():
+        body = overlay_id[len("p8pilot-") :]
+        framing, rest = body.split("-", 1)
+        scenario, arm = rest.rsplit("-", 1)
+        overlays.append(
+            _overlay(
+                overlay_id=overlay_id,
+                scenario=scenario,
+                arm=arm,
+                sink="a2a_relay",
+                framing=framing,
+                policy_text=PHASE_6B_HOST_POLICY_TEXT,
+                researcher_note=_note("v8pilot", scenario, arm, "a2a_relay", framing),
+            )
+        )
+    return overlays
+
+
+def build_pilot_overlays_doc() -> dict:
+    return {
+        "name": "agent-interop-composed-live-overlays-phase8-pilot",
+        "version": "0.8.0-pilot",
+        "overlays": _pilot_overlays(),
+    }
+
+
+def build_pilot_plan_doc() -> dict:
+    from app.runner.blocked_schedule import build_phase_8_schedule_artifact, phase_8_pilot_cells
+
+    schedule = build_phase_8_schedule_artifact("v8pilot")
+    overlay_ids = [o for (_, _, o) in phase_8_pilot_cells()]
+    n_conditions = len({c for (_, c, _) in phase_8_pilot_cells()})
+    trials_per_model = schedule["trials_per_model"]
+    return {
+        "experiment_id": "composed-live-canary-008pilot",
+        "experiment_version": "v8pilot",
+        "model": "REPLACE_WITH_MODEL_ID",
+        "overlay_ids": overlay_ids,
+        "trials_per_condition": trials_per_model // n_conditions,
+        "max_decisions_per_trial": 1,
+        "max_total_decisions": trials_per_model,
+        "timeout_seconds": 20.0,
+        "max_output_tokens": 512,
+        "reasoning_effort": "low",
+        "execution_mode": "decision_point",
+    }
+
+
 def build_overlays_doc() -> dict:
     overlays: list[dict] = []
     for substudy in _SUBSTUDIES:
@@ -265,6 +328,32 @@ def main(argv: list[str] | None = None) -> int:
                 "headroom_framing": HEADROOM_FRAMING,
                 "wrote": written,
                 "substudies": summary,
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
+def main_pilot(argv: list[str] | None = None) -> int:
+    """Writes the P8-0 pilot artifacts only (design S8) -- separate from
+    ``main()``'s main-sub-study regeneration."""
+    from app.runner.blocked_schedule import build_phase_8_schedule_artifact
+
+    PILOT_OVERLAYS_PATH.write_text(
+        yaml.safe_dump(build_pilot_overlays_doc(), sort_keys=False, width=100, allow_unicode=True)
+    )
+    plan = build_pilot_plan_doc()
+    PILOT_PLAN_PATH.write_text(json.dumps(plan, indent=2) + "\n")
+    schedule = build_phase_8_schedule_artifact("v8pilot")
+    PILOT_SCHEDULE_PATH.write_text(json.dumps(schedule, indent=2, sort_keys=True) + "\n")
+    print(
+        json.dumps(
+            {
+                "wrote": [str(PILOT_OVERLAYS_PATH), str(PILOT_PLAN_PATH), str(PILOT_SCHEDULE_PATH)],
+                "overlay_count": len(plan["overlay_ids"]),
+                "trials_per_model": schedule["trials_per_model"],
+                "study_schedule_sha256": schedule["study_schedule_sha256"],
             },
             indent=2,
         )

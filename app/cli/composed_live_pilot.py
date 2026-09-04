@@ -96,8 +96,14 @@ FROZEN_PLAN_PATHS: dict[str, Path] = {
     "v8b": _BENCHMARKS_DIR / "live_canary_plan_phase8b.json",
     "v8c": _BENCHMARKS_DIR / "live_canary_plan_phase8c.json",
     "v8d": _BENCHMARKS_DIR / "live_canary_plan_phase8d.json",
+    # Phase 8C gating pilot (design S8): 576 trials, 3 framing candidates x
+    # 4 arms x 4 pilot scenarios, a2a_relay only, strict policy. Its own
+    # overlay file (sweeps all 3 framings, never HEADROOM_FRAMING).
+    "v8pilot": _BENCHMARKS_DIR / "live_canary_plan_phase8_pilot.json",
 }
-_PHASE_8_PLAN_VERSIONS: frozenset[str] = frozenset({"v8a", "v8a2", "v8b", "v8c", "v8d"})
+_PHASE_8_PLAN_VERSIONS: frozenset[str] = frozenset(
+    {"v8a", "v8a2", "v8b", "v8c", "v8d", "v8pilot"}
+)
 # Plan versions that dispatch trials in a frozen BLOCKED schedule.
 _BLOCKED_SCHEDULE_PLAN_VERSIONS = frozenset({"v3", "v4", "v7a"}) | _PHASE_8_PLAN_VERSIONS
 _PHASE_6B_PLAN_VERSIONS = frozenset({"v4"})
@@ -109,12 +115,17 @@ OVERLAYS_PATH = "benchmarks/composed/live_overlays.yaml"
 _OVERLAYS_PATH_BY_VERSION: dict[str, str] = {
     "v4": "benchmarks/composed/live_overlays_v2.yaml",
     "v7a": "benchmarks/composed/live_overlays_phase7a.yaml",
-    **{v: "benchmarks/composed/live_overlays_phase8.yaml" for v in _PHASE_8_PLAN_VERSIONS},
+    **{
+        v: "benchmarks/composed/live_overlays_phase8.yaml"
+        for v in _PHASE_8_PLAN_VERSIONS
+        if v != "v8pilot"
+    },
+    "v8pilot": "benchmarks/composed/live_overlays_phase8_pilot.yaml",
 }
 # Phase 8: the canonical action surface actually offered ANYWHERE in a
 # sub-study's plan -- the UNION across its overlays' sinks. v8a mixes both
-# sinks (a2a_relay + user_reply overlays in one plan); v8a2/v8b/v8c/v8d are
-# a2a_relay only. Any single trial is further restricted by
+# sinks (a2a_relay + user_reply overlays in one plan); v8a2/v8b/v8c/v8d/
+# v8pilot are a2a_relay only. Any single trial is further restricted by
 # bootstrap_plan_for(overlay) (sink-aware, see app.runner.decision_point_
 # pilot) -- this tuple is the fingerprint/provenance surface, not a
 # per-trial restriction.
@@ -122,6 +133,7 @@ _PHASE_8_CANONICAL_ACTIONS: dict[str, tuple[str, ...]] = {
     "v8a": ("relay_to_remote", "reply_to_user", "stop"),
     "v8a2": ("relay_to_remote", "stop"),
     "v8b": ("relay_to_remote", "stop"),
+    "v8pilot": ("relay_to_remote", "stop"),
     "v8c": ("relay_to_remote", "stop"),
     "v8d": ("relay_to_remote", "stop"),
 }
