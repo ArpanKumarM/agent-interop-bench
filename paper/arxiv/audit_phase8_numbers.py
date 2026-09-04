@@ -40,6 +40,13 @@ Checks:
      list of magnitude words appearing in paper/main_v2.md with no digit,
      '%', or the words 'exactly'/'threshold'/'rule' within the same
      sentence.
+  8. The v1 tables restored into v2 (Phase 7 contrast-summary table,
+     secondary-diagnostics table, the Phase-6-vs-Phase-7 comparison
+     table, and the three Appendix C per-scenario tables) are extracted
+     from both documents and compared row-for-row, whitespace-normalized
+     -- not just spot-checked for a few numbers. A restored table that
+     was mistranscribed in any single cell fails here even if that cell
+     never appears in prose.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -311,6 +318,57 @@ def audit_phase6_phase7_against_frozen_artifacts() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# 8. Restored v1 tables: extracted from both documents and compared
+#    row-for-row (whitespace-normalized), not just spot-checked.
+# --------------------------------------------------------------------------- #
+_TABLE_BLOCK_RE = re.compile(r"(?:^\|.*\|\s*$\n?)+", re.MULTILINE)
+
+
+def _normalize_table_block(block: str) -> list[str]:
+    """One row per line, internal whitespace collapsed, blank lines dropped."""
+    return [" ".join(line.split()) for line in block.strip().splitlines() if line.strip()]
+
+
+def _table_after(text: str, anchor: str, *, occurrence: int = 1) -> str:
+    """The first markdown table block that starts after the nth occurrence
+    of `anchor` in `text`."""
+    idx = -1
+    for _ in range(occurrence):
+        idx = text.find(anchor, idx + 1)
+        if idx == -1:
+            raise AuditError(f"anchor not found: {anchor!r}")
+    m = _TABLE_BLOCK_RE.search(text, idx)
+    if not m:
+        raise AuditError(f"no table block found after anchor: {anchor!r}")
+    return m.group(0)
+
+
+def audit_restored_tables_match_v1() -> None:
+    pairs = [
+        ("Phase 7 pooled arm rates", "**Phase 7 pooled arm rates**", 1, 1),
+        ("Phase 7 per-model contrast summary", "**Phase 7 per-model contrast summary**", 1, 1),
+        ("Secondary diagnostics table", "cred. tok. | prim.+ | prim. \\| relay |", 1, 1),
+        (
+            "Cross-phase (Phase 6 vs Phase 7) comparison table",
+            "| model | earlier C",
+            1,
+            1,
+        ),
+        ("Appendix C − N table", "**C − N (confidential", 1, 1),
+        ("Appendix P − N table", "**P − N (public", 1, 1),
+        ("Appendix C − P table", "**C − P (confidential", 1, 1),
+    ]
+    for label, anchor, v1_occ, v2_occ in pairs:
+        v1_block = _normalize_table_block(_table_after(MAIN_V1, anchor, occurrence=v1_occ))
+        v2_block = _normalize_table_block(_table_after(MAIN_V2, anchor, occurrence=v2_occ))
+        check(
+            v1_block == v2_block,
+            f"restored table {label!r} does not match v1 row-for-row:\n"
+            f"  v1: {v1_block}\n  v2: {v2_block}",
+        )
+
+
+# --------------------------------------------------------------------------- #
 # 7. Qualifier lint (warning only)
 # --------------------------------------------------------------------------- #
 _MAGNITUDE_WORDS = (
@@ -350,6 +408,7 @@ def main() -> int:
     audit_appendix_a_acceptance_table()
     audit_trial_counts_and_cost()
     audit_phase6_phase7_against_frozen_artifacts()
+    audit_restored_tables_match_v1()
     lint_qualifiers()
 
     if _warnings:
