@@ -186,19 +186,16 @@ which we avoid except as a disclosed, non-primary cross-check (§4.1);
 has been framed as a field. We claim none of these risk concepts as
 novel and make no "first" claim.
 
-On the privacy-leakage side specifically, three recent efforts are the
+On the privacy-leakage side specifically, two recent efforts are the
 nearest prior art. *PrivacyLens-Live* (Wang et al., `arXiv:2509.17488`)
 converts a static privacy benchmark into live MCP and A2A environments
 and reports higher leakage there than in static question-answering.
-*AgentLeak* (El Yagoubi et al., `arXiv:2602.11510`) benchmarks privacy
-leakage across internal channels — inter-agent messages, shared memory,
-tool arguments — that output-only audits do not inspect. *The Sum Leaks More Than Its Parts* (Patil et al.,
-`arXiv:2509.14284`) studies *compositional* privacy leakage, where
-individually innocuous responses accumulate across agents into a
-disclosure. Our study is narrower than all three: one record, one
-labeled field-egress outcome, one handoff, exact-substring scoring, with
-a pre-registered label or framing as the intervention rather than an
-adversary.
+*The Sum Leaks More Than Its Parts* (Patil et al., `arXiv:2509.14284`)
+studies *compositional* privacy leakage, where individually innocuous
+responses accumulate across agents into a disclosure. Our study is
+narrower than both: one record, one labeled field-egress outcome, one
+handoff, exact-substring scoring, with a pre-registered label or framing
+as the intervention rather than an adversary.
 
 This paper's central finding — that task framing can dominate a targeted
 behavioral manipulation strongly enough to prevent its measurement —

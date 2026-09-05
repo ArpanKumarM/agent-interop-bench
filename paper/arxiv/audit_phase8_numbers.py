@@ -493,14 +493,12 @@ VERIFIED_ARXIV_IDS: dict[str, str] = {
     "2502.06065": "Razavi et al., PromptSET / prompt-sensitivity-prediction task",
     "2509.17488": "Wang et al., PrivacyLens-Live -- static privacy benchmark ported to MCP/A2A",
     "2509.14284": "Patil et al., compositional privacy leakage across agents",
-    "2602.11510": (
-        "El Yagoubi et al., AgentLeak -- internal-channel privacy leakage benchmark. "
-        "NOTE: post-training-cutoff (Feb 2026); title differs across versions "
-        "(v1 'Full-Stack Benchmark for Privacy Leakage' vs later 'Benchmark for "
-        "Internal-Channel Privacy Leakage') and author order was inconsistent "
-        "between fetches -- confirm exact citation form at camera-ready."
-    ),
 }
+# Deliberately NOT cited: arXiv:2602.11510 (AgentLeak). It resolves, but
+# it is post-training-cutoff and could not be vetted -- its title differs
+# between versions and author order came back inconsistent across fetches.
+# PrivacyLens-Live and the compositional-privacy paper cover that side and
+# are both verified pre-cutoff, so nothing depends on it.
 _ARXIV_ID_RE = re.compile(r"arXiv:(\d{4}\.\d{4,5})", re.IGNORECASE)
 
 
