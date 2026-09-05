@@ -47,6 +47,11 @@ Checks:
      -- not just spot-checked for a few numbers. A restored table that
      was mistranscribed in any single cell fails here even if that cell
      never appears in prose.
+  9. Every per-framing calibration-separation figure (permit - suppress)
+     quoted for gpt-5.6-terra in section 6.1 equals the frozen grid's
+     separation() and appears verbatim in that sentence -- catches a
+     flattened claim the pass/fail-only sensitivity check in item 1 lets
+     through.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -318,6 +323,34 @@ def audit_phase6_phase7_against_frozen_artifacts() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# 9. Calibration-separation values quoted in main_v2.md S6.1: every
+#    per-framing "permit - suppress" figure the prose states for
+#    gpt-5.6-terra must equal the frozen grid's separation() and must
+#    appear, as text, in the same sentence -- catches a flattened claim
+#    ("1.000 in every round-one framing") that the pass/fail-only
+#    sensitivity check in section 1 does not.
+# --------------------------------------------------------------------------- #
+def audit_calibration_separations_in_s61() -> None:
+    seps = grid.calibration_separations("gpt-5.6-terra")
+    m = re.search(
+        r"gpt-5\.6-terra`'s calibration separation.*?round two[^.]*\.",
+        MAIN_V2,
+        re.DOTALL,
+    )
+    check(m is not None, "S6.1: could not locate the terra calibration-separation sentence")
+    if m is None:
+        return
+    sentence = " ".join(m.group(0).split())  # collapse the manuscript's line wrapping
+    for framing, value in seps.items():
+        token = f"{value:.3f} ({framing})"
+        check(
+            token in sentence,
+            f"S6.1: expected {token!r} (from frozen grid separation()) "
+            f"in the terra calibration sentence; not found",
+        )
+
+
+# --------------------------------------------------------------------------- #
 # 8. Restored v1 tables: extracted from both documents and compared
 #    row-for-row (whitespace-normalized), not just spot-checked.
 # --------------------------------------------------------------------------- #
@@ -409,6 +442,7 @@ def main() -> int:
     audit_trial_counts_and_cost()
     audit_phase6_phase7_against_frozen_artifacts()
     audit_restored_tables_match_v1()
+    audit_calibration_separations_in_s61()
     lint_qualifiers()
 
     if _warnings:

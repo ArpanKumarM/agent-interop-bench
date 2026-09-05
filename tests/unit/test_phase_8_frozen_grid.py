@@ -68,6 +68,20 @@ def test_f1_is_ceiling_constrained_not_a_second_inversion():
     assert grid.N_RATE["claude-sonnet-5"]["F5"] < 1.000
 
 
+def test_terra_calibration_separations_are_not_flat():
+    # S6.1 quotes these verbatim; an earlier draft flattened round one to
+    # "1.000 in every round-one framing", which is wrong for F2 and F3.
+    seps = grid.calibration_separations("gpt-5.6-terra")
+    assert seps == {
+        "F1": 1.000,
+        "F2": 0.750,
+        "F3": 0.667,
+        "F4": 0.167,
+        "F5": 0.333,
+        "F6": 0.167,
+    }
+
+
 def test_trial_totals():
     assert grid.PHASE_6_TRIALS == 640
     assert grid.PHASE_7_TRIALS == 480

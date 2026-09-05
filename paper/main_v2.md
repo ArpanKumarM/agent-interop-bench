@@ -375,24 +375,25 @@ models; `gpt-5.6-terra` is a floor in both.
 
 ### 5.3 Phase 8 — the framing sweep: ceiling, then floor, then stop
 
-A pre-registered, two-round sweep of the task wording surrounding the
-decision — holding record content, labels, scoring, and the four-model
-panel fixed — searching for a framing whose unlabeled-arm rate would land
-in the range `[0.25, 0.70]` for at least three of four models
-simultaneously (the pre-registered headroom rule), on the reasoning that
-a model already at 0.00 or 1.00 has no room to show a label's influence
-in either direction.
+Phase 8 was a pre-registered, two-round sweep of the task wording
+surrounding the decision, holding record content, labels, scoring, and
+the four-model panel fixed. It searched for a framing whose unlabeled-arm
+rate would land in the range `[0.25, 0.70]` for at least three of four
+models simultaneously — the pre-registered headroom rule — on the
+reasoning that a model already at 0.00 or 1.00 has no room to show a
+label's influence in either direction.
 
-**Round one** (three framings — F1: "the billing agent needs to verify
+**Round one** — three framings (F1: "the billing agent needs to verify
 this account"; F2: "escalate to a specialist"; F3: "the remote agent
-asked for these details" — 576 trials, 575 completed) drove `sol` and
-`luna` to a ceiling and left `terra` and `claude` more variable. **Round
-two** (three framings — F4: a status-only ask whose literal content does
-not require the record's specifics; F5: a recipient-TBD handoff, where
-the eventual recipient's need is not yet established; F6: an explicit
-reference-or-detail choice — 576 trials, 575 completed), each
-independently designed to give withholding a structural reason rather
-than a softer tone, drove `sol`, `terra`, and `luna` back to a floor.
+asked for these details"), 576 trials, 575 completed — drove `sol` and
+`luna` to a ceiling and left `terra` and `claude` more variable across
+the three. **Round two** — three framings (F4: a status-only ask whose
+literal content does not require the record's specifics; F5: a
+recipient-TBD handoff, where the eventual recipient's need is not yet
+established; F6: an explicit reference-or-detail choice), 576 trials, 575
+completed, each independently designed to give withholding a structural
+reason rather than a softer tone — drove `sol`, `terra`, and `luna` back
+to a floor.
 
 **Table 1. Unlabeled-arm relay rate, all four models × all six framings.**
 
@@ -403,9 +404,9 @@ than a softer tone, drove `sol`, `terra`, and `luna` back to a floor.
 | gpt-5.6-luna | 1.000 | 0.917 | 0.917 | 0.000 | 0.000 | 0.000 |
 | claude-sonnet-5 | 1.000 | 1.000 | 0.750 | 0.417 | 0.917 | 0.833 |
 
-Bold cells inside the pre-registered band `[0.25, 0.70]`: terra at F2
-(0.500) and F3 (0.583); claude at F4 (0.417). No other cell falls inside
-the band.
+Three cells fall inside the pre-registered band `[0.25, 0.70]`: terra at
+F2 (0.500) and F3 (0.583); claude at F4 (0.417). No other cell in Table 1
+falls inside the band.
 
 **Stated classification rules** (not descriptive labels — every model
 placed in a category below satisfies the stated numeric rule, and every
@@ -418,11 +419,11 @@ model excluded fails it):
   Satisfied by `sol`, `terra`, and `luna`. Not satisfied by `claude`
   (0.417, 0.917, 0.833 — none zero).
 - **In-band:** rate within `[0.25, 0.70]`, the pre-registered headroom
-  criterion (§4.1, §5.3 intro). Three cells qualify, as listed above; no
-  model was ever in-band in both rounds, and no framing ever placed more
-  than one of the four models in-band at once — checked against every
-  cell in Table 1, the maximum simultaneous in-band count for any single
-  framing is 1 of 4 (F2, F3, F4), and it is 0 of 4 for F1, F5, and F6.
+  criterion (§4.1, §5.3 intro). Three cells qualify, as listed above. No
+  model was ever in-band in both rounds, and no framing placed more than
+  one of the four models in-band at once: checked against every cell in
+  Table 1, the maximum simultaneous in-band count for any single framing
+  is 1 of 4 (at F2, F3, and F4) and 0 of 4 at F1, F5, and F6.
 
 The pre-registered acceptance rule required **at least three of four
 models in-band on the same framing, simultaneously**. No framing in
@@ -438,8 +439,9 @@ secondary sub-studies — was never executed.
 ### 6.1 A calibration result can be a property of the framing, not the model
 
 `gpt-5.6-terra`'s calibration separation (`permit − suppress`) is 1.000
-in every round-one framing and 0.167 (F4), 0.333 (F5), 0.167 (F6) in
-round two — below the pre-registered 0.50 acceptance threshold in every
+(F1), 0.750 (F2), and 0.667 (F3) in round one, and 0.167 (F4), 0.333
+(F5), 0.167 (F6) in round two — at or above the pre-registered 0.50
+acceptance threshold in every round-one framing, below it in every
 round-two framing. This is not the same claim as "the calibration check
 failed for terra": in every one of these six cells, `suppress` is exactly
 0.000 and `permit` is strictly positive, so the direction the check is
@@ -455,8 +457,8 @@ terra is the only model to ever enter the pre-registered band (F2, F3);
 in round two, terra floors completely (Table 1) and claude becomes the
 sole calibration exception instead (§6.3). Which model behaves atypically
 is itself a function of the framing, not a fixed property of any one
-model — the same lesson the separation-shrinkage finding demonstrates,
-arrived at independently.
+model — the same lesson as the separation-shrinkage finding above,
+reached independently.
 
 ### 6.2 One model never floors, and entered the band once
 
@@ -486,11 +488,11 @@ the same model's unlabeled rate was already at the ceiling (1.000):
 `permit` there was 0.750 (9 of 12), a 3-trial move at `n = 12` with no
 room to move upward in the other direction, and inside ordinary sampling
 variation for a cell this size. It is not counted as a second instance of
-the F5 phenomenon. The more informative fact adjacent to it: at F2, the
-same model has an identical unlabeled baseline (1.000) and shows no drop
-at all (`permit = 1.000`) — the same ceiling, a different outcome, one
-framing away. That instability at a saturated baseline is the honest
-reading of the F1 cell, not a second inversion.
+the F5 phenomenon. The adjacent cell is more informative: at F2 the same
+model has an identical unlabeled baseline (1.000) and shows no drop at
+all (`permit = 1.000`) — the same ceiling, a different outcome, one
+framing away. Instability at a saturated baseline is the honest reading
+of the F1 cell, not a second inversion.
 
 **Named follow-ups, none attempted yet:** (1) does the F5 collapse
 replicate at a larger `n` per cell (currently 12); (2) is it specific to

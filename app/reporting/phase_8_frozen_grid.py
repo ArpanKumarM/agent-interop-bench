@@ -211,6 +211,12 @@ def informative_non_claude_cells() -> list[tuple[str, str]]:
     return [(m, f) for (m, f, n, _p) in non_claude_cells() if n < 1.000]
 
 
+def calibration_separations(model: str) -> dict[str, float]:
+    """permit - suppress, per framing, for one model (S6.1 quotes these
+    verbatim for gpt-5.6-terra)."""
+    return {f: round(separation(model, f), 3) for f in ALL_FRAMINGS}
+
+
 def claude_f1_f5_inversion_check() -> dict[str, dict[str, float]]:
     """The two claude cells where permit < N, plus F2 as the adjacent
     same-baseline contrast cell (S6.3)."""
