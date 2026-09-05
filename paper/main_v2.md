@@ -186,13 +186,33 @@ which we avoid except as a disclosed, non-primary cross-check (§4.1);
 has been framed as a field. We claim none of these risk concepts as
 novel and make no "first" claim.
 
+On the privacy-leakage side specifically, three recent efforts are the
+nearest prior art. *PrivacyLens-Live* (Wang et al., `arXiv:2509.17488`)
+converts a static privacy benchmark into live MCP and A2A environments
+and reports higher leakage there than in static question-answering.
+*AgentLeak* (El Yagoubi et al., `arXiv:2602.11510`) benchmarks privacy
+leakage across internal channels — inter-agent messages, shared memory,
+tool arguments — that output-only audits do not inspect. *The Sum Leaks More Than Its Parts* (Patil et al.,
+`arXiv:2509.14284`) studies *compositional* privacy leakage, where
+individually innocuous responses accumulate across agents into a
+disclosure. Our study is narrower than all three: one record, one
+labeled field-egress outcome, one handoff, exact-substring scoring, with
+a pre-registered label or framing as the intervention rather than an
+adversary.
+
 This paper's central finding — that task framing can dominate a targeted
 behavioral manipulation strongly enough to prevent its measurement —
-sits closest to work on instruction-following robustness and prompt/
-framing sensitivity in LLM behavior more broadly `[CITATION NEEDED —
-requires a verified primary-source search before this section is final;
-not fabricated here per this project's citation-audit discipline
-(paper/citation_audit.md)]`.
+sits closest to the literature on LLM prompt sensitivity. Sclar et al.
+(`arXiv:2310.11324`) show meaning-preserving prompt-format changes moving
+few-shot accuracy by as much as 76 points on one open model, and argue
+for reporting a range of performance across plausible formats rather than
+a single one; *PromptSET* (Razavi et al., `arXiv:2502.06065`) casts
+predicting a prompt's sensitivity as its own task and finds existing
+methods weak at it. Our result is the agent-behavior analogue: the
+quantity a pre-registered label intervention was built to move was
+instead dominated by the surrounding task wording, to the point where the
+intervention's effect could not be estimated at all under the
+pre-registered headroom rule (§5.3).
 
 ## 4. Instrument
 

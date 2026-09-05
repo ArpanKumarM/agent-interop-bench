@@ -57,6 +57,12 @@ Checks:
      in-band at F2/F3). Warns on that construction unless a simultaneity
      token nearby marks it as the correct "no framing placed three of
      four ... simultaneously" form.
+ 11. Every arXiv id cited in main_v2.md is in VERIFIED_ARXIV_IDS -- the
+     set individually fetched from arxiv.org and checked for title,
+     authors, and that the paper supports the claim it is cited for. A
+     new id fails the build until it is verified the same way and
+     recorded. This is the one surface no number-vs-artifact check can
+     cover: a fabricated citation parses fine.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -470,6 +476,48 @@ def lint_terra_flattening() -> None:
         )
 
 
+# --------------------------------------------------------------------------- #
+# 11. Citation identifiers: every arXiv id in main_v2.md must be one that
+#     was individually fetched from arxiv.org and checked (title, authors,
+#     and that the paper actually says what it is cited for) on the date
+#     below. Numbers are machine-checked against frozen artifacts; a
+#     fabricated citation looks exactly like a real one to any parser, so
+#     the only guard is pinning the vetted set and failing on anything
+#     outside it. A NEW arXiv id added to the manuscript fails this check
+#     until it is verified the same way and added here.
+# --------------------------------------------------------------------------- #
+VERIFIED_ARXIV_IDS: dict[str, str] = {
+    # id: one-line record of what it was checked to support (verified 2026-09-05)
+    "2609.01693": "this paper's own v1 preprint (the front-matter revision note) -- self-reference",
+    "2310.11324": "Sclar et al., prompt-format sensitivity, up to 76 acc. pts on LLaMA-2-13B",
+    "2502.06065": "Razavi et al., PromptSET / prompt-sensitivity-prediction task",
+    "2509.17488": "Wang et al., PrivacyLens-Live -- static privacy benchmark ported to MCP/A2A",
+    "2509.14284": "Patil et al., compositional privacy leakage across agents",
+    "2602.11510": (
+        "El Yagoubi et al., AgentLeak -- internal-channel privacy leakage benchmark. "
+        "NOTE: post-training-cutoff (Feb 2026); title differs across versions "
+        "(v1 'Full-Stack Benchmark for Privacy Leakage' vs later 'Benchmark for "
+        "Internal-Channel Privacy Leakage') and author order was inconsistent "
+        "between fetches -- confirm exact citation form at camera-ready."
+    ),
+}
+_ARXIV_ID_RE = re.compile(r"arXiv:(\d{4}\.\d{4,5})", re.IGNORECASE)
+
+
+def audit_citation_ids_are_vetted() -> None:
+    found = {m.group(1) for m in _ARXIV_ID_RE.finditer(MAIN_V2)}
+    unvetted = found - set(VERIFIED_ARXIV_IDS)
+    check(
+        not unvetted,
+        f"main_v2.md cites arXiv id(s) not in VERIFIED_ARXIV_IDS: {sorted(unvetted)} -- "
+        "each must be fetched from arxiv.org and checked (title, authors, claim) "
+        "before it goes in the manuscript, then recorded here.",
+    )
+    missing = set(VERIFIED_ARXIV_IDS) - found
+    if missing:
+        warn(f"VERIFIED_ARXIV_IDS lists id(s) no longer cited in main_v2.md: {sorted(missing)}")
+
+
 def main() -> int:
     audit_frozen_grid_self_consistency()
     audit_round_two_from_raw()
@@ -479,6 +527,7 @@ def main() -> int:
     audit_phase6_phase7_against_frozen_artifacts()
     audit_restored_tables_match_v1()
     audit_calibration_separations_in_s61()
+    audit_citation_ids_are_vetted()
     lint_qualifiers()
     lint_terra_flattening()
 
