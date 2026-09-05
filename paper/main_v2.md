@@ -71,14 +71,15 @@ surface with the same judge-free scoring pipeline.
 
 The central finding is not the label effect the first study set out to
 measure. It is that **task framing dominates any such effect large enough
-to detect in this configuration.** Three of four models never produced a
-measurable intermediate rate under any of six pre-registered task
-framings, tried across two independent rounds: every framing drove them
-to a floor or a ceiling, never to a stable middle where a label's
-influence could be read off cleanly. A stopping rule, fixed before either
-pilot ran, ended the search after the second rejection rather than
-permitting a third, fourth, or fifth attempt at finding a framing that
-would recover the original question.
+to detect in this configuration.** No framing placed more than one of the
+four models at a measurable intermediate rate at once — the pre-registered
+acceptance rule required three of four, simultaneously — and no model that
+reached that band in one round reached it in the other. No framing
+produced a stable middle across the panel where a label's influence could
+be read off cleanly. A stopping rule, fixed before either pilot ran,
+ended the search after the second rejection rather than permitting a
+third, fourth, or fifth attempt at finding a framing that would recover
+the original question.
 
 **The arc.** A two-arm study (Phase 6, confidential vs. public labels)
 found a large label contrast but could not say which of the two active
@@ -94,29 +95,35 @@ but because the instrument had no room below zero to show one. A
 pre-registered, two-round framing sweep (Phase 8) then searched for a
 task wording that would lift those three models' baseline behavior into a
 range where movement in either direction could be measured. It did not
-find one. The first round's three framings drove the same models to a
-near-complete ceiling instead of a floor; a second, independently
+find one. The first round's three framings drove `sol` and `luna` to a
+near-complete ceiling and left `terra` and `claude` more variable —
+`terra` briefly inside the target band. A second, independently
 pre-registered round of three framings, deliberately designed to give
 withholding a legitimate structural reason rather than a softer tone,
-drove them back to a floor. The pre-registered stopping rule then ended
-the search.
+drove `sol`, `terra`, and `luna` to a floor. The pre-registered stopping
+rule then ended the search.
 
 **Contributions.** (1) A validated measurement instrument: a
-suppress/permit calibration check that separates cleanly on live models,
-three deterministic near-match leakage detectors with a measured 0.0%
-false-positive rate against adversarial synthetic negative controls, and
-a second delivery channel (a direct reply to the user, instead of a
-relay to the remote agent) that isolates whether an observed effect is
-specific to agent-to-agent delegation. (2) A pre-registered, two-round
-task-framing sweep with a stopping rule fixed and followed — the rule
-fired on schedule, and the ~13,200-trial main study it would have gated
-was never executed. (3) The central finding: across six framings
-authored by one researcher, three of four models' baseline behavior
-never occupied a measurable middle, and task framing's effect on that
-baseline dominates any confidentiality-label effect this instrument could
-have detected on top of it. (4) Two further findings produced by the
-pre-registration process itself, not merely alongside it: an instrument-
-sensitivity check whose reliability turned out to be framing-dependent
+suppress/permit calibration check that separates in the intended
+direction on live models — `suppress` at exactly 0.000 with `permit`
+above it in every pilot cell — meeting the pre-registered 0.50
+separation bar for all four models in round one and falling below it for
+some models in round two (§6.1); three deterministic near-match leakage
+detectors with a measured 0.0% false-positive rate against adversarial
+synthetic negative controls; and a second delivery channel (a direct
+reply to the user, instead of a relay to the remote agent) that isolates
+whether an observed effect is specific to agent-to-agent delegation.
+(2) A pre-registered, two-round task-framing sweep with a stopping rule
+fixed and followed — the rule fired on schedule, and the ~13,200-trial
+main study it would have gated was never executed. (3) The central
+finding: across six framings authored by one researcher, no framing
+placed three of four models' baseline behavior in a measurable middle
+simultaneously — the acceptance rule's threshold — and task framing's
+effect on that baseline dominates any confidentiality-label effect this
+instrument could have detected on top of it. (4) Two further findings
+produced by the pre-registration process itself, not merely alongside
+it: an instrument-sensitivity check whose reliability turned out to be
+framing-dependent
 rather than a fixed model property, and a single unexplained inversion —
 an explicit "share everything" instruction producing sharply *lower*
 compliance than the same model's unprompted baseline — reported as an
@@ -152,8 +159,8 @@ through one shared post-parse path, unchanged across all three phases.
 predicate `mutation_blocked = is_mutating and not approved` runs before
 any state-changing call, with `is_mutating` re-derived from the trusted
 annotation and `approved` forced to `false` for a model's own tool
-request on both providers. In Phase 6's full trace audit (640 trials)
-this observed 0 violations. This is a property of the harness, not a
+request on both providers. Phase 6's full trace audit (640 trials) found
+0 violations. This is a property of the harness, not a
 model-safety rate: no model requested a state-changing tool in that
 study, so the gate was never exercised by a real request, and it is not
 revisited in Phase 8.
@@ -251,7 +258,7 @@ direction, though not always in magnitude, in round two (§6.1).
 
 **Near-match scoring (L1–L3).** The frozen primary detector (L0) is
 exact-substring only. Three secondary, deterministic detectors were built
-and validated as a specificity check before being used for anything: L1
+and validated as a specificity check before being used as cross-checks: L1
 (normalized substring — casefold, whitespace-collapse, markdown-strip),
 L2 (per-field fuzzy token-set match, threshold 90), and L3 (a field name
 within 12 tokens of an 80-threshold fuzzy value match). Validated against
@@ -274,9 +281,10 @@ with L0–L3, never as an outcome in its own right.
 
 ### 5.1 Phase 6 — two-arm study: a confound
 
-640 trials (four models × 10 record scenarios × confidential/public
-labels × repeats). The confidential-vs-public contrast (`C − P`, paired
-per scenario) was large by any reading, but **no pre-registered magnitude
+Phase 6 ran 640 trials: four models × 10 record scenarios × two labels
+(confidential, public) × repeats. The confidential-vs-public contrast
+(`C − P`, paired per scenario) was large by any reading, but **no
+pre-registered magnitude
 threshold existed for Phase 6** — it predates the band-based criteria
 introduced in Phase 8 (§5.3) entirely, so "large" is reported here as the
 raw numbers, not a category: `claude-sonnet-5` −0.900 (10 of 10
@@ -295,10 +303,9 @@ four models, so that `C − N`, `P − N`, and `C − P` can each be read
 separately (pooled arm rates below). Three of four models (`sol`,
 `terra`, `luna`) produced a pooled rate of exactly 0/40 on **both** the
 confidential and the unlabeled arms — a complete floor, not a partial
-one — leaving the
-confidentiality-vs-unlabeled contrast structurally unreadable for those
-models: the confidential arm has no room below zero to show a
-suppression effect even if one exists. `claude-sonnet-5`'s unlabeled arm
+one — which leaves the confidentiality-vs-unlabeled contrast structurally
+unreadable for those models. The confidential arm has no room below zero
+to show a suppression effect even if one exists. `claude-sonnet-5`'s unlabeled arm
 was 5/40, its confidential arm 1/40 — both low, neither an exact floor —
 and its `P − N` contrast was +0.800 (mean, all 10 scenarios positive),
 the only model for which the public label's association with increased
@@ -512,17 +519,18 @@ large enough for this instrument to detect.** "Large enough to detect"
 has a specific operational meaning, not a subjective one: the
 pre-registered headroom rule (§5.3) required a model's unlabeled-arm
 rate to sit inside `[0.25, 0.70]` for a label's influence to have room
-to move it in either direction. Three of four models never sat inside
-that band under any of the six framings tried (Table 1); for those
-models, a label effect of any size was structurally unobservable at
-every framing tested, not observed and found small. This is not
-evidence that sensitivity labels are ineffective in agent systems
-generally. It is
-evidence that, in the specific decision surface studied here, the
+to move it, and acceptance required that of three of four models on the
+same framing. No framing reached even two in-band at once (Table 1).
+`sol` and `luna` were never in-band on any framing; `terra` was, at two
+round-one framings, but never with the others alongside and not at all
+in round two. For those three models the confidentiality-label effect is
+unobservable with this instrument under these six framings — not observed
+and found small. This is not evidence that sensitivity labels are
+ineffective in agent systems generally. It is evidence that, in the
+specific decision surface studied here, the
 variable this instrument was able to move — from an exact 0.000 floor to
 an exact or near-exact 1.000 ceiling, in both directions (Table 1) — was
-the wording of the task, not the
-record's label.
+the wording of the task, not the record's label.
 
 Two things this finding does not claim. First, it does not claim the
 confidentiality label has no effect: Phase 7's floor means the effect is

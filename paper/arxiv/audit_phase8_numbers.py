@@ -52,6 +52,11 @@ Checks:
      separation() and appears verbatim in that sentence -- catches a
      flattened claim the pass/fail-only sensitivity check in item 1 lets
      through.
+ 10. Terra-flattening lint (warning): "three of four models never <verb>"
+     with the models as the subject of the negation is false (terra was
+     in-band at F2/F3). Warns on that construction unless a simultaneity
+     token nearby marks it as the correct "no framing placed three of
+     four ... simultaneously" form.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -434,6 +439,37 @@ def lint_qualifiers() -> None:
                 )
 
 
+# gpt-5.6-terra is the model that breaks the "GPT-5.6 group behaves as one"
+# grouping in BOTH directions: in-band at F2/F3 in round one, complete
+# floor in round two. Summary prose in the intro/discussion repeatedly
+# flattened it into "three of four models never <verb>", making the models
+# the subject of the negation -- which is false (terra was in-band twice).
+# The CORRECT construction makes a framing the subject ("no framing placed
+# three of four models ... simultaneously"), so a simultaneity token
+# nearby means it is fine. Warn only on "three of four models" directly
+# governing a negated past-tense verb, with no simultaneity token close by.
+_FLATTENING_RE = re.compile(
+    r"(three|3)\s+of\s+(four|4)\s+models['’]?\s+(?:[\w'’]+\s+){0,3}"
+    r"(never|did\s+not|do\s+not|failed\s+to|were\s+never|was\s+never)\s+\w+",
+    re.IGNORECASE,
+)
+_SIMULTANEITY_RE = re.compile(
+    r"simultaneous|at\s+once|at\s+the\s+same\s+time|together|same\s+framing", re.IGNORECASE
+)
+
+
+def lint_terra_flattening() -> None:
+    flat = " ".join(MAIN_V2.split())
+    for m in _FLATTENING_RE.finditer(flat):
+        window = flat[max(0, m.start() - 80) : m.end() + 80]
+        if _SIMULTANEITY_RE.search(window):
+            continue
+        warn(
+            "main_v2.md: possible terra-flattening ('three of four models "
+            f"never ...') -- verify against Table 1: {m.group(0)!r}"
+        )
+
+
 def main() -> int:
     audit_frozen_grid_self_consistency()
     audit_round_two_from_raw()
@@ -444,6 +480,7 @@ def main() -> int:
     audit_restored_tables_match_v1()
     audit_calibration_separations_in_s61()
     lint_qualifiers()
+    lint_terra_flattening()
 
     if _warnings:
         print(f"=== {len(_warnings)} qualifier-lint warning(s) (non-fatal) ===")
