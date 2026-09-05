@@ -63,6 +63,9 @@ Checks:
      new id fails the build until it is verified the same way and
      recorded. This is the one surface no number-vs-artifact check can
      cover: a fabricated citation parses fine.
+ 12. Appendix B raw-trials SHA-256 hashes: round two matches the
+     verify-script's EXPECTED_SHA256 (checked against bytes on disk by
+     check 2); round one matches docs/phase_8c_pilot_result.md.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -516,6 +519,62 @@ def audit_citation_ids_are_vetted() -> None:
         warn(f"VERIFIED_ARXIV_IDS lists id(s) no longer cited in main_v2.md: {sorted(missing)}")
 
 
+# --------------------------------------------------------------------------- #
+# 12. Appendix B raw-trials SHA-256 hashes. Round two: must match
+#     EXPECTED_SHA256 in scripts/verify_phase_8_round2_from_raw.py, which
+#     that script checks against the actual bytes on disk (check 2) -- so
+#     the manuscript's round-two hashes are machine-tied to the files.
+#     Round one: must match docs/phase_8c_pilot_result.md (raw files gone,
+#     transcription is the strongest check available, same as check 3).
+# --------------------------------------------------------------------------- #
+def _hashes_from_markdown_table(text: str, model_line_prefix: str) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for model in grid.PANEL:
+        m = re.search(
+            rf"{re.escape(model_line_prefix)}{re.escape(model)}\s*\|\s*`([0-9a-f]{{40,64}})`",
+            text,
+        )
+        if m:
+            out[model] = m.group(1)
+    return out
+
+
+def audit_appendix_b_hashes() -> None:
+    from scripts.verify_phase_8_round2_from_raw import EXPECTED_SHA256 as R2
+
+    # "**Round one**" / "**Round two**" also appear as run-in headers in
+    # S5.3, so anchor to Appendix B first, then split within it.
+    app_b = MAIN_V2[MAIN_V2.find("## Appendix B") :]
+    r1_start = app_b.find("**Round one**")
+    r2_start = app_b.find("**Round two**")
+    other_start = app_b.find("**Other counts.**")
+    check(
+        0 <= r1_start < r2_start < other_start,
+        "Appendix B: round one/two/other blocks not in expected order",
+    )
+    r1_block = app_b[r1_start:r2_start]
+    r2_block = app_b[r2_start:other_start]
+
+    v2_r1 = _hashes_from_markdown_table(r1_block, "raw `trials.jsonl` — ")
+    v2_r2 = _hashes_from_markdown_table(r2_block, "raw `trials.jsonl` — ")
+
+    for model in grid.PANEL:
+        check(
+            v2_r2.get(model) == R2[model],
+            f"Appendix B round-two hash for {model}: {v2_r2.get(model)!r} != "
+            f"verify-script EXPECTED_SHA256 {R2[model]!r}",
+        )
+
+    doc1 = (ROOT / "docs" / "phase_8c_pilot_result.md").read_text()
+    doc1_hashes = _hashes_from_markdown_table(doc1, "| ")
+    for model in grid.PANEL:
+        check(
+            v2_r1.get(model) == doc1_hashes.get(model),
+            f"Appendix B round-one hash for {model}: {v2_r1.get(model)!r} != "
+            f"docs/phase_8c_pilot_result.md {doc1_hashes.get(model)!r}",
+        )
+
+
 def main() -> int:
     audit_frozen_grid_self_consistency()
     audit_round_two_from_raw()
@@ -526,6 +585,7 @@ def main() -> int:
     audit_restored_tables_match_v1()
     audit_calibration_separations_in_s61()
     audit_citation_ids_are_vetted()
+    audit_appendix_b_hashes()
     lint_qualifiers()
     lint_terra_flattening()
 

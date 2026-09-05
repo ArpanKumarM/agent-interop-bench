@@ -638,19 +638,50 @@ full — are released alongside this paper.
 
 ## Appendix B — Pinned identifiers
 
+**Shared harness** (identical across both pilot rounds; the host-policy
+hash also matches Phases 6–7).
+
+| item | SHA-256 |
+|---|---|
+| host-policy hash | `32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be` |
+| canonical action-schema hash (`{relay_to_remote, stop}`) | `96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5` |
+
+**Round one** (Phase 8C, plan `v8pilot`, `execution_mode = decision_point`,
+sink `a2a_relay`). 576 trials planned, 575 completed, $3.32; one attrition
+on `gpt-5.6-terra` (`max_output_tokens` truncation, no retry or
+replacement).
+
 | item | value |
 |---|---|
-| Phase 8C (round one) execution source commit | `74ba1cdd545ce9f32850bd4ba107e45af952dbb3` |
-| Phase 8A.2 (round two) execution source commit | `d06a88b0eebd6f4452ab09ccbc6fe5c2a4907631` |
-| Round one trials | 576 planned, 575 completed, $3.32 |
-| Round two trials | 576 planned, 575 completed, $3.02 |
-| L1–L3 false-positive check | 952 checks, 0.0% for L1, L2, L3 |
-| Main study (never executed) | 13,184 trials (S8-A 9,216 · S8-A′ 512 · S8-B 1,536 · S8-C 1,536 · S8-D 384) |
+| execution source commit | `74ba1cdd545ce9f32850bd4ba107e45af952dbb3` |
+| raw `trials.jsonl` — gpt-5.6-sol | `8056732c70281790b50c9a062407e42f871c40f239155d194d0fd87726bdb498` |
+| raw `trials.jsonl` — gpt-5.6-terra | `b9e2956dfeeabb38862c8c584829ab1ff19356ffa3ce969022603f20853100e5` |
+| raw `trials.jsonl` — gpt-5.6-luna | `8093abcec32f2c603bff16d67b9dbd52576d03fcc99ef97b820242a8f979c460` |
+| raw `trials.jsonl` — claude-sonnet-5 | `64b432ce498e6649ffcef6b264260b7a1b0a928902a57bfa84993892ab90e0ab` |
 
-*Raw `trials.jsonl` SHA-256 hashes for both rounds, per model, are
-recorded in `docs/phase_8c_pilot_result.md` and
-`docs/phase_8a2_pilot_result.md` and are not reproduced here pending the
-final pass through `audit_numbers.py`.*
+**Round two** (Phase 8A.2, plan `v8pilot`, framings F4/F5/F6, pilot-only
+scenarios disjoint from the main-study set). 576 trials planned, 575
+completed, $3.02; one attrition on `gpt-5.6-terra`, same failure mode.
+
+| item | value |
+|---|---|
+| execution source commit | `d06a88b0eebd6f4452ab09ccbc6fe5c2a4907631` |
+| raw `trials.jsonl` — gpt-5.6-sol | `db9d3c5ca540c0e19730e9f4e80ed5f6cbd4cae57af933af8fd5d3aee5af6899` |
+| raw `trials.jsonl` — gpt-5.6-terra | `55144203978551a8abd694c7885dee1abc7f01566f82d4218376b05dbd5184f4` |
+| raw `trials.jsonl` — gpt-5.6-luna | `6a2512282b4dbcf5c412219034deca38acaf5bd50a0815bddc38568ff79940da` |
+| raw `trials.jsonl` — claude-sonnet-5 | `8f916fa3cf3315e2fd89a1fec0fe74bd2e3c7ee7d3936d590db9fd15dff42c73` |
+
+**Other counts.** L1–L3 false-positive check: 952 checks, 0.0% for L1,
+L2, and L3. Main study (never executed): 13,184 trials (S8-A 9,216 ·
+S8-A′ 512 · S8-B 1,536 · S8-C 1,536 · S8-D 384).
+
+*Provenance.* Round two's raw `trials.jsonl` files are on disk and
+`scripts/verify_phase_8_round2_from_raw.py` recomputes each hash above
+from the bytes and checks it (run by `audit_phase8_numbers.py`). Round
+one's raw files were overwritten by round two's run before this need was
+anticipated; round-one hashes are transcribed from
+`docs/phase_8c_pilot_result.md` and cannot now be re-derived from bytes
+on this machine.
 
 ## Appendix C — Phase 7 scenario-level contrast tables
 
