@@ -808,7 +808,7 @@ released alongside this paper.
 \section{Framings piloted and discarded}
 \label{app:framings}
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \caption{Round one framings (verbatim prompt, \code{a2a_relay} sink).}
 \label{tab:framings-r1}
@@ -824,7 +824,7 @@ F3 & ``The remote agent asked you to pull this customer's account details for th
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \caption{Round two framings (verbatim prompt, \code{a2a_relay} sink).}
 \label{tab:framings-r2}
@@ -840,7 +840,7 @@ F6 & ``Look up the record for this case. You can either send the remote agent th
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \caption{Acceptance-rule outcomes, both rounds.}
 \label{tab:accept}
@@ -866,9 +866,7 @@ F6 & no (0/4) & yes (3/4) & no \\
 (identical across both pilot rounds; the host-policy hash also matches
 Phases~6--7).
 
-\begin{table}[h]
-\centering
-\small
+\begin{center}
 \scriptsize
 \begin{tabular}{@{}lp{0.72\linewidth}@{}}
 \toprule
@@ -878,7 +876,7 @@ host-policy hash & \code{32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed09357
 canonical action-schema hash & \code{96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{center}
 
 \paragraph{Round one}
 (Phase~8C, plan \code{v8pilot}, \code{execution_mode = decision_point},
@@ -886,9 +884,7 @@ sink \code{a2a_relay}). 576 trials planned, 575 completed, \$3.32; one
 attrition on \code{gpt-5.6-terra} (\code{max_output_tokens} truncation,
 no retry or replacement).
 
-\begin{table}[h]
-\centering
-\small
+\begin{center}
 \scriptsize
 \begin{tabular}{@{}lp{0.72\linewidth}@{}}
 \toprule
@@ -901,16 +897,14 @@ raw \code{trials.jsonl}, gpt-5.6-sol     & \code{8056732c70281790b50c9a062407e42
 \hspace{1em}claude-sonnet-5 & \code{64b432ce498e6649ffcef6b264260b7a1b0a928902a57bfa84993892ab90e0ab} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{center}
 
 \paragraph{Round two}
 (Phase~8A.2, plan \code{v8pilot}, framings F4/F5/F6, pilot-only scenarios
 disjoint from the main-study set). 576 trials planned, 575 completed,
 \$3.02; one attrition on \code{gpt-5.6-terra}, same failure mode.
 
-\begin{table}[h]
-\centering
-\small
+\begin{center}
 \scriptsize
 \begin{tabular}{@{}lp{0.72\linewidth}@{}}
 \toprule
@@ -923,7 +917,7 @@ raw \code{trials.jsonl}, gpt-5.6-sol     & \code{db9d3c5ca540c0e19730e9f4e80ed5f
 \hspace{1em}claude-sonnet-5 & \code{8f916fa3cf3315e2fd89a1fec0fe74bd2e3c7ee7d3936d590db9fd15dff42c73} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{center}
 
 \paragraph{Other counts.}
 L1--L3 false-positive check: 952 checks, $0.0\%$ for L1, L2, and L3. Main
@@ -947,7 +941,7 @@ Each cell is $(k_a - k_b) / 4$ over 4 completed repeats; per-model mean
 and median rows reconcile exactly with the \S\ref{subsec:phase7} contrast
 table. Scenario order is the frozen design order.
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \caption{\mbox{$C - N$} (confidential $-$ unlabeled).}
 \label{tab:scen-cn}
@@ -974,7 +968,7 @@ procurement-vendor  & $0.00$ & $0.00$ & $0.00$ & $-0.25$ \\
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \caption{\mbox{$P - N$} (public $-$ unlabeled).}
 \label{tab:scen-pn}
@@ -1001,7 +995,7 @@ procurement-vendor  & $+0.50$ & $0.00$ & $+0.75$ & $+0.75$ \\
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \caption{\mbox{$C - P$} (confidential $-$ public; the earlier study's
 contrast, recomputed on Phase~7 data).}
@@ -1029,6 +1023,7 @@ procurement-vendor  & $-0.50$ & $0.00$ & $-0.75$ & $-1.00$ \\
 \end{tabular}
 \end{table}
 
+\clearpage
 \bibliographystyle{plainnat}
 \bibliography{references_v2}
 
