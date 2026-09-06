@@ -47,8 +47,8 @@ unlabeled arms: the confidentiality effect is unresolved by a floor, not
 a genuine null. A two-round, six-framing task-wording sweep followed,
 with a stopping rule fixed in advance. Round one (576 trials) drove two
 of four models to a near-complete ceiling; round two (576 trials),
-designed to reduce, not soften, the forwarding pull, drove three of four
-models back to a floor. No framing gave all four models a measurable
+designed to give withholding a structural reason rather than a softer
+tone, drove three of four models back to a floor. No framing gave all four models a measurable
 middle at once, which the acceptance rule required; individual models
 sometimes had it — never together. The stopping rule fired after round
 two: the ~13,200-trial main study was never run. Task framing dominates
@@ -97,16 +97,20 @@ vs. unlabeled, public vs. unlabeled, confidential vs. public) are now all
 separately readable — but three of four models produced a complete floor
 on both the confidential and unlabeled arms, so the confidentiality
 contrast specifically remains unresolved: not because no effect exists,
-but because the instrument had no room below zero to show one. A
+but because the instrument had no room below zero to show one. Phase 7
+did produce one substantial result: for `claude-sonnet-5`, the public
+label raised verbatim egress over the unlabeled baseline in every one of
+the ten scenarios (`P − N` mean +0.800) — the only Phase 7 label effect
+measurable against a baseline that was not itself on the floor. A
 pre-registered, two-round framing sweep (Phase 8) then searched for a
-task wording that would lift those three models' baseline behavior into a
-range where movement in either direction could be measured. It did not
-find one. The first round's three framings drove `sol` and `luna` to a
+task wording that would give the other three models a baseline in a
+measurable range too, so a label's influence could be read across the
+panel rather than for one model at one framing. It did not find one. The first round's three framings drove `sol` and `luna` to a
 near-complete ceiling and left `terra` and `claude` more variable —
 `terra` briefly inside the target band. A second, independently
 pre-registered round of three framings, deliberately designed to give
-withholding a legitimate structural reason rather than a softer tone,
-drove `sol`, `terra`, and `luna` to a floor. The pre-registered stopping
+withholding a structural reason rather than a softer tone, drove `sol`,
+`terra`, and `luna` to a floor. The pre-registered stopping
 rule then ended the search.
 
 **Contributions.** (1) A validated measurement instrument: a
@@ -117,8 +121,9 @@ separation bar for all four models in round one and falling below it for
 some models in round two (§6.1); three deterministic near-match leakage
 detectors with a measured 0.0% false-positive rate against adversarial
 synthetic negative controls; and a second delivery channel (a direct
-reply to the user, instead of a relay to the remote agent) that isolates
-whether an observed effect is specific to agent-to-agent delegation.
+reply to the user, instead of a relay to the remote agent), built and
+live-exercised to allow isolating whether an observed effect is specific
+to agent-to-agent delegation (not used in either pilot round).
 (2) A pre-registered, two-round task-framing sweep with a stopping rule
 fixed and followed — the rule fired on schedule, and the ~13,200-trial
 main study it would have gated was never executed. (3) The central
@@ -335,7 +340,10 @@ the only model for which the public label's association with increased
 disclosure was measurable against a non-floor baseline.
 
 **Phase 7 pooled arm rates** (descriptive only; n = 10 scenarios, 4
-repeats each — not 40 independent trials).
+repeats each — not 40 independent trials). Read down the C and N columns:
+`sol`, `terra`, and `luna` sit at 0/40 in both, which is the floor that
+makes their `C − N` unreadable; only `claude-sonnet-5`, and only its
+public arm (37/40), moves substantially.
 
 | model | confidential (C) | unlabeled (N) | public (P) | C − N reading |
 |---|---|---|---|---|
@@ -346,7 +354,9 @@ repeats each — not 40 independent trials).
 
 **Phase 7 per-model contrast summary** — each row summarises 10
 scenario-level differences (n = 10); full per-scenario values are in
-Appendix C.
+Appendix C. The `C − N` rows are all at or near zero (the floor again);
+the `P − N` rows are where any label signal appears, and only for
+`claude-sonnet-5` does it reach every scenario (10 / 0 / 0, mean +0.800).
 
 | model | contrast | mean of 10 | median of 10 | scenarios +/0/− |
 |---|---|---|---|---|
