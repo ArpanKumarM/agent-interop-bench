@@ -1,0 +1,117 @@
+\begin{thebibliography}{19}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{A2A Project, Linux Foundation}(2026)]{a2a-spec}
+{A2A Project, Linux Foundation}.
+\newblock {Agent2Agent (A2A) Protocol Specification, Version 1.0.0}.
+\newblock \url{https://a2a-protocol.org/v1.0.0/specification/}, 2026.
+\newblock v1.0.0. Agent Card; Task/TaskStatus/TaskState; Message and Part; Artifact; HTTP+JSON/REST protocol binding. Project hosted by the Linux Foundation since June 2025. The framework's local A2A fixture implements the HTTP+JSON/REST binding shapes only.
+
+\bibitem[{Anthropic and Model Context Protocol contributors}(2025)]{mcp-spec}
+{Anthropic and Model Context Protocol contributors}.
+\newblock {Model Context Protocol} specification (revision 2025-06-18).
+\newblock \url{https://modelcontextprotocol.io/specification/2025-06-18}, 2025.
+\newblock Authoritative revision 2025-06-18. Defines Hosts/Clients/Servers, the ``Tools'' server feature, and tool annotations (destructive / read-only hints), which ``should be considered untrusted, unless obtained from a trusted server.'' Local MCP fixture implemented with the MCP Python SDK, \texttt{mcp==2.0.0}.
+
+\bibitem[Debenedetti et~al.(2024)Debenedetti, Zhang, Balunovi\'{c}, Beurer-Kellner, Fischer, and Tram\`{e}r]{agentdojo2024}
+Edoardo Debenedetti, Jie Zhang, Mislav Balunovi\'{c}, Luca Beurer-Kellner, Marc Fischer, and Florian Tram\`{e}r.
+\newblock {AgentDojo}: A dynamic environment to evaluate prompt injection attacks and defenses for {LLM} agents.
+\newblock In \emph{Advances in Neural Information Processing Systems 37 (NeurIPS), Datasets and Benchmarks Track}, 2024.
+\newblock arXiv:2406.13352. Rule-based (non-LLM-judge) utility and security functions.
+
+\bibitem[Debenedetti et~al.(2025)Debenedetti, Shumailov, Fan, Hayes, Carlini, Fabian, Kern, Shi, Terzis, and Tram\`{e}r]{camel2025}
+Edoardo Debenedetti, Ilia Shumailov, Tianqi Fan, Jamie Hayes, Nicholas Carlini, Daniel Fabian, Christoph Kern, Chongyang Shi, Andreas Terzis, and Florian Tram\`{e}r.
+\newblock Defeating prompt injections by design.
+\newblock arXiv:2503.18813, 2025.
+\newblock \url{https://arxiv.org/abs/2503.18813}. Preprint. Proposes {CaMeL}: control/data-flow separation, capabilities, and a custom interpreter tracking data provenance before each tool call.
+
+\bibitem[Du et~al.(2026)Du, Su, Li, Ding, Yang, Han, Tang, Zhu, and You]{protocolbench2026}
+Hongyi Du, Jiaqi Su, Jisen Li, Lijie Ding, Yingxuan Yang, Peixuan Han, Xiangru Tang, Kunlun Zhu, and Jiaxuan You.
+\newblock {ProtocolBench}: Which {LLM} {MultiAgent} {Protocol to Choose?}
+\newblock In \emph{Proceedings of the 43rd International Conference on Machine Learning (ICML)}, volume 306 of \emph{Proceedings of Machine Learning Research}. PMLR, 2026.
+\newblock Also arXiv:2510.17149. Evaluates which multi-agent communication protocol to choose, primarily through task success, latency, communication overhead, and failure robustness. Distinction: a question of protocol choice, not our label-conditioned egress measurement.
+
+\bibitem[Li et~al.(2026{\natexlab{a}})Li, Sun, Wang, and Zhang]{mcphunt2026}
+Haonan Li, Tianjun Sun, Yongqing Wang, and Qisheng Zhang.
+\newblock {MCPHunt}: An evaluation framework for cross-boundary data propagation in multi-server {MCP} agents.
+\newblock arXiv:2604.27819, 2026{\natexlab{a}}.
+\newblock \url{https://arxiv.org/abs/2604.27819}. Preprint, cs.AI. Cross-boundary data propagation / canary tracking within the MCP layer. Distinction: our setting composes MCP with A2A --- the measured flow crosses from a local MCP result into a remote A2A message.
+
+\bibitem[Li et~al.(2026{\natexlab{b}})Li, Chu, Zheng, Zhang, Gong, and Xiao]{a2asecbench2026}
+Tianhao Li, Chuangxin Chu, Yujia Zheng, Bohan Zhang, Neil~Zhenqiang Gong, and Chaowei Xiao.
+\newblock {A2ASecBench}: A protocol-aware security benchmark for agent-to-agent multi-agent systems.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026{\natexlab{b}}.
+\newblock Poster. OpenReview \url{https://openreview.net/forum?id=LfdFnakqGJ}. Taxonomy of supply-chain manipulations and protocol-logic weaknesses; six attacks across A2A stages.
+
+\bibitem[Mahapatra(2026)]{mahapatra2026v1}
+Arpan~Kumar Mahapatra.
+\newblock Public-sharing labels and verbatim field egress in an mcp-to-a2a agent configuration: A controlled multi-model study, 2026.
+\newblock v1. This paper is a substantially revised v2.
+
+\bibitem[Patil et~al.(2025)Patil, Stengel-Eskin, and Bansal]{patil2025sum}
+Vaidehi Patil, Elias Stengel-Eskin, and Mohit Bansal.
+\newblock The sum leaks more than its parts: Compositional privacy risks and mitigations in multi-agent collaboration, 2025.
+\newblock \url{https://arxiv.org/abs/2509.14284}. Compositional privacy leakage: individually innocuous responses accumulate across agents into a disclosure. Proposes Theory-of-Mind and Collaborative Consensus defenses.
+
+\bibitem[Razavi et~al.(2025)Razavi, Soltangheis, Arabzadeh, Salamat, Zihayat, and Bagheri]{razavi2025benchmarking}
+Amirhossein Razavi, Mina Soltangheis, Negar Arabzadeh, Sara Salamat, Morteza Zihayat, and Ebrahim Bagheri.
+\newblock Benchmarking prompt sensitivity in large language models, 2025.
+\newblock \url{https://arxiv.org/abs/2502.06065}. Introduces the Prompt Sensitivity Prediction task and the PromptSET dataset; finds existing methods weak at predicting a prompt's sensitivity.
+
+\bibitem[Ruan et~al.(2024)Ruan, Dong, Wang, Pitis, Zhou, Ba, Dubois, Maddison, and Hashimoto]{toolemu2024}
+Yangjun Ruan, Honghua Dong, Andrew Wang, Silviu Pitis, Yongchao Zhou, Jimmy Ba, Yann Dubois, Chris~J. Maddison, and Tatsunori Hashimoto.
+\newblock Identifying the risks of {LM} agents with an {LM}-emulated sandbox.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2024.
+\newblock arXiv:2309.15817. Framework known as {ToolEmu}; LM-emulated tool execution and an LM-based safety evaluator.
+
+\bibitem[Schroeder~de Witt et~al.(2025)Schroeder~de Witt, Krawiecka, Krawczuk, et~al.]{masec2025}
+Christian Schroeder~de Witt, Klaudia Krawiecka, Igor Krawczuk, et~al.
+\newblock Open challenges in multi-agent security: Towards secure systems of interacting {AI} agents.
+\newblock arXiv:2505.02077, 2025.
+\newblock \url{https://arxiv.org/abs/2505.02077}. Multi-author position paper (23 authors; full list in the arXiv record).
+
+\bibitem[Sclar et~al.(2023)Sclar, Choi, Tsvetkov, and Suhr]{sclar2023quantifying}
+Melanie Sclar, Yejin Choi, Yulia Tsvetkov, and Alane Suhr.
+\newblock Quantifying language models' sensitivity to spurious features in prompt design or: How i learned to start worrying about prompt formatting, 2023.
+\newblock \url{https://arxiv.org/abs/2310.11324}. Meaning-preserving prompt-format changes move few-shot accuracy by as much as 76 points on LLaMA-2-13B; proposes reporting a performance range across plausible formats (FormatSpread).
+
+\bibitem[Wang et~al.(2025)Wang, Yu, Liu, Qin, Zhang, Lin, Zhang, and Rajmohan]{wang2025privacy}
+Shouju Wang, Fenglin Yu, Xirui Liu, Xiaoting Qin, Jue Zhang, Qingwei Lin, Dongmei Zhang, and Saravan Rajmohan.
+\newblock Privacy in action: Towards realistic privacy mitigation and evaluation for {LLM}-powered agents, 2025.
+\newblock \url{https://arxiv.org/abs/2509.17488}. Introduces PrivacyLens-Live, converting a static privacy benchmark into dynamic MCP and A2A environments, and reports higher leakage there than in static question-answering.
+
+\bibitem[Yang et~al.(2025)Yang, Gao, Wu, Chen, Li, and Wang]{mcpsecbench2025}
+Yixuan Yang, Cuifeng Gao, Daoyuan Wu, Yufan Chen, Yingjiu Li, and Shuai Wang.
+\newblock {MCPSecBench}: A systematic security benchmark and playground for testing model context protocols.
+\newblock arXiv:2508.13220, 2025.
+\newblock \url{https://arxiv.org/abs/2508.13220}. Technical report; not a peer-reviewed venue. 17 attack types across 4 MCP attack surfaces.
+
+\bibitem[Zhang et~al.(2026)Zhang, Li, Luo, Liu, Li, and Xu]{msb2026}
+Dongsen Zhang, Zekun Li, Xu~Luo, Xuannan Liu, Peipei Li, and Wenjun Xu.
+\newblock {MCP Security Bench (MSB)}: Benchmarking attacks against model context protocol in {LLM} agents.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026.
+\newblock arXiv:2510.15994. ``Accepted by ICLR 2026.'' 12-attack taxonomy across the tool-use pipeline; 405 tools, 2000 attack instances.
+
+\bibitem[Zheng and Zhang(2026)]{agentrfc2026}
+Shenghan Zheng and Qifan Zhang.
+\newblock {AgentRFC}: Security design principles and conformance testing for agent protocols.
+\newblock arXiv:2603.23801, 2026.
+\newblock \url{https://arxiv.org/abs/2603.23801}. Preprint, cs.CR. Security design principles, TLA+ invariants, and conformance checking for agent protocols, including the ``Composition Safety'' principle, with formal models of five cross-protocol composition patterns spanning MCP/A2A/ANP/ACP.
+
+\bibitem[Zheng et~al.(2026)Zheng, Zhang, Zhang, Li, and Hauser]{agentthread2026}
+Shenghan Zheng, Qifan Zhang, Zheng Zhang, Haonan Li, and Christophe Hauser.
+\newblock Formal security analysis of agent protocol composition.
+\newblock arXiv:2606.28690, 2026.
+\newblock \url{https://arxiv.org/abs/2606.28690}. Preprint, cs.CR. Source-linked formal analysis together with SDK replay; introduces the \emph{AgentThread} framework (\emph{AgentThread} is the framework, not the paper title). Distinction: formal / replay assurance versus our controlled live-model MCP-to-A2A behavioral experiment.
+
+\bibitem[Zong et~al.(2026)Zong, Shen, Wang, Lan, and Yang]{mcpsafetybench2026}
+Xuanjun Zong, Zhiqi Shen, Lei Wang, Yunshi Lan, and Chao Yang.
+\newblock {MCP-SafetyBench}: A benchmark for safety evaluation of large language models with real-world {MCP} servers.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2026.
+\newblock arXiv:2512.15163. Accepted to ICLR 2026. Multi-turn ReAct tasks over real-world MCP servers; 20-category attack taxonomy.
+
+\end{thebibliography}

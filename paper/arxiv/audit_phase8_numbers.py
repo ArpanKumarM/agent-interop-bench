@@ -66,6 +66,16 @@ Checks:
  12. Appendix B raw-trials SHA-256 hashes: round two matches the
      verify-script's EXPECTED_SHA256 (checked against bytes on disk by
      check 2); round one matches docs/phase_8c_pilot_result.md.
+ 13. paper/arxiv/main_v2.tex mirrors the Markdown: Table 1, the
+     acceptance table, trial counts/costs, the Phase 6/7 numbers, the
+     terra separations, the Appendix B hashes, and the five restored
+     tables (data rows token-for-token vs the .md). The .tex is a hand
+     transcription and would otherwise be an unchecked surface.
+ 14. references_v2.bib: every arXiv eprint is in VERIFIED_ARXIV_IDS or
+     carried from v1's verified references.bib; AgentLeak (2602.11510)
+     appears nowhere as an entry; every \cite key in main_v2.tex
+     resolves; no bare inline arXiv id is left in the .tex body.
+     Qualifier and terra-flattening lints also run on the .tex.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -82,6 +92,28 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 MAIN_V2 = (ROOT / "paper" / "main_v2.md").read_text()
 MAIN_V1 = (ROOT / "paper" / "main.md").read_text()
+MAIN_V2_TEX = (ROOT / "paper" / "arxiv" / "main_v2.tex").read_text()
+REFS_V2_BIB = (ROOT / "paper" / "arxiv" / "references_v2.bib").read_text()
+REFS_V1_BIB = (ROOT / "paper" / "arxiv" / "references.bib").read_text()
+
+
+def _tex_flat(tex: str) -> str:
+    """A plain-text view of the .tex for 'does this literal/number appear'
+    checks: drop TeX math/grouping punctuation and macros so that e.g.
+    ``$5/40 = 0.125$`` -> ``5/40 = 0.125`` and ``13{,}184`` -> ``13,184``."""
+    s = re.sub(r"(?m)^\s*%.*$", "", tex)  # drop comment lines
+    s = re.sub(r"\\code\{([^{}]*)\}", r"\1", s)  # \code{x} -> x
+    s = re.sub(r"\\(?:textbf|emph|texttt|mbox)\{([^{}]*)\}", r"\1", s)
+    s = s.replace("{,}", ",")
+    s = s.replace(r"\$", "\x00").replace(r"\%", "%")  # protect escaped $
+    s = s.replace(r"\,", "").replace("~", " ").replace("---", "—")
+    s = re.sub(r"\\[a-zA-Z]+", " ", s)  # remaining control words
+    s = s.replace("$", "").replace("{", "").replace("}", "")
+    s = s.replace("\x00", "$")  # restore escaped $ as a literal dollar
+    return re.sub(r"[ \t]+", " ", s)
+
+
+MAIN_V2_TEX_FLAT = _tex_flat(MAIN_V2_TEX)
 
 sys.path.insert(0, str(ROOT))
 from app.reporting import phase_8_frozen_grid as grid  # noqa: E402
@@ -575,6 +607,219 @@ def audit_appendix_b_hashes() -> None:
         )
 
 
+# --------------------------------------------------------------------------- #
+# 13. paper/arxiv/main_v2.tex mirrors the manuscript. Every structured
+#     check above that reads the Markdown is re-run against the .tex:
+#     Table 1 grid, the acceptance table, trial counts and costs, the
+#     Phase 6/7 numbers, the terra calibration separations, the Appendix B
+#     hashes, and the five restored tables (data rows compared token-for-
+#     token to the Markdown, which check 8 already pins to v1). The .tex
+#     is a hand-transcription; without this it can drift from the .md.
+# --------------------------------------------------------------------------- #
+_TEX_MODEL_ROW_RE = re.compile(
+    r"^(gpt-5\.6-sol|gpt-5\.6-terra|gpt-5\.6-luna|claude-sonnet-5)\s*"
+    r"&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*"
+    r"&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*\\\\",
+    re.MULTILINE,
+)
+_TEX_ACCEPT_ROW_RE = re.compile(
+    r"^(F[1-6])\s*&\s*(?:yes|no)\s*\((\d)/4\)\s*&\s*(?:yes|no)\s*\((\d)/4\)\s*&",
+    re.MULTILINE,
+)
+
+
+def _tex_table_block(label: str) -> str:
+    m = re.search(
+        rf"\\label\{{{re.escape(label)}\}}.*?\\end\{{tabular\}}", MAIN_V2_TEX, re.DOTALL
+    )
+    if not m:
+        raise AuditError(f"main_v2.tex: no table block for \\label{{{label}}}")
+    return m.group(0)
+
+
+def _data_row_numbers(block: str) -> list[str]:
+    """Ordered numeric tokens from a table's DATA rows only (rows with a
+    digit/digit fraction or a decimal, plus mean/median rows). Unicode
+    minus and en/em dashes normalised out first so md and tex agree."""
+    out: list[str] = []
+    for raw in block.splitlines():
+        line = raw.replace("−", "-").replace("–", " ").replace("—", " ").replace("--", " ")
+        is_data = re.search(r"\d/\d|\d\.\d", line) or re.match(
+            r"\s*(\|\s*)?(\\textbf\{)?\*{0,2}(mean|median)\b", line, re.IGNORECASE
+        )
+        if not is_data:
+            continue
+        out.extend(re.findall(r"[+-]?\d+(?:\.\d+)?", line))
+    return out
+
+
+def audit_tex_mirrors_manuscript() -> None:
+    # -- Table 1 grid --
+    rows = _TEX_MODEL_ROW_RE.findall(_tex_table_block("tab:grid"))
+    check(len(rows) == 4, f"main_v2.tex Table 1: expected 4 rows, found {len(rows)}")
+    for model, *cells in rows:
+        got = [float(c) for c in cells]
+        want = [grid.N_RATE[model][f] for f in grid.ALL_FRAMINGS]
+        check(got == want, f"main_v2.tex Table 1 row {model}: {got} != frozen {want}")
+
+    # -- acceptance table --
+    acc = _TEX_ACCEPT_ROW_RE.findall(_tex_table_block("tab:accept"))
+    check(len(acc) == 6, f"main_v2.tex acceptance table: expected 6 rows, found {len(acc)}")
+    for framing, hp, sp in acc:
+        check(
+            int(hp) == grid.headroom_pass_count(framing)
+            and int(sp) == grid.sensitivity_pass_count(framing),
+            f"main_v2.tex acceptance {framing}: ({hp}/4,{sp}/4) != recomputed "
+            f"({grid.headroom_pass_count(framing)}/4,{grid.sensitivity_pass_count(framing)}/4)",
+        )
+
+    # -- trial counts, costs, main-study totals --
+    for literal in ("640 trials", "480 trials", "576 trials", "13,184", "13,200"):
+        check(
+            literal in MAIN_V2_TEX_FLAT,
+            f"main_v2.tex: expected literal {literal!r} not found (flattened)",
+        )
+    for cost in (grid.ROUND_ONE_COST_USD, grid.ROUND_TWO_COST_USD):
+        check(f"${cost}" in MAIN_V2_TEX_FLAT, f"main_v2.tex: cost ${cost} not found")
+
+    # -- Phase 6/7 numbers --
+    for _model, contrast in _true_phase6_c_minus_p().items():
+        check(
+            f"{contrast:.3f}" in MAIN_V2_TEX_FLAT,
+            f"main_v2.tex: Phase 6 contrast {contrast:.3f} not found (flattened)",
+        )
+    for _model, arms in _true_phase7_pooled().items():
+        for _arm, (k, n) in arms.items():
+            check(
+                f"{k}/{n}" in MAIN_V2_TEX_FLAT,
+                f"main_v2.tex: Phase 7 rate {k}/{n} not found (flattened)",
+            )
+
+    # -- terra calibration separations --
+    for framing, value in grid.calibration_separations("gpt-5.6-terra").items():
+        tok = f"{value:.3f} ({framing})"
+        check(tok in MAIN_V2_TEX_FLAT, f"main_v2.tex: terra separation token {tok!r} not found")
+
+    # -- Appendix B hashes (all 8 raw + 2 shared) --
+    from scripts.verify_phase_8_round2_from_raw import EXPECTED_SHA256 as R2
+
+    shared = (
+        "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
+        "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
+    )
+    for h in (*shared, *R2.values()):
+        check(h in MAIN_V2_TEX, f"main_v2.tex: pinned hash {h[:12]}... not found")
+
+    # -- five restored tables: data rows token-for-token vs the Markdown --
+    restored = [
+        ("**Phase 7 pooled arm rates**", 1, "tab:p7arms"),
+        ("**Phase 7 per-model contrast summary**", 1, "tab:p7con"),
+        ("cred. tok. | prim.+ | prim. \\| relay |", 1, "tab:p7diag"),
+        ("| model | earlier C", 1, "tab:xphase"),
+        ("**C − N (confidential", 1, "tab:scen-cn"),
+        ("**P − N (public", 1, "tab:scen-pn"),
+        ("**C − P (confidential", 1, "tab:scen-cp"),
+    ]
+    for anchor, occ, label in restored:
+        md_nums = _data_row_numbers(_table_after(MAIN_V2, anchor, occurrence=occ))
+        tex_nums = _data_row_numbers(_tex_table_block(label))
+        check(
+            md_nums == tex_nums,
+            f"main_v2.tex table {label}: data-row numbers differ from main_v2.md\n"
+            f"  md : {md_nums}\n  tex: {tex_nums}",
+        )
+
+
+# --------------------------------------------------------------------------- #
+# 14. references_v2.bib + \cite keys in main_v2.tex.
+#     - every arXiv eprint in the .bib is in VERIFIED_ARXIV_IDS (this
+#       session's fetched-and-checked set) OR is carried verbatim from
+#       v1's already-verified references.bib;
+#     - AgentLeak (2602.11510) appears nowhere as an entry;
+#     - every \citep/\citet key in the .tex resolves to a .bib entry;
+#     - no bare "arXiv:NNNN.NNNNN" is left inline in the .tex body (they
+#       are citations now), except the self-reference in the draft note.
+# --------------------------------------------------------------------------- #
+def audit_bib_and_citations() -> None:
+    # strip % comments so the AgentLeak-exclusion note (which names the id)
+    # is not mistaken for a citation of it.
+    bib_body = re.sub(r"(?m)^\s*%.*$", "", REFS_V2_BIB)
+    tex_body = re.sub(r"(?m)^\s*%.*$", "", MAIN_V2_TEX)
+
+    bib_keys = set(re.findall(r"@\w+\{([^,\s]+),", bib_body))
+    bib_eprints = set(re.findall(r"eprint\s*=\s*\{(\d{4}\.\d{4,5})\}", bib_body))
+    bib_arxiv_any = set(_ARXIV_ID_RE.findall(bib_body)) | bib_eprints
+    v1_arxiv = set(_ARXIV_ID_RE.findall(re.sub(r"(?m)^\s*%.*$", "", REFS_V1_BIB)))
+
+    for aid in bib_arxiv_any:
+        check(
+            aid in VERIFIED_ARXIV_IDS or aid in v1_arxiv,
+            f"references_v2.bib references arXiv:{aid}, which is neither in "
+            "VERIFIED_ARXIV_IDS (fetched and checked this round) nor carried "
+            "from v1's verified references.bib.",
+        )
+    check(
+        "2602.11510" not in bib_arxiv_any,
+        "references_v2.bib contains AgentLeak (arXiv:2602.11510) as data -- it "
+        "was deliberately excluded; do not re-add it without verifying it.",
+    )
+    # the exclusion note itself must stay, so nobody re-adds it in good faith
+    check(
+        "2602.11510" in REFS_V2_BIB and "AgentLeak" in REFS_V2_BIB,
+        "references_v2.bib: the AgentLeak-exclusion note has been removed.",
+    )
+
+    # each session-verified id must be an eprint in its own entry, with the
+    # first author's surname in the same entry.
+    entries = re.split(r"(?=^@)", bib_body, flags=re.MULTILINE)
+    surname = {
+        "2310.11324": "Sclar",
+        "2502.06065": "Razavi",
+        "2509.17488": "Wang",
+        "2509.14284": "Patil",
+        "2609.01693": "Mahapatra",
+    }
+    for eid, name in surname.items():
+        hit = [e for e in entries if f"{{{eid}}}" in e]
+        check(
+            len(hit) == 1 and "eprint" in hit[0] and name in hit[0],
+            f"references_v2.bib: expected exactly one entry with eprint {eid} "
+            f"and first-author surname {name!r}; found {len(hit)}.",
+        )
+
+    # \cite keys in the .tex all resolve to a bib entry
+    cited: set[str] = set()
+    for grp in re.findall(r"\\cite[a-z]*\{([^}]+)\}", tex_body):
+        cited.update(k.strip() for k in grp.split(","))
+    check(
+        not (cited - bib_keys),
+        f"main_v2.tex cites undefined bib keys: {sorted(cited - bib_keys)}",
+    )
+
+    # no bare inline arXiv id left in the .tex body except the self-ref,
+    # which is rendered as \code{arXiv:2609.01693} in the draft note.
+    for m in _ARXIV_ID_RE.finditer(tex_body):
+        ctx = tex_body[max(0, m.start() - 45) : m.start() + 20]
+        check(
+            m.group(1) == "2609.01693" and r"\code{arXiv:2609.01693}" in ctx,
+            f"main_v2.tex: bare inline arXiv:{m.group(1)} -- use \\citep{{...}}.",
+        )
+
+
+def _lint_text(label: str, text: str) -> None:
+    for lineno, line in enumerate(text.splitlines(), start=1):
+        low = line.lower()
+        for word in _MAGNITUDE_WORDS:
+            if re.search(rf"\b{word}\b", low) and not _SAFE_NEARBY.search(line):
+                warn(f"{label}:{lineno}: {word!r} with no adjacent number/rule -- {line.strip()!r}")
+    flat = " ".join(text.split())
+    for fm in _FLATTENING_RE.finditer(flat):
+        window = flat[max(0, fm.start() - 80) : fm.end() + 80]
+        if _SIMULTANEITY_RE.search(window):
+            continue
+        warn(f"{label}: possible terra-flattening -- {fm.group(0)!r}")
+
+
 def main() -> int:
     audit_frozen_grid_self_consistency()
     audit_round_two_from_raw()
@@ -586,8 +831,11 @@ def main() -> int:
     audit_calibration_separations_in_s61()
     audit_citation_ids_are_vetted()
     audit_appendix_b_hashes()
+    audit_tex_mirrors_manuscript()
+    audit_bib_and_citations()
     lint_qualifiers()
     lint_terra_flattening()
+    _lint_text("main_v2.tex", MAIN_V2_TEX)
 
     if _warnings:
         print(f"=== {len(_warnings)} qualifier-lint warning(s) (non-fatal) ===")
