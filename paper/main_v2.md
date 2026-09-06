@@ -20,13 +20,19 @@ Arpan Kumar Mahapatra · `arpan.arpan.mohapatra@gmail.com`
 > retained and reconciled against the same frozen analysis artifacts v1
 > used (§5.1, §5.2; machine-checked by `paper/arxiv/audit_phase8_numbers.py`,
 > which fails the build if v2's numbers drift from those artifacts or from
-> v1's text). Every Phase 8 number in this draft is machine-audited
-> against the frozen pilot artifacts and a live recomputation from raw
-> trial data where raw data still exists
-> (`paper/arxiv/audit_phase8_numbers.py`,
-> `scripts/verify_phase_8_round2_from_raw.py`); v1's own
-> `gen_tables.py`/`audit_numbers.py` pipeline has not been extended to
-> generate v2's LaTeX and is a separate, later step.
+> v1's text). Every Phase 8 number is checked against the frozen pilot
+> artifacts and, for round two, a live recomputation from the raw trial
+> bytes (`scripts/verify_phase_8_round2_from_raw.py`); the restored v1
+> tables are checked row-for-row against v1; the derived quantities in the
+> abstract and Introduction are checked against the frozen grid; and every
+> cited arXiv id is checked against a hand-verified set. The build fails
+> on any drift. This is verification rather than generation — v1's
+> `gen_tables.py` regenerates its tables from artifacts, whereas here the
+> prose is written and then checked — and it is aimed where both v1's
+> errors and this revision's occurred: prose claims in the abstract and
+> Introduction, not table cells. A LaTeX build of v2 is not yet produced;
+> the audit will be extended to check it alongside the Markdown when it
+> is.
 
 ## Abstract
 
