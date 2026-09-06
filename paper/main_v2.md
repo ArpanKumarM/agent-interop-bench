@@ -30,9 +30,11 @@ Arpan Kumar Mahapatra · `arpan.arpan.mohapatra@gmail.com`
 > `gen_tables.py` regenerates its tables from artifacts, whereas here the
 > prose is written and then checked — and it is aimed where both v1's
 > errors and this revision's occurred: prose claims in the abstract and
-> Introduction, not table cells. A LaTeX build of v2 is not yet produced;
-> the audit will be extended to check it alongside the Markdown when it
-> is.
+> Introduction, not table cells. The LaTeX build
+> (`paper/arxiv/main_v2.tex`, `references_v2.bib`) is a faithful
+> transcription of this Markdown; the audit parses it too and asserts
+> every table and quoted figure matches, so the two renderings cannot
+> drift apart.
 
 ## Abstract
 
