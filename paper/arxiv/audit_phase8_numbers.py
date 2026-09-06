@@ -52,6 +52,15 @@ Checks:
      separation() and appears verbatim in that sentence -- catches a
      flattened claim the pass/fail-only sensitivity check in item 1 lets
      through.
+  9b. Section 6.4 (post-hoc public arm) + the section 5.3 resolution
+     caveat: the four-arm structure and n=12 reconciliation, the
+     mandatory post-hoc / not-in-frozen-plan / F1-F3-unrecoverable
+     disclosures, the claude P - N values (+0.500 / +0.083 / +0.167),
+     and the Wilson-interval / F3 caveat must all appear in BOTH
+     main_v2.md and the .tex. Frozen-grid self-consistency (item 1) also
+     now checks PUBLIC_RATE round one is all None, the round-two P - N
+     values, and that F3 is the only framing whose 95% CIs reach the
+     3-of-4 acceptance threshold.
  10. Terra-flattening lint (warning): "three of four models never <verb>"
      with the models as the subject of the negation is false (terra was
      in-band at F2/F3). Warns on that construction unless a simultaneity
@@ -177,6 +186,34 @@ def audit_frozen_grid_self_consistency() -> None:
         + len(grid.informative_non_claude_cells())
         == 18,
         "ceiling-constrained + informative non-claude cells != 18",
+    )
+    # S6.4 public arm: round one unrecoverable, round two P - N for claude.
+    check(
+        all(
+            grid.PUBLIC_RATE[m][f] is None
+            for m in grid.PANEL
+            for f in grid.ROUND_ONE_FRAMINGS
+        ),
+        "PUBLIC_RATE round one (F1-F3) is no longer all None -- it is unrecoverable",
+    )
+    check(
+        (
+            grid.p_minus_n("claude-sonnet-5", "F4") == 0.500
+            and grid.p_minus_n("claude-sonnet-5", "F5") == 0.083
+            and grid.p_minus_n("claude-sonnet-5", "F6") == 0.167
+        ),
+        "S6.4 claude P - N round-two values changed",
+    )
+    # S5.3 resolution caveat: point-estimate rule -> max 1 in band; the
+    # generous 95%-CI reading reaches the 3-of-4 threshold only at F3.
+    check(
+        grid.framings_where_ci_reaches_three() == ["F3"],
+        f"framings where >=3/4 CIs touch the band changed: "
+        f"{grid.framings_where_ci_reaches_three()}",
+    )
+    check(
+        grid.max_simultaneous_ci_touches_band() == 3,
+        f"max simultaneous CI-touches-band changed: {grid.max_simultaneous_ci_touches_band()}",
     )
     expected_headroom = {"F1": 0, "F2": 1, "F3": 1, "F4": 1, "F5": 0, "F6": 0}
     for framing, expected in expected_headroom.items():
@@ -393,6 +430,47 @@ def audit_calibration_separations_in_s61() -> None:
             token in sentence,
             f"S6.1: expected {token!r} (from frozen grid separation()) "
             f"in the terra calibration sentence; not found",
+        )
+
+
+# --------------------------------------------------------------------------- #
+# 9b. S6.4 (post-hoc public arm) + S5.3 resolution caveat: the load-
+#     bearing numbers and the mandatory disclosures must appear in BOTH
+#     main_v2.md and the .tex.
+# --------------------------------------------------------------------------- #
+def audit_s64_public_arm_and_resolution_caveat() -> None:
+    md_flat = " ".join(MAIN_V2.split())
+    tex_flat = " ".join(MAIN_V2_TEX_FLAT.split())
+    for label, doc in (("main_v2.md", md_flat), ("main_v2.tex", tex_flat)):
+        # the four-arm structure + n=12 reconciliation
+        check(
+            "four arms" in doc.lower() and "suppress" in doc and "permit" in doc,
+            f"{label}: S6.4 must state the pilot ran four arms "
+            "(suppress, unlabeled, public, permit)",
+        )
+        # the mandatory post-hoc disclosure
+        check(
+            ("post hoc" in doc.lower() or "post-hoc" in doc.lower()),
+            f"{label}: S6.4 must label the public-arm analysis post hoc",
+        )
+        check(
+            "not part of the frozen" in doc.lower()
+            or "did not call for reporting" in doc.lower()
+            or "was not part of the pre-registered" in doc.lower(),
+            f"{label}: S6.4 must state the public arm was not in the frozen analysis plan",
+        )
+        # round-one public arm is unrecoverable, and that is the overwrite's cost
+        check(
+            "unrecoverable" in doc.lower() or "cannot be recovered" in doc.lower(),
+            f"{label}: S6.4 must state the F1-F3 public arm is unrecoverable",
+        )
+        # the claude P - N numbers
+        for v in ("+0.500", "+0.083", "+0.167"):
+            check(v in doc, f"{label}: S6.4 claude P - N value {v!r} not found")
+        # the F3 resolution caveat
+        check(
+            "F3" in doc and ("Wilson" in doc or "95%" in doc or "interval" in doc.lower()),
+            f"{label}: S5.3 must carry the Wilson-interval / F3 resolution caveat",
         )
 
 
@@ -829,6 +907,7 @@ def main() -> int:
     audit_phase6_phase7_against_frozen_artifacts()
     audit_restored_tables_match_v1()
     audit_calibration_separations_in_s61()
+    audit_s64_public_arm_and_resolution_caveat()
     audit_citation_ids_are_vetted()
     audit_appendix_b_hashes()
     audit_tex_mirrors_manuscript()

@@ -102,6 +102,36 @@ SUPPRESS_RATE: dict[str, dict[str, float]] = {
 }
 
 # --------------------------------------------------------------------------- #
+# public-arm (`P`) rate, per model per framing.
+#
+# The pilots ran FOUR arms -- suppress, unlabeled, public, permit -- so the
+# public-vs-unlabeled (`P - N`) label contrast was collected at every pilot
+# framing. The frozen pilot analysis plan (docs/phase_8a2_pilot_design.md
+# S6) reserved `P - N` as the MAIN-STUDY primary test and did not call for
+# reporting it at the pilot stage; it is analysed post hoc in S6 of v2,
+# after review identified the paper had no within-study, same-framing label
+# measurement. ROUND ONE (F1-F3) raw trials were overwritten before this
+# need was anticipated, so the F1-F3 public arm is UNRECOVERABLE and is
+# left as None. ROUND TWO (F4-F6) is recomputed live from the byte-pinned
+# raw by scripts/verify_phase_8_round2_from_raw.py.
+PUBLIC_RATE: dict[str, dict[str, float | None]] = {
+    "gpt-5.6-sol": {"F1": None, "F2": None, "F3": None, "F4": 0.083, "F5": 0.000, "F6": 0.000},
+    "gpt-5.6-terra": {"F1": None, "F2": None, "F3": None, "F4": 0.000, "F5": 0.000, "F6": 0.000},
+    "gpt-5.6-luna": {"F1": None, "F2": None, "F3": None, "F4": 0.000, "F5": 0.333, "F6": 0.000},
+    "claude-sonnet-5": {"F1": None, "F2": None, "F3": None, "F4": 0.917, "F5": 1.000, "F6": 1.000},
+}
+
+
+def p_minus_n(model: str, framing: str) -> float | None:
+    """public - unlabeled at one pilot cell, or None if the public arm for
+    that framing is unrecoverable (round one)."""
+    p = PUBLIC_RATE[model][framing]
+    return None if p is None else round(p - N_RATE[model][framing], 3)
+
+
+ROUND_TWO_FRAMINGS_WITH_PUBLIC = ROUND_TWO_FRAMINGS  # F4, F5, F6 -- the only P - N we have
+
+# --------------------------------------------------------------------------- #
 # Trial counts and cost (docs/phase_8c_pilot_result.md,
 # docs/phase_8a2_pilot_result.md).
 # --------------------------------------------------------------------------- #
@@ -189,6 +219,65 @@ def sensitivity_pass_count(framing: str) -> int:
 
 def headroom_pass_count(framing: str) -> int:
     return sum(1 for model in PANEL if in_band(N_RATE[model][framing]))
+
+
+# --------------------------------------------------------------------------- #
+# n = 12 per pilot cell (4 pilot scenarios x 3 repeats). The in-band / out
+# classification in S5.3 is a point-estimate call at that resolution; these
+# helpers let S5.3 and the audit state how thin the margin is.
+# --------------------------------------------------------------------------- #
+PILOT_CELL_N = 12
+
+# N-arm successes (k of 12) per cell. Round one (F1-F3) is transcribed from
+# docs/phase_8c_pilot_result.md; round two (F4-F6) is raw-verified.
+N_SUCCESSES: dict[str, dict[str, int]] = {
+    "gpt-5.6-sol": {"F1": 12, "F2": 12, "F3": 12, "F4": 0, "F5": 0, "F6": 0},
+    "gpt-5.6-terra": {"F1": 11, "F2": 6, "F3": 7, "F4": 0, "F5": 0, "F6": 0},
+    "gpt-5.6-luna": {"F1": 12, "F2": 11, "F3": 11, "F4": 0, "F5": 0, "F6": 0},
+    "claude-sonnet-5": {"F1": 12, "F2": 12, "F3": 9, "F4": 5, "F5": 11, "F6": 10},
+}
+
+
+def _wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
+    if n == 0:
+        return (0.0, 0.0)
+    import math
+
+    p = k / n
+    d = 1 + z * z / n
+    centre = (p + z * z / (2 * n)) / d
+    half = z / d * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    return (round(max(0.0, centre - half), 3), round(min(1.0, centre + half), 3))
+
+
+def n_rate_ci(model: str, framing: str) -> tuple[float, float]:
+    """Wilson 95% interval on the unlabeled-arm rate for one pilot cell."""
+    return _wilson(N_SUCCESSES[model][framing], PILOT_CELL_N)
+
+
+def ci_touches_band(model: str, framing: str) -> bool:
+    lo, hi = n_rate_ci(model, framing)
+    return not (hi < BAND_LOW or lo > BAND_HIGH)
+
+
+def max_simultaneous_ci_touches_band() -> int:
+    """Largest number of models on one framing whose 95% CI even overlaps
+    the band -- the most generous reading of 'could have had headroom'.
+    The pre-registered rule used point estimates; this is the robustness
+    counter-check for S5.3."""
+    return max(
+        sum(1 for m in PANEL if ci_touches_band(m, f)) for f in ALL_FRAMINGS
+    )
+
+
+def framings_where_ci_reaches_three() -> list[str]:
+    """Framings where >=3 of 4 models' 95% CIs overlap the band -- i.e.
+    where n=12 cannot rule out that the acceptance rule was met."""
+    return [
+        f
+        for f in ALL_FRAMINGS
+        if sum(1 for m in PANEL if ci_touches_band(m, f)) >= 3
+    ]
 
 
 def non_claude_cells() -> list[tuple[str, str, float, float]]:

@@ -49,9 +49,9 @@
   \do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
 \makeatother
 
-\title{Task Framing Dominates Sensitivity Labels in Verbatim Field
-Egress:\\[2pt] A Pre-Registered Framing Sweep in an MCP-to-A2A Agent
-Configuration}
+\title{Whether a Sensitivity-Label Effect Can Be Measured at an
+MCP-to-A2A Handoff Depends on the Task Framing:\\[2pt] A Pre-Registered
+Sweep}
 
 \author{Arpan Kumar Mahapatra\\[2pt]
 \texttt{arpan.arpan.mohapatra@gmail.com}}
@@ -67,8 +67,12 @@ Configuration}
 \textbf{Draft v2 --- note on scope and numeric integrity.} This is a v2
 revision of \code{arXiv:2609.01693}~\citep{mahapatra2026v1}. \textbf{v2
 substantially revises v1.} Two additional pre-registered pilot studies
-(Phase~8) changed the central claim from a measured label effect to a
-framing-dominance finding. v1's per-model contrast-summary table with
+(Phase~8) changed the central claim from a measured label effect (v1) to
+a narrower statement: a pre-registered pilot could not resolve, at its
+own sample size, whether any of six task framings met its acceptance
+criterion, and the one within-study label measurement it contains (from
+an arm outside the frozen analysis plan, \S\ref{subsec:publicarm}) is
+exploratory. v1's per-model contrast-summary table with
 sign counts and medians, its secondary-diagnostics table, its
 per-scenario contrast tables, and its Phase-6-vs-Phase-7 cross-phase
 reproducibility check are all reproduced here
@@ -107,22 +111,33 @@ a genuine null. A two-round, six-framing task-wording sweep followed,
 with a stopping rule fixed in advance. Round one (576 trials) drove two
 of four models to a near-complete ceiling; round two (576 trials),
 designed to give withholding a structural reason rather than a softer
-tone, drove three of four models back to a floor. No framing gave all
-four models a measurable middle at once, which the acceptance rule
-required; individual models sometimes had it --- never together. The
-stopping rule fired after round two: the $\sim$13{,}200-trial main study
-was never run. Task framing dominates any label effect large enough to
-detect here. Calibration reliability was itself framing-dependent, and no
-model's in-band behavior in one round persisted into the next. At one
-framing, an explicit ``share everything'' instruction produced far lower
-compliance than the same model's own unlabeled baseline --- 11 of 12
-trials relayed unprompted, 1 of 12 complied with the explicit instruction
---- an unexplained inversion, reported with no mechanism proposed.
-Near-match scoring worked as designed. Findings are scoped to one host
-policy, one decision surface, and six framings authored by a single
-researcher --- not the space of possible framings. This is not evidence
-that sensitivity labels are ineffective in agent systems generally, only
-that framing dominated them here.
+tone, drove three of four models back to a floor. No framing met the
+acceptance rule (an unlabeled-arm rate inside $[0.25, 0.70]$ for at
+least three of four models on one framing). For five of the six framings
+this holds under any reasonable reading of the $n = 12$ pilot cells; for
+the sixth (F3), three of four models' $95\%$ intervals overlap the band,
+so at pilot resolution its rejection cannot be distinguished from an
+acceptance. The stopping rule fired after round two: the
+$\sim$13{,}200-trial main study was never run. Whether a label's effect
+is measurable here therefore depends on the task framing, and for most
+model-framing pairs it stayed unresolved. The pilots also carried a
+public-sharing-label arm outside the frozen analysis plan; analyzed post
+hoc, it contains one within-study measurement --- at the single framing
+that left a model's baseline in range, the public label moved verbatim
+egress by $+0.50$ (one model, $n = 12$, exploratory). Calibration
+reliability was itself framing-dependent, and no model's in-band
+behavior in one round persisted into the next. At one framing, an
+explicit ``share everything'' instruction produced far lower compliance
+than the same model's own unlabeled baseline --- 11 of 12 trials relayed
+unprompted, 1 of 12 complied with the explicit instruction --- an
+unexplained inversion, reported with no mechanism proposed. Findings are
+scoped to one host policy, one decision surface, and six framings
+authored by a single researcher --- not the space of possible framings.
+This is not evidence that sensitivity labels are ineffective in agent
+systems generally; it is a report that a pre-registered pilot could not
+resolve, at its own sample size, whether any of six framings met its
+acceptance criterion, and that the one label measurement it contains is
+exploratory.
 \end{abstract}
 
 % ===========================================================================
@@ -140,16 +155,20 @@ conducted over the same fixed decision surface with the same judge-free
 scoring pipeline.
 
 The central finding is not the label effect the first study set out to
-measure. It is that \textbf{task framing dominates any such effect large
-enough to detect in this configuration.} No framing placed more than one
-of the four models at a measurable intermediate rate at once --- the
-pre-registered acceptance rule required three of four, simultaneously ---
-and no model that reached that band in one round reached it in the other.
-No framing produced a stable middle across the panel where a label's
-influence could be read off cleanly. A stopping rule, fixed before either
-pilot ran, ended the search after the second rejection rather than
-permitting a third, fourth, or fifth attempt at finding a framing that
-would recover the original question.
+measure. It is that \textbf{whether a sensitivity label's effect is
+measurable here depends on the task framing.} A pre-registered two-round
+sweep of six task framings did not find one that met its acceptance
+criterion --- an unlabeled-arm rate inside $[0.25, 0.70]$ for at least
+three of four models on the same framing. On point estimates no framing
+placed more than one model in that band. At the pilot's $n = 12$ per
+cell, a Wilson $95\%$ interval leaves five of the six framings still
+clearly short; the sixth, F3, has three of four models' intervals
+overlapping the band, so at this sample size its rejection cannot be
+distinguished from an acceptance (\S\ref{subsec:phase8}). A stopping
+rule fixed before either pilot ran ended the search after the second
+round rather than permitting a third, fourth, or fifth attempt --- so
+the negative result is what a two-round pilot could establish, not what
+a powered study concluded.
 
 \paragraph{The arc.}
 A two-arm study (Phase~6, confidential vs.\ public labels) found a large
@@ -171,14 +190,19 @@ measurable against a baseline that was not itself on the floor. A
 pre-registered, two-round framing sweep (Phase~8) then searched for a
 task wording that would give the other three models a baseline in a
 measurable range too, so a label's influence could be read across the
-panel rather than for one model at one framing. It did not find one. The
+panel rather than for one model at one framing. It did not find one: the
 first round's three framings drove \code{sol} and \code{luna} to a
 near-complete ceiling and left \code{terra} and \code{claude} more
-variable --- \code{terra} briefly inside the target band. A second,
-independently pre-registered round of three framings, deliberately
-designed to give withholding a structural reason rather than a softer
-tone, drove \code{sol}, \code{terra}, and \code{luna} to a floor. The
-pre-registered stopping rule then ended the search.
+variable, \code{terra} briefly inside the target band; the second
+round's three, designed to give withholding a structural reason rather
+than a softer tone, drove \code{sol}, \code{terra}, and \code{luna} to a
+floor. The pilots did, however, carry a \code{public} arm at every
+framing --- collected under the pilot design but outside its frozen
+analysis plan. Analyzed post hoc (\S\ref{subsec:publicarm}), that arm
+supplies the within-study, same-framing label measurement the rest of
+the arc lacks: at F4, the one framing that left a model's baseline in
+range, adding the public label moved \code{claude-sonnet-5}'s rate by
+$+0.500$ ($n = 12$, exploratory).
 
 \paragraph{Contributions.}
 (1)~A validated measurement instrument: a suppress/permit calibration
@@ -196,10 +220,10 @@ to agent-to-agent delegation (not used in either pilot round).
 fixed and followed --- the rule fired on schedule, and the
 $\sim$13{,}200-trial main study it would have gated was never executed.
 (3)~The central finding: across six framings authored by one researcher,
-no framing placed three of four models' baseline behavior in a measurable
-middle simultaneously --- the acceptance rule's threshold --- and task
-framing's effect on that baseline dominates any confidentiality-label
-effect this instrument could have detected on top of it. (4)~Two further
+no framing produced an unlabeled-arm rate in the pre-registered band for
+three of four models simultaneously; at the pilot's sample size the
+rejection of the closest framing (F3) is not resolvable, and whether a
+label effect is measurable at all is itself framing-dependent. (4)~Two further
 findings produced by the pre-registration process itself, not merely
 alongside it: an instrument-sensitivity check whose reliability turned
 out to be framing-dependent rather than a fixed model property, and a
@@ -564,11 +588,18 @@ claude-sonnet-5 & $-0.900$ & $0 / 0 / 10$ & $-0.900$ & $0 / 0 / 10$ & consistent
 
 Phase~8 was a pre-registered, two-round sweep of the task wording
 surrounding the decision, holding record content, labels, scoring, and
-the four-model panel fixed. It searched for a framing whose unlabeled-arm
-rate would land in the range $[0.25, 0.70]$ for at least three of four
-models simultaneously --- the pre-registered headroom rule --- on the
-reasoning that a model already at $0.00$ or $1.00$ has no room to show a
-label's influence in either direction.
+the four-model panel fixed. Each round ran \textbf{four arms} ---
+\code{suppress}, \code{unlabeled}, \code{public}, \code{permit} --- over
+4 pilot scenarios $\times$ 3 repeats, so 4 models $\times$ 3 framings
+$\times$ 4 arms $\times$ 12 $= 576$ trials per round and $n = 12$ per
+(model, framing, arm) cell. The sweep searched for a framing whose
+\code{unlabeled}-arm rate would land in the range $[0.25, 0.70]$ for at
+least three of four models simultaneously --- the pre-registered
+headroom rule --- on the reasoning that a model already at $0.00$ or
+$1.00$ has no room to show a label's influence in either direction. The
+acceptance rule read only the \code{unlabeled} and \code{permit}/%
+\code{suppress} arms; the \code{public} arm rode along and is analyzed
+separately in \S\ref{subsec:publicarm}.
 
 \textbf{Round one} --- three framings (F1: ``the billing agent needs to
 verify this account''; F2: ``escalate to a specialist''; F3: ``the remote
@@ -626,13 +657,32 @@ satisfies the stated numeric rule, and every model excluded fails it):
 \end{itemize}
 
 The pre-registered acceptance rule required \textbf{at least three of
-four models in-band on the same framing, simultaneously}. No framing in
-either round reached even two. The stopping rule (fixed in
+four models in-band on the same framing, simultaneously}. On point
+estimates no framing reached even two. The stopping rule (fixed in
 \code{docs/phase_8a2_pilot_design.md} \S1a before round two's data
 existed) therefore fired after round two: no third round was attempted,
 and the main study this sweep would have gated --- S8-A through S8-D,
 13{,}184 trials at the repeat counts fixed for the primary contrast and
 its secondary sub-studies --- was never executed.
+
+\paragraph{Resolution.}
+The classification above is a point-estimate call at $n = 12$ per cell.
+A Wilson $95\%$ interval on \code{gpt-5.6-terra}'s F2 rate ($6/12 =
+0.500$) is roughly $[0.25, 0.75]$ --- wider than the whole acceptance
+band. Applying that interval cell by cell: for F1, F2, F4, F5, and F6
+the acceptance criterion is unmet under any reading (at most two models'
+intervals reach the band). \textbf{F3 is the exception} --- three of
+four models' $95\%$ intervals overlap $[0.25, 0.70]$ there
+(\code{terra} $0.583 \to [0.32, 0.81]$, \code{luna} $0.917 \to [0.65,
+0.99]$, \code{claude} $0.750 \to [0.47, 0.91]$; only \code{sol}, 12/12,
+is firmly outside). Three of four is the acceptance threshold, so at
+this sample size F3's rejection cannot be distinguished from an
+acceptance. The stopping rule fired correctly given the rule as written;
+but the sweep's negative result turns on a resolution the pilot did not
+have, and F3 is the concrete candidate for a follow-up at higher $n$. It
+is also the framing whose round-one \code{public} arm was lost to a
+raw-data overwrite (\S\ref{subsec:publicarm}), so that follow-up would
+have to re-collect it.
 
 % ===========================================================================
 \section{Secondary Findings}
@@ -663,6 +713,17 @@ and claude becomes the sole calibration exception instead
 (\S\ref{subsec:f5}). Which model behaves atypically is itself a function
 of the framing, not a fixed property of any one model --- the same
 lesson as the separation-shrinkage finding above, reached independently.
+
+A third view of the same effect, per framing rather than per round.
+\code{permit} $-$ \code{suppress} at F4 / F5 / F6 is \code{sol} $0.667 /
+1.000 / 0.917$, \code{terra} $0.167 / 0.333 / 0.167$, \code{claude}
+$0.583 / 0.083 / 0.833$; only \code{luna} is flat ($1.000$ at all
+three). \code{claude}'s $0.083$ at F5 is the permit collapse of
+\S\ref{subsec:f5}, but even setting F5 aside its F4 and F6 separations
+($0.583$, $0.833$) differ. So an explicit instruction's effect on this
+behavior is framing-modulated for three of four models --- from an arm
+independent of the \code{unlabeled}-baseline sweep, and independent of
+the \code{public} arm of \S\ref{subsec:publicarm}.
 
 \subsection{One model never floors, and entered the band once}
 \label{subsec:claude-band}
@@ -711,45 +772,100 @@ this model under a framing not yet tried; (5) does it appear under the
 \code{reply_to_user} sink, which neither pilot round exercised
 (\S\ref{sec:instrument}).
 
+\subsection{The public arm: an unplanned within-study label measurement}
+\label{subsec:publicarm}
+
+The Phase~8 pilots ran four arms --- \code{suppress}, \code{unlabeled},
+\code{public}, \code{permit} --- so the \code{public}-vs-\code{unlabeled}
+(\mbox{$P - N$}) label contrast was collected at every pilot framing.
+The frozen pilot analysis plan (\code{docs/phase_8a2_pilot_design.md}
+\S6) reserved \mbox{$P - N$} as the \emph{primary} test for the main
+study and did not call for reporting it at the pilot stage; the pilot's
+job was to apply the headroom and sensitivity rules to the other arms.
+This subsection analyzes the \code{public} arm \textbf{post hoc}. The
+reason it was examined is specific and precedes the result: a review of
+this manuscript observed that the paper compared Phase~8 framing effects
+against a Phase~7 label effect measured in a \emph{different} study, with
+no within-study, same-framing label measurement anywhere. The
+\code{public}-arm data was analyzed to fill that gap --- not because F4
+or any other cell had been inspected first.
+
+Round two's raw trials are byte-pinned (Appendix~\ref{app:pinned}) and
+the rates below are recomputed from them by the script that verifies the
+rest (\code{scripts/verify_phase_8_round2_from_raw.py}, now checking all
+four arms). Round one's raw trials were overwritten before this need was
+anticipated, so the F1--F3 \code{public} arm is \textbf{unrecoverable}:
+the measurement below is F4--F6 only, and --- because the other three
+models are on the floor on both \code{P} and \code{N} there --- a label
+contrast only for \code{claude-sonnet-5}.
+
+\begin{table}[t]
+\centering
+\caption{Round-two \code{public} arm, recomputed from the byte-pinned
+raw. \mbox{$P - N$} $=$ public $-$ unlabeled.}
+\label{tab:publicarm}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+model & F4 \code{P} & F4 \code{N} & F4 \mbox{$P - N$} & F5 \mbox{$P - N$} & F6 \mbox{$P - N$} \\
+\midrule
+gpt-5.6-sol     & $0.083$ & $0.000$ & $+0.083$ & $0.000$  & $0.000$ \\
+gpt-5.6-terra   & $0.000$ & $0.000$ & $0.000$  & $0.000$  & $0.000$ \\
+gpt-5.6-luna    & $0.000$ & $0.000$ & $0.000$  & $+0.333$ & $0.000$ \\
+claude-sonnet-5 & $0.917$ & $0.417$ & $+0.500$ & $+0.083$ & $+0.167$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At \textbf{F4} --- the one pilot cell where a model's \code{unlabeled}
+baseline sits inside the pre-registered band (\code{claude-sonnet-5},
+\code{N} $= 0.417$) --- adding \code{[PUBLIC - OK TO SHARE]} raised the
+rate to $0.917$, a \mbox{$P - N$} of \textbf{$+0.500$} at $n = 12$. A
+Fisher exact test on that $2\times2$ gives $p \approx 0.03$; that figure
+is one comparison, chosen after the fact from the twelve
+(model, framing) cells this analysis makes available, uncorrected, at
+$n = 12$ --- a descriptive marker, not a confirmatory test. Across the
+three round-two framings where Claude's \mbox{$P - N$} is computable it
+is $+0.500$ (F4), $+0.083$ (F5), $+0.167$ (F6); the Phase~7 framing gave
+$+0.800$. The label effect, where it can be seen at all, is itself
+framing-dependent. This is one model, three framings, $n = 12$, reported
+as exploratory.
+
 % ===========================================================================
 \section{Discussion}
 \label{sec:discussion}
 
-The central finding is a scope claim, not a general one: \textbf{in this
-MCP-to-A2A configuration, under six task framings authored by one
-researcher, task framing dominated any confidentiality-label effect large
-enough for this instrument to detect.} ``Large enough to detect'' has a
-specific operational meaning, not a subjective one: the pre-registered
-headroom rule (\S\ref{subsec:phase8}) required a model's unlabeled-arm
-rate to sit inside $[0.25, 0.70]$ for a label's influence to have room to
-move it, and acceptance required that of three of four models on the same
-framing. No framing reached even two in-band at once
-(Table~\ref{tab:grid}). \code{sol} and \code{luna} were never in-band on
-any framing; \code{terra} was, at two round-one framings, but never with
-the others alongside and not at all in round two. For those three models
-the confidentiality-label effect is unobservable with this instrument
-under these six framings --- not observed and found small. This is not
-evidence that sensitivity labels are ineffective in agent systems
-generally. It is evidence that, in the specific decision surface studied
-here, the variable this instrument was able to move --- from an exact
-$0.000$ floor to an exact or near-exact $1.000$ ceiling, in both
-directions (Table~\ref{tab:grid}) --- was the wording of the task, not
-the record's label.
+The claim this paper supports is deliberately narrow: \textbf{a
+pre-registered two-round pilot could not resolve, at its own sample
+size, whether any of six task framings met its acceptance criterion, and
+the one label measurement it contains is exploratory.} The
+pre-registered headroom rule (\S\ref{subsec:phase8}) required a model's
+\code{unlabeled}-arm rate inside $[0.25, 0.70]$ for at least three of
+four models on the same framing. On point estimates no framing reached
+two; under a Wilson $95\%$ interval at $n = 12$, five of six framings
+are still clearly short, and the sixth (F3) has three of four models'
+intervals overlapping the band --- three of four being the threshold
+itself. So the pre-registered rule rejected every framing, and for F3
+that rejection is not distinguishable from an acceptance at this $n$.
+Whether a sensitivity label's effect can be \emph{measured} at this
+decision surface is therefore itself a function of the task wording: for
+most model-framing pairs the baseline floored or ceilinged and no
+contrast was readable; at F4, where \code{claude-sonnet-5}'s baseline
+was in range, the \code{public} label moved it $+0.500$
+(\S\ref{subsec:publicarm}, exploratory).
 
-Two things this finding does not claim. First, it does not claim the
-confidentiality label has no effect: Phase~7's floor means the effect is
-unmeasured, not measured-and-absent, for three of four models, and that
-remains true after Phase~8. Second, it does not claim six is
-representative of the space of possible task framings. Six framings
-written by a single researcher, evaluated against a mechanical
-pre-registered rule, is a small and specific sample of a much larger
-space; a different set of six, written with different task-design
-arguments, might behave differently. What can be said is narrower and
-fully supported: these six did not produce a stable, simultaneous middle
-for three of four models, across two independently pre-registered
-attempts, and the pre-registered stopping rule --- written before either
-pilot's data existed --- is what ended the search rather than a
-discretionary judgment made after seeing the numbers.
+Three things this does not claim. First, it does not claim the label has
+no effect: for three of four models the effect is unmeasured, not
+measured-and-absent, and that is still true after Phase~8. Second, it
+does not claim six framings represent the space of possible framings ---
+they are a small, hand-authored sample, and F3 in particular invites a
+higher-$n$ follow-up that this pilot could not settle. Third, it does
+not claim the Phase~8 \code{public}-arm result as a finding: it is one
+model at three framings, $n = 12$, analyzed outside the frozen plan.
+What the paper does establish is the process: the acceptance rule, the
+stopping rule, and the disclosure of every arm collected --- including
+the one the plan did not ask us to report --- were fixed or followed
+rather than chosen after seeing the numbers.
 
 % ===========================================================================
 \section{Limitations}
@@ -763,18 +879,29 @@ multi-turn negotiation, no opportunity for the model to ask a clarifying
 question before deciding. \emph{(iii)} Six task framings, authored by one
 researcher, evaluated in two rounds of three; not a systematic or random
 sample of possible framings. \emph{(iv)} Small per-cell sample size in
-the pilots (12 trials per model per arm per framing), which limits
-confidence in any individual cell, including the F5 anomaly
-(\S\ref{subsec:f5}) and the exact magnitude of terra's round-two
-separation (\S\ref{subsec:calib}). \emph{(v)} The \code{reply_to_user}
-sink was exercised live but not systematically validated
-(\S\ref{sec:instrument}) and was not part of either pilot round; its
-behavior under the framings and labels studied here is untested.
-\emph{(vi)} The F5 permit collapse (\S\ref{subsec:f5}) is reported with
-no mechanism and has not been replicated. \emph{(vii)} The main study
-this sweep was designed to gate was never executed; every Phase~8
-finding in this paper is a pilot-scale finding, not a confirmatory one.
-\emph{(viii)} The held-out judge (L4) has not been run.
+the pilots (12 trials per model per arm per framing). At $n = 12$ the
+in-band/out classification is not resolvable for every cell: a Wilson
+$95\%$ interval on a $6/12$ rate spans the whole acceptance band, and at
+F3 three of four models' intervals overlap it (\S\ref{subsec:phase8}),
+so F3's rejection under the pre-registered rule cannot be distinguished
+from an acceptance. The F5 anomaly (\S\ref{subsec:f5}), terra's
+round-two separation (\S\ref{subsec:calib}), and the
+\S\ref{subsec:publicarm} \mbox{$P - N$} values are all at this
+resolution. \emph{(v)} The F1--F3 \code{public} arm was overwritten
+before it was analyzed and is unrecoverable (\S\ref{subsec:publicarm});
+the within-study label contrast therefore exists only for F4--F6, and
+only for one model. \emph{(vi)} The \code{reply_to_user} sink was
+exercised live but not systematically validated (\S\ref{sec:instrument})
+and was not part of either pilot round; its behavior under the framings
+and labels studied here is untested. \emph{(vii)} The F5 permit collapse
+(\S\ref{subsec:f5}) is reported with no mechanism and has not been
+replicated. \emph{(viii)} The \code{public}-arm analysis
+(\S\ref{subsec:publicarm}) is post hoc, outside the frozen analysis
+plan, and its $p$-value is one uncorrected comparison selected from
+twelve. \emph{(ix)} The main study this sweep was designed to gate was
+never executed; every Phase~8 finding in this paper is a pilot-scale
+finding, not a confirmatory one. \emph{(x)} The held-out judge (L4) has
+not been run.
 
 % ===========================================================================
 \section{Reproducibility}
@@ -798,15 +925,25 @@ fingerprints, and manifest hashes are byte-pinned
 synthetic fixtures independent of this paper's own numbers.
 
 \paragraph{Public artifact.}
-Code, the frozen harness, and byte-pinned raw traces from all three
-phases --- including both rejected Phase~8 pilot rounds in full --- are
-released alongside this paper.
+Code, the frozen harness, and byte-pinned raw traces are released at
+\url{https://github.com/ArpanKumarM/agent-interop-bench}. The Phase~6/7
+artifacts are in the \code{paper-v1.0} release; the Phase~8 pilot traces
+--- round two's four arms in full, round one's raw having been
+overwritten before the \code{public} arm was analyzed
+(\S\ref{subsec:publicarm}) --- will be added in a \code{paper-v2.0}
+release. \emph{[The \code{paper-v2.0} tag URL is inserted here on
+posting; it does not yet exist.]}
 
 % ===========================================================================
 \appendix
 
 \section{Framings piloted and discarded}
 \label{app:framings}
+
+The six framings below are the full set piloted; none was accepted
+(\S\ref{subsec:phase8}). Each is the verbatim user-turn prompt, run
+under the \code{a2a_relay} sink across the four pilot arms. The
+acceptance-rule outcome table follows.
 
 \begin{table}[t]
 \centering

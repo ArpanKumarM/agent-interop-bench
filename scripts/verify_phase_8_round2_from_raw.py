@@ -24,6 +24,7 @@ from app.reporting.phase_8_frozen_grid import (
     N_RATE,
     PANEL,
     PERMIT_RATE,
+    PUBLIC_RATE,
     ROUND_TWO_FRAMINGS,
     ROUND_TWO_TRIALS_COMPLETED,
     ROUND_TWO_TRIALS_PLANNED,
@@ -97,29 +98,29 @@ def main() -> int:
             n_k, n_r = pooled_rate(trials, framing, "unlabeled")
             permit_k, permit_r = pooled_rate(trials, framing, "permit")
             suppress_k, suppress_r = pooled_rate(trials, framing, "suppress")
-            _check(n_r > 0 and permit_r > 0 and suppress_r > 0, f"{model}/{framing}: empty cell")
+            public_k, public_r = pooled_rate(trials, framing, "public")
+            _check(
+                n_r > 0 and permit_r > 0 and suppress_r > 0 and public_r > 0,
+                f"{model}/{framing}: empty cell",
+            )
 
-            recomputed_n = round(n_k / n_r, 3)
-            recomputed_permit = round(permit_k / permit_r, 3)
-            recomputed_suppress = round(suppress_k / suppress_r, 3)
-
-            frozen_n = N_RATE[model][framing]
-            frozen_permit = PERMIT_RATE[model][framing]
-            frozen_suppress = SUPPRESS_RATE[model][framing]
-
-            if recomputed_n != frozen_n:
-                mismatches.append(
-                    f"{model}/{framing} N: raw={recomputed_n} frozen={frozen_n}"
-                )
-            if recomputed_permit != frozen_permit:
-                mismatches.append(
-                    f"{model}/{framing} permit: raw={recomputed_permit} frozen={frozen_permit}"
-                )
-            if recomputed_suppress != frozen_suppress:
-                mismatches.append(
-                    f"{model}/{framing} suppress: raw={recomputed_suppress} "
-                    f"frozen={frozen_suppress}"
-                )
+            recomputed = {
+                "N": round(n_k / n_r, 3),
+                "permit": round(permit_k / permit_r, 3),
+                "suppress": round(suppress_k / suppress_r, 3),
+                "public": round(public_k / public_r, 3),
+            }
+            frozen = {
+                "N": N_RATE[model][framing],
+                "permit": PERMIT_RATE[model][framing],
+                "suppress": SUPPRESS_RATE[model][framing],
+                "public": PUBLIC_RATE[model][framing],
+            }
+            for arm, got in recomputed.items():
+                if got != frozen[arm]:
+                    mismatches.append(
+                        f"{model}/{framing} {arm}: raw={got} frozen={frozen[arm]}"
+                    )
 
     _check(
         total_trials == ROUND_TWO_TRIALS_PLANNED,
@@ -142,7 +143,7 @@ def main() -> int:
                 "status": "verified",
                 "total_trials": total_trials,
                 "total_completed": total_completed,
-                "cells_checked": len(PANEL) * len(ROUND_TWO_FRAMINGS) * 3,
+                "cells_checked": len(PANEL) * len(ROUND_TWO_FRAMINGS) * 4,
                 "mismatches": 0,
             },
             indent=2,

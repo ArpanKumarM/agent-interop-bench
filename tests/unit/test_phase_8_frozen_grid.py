@@ -82,6 +82,46 @@ def test_terra_calibration_separations_are_not_flat():
     }
 
 
+def test_public_arm_round_one_is_unrecoverable():
+    # F1-F3 raw was overwritten; the public arm for those framings is gone.
+    for m in grid.PANEL:
+        for f in grid.ROUND_ONE_FRAMINGS:
+            assert grid.PUBLIC_RATE[m][f] is None
+            assert grid.p_minus_n(m, f) is None
+
+
+def test_public_arm_round_two_p_minus_n():
+    # S6.4 quotes these; raw-verified by verify_phase_8_round2_from_raw.py.
+    assert grid.p_minus_n("claude-sonnet-5", "F4") == 0.500
+    assert grid.p_minus_n("claude-sonnet-5", "F5") == 0.083
+    assert grid.p_minus_n("claude-sonnet-5", "F6") == 0.167
+    # F4 is the one cell where a model's N baseline is in band, and P moves it.
+    assert grid.in_band(grid.N_RATE["claude-sonnet-5"]["F4"])
+    assert grid.PUBLIC_RATE["claude-sonnet-5"]["F4"] == 0.917
+
+
+def test_n_successes_consistent_with_n_rate():
+    for m in grid.PANEL:
+        for f in grid.ALL_FRAMINGS:
+            assert round(grid.N_SUCCESSES[m][f] / grid.PILOT_CELL_N, 3) == grid.N_RATE[m][f]
+
+
+def test_f3_is_the_only_framing_the_pilot_cannot_resolve():
+    # Point-estimate rule: no framing reaches 3-of-4 in band.
+    assert grid.max_simultaneous_in_band() == 1
+    # Generous 95%-CI-overlap reading: F3, and only F3, reaches the
+    # 3-of-4 acceptance threshold -- so its rejection is not resolvable
+    # at n = 12.
+    assert grid.framings_where_ci_reaches_three() == ["F3"]
+    assert grid.max_simultaneous_ci_touches_band() == 3
+    lo, hi = grid.n_rate_ci("gpt-5.6-terra", "F2")
+    # the 95% interval is wider than the entire acceptance band and
+    # contains its upper edge -- terra's true F2 rate could be anywhere
+    # from the band's lower edge to above it.
+    assert (hi - lo) > (grid.BAND_HIGH - grid.BAND_LOW)
+    assert lo <= grid.BAND_HIGH <= hi
+
+
 def test_trial_totals():
     assert grid.PHASE_6_TRIALS == 640
     assert grid.PHASE_7_TRIALS == 480
