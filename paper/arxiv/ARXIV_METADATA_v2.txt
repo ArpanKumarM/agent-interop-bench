@@ -1,0 +1,90 @@
+========================================================================
+PROPOSED arXiv SUBMISSION METADATA -- v2 replacement of arXiv:2609.01693
+(preprint; not yet submitted)
+========================================================================
+
+This is a v2 of an existing arXiv paper, submitted as a new version of
+the same identifier (2609.01693), NOT as a new submission.
+
+Title:
+Task Framing Dominates Sensitivity Labels in Verbatim Field Egress:
+A Pre-Registered Framing Sweep in an MCP-to-A2A Agent Configuration
+
+(Title changed from v1. v1 was "Public-Sharing Labels and Verbatim Field
+Egress in an MCP-to-A2A Agent Configuration: A Controlled Multi-Model
+Study". arXiv keeps both titles in the version history.)
+
+Authors:
+Arpan Kumar Mahapatra
+
+Primary category:
+cs.CR
+
+Cross-list category:
+cs.AI
+
+Comments:
+v2 substantially revises v1: two additional pre-registered pilot studies
+(Phase 8) changed the central claim from a measured public-sharing-label
+effect to a framing-dominance finding -- across six pre-registered task
+framings the label effect could not be measured, and a pre-registered
+stopping rule ended the search. 13 pages. Code and byte-pinned traces
+for all three phases, including both rejected Phase 8 pilot rounds:
+https://github.com/ArpanKumarM/agent-interop-bench
+
+Journal-ref:
+(none -- preprint)
+
+DOI:
+(none -- preprint)
+
+License:
+Same as v1 (arXiv.org perpetual, non-exclusive license, arXiv-1.0,
+unless the author elects CC BY 4.0). The repository code remains MIT;
+that does not cover the manuscript text.
+
+------------------------------------------------------------------------
+ABSTRACT  (ASCII-only; arXiv metadata form; hard limit 1920 characters)
+------------------------------------------------------------------------
+Measuring a sensitivity label's effect on agent behavior requires a task
+framing that gives the behavior room to move. We report a three-phase,
+pre-registered MCP-to-A2A handoff study, scored by an exact-substring,
+judge-free detector. A two-arm study (640 trials) found a large
+confidential-vs-public contrast but could not attribute it to either
+label. Adding an unlabeled baseline (480 trials) resolved that ambiguity
+but drove three of four models to a floor on both the confidential and
+unlabeled arms: the confidentiality effect is unresolved by a floor, not
+a genuine null. A two-round, six-framing task-wording sweep followed,
+with a stopping rule fixed in advance. Round one (576 trials) drove two
+of four models to a near-complete ceiling; round two (576 trials),
+designed to give withholding a structural reason rather than a softer
+tone, drove three of four models back to a floor. No framing gave all
+four models a measurable middle at once, which the acceptance rule
+required; individual models sometimes had it -- never together. The
+stopping rule fired after round two: the ~13,200-trial main study was
+never run. Task framing dominates any label effect large enough to
+detect here. Calibration reliability was itself framing-dependent, and
+no model's in-band behavior in one round persisted into the next. At one
+framing, an explicit "share everything" instruction produced far lower
+compliance than the same model's own unlabeled baseline -- 11 of 12
+trials relayed unprompted, 1 of 12 complied with the explicit
+instruction -- an unexplained inversion, reported with no mechanism.
+Near-match scoring worked as designed. Findings are scoped to one host
+policy, one decision surface, and six framings authored by a single
+researcher -- not the space of possible framings. This is not evidence
+that sensitivity labels are ineffective in agent systems generally, only
+that framing dominated them here.
+------------------------------------------------------------------------
+END ABSTRACT
+------------------------------------------------------------------------
+
+Notes:
+- The ASCII abstract above matches the PDF abstract
+  (paper/arxiv/main_v2.tex) except: em dashes -> "--", and the final
+  clause drops "proposed" ("reported with no mechanism" vs the PDF's
+  "reported with no mechanism proposed") to stay under the 1920-char
+  metadata limit. No claim, number, or qualifier differs.
+- Page count in "Comments" (13) is the compiled main_v2.pdf page count.
+- The boxed scope / numeric-integrity note on page 1 of the PDF stays in
+  the submitted version; the "Comments" sentence above is deliberately
+  redundant with it, not a replacement.
