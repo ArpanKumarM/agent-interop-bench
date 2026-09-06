@@ -125,12 +125,14 @@ measurable against a baseline that was not itself on the floor. A
 pre-registered, two-round framing sweep (Phase 8) then searched for a
 task wording that would give the other three models a baseline in a
 measurable range too, so a label's influence could be read across the
-panel rather than for one model at one framing. It did not find one: the
-first round's three framings drove `sol` and `luna` to a near-complete
-ceiling and left `terra` and `claude` more variable, `terra` briefly
-inside the target band; the second round's three, designed to give
-withholding a structural reason rather than a softer tone, drove `sol`,
-`terra`, and `luna` to a floor. The pilots did, however, carry a
+panel rather than for one model at one framing. It did not find one that
+cleared the acceptance rule on point estimates — though at F3 the pilot's
+n = 12 leaves that rejection indistinguishable from an acceptance (§5.3).
+The first round's three framings drove `sol` and `luna` to a
+near-complete ceiling and left `terra` and `claude` more variable,
+`terra` briefly inside the target band; the second round's three,
+designed to give withholding a structural reason rather than a softer
+tone, drove `sol`, `terra`, and `luna` to a floor. The pilots did, however, carry a
 `public` arm at every framing — collected under the pilot design but
 outside its frozen analysis plan. Analyzed post hoc (§6.4), that arm
 supplies the within-study, same-framing label measurement the rest of

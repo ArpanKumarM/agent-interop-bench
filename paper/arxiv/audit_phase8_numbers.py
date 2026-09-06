@@ -85,6 +85,11 @@ Checks:
      appears nowhere as an entry; every \cite key in main_v2.tex
      resolves; no bare inline arXiv id is left in the .tex body.
      Qualifier and terra-flattening lints also run on the .tex.
+ 15. Posting gates (report as GATE, still fail the build): the
+     paper-v2.0 tag-URL placeholder and the \date{} TODO comment must
+     both be gone. Designed to stay red until camera-ready; going green
+     is the posting-ready signal. Fix by doing the step, not by
+     deleting the check.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -134,11 +139,12 @@ class AuditError(RuntimeError):
 
 _failures: list[str] = []
 _warnings: list[str] = []
+_gates: list[str] = []
 
 
 def check(cond: bool, msg: str) -> None:
     if not cond:
-        _failures.append(msg)
+        (_gates if msg.startswith("POSTING GATE") else _failures).append(msg)
 
 
 def warn(msg: str) -> None:
@@ -898,6 +904,36 @@ def _lint_text(label: str, text: str) -> None:
         warn(f"{label}: possible terra-flattening -- {fm.group(0)!r}")
 
 
+# --------------------------------------------------------------------------- #
+# 15. Posting gates. Two steps cannot be verified against an artifact --
+#     cutting the paper-v2.0 release tag and setting the real submission
+#     date -- so they are guarded by placeholders that FAIL THE BUILD
+#     while present. The audit is meant to be red until both are done;
+#     going green is the posting-ready signal. Do not "fix" these by
+#     deleting the check -- do the step.
+# --------------------------------------------------------------------------- #
+_TAG_PLACEHOLDER = "tag URL is inserted here on posting"
+_DATE_TODO = "TODO: set to the actual arXiv v2 submission date"
+
+
+def audit_posting_gates() -> None:
+    for label, doc in (("main_v2.md", MAIN_V2), ("main_v2.tex", MAIN_V2_TEX)):
+        flat = " ".join(doc.split())  # placeholder may be line-wrapped
+        check(
+            _TAG_PLACEHOLDER not in flat,
+            f"POSTING GATE ({label}): the paper-v2.0 tag URL is still a "
+            "placeholder. Cut the release tag containing the Phase 8 traces "
+            "and substitute its URL in the Public-artifact paragraph, then "
+            "this check passes.",
+        )
+    check(
+        _DATE_TODO not in " ".join(MAIN_V2_TEX.split()),
+        "POSTING GATE (main_v2.tex): the \\date{} still carries the "
+        f"'{_DATE_TODO}' comment. Set the real v2 submission date and remove "
+        "the comment.",
+    )
+
+
 def main() -> int:
     audit_frozen_grid_self_consistency()
     audit_round_two_from_raw()
@@ -912,6 +948,7 @@ def main() -> int:
     audit_appendix_b_hashes()
     audit_tex_mirrors_manuscript()
     audit_bib_and_citations()
+    audit_posting_gates()
     lint_qualifiers()
     lint_terra_flattening()
     _lint_text("main_v2.tex", MAIN_V2_TEX)
@@ -925,9 +962,22 @@ def main() -> int:
         print(f"\n=== {len(_failures)} AUDIT FAILURE(S) ===", file=sys.stderr)
         for f in _failures:
             print(f"  FAIL: {f}", file=sys.stderr)
+
+    if _gates:
+        print(
+            f"\n=== {len(_gates)} POSTING GATE(S) OPEN (expected until camera-ready) ===",
+            file=sys.stderr,
+        )
+        for g in _gates:
+            print(f"  GATE: {g}", file=sys.stderr)
+
+    if _failures or _gates:
         return 1
 
-    print(f"\nAll Phase 8 numeric checks passed ({len(_warnings)} lint warnings).")
+    print(
+        f"\nAll Phase 8 numeric checks passed; posting gates clear "
+        f"({len(_warnings)} lint warnings)."
+    )
     return 0
 
 
