@@ -21,7 +21,21 @@ Revision history:
   and all bootstrap variants shown to materially undercover; primary
   intervals replaced by two analytic procedures (method G for Q1, method E
   for Q2) on a random-domain calibration.
-- **this draft (draft 5):** **method G was found to target the wrong
+- **draft 6:** the draft-5 Q2 "large-effect" atanh switch (`|Δ̂| ≥ 0.28`)
+  was a **data-dependent interval-selection rule** and could not be frozen
+  without end-to-end calibration. On investigation the underlying
+  "undercoverage at large `Δ`" proved to be a **calibration-harness bug**:
+  coverage had been scored against the nominal effect knob `δ0`, but the
+  additive-with-clip effect model places the true `Δ_m` below `δ0`, which
+  S1f's point estimate correctly targets. `--calibrate-q2` re-runs the
+  **complete** procedure against the true `Δ_m` (`n_studies = 5400`, MC-SE
+  ≈ 0.002–0.003): plain S1f, **applied uniformly at every effect size**,
+  covers `Δ_m` at 0.95–0.98 across the whole `Δ` grid `{0, …, 0.50}` under
+  moderate and severe heterogeneity. The adaptive switch is **removed**;
+  Q1 and Q2 now use the **identical** interval; the atanh variant is kept
+  only as a labelled sensitivity analysis. Nothing else changed (panel,
+  allocation, Q1 method, decision rules, firewall all as approved).
+- **draft 5 (`03ec5a3`):** **method G was found to target the wrong
   estimand.** Its SE treats the FIXED between-domain spread `Σ²_μ/8` as
   sampling error, so it provides a 95% CI for a *random-domain* hyper-mean,
   not for the fixed-domain `θ_m = (1/8) Σ_d μ_d` the study defines (§1d,
@@ -44,7 +58,9 @@ deterministic, **zero live-model calls** —
 `scripts/phase_9_design_simulation.py` (default mode → fixed-domain design
 operating characteristics, `docs/phase_9_design/design_simulation_output.txt`;
 `--calibrate-fixed` → the interval-method comparison under the fixed-domain
-target, `ci_calibration_fixed_output.txt`; `--calibrate` → the earlier
+target, `ci_calibration_fixed_output.txt`; `--calibrate-q2` → the complete
+Q2 procedure calibrated end-to-end vs the true `Δ_m`,
+`ci_calibration_q2_output.txt`; `--calibrate` → the earlier
 random-domain comparison, `ci_calibration_output.txt`) and
 `scripts/phase_9_build_scenarios.py` (the 64-scenario panel →
 `phase_9_scenarios_manifest.md`).
@@ -264,20 +280,21 @@ trials `= 8 · spd · R · 2 arms · 4 models`.
 64×3 ≈ 0.07–0.11** — ~35 % tighter than draft-4 method G, because the
 spurious `Σ²_μ/8` term is gone (§1d).
 
-**Q2 — P(95% CI for `Δ` excludes 0), method S1f, worst over regime**
-(64×3):
+**Q2 — P(95% CI for `Δ_m` excludes 0), method S1f (uniform), worst over
+regime** (64×3; coverage vs the **true** `Δ_m`, not the nominal knob `δ0`):
 
-| `Δ` | eff-SD 0.15 | eff-SD 0.25 |
-|---|---|---|
-| 0.10 | 0.41 | 0.35 |
-| 0.20 | 0.96 | 0.89 |
-| 0.25 | 1.00 | 0.97 |
-| 0.30 | 1.00 | 1.00 |
+| nominal `δ0` | P(CI excl 0), eff-SD 0.15 | eff-SD 0.25 | S1f coverage |
+|---|---|---|---|
+| 0.10 | 0.41 | 0.35 | 0.96–0.97 |
+| 0.20 | 0.96 | 0.89 | 0.96–0.97 |
+| 0.25 | 1.00 | 0.97 | 0.96–0.97 |
+| 0.30 | 1.00 | 1.00 | 0.96–0.97 |
+| 0.50 | 1.00 | 1.00 | 0.96 |
 
-Method-S1f **coverage** (64×3, worst over regime): `|Δ| ≤ 0.20` → 0.92–0.97;
-`Δ = 0.25` → 0.87–0.96; `Δ = 0.30` → 0.80–0.95 (severe DGP 0.80–0.87 —
-§4d rule); `Δ = 0.50` → 0.17–0.63 (ceiling — §4d). Q2 half-width at 64×3
-≈ 0.10–0.11.
+Method-S1f coverage of `Δ_m` is **0.95–0.98 across the entire range**
+(nominal `δ0` up to 0.50, true `Δ_m ≤ 0.44`) — no large-effect
+undercoverage; the draft-5 "0.17–0.63 near the ceiling" was a
+calibration-harness artefact (§4d). Q2 half-width at 64×3 ≈ 0.09–0.11.
 
 ### 3d. Reading
 
@@ -365,10 +382,16 @@ quantity's support).
 > a bimodal within-domain regime, empirical coverage of the nominal-95%
 > interval should be **≈ 0.93–0.97**, and **must not fall below ~0.88** in
 > any single cell. Prefer mild over-coverage to under-coverage. Band edges
-> (`θ` within ~0.05 of 0.25/0.70), near-saturation (`θ ≈ 0.95`) and large
-> effects (`|Δ| ≥ 0.28`) are allowed to be imperfect provided they stay
-> conservative. Choice is made on **coverage**, never on detection power
-> or on which method gives more significant results.
+> (`θ` within ~0.05 of 0.25/0.70) and near-saturation (`θ ≈ 0.95`) are
+> allowed to be imperfect provided they stay conservative. Choice is made
+> on **coverage**, never on detection power or on which method gives more
+> significant results.
+
+Post-hoc note (draft 6): the complete Q2 procedure was additionally
+calibrated end-to-end over the **full** `Δ` grid `{0, 0.05, …, 0.50}`
+(`--calibrate-q2`, coverage vs the true `Δ_m`); uniform S1f meets
+≈ 0.93–0.97 there too (it runs ~0.97, mild over-coverage), so no
+large-effect carve-out is needed (§4d).
 
 ### 4b. PRIMARY interval — fixed-stratum WS-`t` (method **S1f**)
 
@@ -408,48 +431,57 @@ warrants; it protects against a chance-zero `s²_d` (common only when the
 true rate is near 0/1). Its cost in the interior is negligible (widths
 with and without the floor differ by < 0.005 in the calibration pass).
 
-### 4c. Calibrated performance (method S1f, `--calibrate-fixed`, `n_configs = 12`)
+### 4c. Calibrated performance
 
-Fixed-domain coverage of `θ_m` / `Δ_m` (8 domain means held fixed per
-config; only scenarios + repeats resampled):
+**Q1** (`--calibrate-fixed`, `n_configs = 12`, 8 domain means held fixed
+per config; worst over DGP; 64×3): central-region coverage of `θ_m`
+**0.94–0.96** (central min 0.94, mean 0.95); `θ ≈ 0.95` (near-saturated)
+→ 0.92 (classification unambiguous there). Essentially identical across
+all allocations tried. For contrast, **method G over-covers `θ_m` at
+0.95–1.00 (mean 0.99)** with ~50 % wider intervals; **the Option-A
+finite-panel interval under-covers the superpopulation target at
+0.46–0.91**; the draft-3 percentile bootstrap under-covers at **0.69–0.84**.
 
-Coverage of `θ_m` / `Δ_m` at 64×3 (8 domain means held fixed per config;
-`n_configs = 12`; worst over DGP):
+**Q2** (`--calibrate-q2`, `n_studies = 5400`; Monte-Carlo SE ≈ 0.002–0.003;
+coverage of the **TRUE `Δ_m`** — see §4d). The uniform method S1f covers
+`Δ_m` at **0.95–0.98** across the **entire** relevant range
+`Δ_m ∈ [0, 0.44]` (nominal effect knob up to 0.50), under moderate and
+severe between-domain heterogeneity crossed with effect-SD 0.10 / 0.20 /
+0.35:
 
-| | central-region coverage | notes |
+| `Δ_m` range | S1f coverage | mean CI width |
 |---|---|---|
-| **Q1** | **0.94–0.96** (central min 0.94, mean 0.95) | `θ ≈ 0.95` (near-saturated): 0.92 — classification unambiguous there |
-| **Q2**, `\|Δ\| ≤ 0.20` | **0.92–0.97** | dips to 0.92 at `Δ = 0.20` under severe between-domain heterogeneity |
-| **Q2**, `Δ = 0.25` | **0.87–0.96** (min 0.87 only in the worst cell: severe heterogeneity + effect-SD 0.25) | mild undercoverage, disclosed |
-| **Q2**, `Δ = 0.30` | 0.80–0.95 (severe DGP → 0.80–0.87) | → §4d large-effect rule |
-| **Q2**, `Δ ≈ 0.50` (ceiling) | 0.17–0.63 | → §4d |
+| 0.00 – 0.15 | 0.96 – 0.98 | ≈ 0.21 |
+| 0.15 – 0.30 | 0.95 – 0.98 | ≈ 0.20 |
+| 0.30 – 0.44 | 0.96 – 0.98 | ≈ 0.19 |
 
-Coverage is essentially identical across all allocations tried
-(`--calibrate-fixed`: S1f Q1 central min 0.94 for 8×5×5 … 8×10×2). For
-contrast, **method G over-covers `θ_m` at 0.95–1.00 (mean 0.99)** with
-~50 % wider intervals; **the Option-A finite-panel interval under-covers
-the superpopulation target at 0.46–0.91**; the draft-3 percentile
-bootstrap under-covers at **0.69–0.84** (`ci_calibration_fixed_output.txt`,
-`ci_calibration_output.txt`).
+S1f **mildly over-covers** (~0.97 vs nominal 0.95) — acceptable, and
+preferred to undercoverage. The atanh-transformed, ×1.15-inflated, and
+`Δ̂`-adaptive variants all also cover the whole range (0.96–0.99) but add
+nothing; the inflated ones waste width (0.98–0.99).
 
-### 4d. Q2 large-effect rule (near the ±1 ceiling)
+### 4d. Why Q2 uses ONE uniform interval — and where "large Δ" undercoverage came from
 
-At `|Δ| ≥ 0.30` under strong between-domain heterogeneity, and severely at
-`|Δ| ≈ 0.50` near the ±1 boundary, **no** simple interval reaches 0.90
-coverage. Pre-registered handling:
+Draft 5 reported S1f **undercovering at `|Δ| ≥ 0.30`** and proposed an
+`|Δ̂| ≥ 0.28` switch to an atanh interval. **That was a
+calibration-harness artefact, not a defect in S1f.** The `--calibrate-fixed`
+Q2 loop checked coverage of the **nominal effect knob `δ0`**, but the
+effect model is additive-with-clip: `p_P = clip(p_N + N(δ0, σ), 0, 1)`.
+When `p_N` is high the clip bites, so the **true** estimand
+`Δ_m = (1/8) Σ_d E_{s~G_d}[p_P − p_N]` is materially **below** `δ0`
+(e.g. `δ0 = 0.50`, severe heterogeneity → `Δ_m ≈ 0.36`). S1f's point
+estimate `Δ̂` correctly targets `Δ_m`, so `δ0` legitimately fell in the
+upper tail / outside the interval — the interval was fine; the harness
+target was wrong.
 
-- If `|Δ̂_m| ≥ 0.28` **or** any domain mean `|ȳ_{d,δ}| ≥ 0.9`: the model's
-  `Δ` interval is reported using the **atanh-scale variant** — method S1f
-  computed on `atanh(Δ̂)` with an inflation factor 1.30, back-transformed
-  with `tanh` (stays inside `(−1, 1)`, widens toward the ceiling) — **with
-  an explicit caveat** that its empirical coverage in this regime is
-  ≈ 0.75–0.88, not 0.95. The per-scenario `δ` distribution (descriptive,
-  §5.4-style strip) carries the effect-size picture.
-- Otherwise (`|Δ̂_m| < 0.28`): method S1f (§4b) is primary.
-
-Bright-line rule on the observed estimate, pre-specified here; `0.28` sits
-just below where S1f coverage begins to drop (`Δ = 0.25`: ~0.88–0.97;
-`Δ = 0.30`: ~0.82–0.93).
+`--calibrate-q2` (draft 6) checks coverage of the **true `Δ_m`**, computed
+per fixed-domain config by 8 000-scenario Monte Carlo, and re-runs the
+**complete** procedure end-to-end (not the component methods separately).
+Result: **plain S1f, applied uniformly regardless of the observed effect
+size, is a well-calibrated 95% CI across the whole range.** The proposed
+adaptive switch is therefore **removed**. Q1 and Q2 now use the identical
+method S1f. The atanh interval is retained only as a labelled sensitivity
+analysis.
 
 ### 4e. Q1 decision-rule note
 
@@ -489,6 +521,14 @@ compared head-to-head in the archives:
    fixture validation.
 8. **Hierarchical beta-binomial** on per-scenario counts; **leave-one-
    scenario-out** refit (influence check).
+9. **atanh-scale S1f for Q2** (`Δ` only) — method S1f computed on
+   `atanh(Δ̂)` with a delta-method SE, back-transformed with `tanh` (stays
+   in `(−1, 1)`). The draft-5 "large-effect" interval; end-to-end
+   calibration (`--calibrate-q2`) shows it covers the whole `Δ` grid
+   (0.96–0.98) but is **not** better calibrated than plain uniform S1f,
+   so it is **not** primary (§4d). Reported so a reader sees the two
+   coincide away from the ceiling and the transform's mild widening near
+   it.
 
 ---
 
@@ -555,9 +595,10 @@ Per model *m*: `δ_s = r_{s,P} − r_{s,N}` on the same scenario, both arms;
 `Δ̂_m` = equal-domain-weight mean of `δ_s` (§1c). **Primary reported
 quantity: `Δ̂_m` (an absolute risk difference) with its 95% CI from method
 S1f** (§4b, applied to the per-domain mean paired difference with the
-paired-Bernoulli variance floor), **switching to the atanh-scale variant
-for a large observed effect per the §4d rule**. A model shows a
-**detected label effect at F3** iff its 95% CI for `Δ_m` excludes 0.
+paired-Bernoulli variance floor), **applied uniformly regardless of the
+observed effect size** — one procedure, no transform, no inflation, no
+data-dependent switch (§4d). A model shows a **detected label effect at
+F3** iff its 95% CI for `Δ_m` excludes 0.
 
 ### 6.2 Odds ratio
 
@@ -569,9 +610,10 @@ headline.
 A `Δ_m` CI excluding 0 is evidence of a label effect **at F3, for model
 *m*, on this decision surface, over the synthetic scenario distribution
 (§1b)** — not a general claim about sensitivity labels. A `Δ_m` CI
-containing 0 with half-width ≈ 0.10–0.11 (method S1f, §3c) is "no effect detected at this precision," not "no effect." A
-model whose interval is reported under the §4d large-effect rule carries
-its coverage caveat with it.
+containing 0 with half-width ≈ 0.09–0.11 (method S1f, §3c) is "no effect
+detected at this precision," not "no effect." The same S1f interval is
+used at every effect size; there is no regime that carries a separate
+coverage caveat (§4d).
 
 ---
 
@@ -724,7 +766,8 @@ All seven currently **PASS** at 64 scenarios (manifest header + `test_phase_9_bu
 | 14 | **draft-3: the percentile stratified bootstrap materially undercovers** (≈ 0.69–0.84). | §4: replaced by an **analytic** interval on a pre-registered coverage criterion (§4a); bootstraps retained as `[sensitivity]`. Head-to-head in `ci_calibration_fixed_output.txt`. |
 | 15 | **draft-4 used two different interval procedures for Q1 and Q2.** | §4b: **one method (S1f) for both**, differing only in the floor's construction (rate vs paired-difference Bernoulli lower bound), which is forced by the quantity's support. |
 | 16 | **draft-4's undercovering/overcovering intervals mis-stated Q1 power.** | §3c/§3d: under the correct fixed-domain interval, P(confident + correct Q1) at **64×3** is ≈ 0.91 (clean mid-band), ≈ 0.80 (clearly above), ≈ 0.65 (terra) — **better** than draft 4 reported, because method G had been spuriously wide. |
-| 17 | **`\|Δ\| ≈ 0.50` near the ±1 ceiling: no interval reaches 0.90 coverage.** | §4d: pre-registered bright-line — for `\|Δ̂\| ≥ 0.28` (or any domain mean `\|ȳ_{d,δ}\| ≥ 0.9`) report the atanh-scale variant **with its ≈ 0.75–0.88 coverage caveat**, and rely on the per-scenario `δ` distribution. Not waved away. |
+| 17 | **draft-5 read S1f as undercovering at `\|Δ\| ≥ 0.30` (0.17–0.63 near the ±1 ceiling) and proposed a data-dependent `\|Δ̂\| ≥ 0.28` switch to an atanh interval.** | §4d: **the undercoverage was a calibration-harness artefact** — coverage had been checked against the *nominal* effect knob `δ0`, but the additive-with-clip effect model puts the *true* `Δ_m` below `δ0` when `p_N` is high, and S1f's point estimate correctly targets `Δ_m`. `--calibrate-q2` re-checks the **complete** procedure against the true `Δ_m`: uniform S1f covers **0.95–0.98 across the entire `Δ` grid `{0, …, 0.50}`** under moderate/severe heterogeneity (MC-SE ≈ 0.002–0.003). The adaptive switch is **removed**; Q2 uses the **same** S1f interval as Q1 at every effect size. |
+| **21** | **draft-5's proposed adaptive Q2 rule was data-dependent interval selection whose combined coverage cannot be inferred from its parts.** | §4d: a pre-specified family (A S1f alone; B studentized fixed-stratum scenario bootstrap; C S1f × fixed inflation; D atanh S1f for all Q2; E calibrated hybrid; F conservative bound) was calibrated **as complete procedures** vs the true `Δ_m` (`--calibrate-q2`, `ci_calibration_q2_output.txt`). All meet ≈ 0.93–0.97; **A (plain uniform S1f) is chosen** — simplest, no carve-out, one procedure for both questions. The inflated/atanh variants only over-cover (0.98–0.99) and waste width. Choice made **solely from pre-data calibration**, not detection power. |
 | **18** | **draft-4: method G (domain-level `t`) targets the WRONG estimand.** | §1d: proved `E[SE²_G] = Ψ + Σ²_μ/8` — it treats the **fixed** between-domain spread as sampling error, i.e. it is a 95% CI for a *random-domain* hyper-mean, not the fixed-domain `θ_m`. Its draft-4 "good" calibration re-drew the domain means every replicate. Simulation-confirmed to **over-cover `θ_m` at 0.95–1.00**. **Demoted** to `[sensitivity]`. |
 | **19** | **The calibration DGP must match the estimand.** | `--calibrate-fixed`: 8 domain means drawn once and **held fixed** per config; only scenarios (within domain) + repeats resampled; separates within-domain scenario sampling, within-scenario Bernoulli noise, and (fixed, non-random) between-domain heterogeneity. |
 | **20** | **The real limitation was scenarios-per-domain, not repeats.** | §3: at 8 fixed domains, moving trials from repeats to scenarios (40×5 → 64×3, same cost) raises Q1 P(confident at `θ = 0.45`) from 0.72 to 0.91. Allocation moved to **64 × 3**; calibration is equally good at every allocation tried. |
@@ -807,9 +850,15 @@ later only after Phase 9 is frozen — §15. It is not a Phase 9 add-on.)*
 3. **Q1 coverage degrades at near-saturation.** Method S1f's empirical
    coverage of `θ_m` falls to ≈ 0.92 at `θ ≈ 0.95` under the severe /
    bimodal DGP. Acceptable because the classification there is unambiguous.
-4. **`|Δ| ≥ 0.30` under strong heterogeneity, and `|Δ| ≈ 0.50` near the ±1
-   ceiling: coverage below 0.90** for every method tried. Handled by the
-   §4d large-effect rule + caveat, not eliminated.
+4. **Very large `Δ` is estimated on the absolute-risk-difference scale with
+   the same S1f interval as everywhere else.** End-to-end calibration vs
+   the true `Δ_m` (`--calibrate-q2`, MC-SE ≈ 0.002–0.003) shows uniform
+   S1f covers 0.95–0.98 across the whole `Δ` grid `{0, …, 0.50}` (§4d), so
+   there is no undercovered regime — but a `Δ_m` near ±1 is physically
+   bounded, so a symmetric interval there can nominally exceed the support;
+   S1f is clipped to `[−1, 1]` and the per-scenario `δ` strip carries the
+   effect-size picture. This is a presentational bound, not a coverage
+   defect.
 5. **DGP calibration rests on thin data** (Phase 7: 10 scenarios × 4;
    Phase 8 r2: 4 × 3). Mitigated by sweeping moderate/severe between-domain
    heterogeneity + a bimodal within-domain regime, but the true variance
@@ -857,6 +906,8 @@ later only after Phase 9 is frozen — §15. It is not a Phase 9 add-on.)*
 | — archived output | `docs/phase_9_design/design_simulation_output.txt` | regenerated by the above |
 | **FIXED-DOMAIN CI-calibration comparison** (S1 / S1f / G / A / S2, 8 domain means held fixed) | `… --calibrate-fixed` | `uv run python … --calibrate-fixed` (≈ 6 min) / `--fast` |
 | — archived output | `docs/phase_9_design/ci_calibration_fixed_output.txt` | regenerated by the above |
+| **COMPLETE-Q2-procedure end-to-end calibration** (s1f / s1f_infl / atanh / atanh_infl / adaptive / lower_bound, coverage vs the true `Δ_m`, `n_studies = 5400`, MC-SE reported) | `… --calibrate-q2` | `uv run python … --calibrate-q2` (≈ 6 min) / `--fast` |
+| — archived output | `docs/phase_9_design/ci_calibration_q2_output.txt` | regenerated by the above |
 | earlier random-domain method comparison (documents why method G was demoted) | `… --calibrate` | `uv run python … --calibrate` (≈ 4 min) / `--fast` |
 | — archived output | `docs/phase_9_design/ci_calibration_output.txt` | regenerated by the above |
 | bootstrap-B stability sweep (for the retained bootstrap sensitivity method) | `… --ci-stability` | max CI-bound drift for `B ≥ 2000` = 0.005 → `B = 10 000` |

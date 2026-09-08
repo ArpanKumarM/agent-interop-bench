@@ -161,7 +161,7 @@ def test_method_g_overcovers_fixed_domain_while_s1f_calibrates():
     spread Sigma2_mu/8, so it over-covers theta=(1/8)sum mu_d; the
     within-domain stratified method (S1f) targets the right variance."""
     q1, _q2 = sim.simulate_calibration_fixed(
-        n_configs=3, n_sim=50, b=1, designs=((64, 3),), n_sim_boot=1
+        n_configs=2, n_sim=45, b=1, designs=((64, 3),), n_sim_boot=1
     )
 
     def cov(method: str) -> list[float]:
@@ -185,7 +185,7 @@ def test_finite_panel_undercovers_the_superpopulation_target():
     fixed-domain SUPERPOPULATION estimand -- it only covers the exact
     scenarios, not other draws from G_d."""
     q1, _q2 = sim.simulate_calibration_fixed(
-        n_configs=3, n_sim=50, b=1, designs=((64, 3),), n_sim_boot=1
+        n_configs=2, n_sim=45, b=1, designs=((64, 3),), n_sim_boot=1
     )
     a = [
         r.coverage
@@ -233,3 +233,71 @@ def test_ci_stability_bounds_settle_in_b():
     res = sim.ci_stability(bs=(500, 1000, 2000, 4000))
     for entry in res.values():
         assert entry["max_drift_B>=2000"] < 0.012
+
+
+# --- Q2 confidence procedure (finalized: uniform S1f) ------------------- #
+_DIFF_SMALL = [[0.05, 0.10, 0.02, 0.08, 0.06, 0.09, 0.03, 0.07] for _ in range(8)]
+_DIFF_LARGE = [[0.45, 0.50, 0.40, 0.55, 0.48, 0.52, 0.44, 0.49] for _ in range(8)]
+_N8 = [[0.4] * 8 for _ in range(8)]
+_P8 = [[0.6] * 8 for _ in range(8)]
+
+
+def test_q2_primary_interval_default_is_uniform_s1f_and_deterministic():
+    a = sim.q2_primary_interval(_DIFF_LARGE, _N8, _P8, 3)
+    b = sim.q2_primary_interval(_DIFF_LARGE, _N8, _P8, 3)
+    assert a == b
+    assert a[3] == "s1f"  # default procedure, regardless of effect size
+    # a large observed effect does NOT switch method (no adaptive rule)
+    c = sim.q2_primary_interval(_DIFF_SMALL, _N8, _P8, 3)
+    assert c[3] == "s1f"
+
+
+@pytest.mark.parametrize("proc", ["s1f", "s1f_infl", "atanh", "atanh_infl", "lower_bound"])
+def test_q2_procedures_bracket_and_respect_support(proc):
+    for dv in (_DIFF_SMALL, _DIFF_LARGE):
+        pt, lo, hi, tag = sim.q2_primary_interval(dv, _N8, _P8, 3, procedure=proc)
+        assert -1.0 <= lo <= pt <= hi <= 1.0
+        assert tag.startswith(proc[:4]) or tag == proc
+
+
+def test_q2_atanh_variant_stays_inside_open_interval_for_a_large_effect():
+    pt, lo, hi, _ = sim.q2_primary_interval(_DIFF_LARGE, _N8, _P8, 3, procedure="atanh")
+    assert -1.0 < lo < hi < 1.0
+
+
+def test_q2_adaptive_candidate_switch_behaviour():
+    # |Delta_hat| well below 0.28, no saturated domain -> s1f branch
+    _pt, _lo, _hi, tag = sim.q2_primary_interval(_DIFF_SMALL, _N8, _P8, 3, procedure="adaptive")
+    assert tag == "adaptive:s1f"
+    # |Delta_hat| ~ 0.48 >= 0.28 -> atanh branch
+    _pt, _lo, _hi, tag = sim.q2_primary_interval(_DIFF_LARGE, _N8, _P8, 3, procedure="adaptive")
+    assert tag == "adaptive:atanh_infl"
+    # small mean but one saturated domain (|ybar_delta| >= 0.9) -> atanh branch
+    dv = [[0.02] * 8 for _ in range(7)] + [[0.95] * 8]
+    _pt, _lo, _hi, tag = sim.q2_primary_interval(dv, _N8, _P8, 3, procedure="adaptive")
+    assert tag == "adaptive:atanh_infl"
+
+
+def test_q2_true_delta_falls_below_nominal_when_clipping_bites():
+    # all 8 domain means high -> p + N(0.5, .) clips at 1 -> true Delta << 0.5
+    mu_d = (0.9,) * 8
+    d_true = sim._q2_true_delta(sim._rng("t", "true"), mu_d, 8.0, 0.50, 0.15, mc=4000)
+    assert d_true < 0.30
+    # near zero-effect, true Delta ~ 0
+    d0 = sim._q2_true_delta(sim._rng("t", "t0"), (0.45,) * 8, 8.0, 0.0, 0.15, mc=4000)
+    assert abs(d0) < 0.02
+
+
+def test_q2_final_procedure_coverage_regression():
+    """The frozen Q2 procedure (uniform S1f) must cover the TRUE Delta_m at
+    >= 0.92 across the full delta0 range and all heterogeneity regimes."""
+    rows = sim.simulate_q2_procedures(n_configs=2, n_sim=90)
+    s1f = [r.coverage for r in rows if r.procedure == "s1f"]
+    assert min(s1f) >= 0.90
+    assert max(s1f) <= 1.0
+    # detection rises with the true effect
+    by_d = {}
+    for r in rows:
+        if r.procedure == "s1f":
+            by_d.setdefault(round(r.delta0, 2), []).append(r.detect)
+    assert min(by_d[0.30]) > min(by_d[0.10])

@@ -35,6 +35,7 @@ claude F4 N per-scenario k/3 = 3,0,0,2, near-bimodal):
 
 Run:  uv run python scripts/phase_9_design_simulation.py                    (design OCs)
       uv run python scripts/phase_9_design_simulation.py --calibrate        (CI calibration)
+      uv run python scripts/phase_9_design_simulation.py --calibrate-q2      (Q2 proc coverage)
       uv run python scripts/phase_9_design_simulation.py --ci-stability      (bootstrap B sweep)
       uv run python scripts/phase_9_design_simulation.py --fast             (small; tests)
 """
@@ -327,6 +328,24 @@ def simulate_q2(n_sim: int, b: int = SIM_B) -> list[Q2Row]:
     scenarios + repeats are resampled; target = the true Delta."""
     rows: list[Q2Row] = []
     tot = _DESIGN_N_CONFIGS * n_sim
+    # precompute the TRUE fixed-domain Delta_m per (regime, esd, delta, config)
+    # once -- it does not depend on the design or n_sim (clipping shifts it
+    # below the nominal `delta`).
+    dtrue: dict[tuple, float] = {}
+    for regime in TWOBETA_REGIMES:
+        _kd, kw = TWOBETA_REGIMES[regime]
+        for esd in Q2_EFFECT_SD:
+            for delta in Q2_TRUE_DELTA:
+                for c in range(_DESIGN_N_CONFIGS):
+                    mu_d = draw_fixed_config(_rng("dq2-cfg", regime, c), "2beta", regime, 0.45)[1]
+                    dtrue[regime, esd, delta, c] = _q2_true_delta(
+                        _rng("dq2-true", regime, esd, delta, c),
+                        mu_d,
+                        kw,
+                        delta,
+                        esd,
+                        mc=4000,
+                    )
     for design in CANDIDATE_DESIGNS:
         s, r = design
         spd = s // DOMAINS
@@ -343,6 +362,7 @@ def simulate_q2(n_sim: int, b: int = SIM_B) -> list[Q2Row]:
                     for c in range(_DESIGN_N_CONFIGS):
                         crng = _rng("dq2-cfg", regime, c)
                         mu_d = draw_fixed_config(crng, "2beta", regime, 0.45)[1]
+                        d_true = dtrue[regime, esd, delta, c]
                         srng = _rng("dq2-sim", regime, esd, delta, c, design)
                         for _ in range(n_sim):
                             diffs: list[list[float]] = []
@@ -363,11 +383,10 @@ def simulate_q2(n_sim: int, b: int = SIM_B) -> list[Q2Row]:
                                 diffs.append(drow)
                                 dv_n.append(nrow)
                                 dv_p.append(prow)
-                            floors = _binom_floors_diff(dv_n, dv_p, r)
-                            _pt, lo, hi, _pa = m_strat_ws(None, diffs, 0, floors)
+                            _pt, lo, hi, _tag = q2_primary_interval(diffs, dv_n, dv_p, r)
                             if lo > 0 or hi < 0:
                                 excl += 1
-                            if lo <= delta <= hi:
+                            if lo <= d_true <= hi:
                                 cover += 1
                             hw += (hi - lo) / 2
                     worst_cov = min(worst_cov, cover / tot)
@@ -948,8 +967,8 @@ def print_q1(rows: list[Q1Row]) -> tuple[int, int]:
 def print_q2(rows: list[Q2Row]) -> None:
     print("\n" + "=" * 76)
     print("Q2  FIXED-DOMAIN paired P - N absolute risk difference at F3")
-    print("    PRIMARY interval = method S1f on the per-domain mean paired diff")
-    print("    + per-domain binomial-difference variance floor (worst over regime)")
+    print("    PRIMARY interval = method S1f (uniform; == Q1) on the per-domain")
+    print("    mean paired diff + binomial-difference floor. coverage vs TRUE Delta_m")
     print("=" * 76)
     print(
         f"{'design':>7} {'effect-SD':>10} {'delta':>6} {'P(CI excl 0)':>13} "
@@ -1377,6 +1396,325 @@ def m_finite_panel(
     return theta, theta - hw, theta + hw, False
 
 
+# --------------------------------------------------------------------------- #
+# Q2 CONFIDENCE PROCEDURE  (`--calibrate-q2`)
+#
+# The Q2 estimand Delta_m = (1/8) sum_d E_{s~G_d}[ pi(s|P) - pi(s|N) ] is a
+# fixed constant; per-scenario paired differences are bounded in [-1, 1] and,
+# for a large true effect near the +/-1 ceiling, both skewed and (across
+# domains) heteroskedastic. The end-to-end coverage of any interval must be
+# calibrated against the TRUE Delta_m for each fixed-domain config (not the
+# nominal effect knob, which clipping shifts).
+#
+# `q2_primary_interval(...)` is the ONE procedure that returns exactly what
+# goes in the paper. Candidates (chosen from calibration alone, never from
+# detection power):
+#   s1f         -- fixed-stratum WS t (same as Q1's S1f) on the paired diffs
+#   s1f_infl    -- s1f with a fixed pre-data half-width factor Q2_INFLATION
+#   atanh       -- UNIFORM variance-stabilised: raw-scale Delta_hat, delta-
+#                  method SE on atanh(Delta_hat), tanh back-transform
+#   atanh_infl  -- atanh with the fixed factor Q2_INFLATION
+#   adaptive    -- s1f if |Delta_hat| < 0.28 and no domain near +/-1, else
+#                  atanh_infl  (a data-dependent switch; calibrated end-to-end)
+#   lower_bound -- one-sided 97.5% lower confidence bound (fallback branch)
+#
+# RESULT (--calibrate-q2, n_studies=5400): checked against the TRUE Delta_m
+# (not the nominal effect knob, which clipping shifts), EVERY candidate
+# covers at 0.95-0.99 across the whole range Delta_m in [0, 0.44] and all
+# heterogeneity regimes. The draft-5 'large-Delta undercoverage' was a
+# calibration-harness artefact (it checked coverage of delta0, not Delta_m).
+# => PRIMARY = 's1f' (plain, UNIFORM, no transform, no inflation, no switch)
+#    -- identical to Q1's method. Mild overcoverage ~0.97. 'atanh' is a
+#    retained sensitivity analysis; the inflated / adaptive / lower_bound
+#    variants are not needed.
+# --------------------------------------------------------------------------- #
+Q2_INFLATION = 1.15  # fixed, pre-data conservative half-width factor
+Q2_ADAPT_DELTA = 0.28  # |Delta_hat| switch point for the "adaptive" candidate
+Q2_ADAPT_SAT = 0.90  # per-domain |ybar_delta| saturation trigger (adaptive)
+Q2_CALIB_DELTA0 = (0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.28, 0.30, 0.35, 0.40, 0.50)
+Q2_CALIB_EFFECT_SD = (0.10, 0.20, 0.35)  # moderate / severe / very heterogeneous
+Q2_PROCEDURES = ("s1f", "s1f_infl", "atanh", "atanh_infl", "adaptive", "lower_bound")
+
+
+def _ws_var_df_pd(dv: list[list[float]], floors: list[float] | None) -> tuple[float, float, float]:
+    """(theta, Var_hat, WS df) for the fixed-stratum mean, with an OPTIONAL
+    per-domain variance floor floors[d]. Same estimator as m_strat_ws."""
+    h_ = len(dv)
+    h2 = h_ * h_
+    sum_y = 0.0
+    var = 0.0
+    dfden = 0.0
+    for i, d in enumerate(dv):
+        n = len(d)
+        mean, s2 = _var_ddof1(d)
+        sum_y += mean
+        if floors is not None and s2 < floors[i]:
+            s2 = floors[i]
+        u = s2 / (n * h2)
+        var += u
+        if n > 1:
+            dfden += (u * u) / (n - 1)
+    df = (var * var) / dfden if dfden > 0.0 else float(h_ - 1)
+    return sum_y / h_, var, max(df, 1.0)
+
+
+def _q2_s1f(dv_diff, floors, inflation=1.0):
+    theta, var, df = _ws_var_df_pd(dv_diff, floors)
+    if var <= 0.0:
+        return theta, theta, theta, True
+    hw = inflation * student_t_ppf(0.975, df) * math.sqrt(var)
+    return theta, theta - hw, theta + hw, False
+
+
+def _q2_atanh(dv_diff, floors, inflation=1.0):
+    """Raw-scale point estimate (correct estimand), delta-method interval on
+    atanh(Delta_hat), tanh back-transform -> stays in (-1, 1), widens toward
+    the ceiling. Uniform: the transform is smooth, not a data-dependent
+    method switch."""
+    theta, var, df = _ws_var_df_pd(dv_diff, floors)
+    if var <= 0.0:
+        return theta, theta, theta, True
+    th = min(max(theta, -0.999999), 0.999999)
+    g = math.atanh(th)
+    se_g = math.sqrt(var) / (1.0 - th * th)
+    hw = inflation * student_t_ppf(0.975, df) * se_g
+    return theta, math.tanh(g - hw), math.tanh(g + hw), False
+
+
+def _q2_lower_bound(dv_diff, floors):
+    """One-sided 97.5% lower confidence bound (fallback branch): upper limit
+    is the support bound +1."""
+    theta, var, df = _ws_var_df_pd(dv_diff, floors)
+    if var <= 0.0:
+        return theta, theta, 1.0, True
+    lo = theta - student_t_ppf(0.975, df) * math.sqrt(var)
+    return theta, lo, 1.0, False
+
+
+def q2_primary_interval(
+    dv_diff: list[list[float]],
+    dv_n: list[list[float]],
+    dv_p: list[list[float]],
+    r: int,
+    procedure: str = "s1f",
+) -> tuple[float, float, float, str]:
+    """THE Q2 reporting procedure. Returns (point, lo, hi, method_tag) --
+    exactly the interval that would be printed in the paper. Deterministic
+    in the data (no RNG). `procedure` selects among the pre-specified
+    candidates; the frozen study fixes it to the calibration winner."""
+    floors = _binom_floors_diff(dv_n, dv_p, r)
+
+    def _t3(res: tuple, tag: str) -> tuple[float, float, float, str]:
+        pt, lo, hi, _patho = res
+        return pt, lo, hi, tag
+
+    if procedure == "s1f":
+        return _t3(_q2_s1f(dv_diff, floors), "s1f")
+    if procedure == "s1f_infl":
+        return _t3(_q2_s1f(dv_diff, floors, Q2_INFLATION), "s1f_infl")
+    if procedure == "atanh":
+        return _t3(_q2_atanh(dv_diff, floors), "atanh")
+    if procedure == "atanh_infl":
+        return _t3(_q2_atanh(dv_diff, floors, Q2_INFLATION), "atanh_infl")
+    if procedure == "lower_bound":
+        return _t3(_q2_lower_bound(dv_diff, floors), "lower_bound")
+    if procedure == "adaptive":
+        theta = statistics.fmean([statistics.fmean(d) for d in dv_diff])
+        sat = any(abs(statistics.fmean(d)) >= Q2_ADAPT_SAT for d in dv_diff)
+        if abs(theta) < Q2_ADAPT_DELTA and not sat:
+            return _t3(_q2_s1f(dv_diff, floors), "adaptive:s1f")
+        return _t3(_q2_atanh(dv_diff, floors, Q2_INFLATION), "adaptive:atanh_infl")
+    raise ValueError(f"unknown Q2 procedure {procedure!r}")
+
+
+def _q2_true_delta(
+    rng: random.Random, mu_d: tuple, kw: float, delta0: float, esd: float, mc: int
+) -> float:
+    """The TRUE fixed-domain Delta_m for one config: equal-domain-weight mean
+    of E_{s~G_d}[ clip(p + N(delta0, esd)) - p ]. Clipping shifts this below
+    delta0 when p is high, so coverage must be checked against THIS, not the
+    nominal knob."""
+    tot = 0.0
+    for md in mu_d:
+        dsum = 0.0
+        for _ in range(mc):
+            p = _beta(rng, md, kw)
+            dsum += _clip01(p + rng.gauss(delta0, esd)) - p
+        tot += dsum / mc
+    return tot / len(mu_d)
+
+
+@dataclass
+class Q2ProcRow:
+    procedure: str
+    regime: str
+    delta0: float
+    delta_true: float
+    coverage: float
+    coverage_se: float
+    mean_width: float
+    detect: float
+    pathology: float
+
+
+def simulate_q2_procedures(n_configs: int, n_sim: int, boot_b: int = 0) -> list[Q2ProcRow]:
+    """End-to-end fixed-domain coverage of each complete Q2 procedure.
+    8 domain means drawn once per config and HELD FIXED; only scenarios
+    (within each fixed G_d) + Bernoulli repeats resampled. Coverage is of
+    the TRUE Delta_m (`_q2_true_delta`)."""
+    spd, r = 8, 3
+    rows: list[Q2ProcRow] = []
+    n_studies = n_configs * n_sim
+    for regime in TWOBETA_REGIMES:
+        _kd, kw = TWOBETA_REGIMES[regime]
+        for esd in Q2_CALIB_EFFECT_SD:
+            for delta0 in Q2_CALIB_DELTA0:
+                agg = {p: [0.0, 0.0, 0.0, 0.0] for p in Q2_PROCEDURES}
+                dtrue_sum = 0.0
+                for c in range(n_configs):
+                    crng = _rng("q2p-cfg", regime, c)
+                    mu_d = draw_fixed_config(crng, "2beta", regime, 0.45)[1]
+                    trng = _rng("q2p-true", regime, esd, delta0, c)
+                    dtrue = _q2_true_delta(trng, mu_d, kw, delta0, esd, mc=8000)
+                    dtrue_sum += dtrue
+                    srng = _rng("q2p-sim", regime, esd, delta0, c)
+                    for _ in range(n_sim):
+                        dv_diff: list[list[float]] = []
+                        dv_n: list[list[float]] = []
+                        dv_p: list[list[float]] = []
+                        for md in mu_d:
+                            drow: list[float] = []
+                            nrow: list[float] = []
+                            prow: list[float] = []
+                            for _ in range(spd):
+                                p = _beta(srng, md, kw)
+                                pp = _clip01(p + srng.gauss(delta0, esd))
+                                kn = draw_rate(srng, p, r)
+                                kp = draw_rate(srng, pp, r)
+                                drow.append(kp - kn)
+                                nrow.append(kn)
+                                prow.append(kp)
+                            dv_diff.append(drow)
+                            dv_n.append(nrow)
+                            dv_p.append(prow)
+                        for proc in Q2_PROCEDURES:
+                            _pt, lo, hi, _tag = q2_primary_interval(
+                                dv_diff, dv_n, dv_p, r, procedure=proc
+                            )
+                            a = agg[proc]
+                            a[0] += 1.0 if lo <= dtrue <= hi else 0.0
+                            a[1] += hi - lo
+                            a[2] += 1.0 if (lo > 0.0 or hi < 0.0) else 0.0
+                            a[3] += 1.0 if (hi - lo) <= 1e-9 else 0.0
+                for proc in Q2_PROCEDURES:
+                    cov, wid, det, pat = (v / n_studies for v in agg[proc])
+                    se = math.sqrt(max(cov * (1.0 - cov), 1e-9) / n_studies)
+                    rows.append(
+                        Q2ProcRow(
+                            proc,
+                            f"{regime[:8]}/eSD{esd}",
+                            delta0,
+                            dtrue_sum / n_configs,
+                            cov,
+                            se,
+                            wid,
+                            det,
+                            pat,
+                        )
+                    )
+    return rows
+
+
+def print_q2_procedures(rows: list[Q2ProcRow]) -> str:
+    procs = list(dict.fromkeys(r.procedure for r in rows))
+    regimes = list(dict.fromkeys(r.regime for r in rows))
+    x = {(r.procedure, r.regime, round(r.delta0, 4)): r for r in rows}
+    rep: list[str] = []
+    rep.append("=" * 104)
+    rep.append("Q2 CONFIDENCE PROCEDURE -- end-to-end fixed-domain coverage of the TRUE Delta_m")
+    rep.append(
+        "  (8 domain means held fixed per config; scenarios + repeats resampled; design 8x8x3)"
+    )
+    rep.append(
+        "  target 0.93-0.97 across the scientifically relevant range; "
+        "material undercoverage rejected.  '(se)' = Monte-Carlo SE on coverage."
+    )
+    rep.append("=" * 104)
+    for regime in regimes:
+        rep.append(f"\n### {regime}")
+        rep.append(f"{'delta0':>7} {'Δ_true':>7}  " + "".join(f"{p:>13}" for p in procs))
+        for d0 in Q2_CALIB_DELTA0:
+            dtrue = next(
+                (
+                    x[p, regime, round(d0, 4)].delta_true
+                    for p in procs
+                    if (p, regime, round(d0, 4)) in x
+                ),
+                float("nan"),
+            )
+            cells = ""
+            for p in procs:
+                row = x.get((p, regime, round(d0, 4)))
+                if row is None:
+                    cells += " " * 13
+                    continue
+                flag = _cov_flag(row.coverage) if p != "lower_bound" else ""
+                cells += f"{row.coverage:>7.2f}({row.coverage_se:.3f}){flag:<1}"
+            rep.append(f"{d0:>7.2f} {dtrue:>7.3f}  {cells}")
+    # widths + detection for the leading candidates
+    rep.append("\n-- mean CI width (procs) --")
+    rep.append(f"{'delta0':>7} " + "".join(f"{p:>13}" for p in procs))
+    for regime in regimes[:1]:
+        for d0 in Q2_CALIB_DELTA0:
+            cells = "".join(
+                f"{x[p, regime, round(d0, 4)].mean_width:>13.3f}"
+                if (p, regime, round(d0, 4)) in x
+                else " " * 13
+                for p in procs
+            )
+            rep.append(f"{d0:>7.2f} {cells}   ({regime})")
+    rep.append("\n-- detection P(CI excludes 0), worst over regime --")
+    rep.append(f"{'delta0':>7} " + "".join(f"{p:>13}" for p in procs))
+    for d0 in Q2_CALIB_DELTA0:
+        cells = ""
+        for p in procs:
+            vals = [x[p, rg, round(d0, 4)].detect for rg in regimes if (p, rg, round(d0, 4)) in x]
+            cells += f"{min(vals):>13.2f}" if vals else " " * 13
+        rep.append(f"{d0:>7.2f} {cells}")
+    # verdict
+    rep.append("\n" + "=" * 104)
+    rep.append("VERDICT  (central range delta0 in 0.00..0.30; full range adds 0.35/0.40/0.50)")
+    rep.append("=" * 104)
+    central = tuple(d for d in Q2_CALIB_DELTA0 if d <= 0.30)
+    for p in procs:
+        if p == "lower_bound":
+            continue
+        cc = [
+            x[p, rg, round(d, 4)].coverage
+            for rg in regimes
+            for d in central
+            if (p, rg, round(d, 4)) in x
+        ]
+        fc = [
+            x[p, rg, round(d, 4)].coverage
+            for rg in regimes
+            for d in Q2_CALIB_DELTA0
+            if (p, rg, round(d, 4)) in x
+        ]
+        note = ""
+        if min(fc) >= 0.92 and (sum(cc) / len(cc)) <= 0.985:
+            note = "UNIFORMLY OK (>=0.92 full range)"
+        elif min(cc) >= 0.92:
+            note = f"central OK; full-range min {min(fc):.2f}"
+        else:
+            note = f"central min {min(cc):.2f} -- undercovers"
+        rep.append(
+            f"  {p:<13} central [{min(cc):.2f},{max(cc):.2f}] mean {sum(cc) / len(cc):.2f} | "
+            f"full-range min {min(fc):.2f}  -> {note}"
+        )
+    return "\n".join(rep)
+
+
 @dataclass
 class FixedRow:
     quantity: str
@@ -1497,6 +1835,16 @@ def simulate_calibration_fixed(
                         crng = _rng("fx-cfg-q2", regime, c)
                         config = draw_fixed_config(crng, "2beta", regime, 0.45)
                         mu_d = config[1]
+                        # coverage target = TRUE fixed-domain Delta_m (clipping
+                        # shifts it below the nominal `delta`)
+                        d_true = _q2_true_delta(
+                            _rng("fx-true-q2", regime, esd, delta, c),
+                            mu_d,
+                            kw,
+                            delta,
+                            esd,
+                            mc=6000,
+                        )
                         srng = _rng("fx-sim-q2", regime, esd, delta, c, design)
                         for _ in range(n_sim):
                             dv_diff: list[list[float]] = []
@@ -1525,7 +1873,7 @@ def simulate_calibration_fixed(
                             }
                             for name, (_pt, lo, hi, _pa) in res.items():
                                 a = agg2[name]
-                                a[0] += 1.0 if lo <= delta <= hi else 0.0
+                                a[0] += 1.0 if lo <= d_true <= hi else 0.0
                                 a[1] += hi - lo
                                 a[2] += 1.0 if (lo > 0.0 or hi < 0.0) else 0.0
                             nseen += 1
@@ -1684,7 +2032,24 @@ def main() -> int:
         "the 8 mu_d held fixed; compares fixed-stratum intervals and "
         "scenarios/domain x repeats allocations",
     )
+    ap.add_argument(
+        "--calibrate-q2",
+        action="store_true",
+        help="end-to-end fixed-domain coverage of the COMPLETE Q2 confidence "
+        "procedure(s) vs the TRUE Delta_m, over delta0 0..0.50",
+    )
     args = ap.parse_args()
+
+    if args.calibrate_q2:
+        n_configs, n_sim = (3, 60) if args.fast else (12, 450)
+        print(
+            f"Phase 9 Q2 CONFIDENCE-PROCEDURE calibration  (SEED={SEED}, "
+            f"n_configs={n_configs}, n_sim={n_sim}, n_studies={n_configs * n_sim}, "
+            f"design 8x8x3)"
+        )
+        rows = simulate_q2_procedures(n_configs, n_sim)
+        print(print_q2_procedures(rows))
+        return 0
 
     if args.calibrate_fixed:
         if args.fast:
