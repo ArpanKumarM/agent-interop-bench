@@ -20,7 +20,11 @@ import json
 import sys
 from pathlib import Path
 
-from app.reporting.phase_8_frozen_grid import (
+# allow `uv run python scripts/verify_phase_8_round2_from_raw.py` from the
+# repo root (script dir, not cwd, is sys.path[0] for a script file).
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.reporting.phase_8_frozen_grid import (  # noqa: E402
     N_RATE,
     PANEL,
     PERMIT_RATE,
@@ -30,9 +34,9 @@ from app.reporting.phase_8_frozen_grid import (
     ROUND_TWO_TRIALS_PLANNED,
     SUPPRESS_RATE,
 )
-from app.reporting.phase_8c_pilot import parse_pilot_overlay_id
+from app.reporting.phase_8c_pilot import parse_pilot_overlay_id  # noqa: E402
 
-RAW_ROOT = Path("reports/experiments")
+RAW_ROOT = Path(__file__).resolve().parents[1] / "reports" / "experiments"
 
 # Pinned in docs/phase_8a2_pilot_result.md -- verified present and
 # unchanged before this script trusts the raw files at all.

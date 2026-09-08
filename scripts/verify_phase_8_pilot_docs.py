@@ -21,8 +21,12 @@ import re
 import sys
 from pathlib import Path
 
-from app.reporting import phase_8_frozen_grid as grid
-from app.reporting.phase_8c_pilot import HEADROOM_BAND, evaluate_framing
+# allow `uv run python scripts/verify_phase_8_pilot_docs.py` from the repo
+# root (script dir, not cwd, is sys.path[0] for a script file).
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.reporting import phase_8_frozen_grid as grid  # noqa: E402
+from app.reporting.phase_8c_pilot import HEADROOM_BAND, evaluate_framing  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_ROOT = ROOT / "reports" / "experiments"
