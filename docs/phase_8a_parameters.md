@@ -314,13 +314,22 @@ pilot EXECUTED -- result: NO FRAMING ACCEPTED.** See
 (`docs/phase_8a2_pilot_design.md` §1a), no round 3 is attempted, no new
 framing is written, and the main study does not run under any framing
 piloted so far. Total pilot spend: $6.34 across both rounds (575/576 +
-575/576 trials completed). The project's honest empirical result, as of
+575/576 trials completed). ~~The project's honest empirical result, as of
 this pilot exercise, is that task-framing sensitivity in this decision
 surface dominates any measurable confidentiality/public-sharing label
-effect for 3 of 4 models (`gpt-5.6-sol/terra/luna` swing between a
+effect for 3 of 4 models~~ (`gpt-5.6-sol/terra/luna` swing between a
 complete floor and a near-complete ceiling across six piloted framings,
-finding no stable middle ground); `claude-sonnet-5` is the sole exception,
-varying continuously rather than switching. This is now the project's
-reportable finding pending a manuscript rewrite -- not a "try again"
-situation. See `docs/phase_8a2_pilot_result.md` for the full table and
-next-steps list.
+finding no stable middle ground); `claude-sonnet-5` is the sole
+exception, varying continuously rather than switching.
+
+> *[Superseded 2026-09-07 — this Round-2-update note was a working
+> status summary, not part of the (blocked) design freeze. The current
+> defensible claim: **task framing strongly changed the unlabeled
+> operating regime, frequently pushing behavior to floor or ceiling and
+> therefore determining whether the sensitivity-label contrast could be
+> measured. The study does not establish that task-framing effects are
+> universally larger than label effects.** (`paper/main_v2.md` §7;
+> `docs/phase_8a2_pilot_result.md` correction block.)]*
+
+See `docs/phase_8a2_pilot_result.md` for the full table and next-steps
+list.

@@ -90,6 +90,12 @@ Checks:
      both be gone. Designed to stay red until camera-ready; going green
      is the posting-ready signal. Fix by doing the step, not by
      deleting the check.
+ 16. The Phase 8 pilot RESULT docs (docs/phase_8c_pilot_result.md,
+     docs/phase_8a2_pilot_result.md) acceptance tables match the
+     authoritative analysis -- round one vs the frozen grid, round two
+     recomputed from the byte-pinned raw
+     (scripts/verify_phase_8_pilot_docs.py). Guards the 2026-09-07
+     correction of the mis-transcribed in-band counts.
 
 Run:  uv run python paper/arxiv/audit_phase8_numbers.py
 """
@@ -184,22 +190,16 @@ def audit_frozen_grid_self_consistency() -> None:
     )
     check(
         len(grid.informative_non_claude_cells()) == 14,
-        f"informative non-claude cell count changed: "
-        f"{len(grid.informative_non_claude_cells())}",
+        f"informative non-claude cell count changed: {len(grid.informative_non_claude_cells())}",
     )
     check(
-        len(grid.ceiling_constrained_non_claude_cells())
-        + len(grid.informative_non_claude_cells())
+        len(grid.ceiling_constrained_non_claude_cells()) + len(grid.informative_non_claude_cells())
         == 18,
         "ceiling-constrained + informative non-claude cells != 18",
     )
     # S6.4 public arm: round one unrecoverable, round two P - N for claude.
     check(
-        all(
-            grid.PUBLIC_RATE[m][f] is None
-            for m in grid.PANEL
-            for f in grid.ROUND_ONE_FRAMINGS
-        ),
+        all(grid.PUBLIC_RATE[m][f] is None for m in grid.PANEL for f in grid.ROUND_ONE_FRAMINGS),
         "PUBLIC_RATE round one (F1-F3) is no longer all None -- it is unrecoverable",
     )
     check(
@@ -252,22 +252,34 @@ def audit_frozen_grid_self_consistency() -> None:
 # --------------------------------------------------------------------------- #
 # 2. Round two: live recomputation from raw bytes
 # --------------------------------------------------------------------------- #
-def audit_round_two_from_raw() -> None:
+def _run_verify_script(name: str) -> tuple[int, str, str]:
     import os
 
     env = dict(os.environ)
     env["PYTHONPATH"] = str(ROOT) + (":" + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
     result = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "verify_phase_8_round2_from_raw.py")],
+        [sys.executable, str(ROOT / "scripts" / name)],
         capture_output=True,
         text=True,
         cwd=ROOT,
         env=env,
     )
-    check(
-        result.returncode == 0,
-        f"round-two raw-data verification failed:\n{result.stdout}\n{result.stderr}",
-    )
+    return result.returncode, result.stdout, result.stderr
+
+
+def audit_round_two_from_raw() -> None:
+    rc, out, err = _run_verify_script("verify_phase_8_round2_from_raw.py")
+    check(rc == 0, f"round-two raw-data verification failed:\n{out}\n{err}")
+
+
+def audit_pilot_result_docs() -> None:
+    """docs/phase_8c_pilot_result.md and docs/phase_8a2_pilot_result.md
+    acceptance tables must match the authoritative analysis -- round one
+    against the frozen grid, round two recomputed from the byte-pinned
+    raw. Guards the 2026-09-07 correction of the mis-transcribed headroom
+    counts (F2/F3 round one, F4 round two: '0/4' -> '1/4')."""
+    rc, out, err = _run_verify_script("verify_phase_8_pilot_docs.py")
+    check(rc == 0, f"pilot-result-doc verification failed:\n{out}\n{err}")
 
 
 # --------------------------------------------------------------------------- #
@@ -612,6 +624,8 @@ VERIFIED_ARXIV_IDS: dict[str, str] = {
     "2502.06065": "Razavi et al., PromptSET / prompt-sensitivity-prediction task",
     "2509.17488": "Wang et al., PrivacyLens-Live -- static privacy benchmark ported to MCP/A2A",
     "2509.14284": "Patil et al., compositional privacy leakage across agents",
+    "2604.21308": "Fu et al., CI-Work -- contextual-integrity benchmark, enterprise agents",
+    "2606.23189": "Goel & Gurevych, AgentCIBench -- task-ambiguity / recipient-misalignment",
 }
 # Deliberately NOT cited: arXiv:2602.11510 (AgentLeak). It resolves, but
 # it is post-training-cutoff and could not be vetted -- its title differs
@@ -713,9 +727,7 @@ _TEX_ACCEPT_ROW_RE = re.compile(
 
 
 def _tex_table_block(label: str) -> str:
-    m = re.search(
-        rf"\\label\{{{re.escape(label)}\}}.*?\\end\{{tabular\}}", MAIN_V2_TEX, re.DOTALL
-    )
+    m = re.search(rf"\\label\{{{re.escape(label)}\}}.*?\\end\{{tabular\}}", MAIN_V2_TEX, re.DOTALL)
     if not m:
         raise AuditError(f"main_v2.tex: no table block for \\label{{{label}}}")
     return m.group(0)
@@ -937,6 +949,7 @@ def audit_posting_gates() -> None:
 def main() -> int:
     audit_frozen_grid_self_consistency()
     audit_round_two_from_raw()
+    audit_pilot_result_docs()
     audit_table_1()
     audit_appendix_a_acceptance_table()
     audit_trial_counts_and_cost()

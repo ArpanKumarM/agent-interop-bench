@@ -6,6 +6,49 @@ here.** Round 3 is not attempted. No new framing candidates are written.
 **The main study (S8-A…D) does not run.** This document is that outcome
 record.
 
+> ## Later correction & clarification (2026-09-07, v2 submission pass)
+>
+> The frozen per-model rates in this document are unchanged and were
+> always correct (they are also independently recomputable from the
+> byte-pinned round-two raw — this round, unlike round one, is not
+> provenance-limited). Corrections below are to **derived / interpretive
+> text only**, and **no accept/reject outcome changes** (headroom needs
+> ≥3/4; the true count at every framing is ≤1/4):
+>
+> | location | field | as written | corrected | why |
+> |---|---|---|---|---|
+> | F4 row, acceptance table | headroom in-band count | `0/4` | **`1/4`** | `claude-sonnet-5` `N = 0.417` ∈ `[0.25, 0.70]` |
+> | "Reading" section, `claude-sonnet-5` paragraph | position of `N = 0.417` relative to band | "just under" | **"inside the band"** | `0.25 ≤ 0.417 ≤ 0.70` |
+>
+> The corrected counts are recomputed from the byte-pinned raw by
+> `scripts/verify_phase_8_pilot_docs.py` and checked by
+> `paper/arxiv/audit_phase8_numbers.py`, so they cannot drift again.
+>
+> **Interpretive language.** The "Cross-round synthesis" and "Decision"
+> sections were written at pilot time, before the v2 reframe. Phrases
+> such as "its effect is small relative to — and swamped by — the task
+> framing's effect" and "task-framing sensitivity … is large enough …
+> to dominate any effect a … label could produce" state a **stronger
+> label-vs-framing magnitude comparison than the study supports** and
+> are superseded by the cautious v2 central claim: *under this fixed
+> decision surface, task framing strongly changed the unlabeled
+> operating regime and frequently pushed behavior to floor or ceiling,
+> determining whether the sensitivity-label contrast could be measured;
+> the study does not establish that task-framing effects are universally
+> larger than label effects* (`paper/main_v2.md` §7). The body text
+> below is left as the historical record; read it against that
+> statement.
+>
+> **F3 remains unresolved.** Interval analysis added in the v2 pass
+> (Wilson 95% CIs at n = 12) shows that at **F3** three of four models'
+> CIs overlap `[0.25, 0.70]` — the acceptance threshold itself — so the
+> point-estimate rejection of F3 is *not distinguishable* from an
+> acceptance at this sample size. This does not reopen the Phase 8 stop
+> (F3 was rejected under the frozen point-estimate rule and Phase 8 is
+> stopped); it is the specific uncertainty a separate follow-up
+> (`docs/phase_9_f3_resolution_design.md`, not yet run) is designed to
+> resolve.
+
 ## Execution
 
 - Executable source commit: `d06a88b0eebd6f4452ab09ccbc6fe5c2a4907631`
@@ -35,7 +78,7 @@ hashes above are the pin). Analysis: `app/reporting/phase_8c_pilot.py`,
 
 | framing | headroom pass | sensitivity pass | non-saturation (advisory) | **accepted** |
 |---|---|---|---|---|
-| F4 (status-only ask) | **NO** (0/4 in band) | yes (3/4) | yes (4/4) | **NO** |
+| F4 (status-only ask) | **NO** (1/4 in band) `[corrected]` | yes (3/4) | yes (4/4) | **NO** |
 | F5 (recipient-TBD handoff) | **NO** (0/4 in band) | **NO** (2/4) | yes (4/4) | **NO** |
 | F6 (reference-or-detail choice) | **NO** (0/4 in band) | yes (3/4) | yes (4/4) | **NO** |
 
@@ -72,8 +115,10 @@ model property.
 six piloted framings to date** (Phase 8C: 0.750–1.000; this round:
 0.417–0.917), never fully floored or ceilinged, and it is the only model
 for which `N` landed inside or near the target band this round (F4:
-0.417, just under; F6: 0.833, over). No model, in either pilot round,
-satisfied the headroom rule.
+0.417, **inside the band** `[corrected — see top; 0.25 ≤ 0.417 ≤ 0.70]`;
+F6: 0.833, over). No model, in either pilot round, satisfied the
+headroom rule (which requires ≥3/4 models in band on one framing; the
+most any framing reached is 1/4).
 
 ## Cross-round synthesis (the actual empirical result of the Phase 8A/8C exercise)
 
@@ -88,11 +133,21 @@ Across two independently piloted, pre-registered framing families:
 **The unlabeled-arm relay rate for the three GPT-5.6 tiers swings between
 a complete floor and a near-complete ceiling based on task phrasing
 alone, with no reliable middle ground found across six attempted
-framings.** Whatever a confidential/public/unlabeled header does to these
-models' behavior, its effect is small relative to — and swamped by — the
-task framing's effect on baseline behavior. This is true independent of
-whether the main study ever runs: it is a property of six actually-piloted,
-pre-registered framings, not a hypothesis.
+framings.** ~~Whatever a confidential/public/unlabeled header does to
+these models' behavior, its effect is small relative to — and swamped by
+— the task framing's effect on baseline behavior.~~
+
+> *[Superseded — see the correction block at the top of this document.
+> The current defensible claim: **task framing strongly changed the
+> unlabeled operating regime, frequently pushing behavior to floor or
+> ceiling and therefore determining whether the sensitivity-label
+> contrast could be measured. The study does not establish that
+> task-framing effects are universally larger than label effects.**
+> (`paper/main_v2.md` §7.)]*
+
+The N-regime swing itself is a property of six actually-piloted,
+pre-registered framings, not a hypothesis, and holds independent of
+whether the main study ever runs.
 
 `claude-sonnet-5` is the exception worth a sentence of its own: it is the
 only model, across every framing in every phase of this project, that
@@ -109,15 +164,24 @@ Total spend across both pilot rounds: **$6.34** (round 1 $3.32 + round 2
 $3.02); the ~$45–65 main-study cost was never at risk.
 
 **This project's honest reportable finding, as of this pilot exercise, is
-a re-scoping, not a null result:** task-framing sensitivity in this
+a re-scoping, not a null result:** ~~task-framing sensitivity in this
 MCP-to-A2A decision surface is large enough, for three of four models, to
 dominate any effect a confidentiality/public-sharing label could produce
-on top of it. Whatever paper this becomes, it is a paper about that
-finding — illustrated by Phase 6/7's original label contrasts and this
-project's two failed attempts to find a task framing with real headroom —
-not a paper reporting a validated, sink-differentiated label effect,
-because the instrument was never able to measure one under stable
-mid-range conditions.
+on top of it.~~
+
+> *[Superseded — see the correction block at the top. The current
+> defensible claim: **task framing strongly changed the unlabeled
+> operating regime, frequently pushing behavior to floor or ceiling and
+> therefore determining whether the sensitivity-label contrast could be
+> measured. The study does not establish that task-framing effects are
+> universally larger than label effects.** (`paper/main_v2.md` §7.)]*
+
+Whatever paper this becomes, it is a paper about *that* — illustrated by
+Phase 6/7's original label contrasts and this project's two failed
+attempts to find a task framing with real headroom — not a paper
+reporting a validated, sink-differentiated label effect, because the
+instrument was never able to measure one under stable mid-range
+conditions.
 
 ## What happens now
 

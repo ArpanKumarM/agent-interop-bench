@@ -5,6 +5,49 @@
 study. Revise Phase 8A ... and re-run P8-0 under a new pilot version."
 This document is that outcome record, not a freeze.
 
+> ## Later correction & clarification (2026-09-07, v2 submission pass)
+>
+> The frozen per-model rates in this document (the `N` / `permit` /
+> `suppress` table below) are unchanged and were always correct. Three
+> **derived aggregate counts** were mis-transcribed at the time of
+> writing — the author wrote "0/4" wherever a rule *failed*, conflating
+> "rule not met" with "zero models met it." They are corrected in place
+> below and marked `[corrected]`; **no accept/reject outcome changes**
+> (headroom needs ≥3/4; the true counts are all ≤1/4):
+>
+> | location | field | as written | corrected | why |
+> |---|---|---|---|---|
+> | F2 row, acceptance table | headroom in-band count | `0/4` | **`1/4`** | `gpt-5.6-terra` `N = 0.500` ∈ `[0.25, 0.70]` |
+> | F3 row, acceptance table | headroom in-band count | `0/4` | **`1/4`** | `gpt-5.6-terra` `N = 0.583` ∈ `[0.25, 0.70]` |
+> | F1 row, acceptance table | non-saturation count (advisory) | `0/4` | **`1/4`** | `claude-sonnet-5` `permit = 0.750 < 1.0` |
+> | F2 row, acceptance table | non-saturation count (advisory) | `0/4` | **`1/4`** | `gpt-5.6-terra` `permit = 0.750 < 1.0` |
+>
+> These counts are now recomputed from the frozen per-model table by
+> `scripts/verify_phase_8_pilot_docs.py` (round one against
+> `app.reporting.phase_8_frozen_grid`; round two against the byte-pinned
+> raw) and checked by `paper/arxiv/audit_phase8_numbers.py`, so they
+> cannot silently drift again.
+>
+> **Stale planning figure:** "the main study (S8-A…D, ~6,700 trials)" in
+> the Decision section reflects the repeat counts as of this round. They
+> were later raised (Phase 8A.2 design §7: `R = 8` everywhere, `R = 16`
+> for S8-A). The frozen, live-recomputed main-study total is **13,184
+> trials** (`paper/arxiv/audit_phase8_numbers.py`, check 5). The original
+> figure is left in the body as the historical record.
+>
+> **Interpretive language:** the "Reading" and "Decision" sections were
+> written before the v2 reframe. The current, more cautious central
+> claim is: *under this fixed decision surface, task framing strongly
+> changed the unlabeled operating regime and frequently pushed behavior
+> to floor or ceiling, determining whether the sensitivity-label
+> contrast could be measured; the study does not establish that
+> task-framing effects are universally larger than label effects.* See
+> `paper/main_v2.md` §7. The body below is measurability-focused
+> ("leaving no room for a label to move the rate") and is consistent
+> with that statement; it contains no label-vs-framing *magnitude*
+> claim. (The Round-2 result doc, `docs/phase_8a2_pilot_result.md`, did
+> — those sentences are struck there.)
+
 ## Execution
 
 - Executable source commit: `74ba1cdd545ce9f32850bd4ba107e45af952dbb3`
@@ -40,9 +83,9 @@ for ≥2 models.
 
 | framing | headroom pass | sensitivity pass | non-saturation (advisory) | **accepted** |
 |---|---|---|---|---|
-| F1 (verification handoff) | **NO** (0/4 in band) | yes (4/4) | NO (0/4) | **NO** |
-| F2 (escalation summary) | **NO** (0/4 in band) | yes (4/4) | NO (0/4) | **NO** |
-| F3 (delegated lookup) | **NO** (0/4 in band) | yes (4/4) | yes (2/4) | **NO** |
+| F1 (verification handoff) | **NO** (0/4 in band) | yes (4/4) | NO (1/4) `[corrected]` | **NO** |
+| F2 (escalation summary) | **NO** (1/4 in band) `[corrected]` | yes (4/4) | NO (1/4) `[corrected]` | **NO** |
+| F3 (delegated lookup) | **NO** (1/4 in band) `[corrected]` | yes (4/4) | yes (2/4) | **NO** |
 
 **No candidate is accepted. `HEADROOM_FRAMING` stays the placeholder
 `"F1"` in code but is not usable for a real freeze; the main study
@@ -128,5 +171,7 @@ then re-piloted fresh. Concretely, for whoever authors 8A.2:
 **No spend is at risk from this outcome.** Measured pilot cost: **$3.32**
 total across all 576 trials (sol $1.43, terra $0.76, luna $0.08, claude
 $1.06 — the design's ≈$5–15 projection was conservative). The main study
-(S8-A…D, ~6,700 trials) was never executed, exactly as the gate is
-designed to prevent.
+(S8-A…D, ~~~6,700 trials~~ — see correction block; the repeat counts were
+later raised, and the frozen live-recomputed total is **13,184
+trials**) was never executed, exactly as the gate is designed to
+prevent.
