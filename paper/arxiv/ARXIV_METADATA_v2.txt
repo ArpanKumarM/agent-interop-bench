@@ -7,12 +7,14 @@ This is a v2 of an existing arXiv paper, submitted as a new version of
 the same identifier (2609.01693), NOT as a new submission.
 
 Title:
-Task Framing Dominates Sensitivity Labels in Verbatim Field Egress:
-A Pre-Registered Framing Sweep in an MCP-to-A2A Agent Configuration
+Whether a Sensitivity-Label Effect Can Be Measured at an MCP-to-A2A
+Handoff Depends on the Task Framing: A Pre-Registered Sweep
 
 (Title changed from v1. v1 was "Public-Sharing Labels and Verbatim Field
 Egress in an MCP-to-A2A Agent Configuration: A Controlled Multi-Model
-Study". arXiv keeps both titles in the version history.)
+Study". An interim v2 draft used "Task Framing Dominates Sensitivity
+Labels ..."; that framing was withdrawn as unsupported -- see the v2
+manuscript for why. arXiv keeps all titles in the version history.)
 
 Authors:
 Arpan Kumar Mahapatra
@@ -24,13 +26,15 @@ Cross-list category:
 cs.AI
 
 Comments:
-v2 substantially revises v1: two additional pre-registered pilot studies
-(Phase 8) changed the central claim from a measured public-sharing-label
-effect to a framing-dominance finding -- across six pre-registered task
-framings the label effect could not be measured, and a pre-registered
-stopping rule ended the search. 13 pages. Code and byte-pinned traces
-for all three phases, including both rejected Phase 8 pilot rounds:
-https://github.com/ArpanKumarM/agent-interop-bench
+v2 substantially revises v1. Two additional pre-registered pilot rounds
+(Phase 8) swept six task framings for one with measurement headroom for a
+sensitivity-label contrast; none met the frozen >=3/4 rule, a
+pre-registered stopping rule fired, and the ~13,200-trial main study was
+not executed. v2's claim is a measurability scope claim, not a
+label-vs-framing magnitude claim. 15 pages. Code, byte-pinned round-two
+Phase 8 traces, and the Phase 6/7 artifacts:
+https://github.com/ArpanKumarM/agent-interop-bench (a paper-v2.0 release
+adding the Phase 8 pilot traces is prepared but not yet cut).
 
 Journal-ref:
 (none -- preprint)
@@ -46,45 +50,51 @@ that does not cover the manuscript text.
 ------------------------------------------------------------------------
 ABSTRACT  (ASCII-only; arXiv metadata form; hard limit 1920 characters)
 ------------------------------------------------------------------------
-Measuring a sensitivity label's effect on agent behavior requires a task
-framing that gives the behavior room to move. We report a three-phase,
-pre-registered MCP-to-A2A handoff study, scored by an exact-substring,
-judge-free detector. A two-arm study (640 trials) found a large
+We report a three-phase, pre-registered study of whether an explicit
+sensitivity label on a locally-read record changes verbatim field egress
+at an MCP-to-A2A handoff, scored by an exact-substring, judge-free
+detector. Phase 6 (two arms, 640 trials) found a large
 confidential-vs-public contrast but could not attribute it to either
-label. Adding an unlabeled baseline (480 trials) resolved that ambiguity
-but drove three of four models to a floor on both the confidential and
-unlabeled arms: the confidentiality effect is unresolved by a floor, not
-a genuine null. A two-round, six-framing task-wording sweep followed,
-with a stopping rule fixed in advance. Round one (576 trials) drove two
-of four models to a near-complete ceiling; round two (576 trials),
-designed to give withholding a structural reason rather than a softer
-tone, drove three of four models back to a floor. No framing gave all
-four models a measurable middle at once, which the acceptance rule
-required; individual models sometimes had it -- never together. The
-stopping rule fired after round two: the ~13,200-trial main study was
-never run. Task framing dominates any label effect large enough to
-detect here. Calibration reliability was itself framing-dependent, and
-no model's in-band behavior in one round persisted into the next. At one
-framing, an explicit "share everything" instruction produced far lower
-compliance than the same model's own unlabeled baseline -- 11 of 12
-trials relayed unprompted, 1 of 12 complied with the explicit
-instruction -- an unexplained inversion, reported with no mechanism.
-Near-match scoring worked as designed. Findings are scoped to one host
-policy, one decision surface, and six framings authored by a single
-researcher -- not the space of possible framings. This is not evidence
-that sensitivity labels are ineffective in agent systems generally, only
-that framing dominated them here.
+label. Phase 7 added an unlabeled baseline (480 trials); three of four
+models floored on both the confidential and unlabeled arms, leaving that
+contrast unmeasured rather than measured-and-absent. Phase 8 was a
+two-round, six-framing task-wording sweep with a stopping rule fixed in
+advance, seeking a framing whose unlabeled-arm rate lands in [0.25, 0.70]
+for at least three of four models. Round one (576 trials) drove three
+models to a near-complete ceiling; round two (576 trials) drove three
+back to a floor. No framing met the rule on point estimates; under a
+Wilson 95% interval at n = 12, five of six framings are clearly short,
+but at F3 three of four models' intervals overlap the band -- the
+threshold itself -- so F3's rejection cannot be distinguished from an
+acceptance at this sample size. The stopping rule fired; the
+~13,200-trial main study was not run. Whether a label's effect can be
+measured here depends on the task framing. The pilots also carried a
+public-sharing-label arm outside the frozen analysis plan; analyzed post
+hoc, at the one framing that left a model's baseline in range the public
+label moved egress by +0.50 (one model, n = 12, exploratory). This is
+not evidence that sensitivity labels are ineffective in agent systems;
+it is a report that a pre-registered pilot could not resolve, at its own
+sample size, whether any of six framings met its acceptance criterion,
+and that its one label measurement is exploratory. Findings are scoped
+to one host policy, one decision surface, and six framings by one
+researcher.
 ------------------------------------------------------------------------
 END ABSTRACT
 ------------------------------------------------------------------------
 
 Notes:
-- The ASCII abstract above matches the PDF abstract
-  (paper/arxiv/main_v2.tex) except: em dashes -> "--", and the final
-  clause drops "proposed" ("reported with no mechanism" vs the PDF's
-  "reported with no mechanism proposed") to stay under the 1920-char
-  metadata limit. No claim, number, or qualifier differs.
-- Page count in "Comments" (13) is the compiled main_v2.pdf page count.
+- The ASCII abstract above is a compression of the PDF abstract
+  (paper/arxiv/main_v2.tex) to fit the 1920-char metadata limit: em
+  dashes -> "--", the Phase 8 secondary findings (calibration
+  framing-dependence; the F5 "share everything" inversion) are omitted,
+  and phrasing is tightened. No claim, number, qualifier, or scope
+  statement in the metadata abstract differs from the PDF; the omitted
+  material is strictly narrowing (fewer results reported, not stronger
+  ones).
+- Page count in "Comments" (15) is the compiled main_v2.pdf page count
+  (paper/arxiv/build_pdf_v2.sh).
 - The boxed scope / numeric-integrity note on page 1 of the PDF stays in
-  the submitted version; the "Comments" sentence above is deliberately
+  the submitted version; the "Comments" text above is deliberately
   redundant with it, not a replacement.
+- The repository URL will be replaced with the paper-v2.0 release tag URL
+  once that tag is cut (docs/release_v2_checklist.md).

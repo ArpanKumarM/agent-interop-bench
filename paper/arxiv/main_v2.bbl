@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{21}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -34,6 +34,17 @@ Hongyi Du, Jiaqi Su, Jisen Li, Lijie Ding, Yingxuan Yang, Peixuan Han, Xiangru T
 \newblock {ProtocolBench}: Which {LLM} {MultiAgent} {Protocol to Choose?}
 \newblock In \emph{Proceedings of the 43rd International Conference on Machine Learning (ICML)}, volume 306 of \emph{Proceedings of Machine Learning Research}. PMLR, 2026.
 \newblock Also arXiv:2510.17149. Evaluates which multi-agent communication protocol to choose, primarily through task success, latency, communication overhead, and failure robustness. Distinction: a question of protocol choice, not our label-conditioned egress measurement.
+
+\bibitem[Fu et~al.(2026)Fu, Qin, Zhang, Lin, Wutschitz, Sim, Rajmohan, and Zhang]{fu2026ciwork}
+Wenjie Fu, Xiaoting Qin, Jue Zhang, Qingwei Lin, Lukas Wutschitz, Robert Sim, Saravan Rajmohan, and Dongmei Zhang.
+\newblock {CI-Work}: Benchmarking contextual integrity in enterprise {LLM} agents.
+\newblock In \emph{Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (ACL), Industry Track}, 2026.
+\newblock Also arXiv:2604.21308, cs.CR, submitted 23 Apr 2026. Contextual-integrity benchmark over five enterprise information-flow directions; reports a utility--leakage trade-off (higher task completion correlates with more privacy violations).
+
+\bibitem[Goel and Gurevych(2026)]{goel2026agentcibench}
+Anmol Goel and Iryna Gurevych.
+\newblock Capable but careless: Do computer-use agents follow contextual integrity?, 2026.
+\newblock Introduces the AgentCIBench evaluation harness for computer-use agents. Failure modes include \emph{task-ambiguity overshare} (dense state dumped on an under-specified prompt) and \emph{recipient misalignment}.
 
 \bibitem[Li et~al.(2026{\natexlab{a}})Li, Sun, Wang, and Zhang]{mcphunt2026}
 Haonan Li, Tianjun Sun, Yongqing Wang, and Qisheng Zhang.

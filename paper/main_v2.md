@@ -224,30 +224,39 @@ which we avoid except as a disclosed, non-primary cross-check (§4.1);
 has been framed as a field. We claim none of these risk concepts as
 novel and make no "first" claim.
 
-On the privacy-leakage side specifically, two recent efforts are the
+On the privacy-leakage side specifically, four recent efforts are the
 nearest prior art. *PrivacyLens-Live* (Wang et al., `arXiv:2509.17488`)
 converts a static privacy benchmark into live MCP and A2A environments
 and reports higher leakage there than in static question-answering.
 *The Sum Leaks More Than Its Parts* (Patil et al., `arXiv:2509.14284`)
 studies *compositional* privacy leakage, where individually innocuous
-responses accumulate across agents into a disclosure. Our study is
-narrower than both: one record, one labeled field-egress outcome, one
-handoff, exact-substring scoring, with a pre-registered label or framing
-as the intervention rather than an adversary.
+responses accumulate across agents into a disclosure. Two
+contextual-integrity benchmarks are closer to the mechanism this pilot
+probed: *CI-Work* (Fu et al., `arXiv:2604.21308`, ACL 2026) scores
+enterprise agents on conveying needed content while withholding
+sensitive context across five information-flow directions and reports a
+utility–leakage trade-off; *AgentCIBench* (Goel and Gurevych,
+`arXiv:2606.23189`) names two failure modes our round-two framings
+deliberately induce — *task-ambiguity overshare*, where an
+under-specified prompt draws out dense state (our F4), and *recipient
+misalignment*, where content goes to an addressee whose need is not
+established (our F5). Our study is narrower than all four: one record,
+one labeled field-egress outcome, one handoff, exact-substring scoring,
+with a pre-registered label or framing as the intervention rather than
+an adversary, and it stopped before the confirmatory study.
 
-This paper's central finding — that task framing can dominate a targeted
-behavioral manipulation strongly enough to prevent its measurement —
-sits closest to the literature on LLM prompt sensitivity. Sclar et al.
-(`arXiv:2310.11324`) show meaning-preserving prompt-format changes moving
-few-shot accuracy by as much as 76 points on one open model, and argue
-for reporting a range of performance across plausible formats rather than
-a single one; *PromptSET* (Razavi et al., `arXiv:2502.06065`) casts
-predicting a prompt's sensitivity as its own task and finds existing
-methods weak at it. Our result is the agent-behavior analogue: the
-quantity a pre-registered label intervention was built to move was
-instead dominated by the surrounding task wording, to the point where the
-intervention's effect could not be estimated at all under the
-pre-registered headroom rule (§5.3).
+This paper sits closest to the literature on LLM prompt sensitivity.
+Sclar et al. (`arXiv:2310.11324`) show meaning-preserving prompt-format
+changes moving few-shot accuracy by as much as 76 points on one open
+model, and argue for reporting a range of performance across plausible
+formats rather than a single one; *PromptSET* (Razavi et al.,
+`arXiv:2502.06065`) casts predicting a prompt's sensitivity as its own
+task and finds existing methods weak at it. Our result is the
+agent-behavior analogue: task wording changed the unlabeled operating
+regime so much — floor to ceiling across six framings — that whether a
+pre-registered label contrast could be measured at all depended on it,
+and under the pre-registered headroom rule none of the six gave that
+contrast room to be read across the panel (§5.3).
 
 ## 4. Instrument
 

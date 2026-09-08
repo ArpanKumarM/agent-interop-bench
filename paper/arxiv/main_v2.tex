@@ -7,8 +7,8 @@
 \documentclass[10pt]{article}
 
 % ---------------------------------------------------------------------------
-% Task Framing Dominates Sensitivity Labels in Verbatim Field Egress:
-% A Pre-Registered Framing Sweep in an MCP-to-A2A Agent Configuration.
+% Whether a Sensitivity-Label Effect Can Be Measured at an MCP-to-A2A
+% Handoff Depends on the Task Framing: A Pre-Registered Sweep.
 %
 % v2 of arXiv:2609.01693. This .tex is a faithful hand-transcription of
 % paper/main_v2.md; the numbers are not generated from artifacts (as in
@@ -305,31 +305,40 @@ adjacent provenance-tracking defense; multi-agent security has been
 framed as a field~\citep{masec2025}. We claim none of these risk concepts
 as novel and make no ``first'' claim.
 
-On the privacy-leakage side specifically, two recent efforts are the
+On the privacy-leakage side specifically, four recent efforts are the
 nearest prior art. \emph{PrivacyLens-Live}~\citep{wang2025privacy}
 converts a static privacy benchmark into live MCP and A2A environments
 and reports higher leakage there than in static question-answering.
 \emph{The Sum Leaks More Than Its Parts}~\citep{patil2025sum} studies
 \emph{compositional} privacy leakage, where individually innocuous
-responses accumulate across agents into a disclosure. Our study is
-narrower than both: one record, one labeled field-egress outcome, one
+responses accumulate across agents into a disclosure. Two
+contextual-integrity benchmarks are closer to the mechanism this pilot
+probed: \emph{CI-Work}~\citep{fu2026ciwork} scores enterprise agents on
+conveying needed content while withholding sensitive context across five
+information-flow directions and reports a utility--leakage trade-off;
+\emph{AgentCIBench}~\citep{goel2026agentcibench} names two failure modes
+our round-two framings deliberately induce --- \emph{task-ambiguity
+overshare}, where an under-specified prompt draws out dense state (our
+F4), and \emph{recipient misalignment}, where content goes to an
+addressee whose need is not established (our F5). Our study is narrower
+than all four: one record, one labeled field-egress outcome, one
 handoff, exact-substring scoring, with a pre-registered label or framing
-as the intervention rather than an adversary.
+as the intervention rather than an adversary, and it stopped before the
+confirmatory study.
 
-This paper's central finding --- that task framing can dominate a
-targeted behavioral manipulation strongly enough to prevent its
-measurement --- sits closest to the literature on LLM prompt sensitivity.
+This paper sits closest to the literature on LLM prompt sensitivity.
 \citet{sclar2023quantifying} show meaning-preserving prompt-format
 changes moving few-shot accuracy by as much as 76 points on one open
 model, and argue for reporting a range of performance across plausible
 formats rather than a single one;
 \emph{PromptSET}~\citep{razavi2025benchmarking} casts predicting a
 prompt's sensitivity as its own task and finds existing methods weak at
-it. Our result is the agent-behavior analogue: the quantity a
-pre-registered label intervention was built to move was instead dominated
-by the surrounding task wording, to the point where the intervention's
-effect could not be estimated at all under the pre-registered headroom
-rule (\S\ref{subsec:phase8}).
+it. Our result is the agent-behavior analogue: task wording changed the
+unlabeled operating regime so much --- floor to ceiling across six
+framings --- that whether a pre-registered label contrast could be
+measured at all depended on it, and under the pre-registered headroom
+rule none of the six gave that contrast room to be read across the panel
+(\S\ref{subsec:phase8}).
 
 % ===========================================================================
 \section{Instrument}
