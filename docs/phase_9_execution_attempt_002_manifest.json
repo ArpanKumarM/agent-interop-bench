@@ -1,0 +1,80 @@
+{
+  "aborted_attempt_001": {
+    "all_attempts_status": "HTTP 429 insufficient_quota",
+    "archive_path": "reports/_phase9_aborted_billing_attempt_001/  (git-ignored)",
+    "artifact_sha256": {
+      "ABORTED_ATTEMPT_PROVENANCE.md": "4561d9c33a193573761b4c0d58fff3a33965a22f4316be30e5b4b4ae8499cf2c",
+      "MANIFEST.sha256": "ffc803e80b08d4bc8821cf50604ca90445d7003950eba24bf6d03e0310203a22",
+      "raw/HALTED.json": "05233b4c83a835da0149ec24476189cd91b87c252e2c97ff51b5d97516789e69",
+      "raw/attempts.jsonl": "811a96176966561944ecb8692c715a8931033bdc9bcb046bd9ae95ba92fe122f",
+      "raw/execution_fingerprint.json": "cb256550b418dcf1b2cded22cbd350e0ea61a3e5a9a6e9ed94489adae48dd0e6",
+      "raw/phase_9_frozen_trial_map.json": "3069129f9bb45b2d5cf1a3801cf13e01f5f9b3c575ac7ed097ae4c74e6bc7a90",
+      "raw/plan.json": "c78e7e7fb2bd2af9c6a32a67775405a3b6af55132ce3a8e3bab81677d89eb2cb",
+      "raw/schedule.json": "35d0a72b1f7d13658320afca96b568f2f8eaad3e8598fe6dc7bb46c1adc0e6a2",
+      "raw/summary.json": "9d800a6bd5e0443cf712ca93af30da22434a7dc1284dcf2905afe7bdb3770cd2",
+      "raw/trials.jsonl": "df9c90cb1e97ed35ff3db5eb89acd67480db7bba2556ff56b7e39069ce4c4c29"
+    },
+    "billed_cost_usd": 0.0,
+    "generated_tokens": 0,
+    "halted_under": "frozen design section 12",
+    "provider_attempts": 9,
+    "scientific_observations_contributed": 0,
+    "successful_model_responses": 0
+  },
+  "attempt_002_preconditions": {
+    "attempt_001_contributes_no_observations": true,
+    "real_output_dir_state": {
+      "claude-sonnet-5": "pristine (directory absent)",
+      "gpt-5.6-luna": "pristine (directory absent)",
+      "gpt-5.6-sol": "pristine (directory absent)",
+      "gpt-5.6-terra": "pristine (directory absent)"
+    },
+    "real_output_dirs": {
+      "claude-sonnet-5": "reports/experiments/phase-9-f3-claude/",
+      "gpt-5.6-luna": "reports/experiments/phase-9-f3-luna/",
+      "gpt-5.6-sol": "reports/experiments/phase-9-f3-sol/",
+      "gpt-5.6-terra": "reports/experiments/phase-9-f3-terra/"
+    },
+    "same_frozen_1536_row_schedule": true,
+    "starts_from_pristine_scientific_output_dirs": true
+  },
+  "attempt_freeze_utc": "2026-09-08T22:36:30Z",
+  "attempt_id": "002",
+  "attempt_manifest_sha256": "53d4176f182dc3db321714af7e44542fc908b365b723c1c73c0b57908e668904",
+  "authorization_state": "attempt 002 PREPARED; a live run is a SEPARATE explicit authorization",
+  "execution_addendum_manifest_sha256": "89451e57cbbcb8cec0d48ff81e4d8748287fedb42d71ad40e7d6e86557a46096",
+  "execution_implementation_freeze_commit": "a347a8b3c2b29b77586a113fdabf8bd310e92e85",
+  "execution_implementation_unchanged": true,
+  "execution_provenance_identity": "the scientific trial IDs (p9-<model>-<scenario>-<arm>-r<repeat>, in phase_9_frozen_trial_map.json) are identical across attempts; the EXECUTION attempt is distinguished by (a) this manifest's attempt_id, (b) the archived attempt-001 directory, and (c) each fresh run's own execution_fingerprint.json + started_at UTC. Attempt 002 does not overwrite attempt 001's journal.",
+  "kind": "EXECUTION-ATTEMPT FREEZE",
+  "no_execution_parameter_changed": true,
+  "no_scientific_parameter_changed": true,
+  "not_outcome_based_rerun": "no model output was ever observed in attempt 001 (0 successful responses, 0 tokens); the frozen section-12 halt rule prohibits analysing partial data; no confirmatory or sensitivity analysis was run. The rerun is triggered solely by an external account state, not by any observed scientific result.",
+  "phase": 9,
+  "reason_for_rerun": "attempt 001 was aborted by an EXTERNAL provider-billing failure: 9 gpt-5.6-sol calls, every one HTTP 429 insufficient_quota, ZERO successful model responses, zero generated tokens, $0 cost, halted under frozen design section 12. Billing was subsequently replenished on both OpenAI and Anthropic.",
+  "reused_verbatim": {
+    "analysis": "the hash-pinned scientific analysis implementation only; unchanged",
+    "halt_rule": "frozen design section 12: per (model, arm) cell 192 planned, >= 187 completed required; halt the moment a cell reaches 6 non-completions (187/192 unreachable) or on any indeterminate attempt -- operator-ratified",
+    "live_canary_plan_phase9_sha256": "1cc188c0fdb6917de4fb8549c88439b7798aa326f9a0004b16ac6012d6636dc4",
+    "live_overlays_phase9_sha256": "cd145293dd9ede0a38fac45b743c38a203337bde4ed4b058bfff1c3e7329af50",
+    "model_execution_order": [
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-5.6-luna",
+      "claude-sonnet-5"
+    ],
+    "model_panel": [
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-5.6-luna",
+      "claude-sonnet-5"
+    ],
+    "retry_behavior": "max_retries = 0; no replacement trials; no fallback model",
+    "scenario_fixture_sha256": "da4d525cf3c7773951cbe8ccd67405a7c20a04d4d87a57c2573559dc609c4583",
+    "study_schedule_sha256": "7f05b86c4da756d1b47cccf6df359eacf238fec3cf69610fb1698c227c07f1ad",
+    "total_planned_trials": 1536
+  },
+  "scientific_freeze_commit": "32a76bfa19c3240bd87011fe9a7e41b3ced1a511",
+  "scientific_freeze_manifest_sha256": "e3650e3de1ea505732b4a0c2f320603dc41abd821cd8160250c4d9397f4ebcde",
+  "scientific_freeze_unchanged": true
+}

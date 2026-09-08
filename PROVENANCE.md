@@ -485,3 +485,78 @@ Running the study remains a **separate, explicit authorization** (the
 per-model `run` commands in `docs/phase_9_execution_addendum_manifest.json`,
 gated by `ENABLE_REAL_MODEL_COMPOSED_RUNS=true` + `PHASE_9_EXECUTE=1` + the
 provider key + a passing `verify_phase_9_execution_ready.py`).
+
+---
+
+## 8. Phase 9 — execution attempts
+
+The scientific design (`§6`, commit `32a76bf`) and the execution
+implementation (`§7`, commit `a347a8b`) are frozen and **unchanged** by
+anything in this section. Each live execution attempt is recorded here;
+attempt-level re-freezes satisfy the frozen design §12 requirement to
+"re-freeze before any re-run".
+
+### 8.1 Attempt 001 — ABORTED (external provider billing), 2026-09-08
+
+Authorized and started as frozen. It **halted itself** after **9 provider
+calls**, all `gpt-5.6-sol`, every one returning HTTP **429**
+`insufficient_quota` — *"You have no credits remaining."* on the OpenAI
+account.
+
+| item | value |
+|---|---|
+| start / end (UTC) | `2026-09-08T22:17:33Z` / `2026-09-08T22:17:51Z` |
+| provider attempts | 9 (`gpt-5.6-sol`; 3 arm N, 6 arm P) |
+| **successful model responses** | **0** |
+| **generated tokens** | **0** |
+| **billed cost** | **$0.00** |
+| retries | 0 (frozen `max_retries = 0`; one attempt per trial) |
+| halt | frozen §12: `(gpt-5.6-sol, P)` reached 6 non-completions → ≥187/192 unreachable → immediate halt (operator-ratified) |
+| indeterminate attempts | 0 · duplicates | 0 |
+| later models (`terra`/`luna`/`claude`) | **never started** |
+| persisted execution fingerprint (`gpt-5.6-sol`, under `a347a8b`) | `b7f01aac511e026d20855914fabb300bbbbecdb15eee7bb982d60ce6391c214e` |
+
+**Excluded from all scientific analysis.** Frozen §12 prohibits analysing
+partial data below the completion threshold, and there is nothing to
+analyse (0 successful responses, 0 tokens, 0 measurements). No Q1/Q2 or
+sensitivity analysis was run. This is **not** outcome-based rerunning — no
+model output was ever observed; the cause is an external account state.
+
+The 8 raw run files are archived **byte-identically** (SHA-256 verified
+before and after the move) at
+`reports/_phase9_aborted_billing_attempt_001/` (git-ignored), with
+`ABORTED_ATTEMPT_PROVENANCE.md` and `MANIFEST.sha256`. Their hashes are
+recorded in `docs/phase_9_execution_attempt_002_manifest.json`.
+
+### 8.2 Attempt 002 — PREPARED after billing recovery, 2026-09-08
+
+After OpenAI and Anthropic credits were replenished, attempt 002 was
+prepared. **No scientific or execution-implementation parameter changed** —
+same frozen 1,536-row schedule (`study_schedule_sha256`
+`7f05b86c…c07f1ad`), same scenarios/overlays
+(`live_overlays_phase9.yaml` `cd145293…29af50`,
+`live_canary_plan_phase9.json` `1cc188c0…636dc4`), same provider configs
+(`max_retries = 0`, no fallback), same halt rule, same analysis
+implementation, same four-model order.
+
+| item | value |
+|---|---|
+| attempt id | **002** |
+| attempt-002 freeze manifest | `docs/phase_9_execution_attempt_002_manifest.json` |
+| attempt-002 freeze self-hash | `53d4176f182dc3db321714af7e44542fc908b365b723c1c73c0b57908e668904` |
+| attempt-002 freeze UTC | `2026-09-08T22:36:30Z` |
+| builder / verifier | `scripts/phase_9_attempt_freeze.py` (`--check`) |
+| pristine output dirs | `reports/experiments/phase-9-f3-{sol,terra,luna,claude}/` — all empty (0 `trials.jsonl` rows) |
+| readiness (all 4 models, offline) | READY |
+
+**Execution-attempt identity.** The scientific trial IDs
+(`p9-<model>-<scenario>-<arm>-r<repeat>`) are identical across attempts. An
+attempt is distinguished by (a) this manifest's `attempt_id`, (b) the
+archived attempt-001 directory, and (c) each fresh run's own
+`execution_fingerprint.json` + `started_at` UTC. Because the execution
+fingerprint folds in the source commit, attempt 002 (run under the
+attempt-002 provenance commit) computes a **different** fingerprint from
+attempt 001's `b7f01aac…` — automatically, with no parameter change.
+Attempt 002 does not overwrite attempt 001's journal.
+
+**A live run of attempt 002 is a separate, explicit authorization.**
