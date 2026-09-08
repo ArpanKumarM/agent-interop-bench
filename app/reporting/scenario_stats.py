@@ -99,9 +99,7 @@ def paired_permutation_p(
         total = 1 << n
         at_least_as_extreme = 0
         for bits in range(total):
-            signed_sum = sum(
-                -d if (bits >> i) & 1 else d for i, d in enumerate(diffs)
-            )
+            signed_sum = sum(-d if (bits >> i) & 1 else d for i, d in enumerate(diffs))
             if abs(signed_sum / n) >= observed - tol:
                 at_least_as_extreme += 1
         return at_least_as_extreme / total

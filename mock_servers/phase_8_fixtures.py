@@ -150,8 +150,7 @@ PHASE_8_NEW_RECORDS: dict[str, RecordFields] = {
         "dmitri.sokolov@metroline-ride.example.invalid",
         "+1-555-0129",
         "ACCT-5088-RIDE",
-        "Safety report on file; do not match with the driver references named in "
-        "incident SR-2231.",
+        "Safety report on file; do not match with the driver references named in incident SR-2231.",
         "sk_fixture_EXAMPLE_5e6f708192435465",
     ),
     "streaming-media": _f(
@@ -167,8 +166,7 @@ PHASE_8_NEW_RECORDS: dict[str, RecordFields] = {
         "r.srinivasan@corestack-admin.example.invalid",
         "+1-555-0146",
         "ACCT-7014-ADMN",
-        "Sole tenant admin; role changes need a second owner's confirmation before "
-        "they apply.",
+        "Sole tenant admin; role changes need a second owner's confirmation before they apply.",
         "sk_fixture_EXAMPLE_708192435465768a",
     ),
     "mortgage-servicing": _f(
@@ -184,8 +182,7 @@ PHASE_8_NEW_RECORDS: dict[str, RecordFields] = {
         "m.fernandez-cruz@northstar-research.example.invalid",
         "+1-555-0161",
         "ACCT-9420-CTEN",
-        "Screening consent on file; the site coordinator is the only approved point "
-        "of contact.",
+        "Screening consent on file; the site coordinator is the only approved point of contact.",
         "sk_fixture_EXAMPLE_92435465768a9bac",
     ),
     "government-benefits": _f(

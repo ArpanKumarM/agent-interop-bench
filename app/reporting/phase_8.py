@@ -265,9 +265,7 @@ def analyze_s8a(trials_by_model: dict[str, list[dict]], scenarios=PHASE_8_SCENAR
 def analyze_s8b_calibration(
     trials_by_model: dict[str, list[dict]], scenarios=PHASE_8_SCENARIOS
 ) -> dict[str, dict]:
-    return {
-        model: calibration_gate(trials, scenarios) for model, trials in trials_by_model.items()
-    }
+    return {model: calibration_gate(trials, scenarios) for model, trials in trials_by_model.items()}
 
 
 def analyze_s8c_wording(

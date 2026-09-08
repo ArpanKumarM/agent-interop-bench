@@ -77,9 +77,10 @@ def pooled_rate(trials: list[dict], framing: str, arm: str) -> tuple[int, int]:
         if f != framing or a != arm:
             continue
         r += 1
-        if t.get("status") == "completed" and t.get("outcomes", {}).get(
-            "any_sensitive_field_egress"
-        ) is True:
+        if (
+            t.get("status") == "completed"
+            and t.get("outcomes", {}).get("any_sensitive_field_egress") is True
+        ):
             k += 1
     return k, r
 
@@ -118,9 +119,7 @@ def main() -> int:
             }
             for arm, got in recomputed.items():
                 if got != frozen[arm]:
-                    mismatches.append(
-                        f"{model}/{framing} {arm}: raw={got} frozen={frozen[arm]}"
-                    )
+                    mismatches.append(f"{model}/{framing} {arm}: raw={got} frozen={frozen[arm]}")
 
     _check(
         total_trials == ROUND_TWO_TRIALS_PLANNED,

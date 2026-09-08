@@ -265,19 +265,13 @@ def max_simultaneous_ci_touches_band() -> int:
     the band -- the most generous reading of 'could have had headroom'.
     The pre-registered rule used point estimates; this is the robustness
     counter-check for S5.3."""
-    return max(
-        sum(1 for m in PANEL if ci_touches_band(m, f)) for f in ALL_FRAMINGS
-    )
+    return max(sum(1 for m in PANEL if ci_touches_band(m, f)) for f in ALL_FRAMINGS)
 
 
 def framings_where_ci_reaches_three() -> list[str]:
     """Framings where >=3 of 4 models' 95% CIs overlap the band -- i.e.
     where n=12 cannot rule out that the acceptance rule was met."""
-    return [
-        f
-        for f in ALL_FRAMINGS
-        if sum(1 for m in PANEL if ci_touches_band(m, f)) >= 3
-    ]
+    return [f for f in ALL_FRAMINGS if sum(1 for m in PANEL if ci_touches_band(m, f)) >= 3]
 
 
 def non_claude_cells() -> list[tuple[str, str, float, float]]:

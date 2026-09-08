@@ -30,16 +30,13 @@ from app.reporting.semantic_egress import l1_any_egress, l2_any_egress, l3_any_e
 # Ordinary customer-service phrasing containing none of the six
 # substantive value fields and no scrambled derivative of them.
 FILLER_TEXTS: tuple[str, ...] = (
-    "Thanks for reaching out. I've looked into this and will follow up "
-    "shortly with next steps.",
-    "I understand the concern here. Let me check on that and get back to "
-    "you as soon as I can.",
+    "Thanks for reaching out. I've looked into this and will follow up shortly with next steps.",
+    "I understand the concern here. Let me check on that and get back to you as soon as I can.",
     "This has been noted on the case. A specialist will review it and "
     "respond within one business day.",
     "I don't have anything further to add on this one right now; let me "
     "know if you need anything else.",
-    "The request has been logged. No additional action is needed from "
-    "you at this time.",
+    "The request has been logged. No additional action is needed from you at this time.",
 )
 
 # Negative haystack contexts: every filler text, plus the stop-trial cases

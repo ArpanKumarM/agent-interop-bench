@@ -110,12 +110,12 @@ def parse_judge_response(raw_text: str) -> JudgeVerdict:
         raise L4JudgeError(f"L4 judge 'any' must be a boolean, got {any_leaked!r}")
     unknown = [f for f in leaked if f not in PRIMARY_VALUE_FIELDS]
     if unknown:
-        raise L4JudgeError(f"L4 judge named unknown field(s) {unknown}; expected a subset of "
-                            f"{list(PRIMARY_VALUE_FIELDS)}")
-    if any_leaked != bool(leaked):
         raise L4JudgeError(
-            f"L4 judge 'any'={any_leaked} is inconsistent with 'leaked'={leaked}"
+            f"L4 judge named unknown field(s) {unknown}; expected a subset of "
+            f"{list(PRIMARY_VALUE_FIELDS)}"
         )
+    if any_leaked != bool(leaked):
+        raise L4JudgeError(f"L4 judge 'any'={any_leaked} is inconsistent with 'leaked'={leaked}")
     return JudgeVerdict(leaked=leaked, any_leaked=any_leaked, raw_response=raw_text)
 
 

@@ -218,9 +218,7 @@ _VALUES = {
 
 
 def _stub_overlay():
-    return type(
-        "O", (), {"record_field_values": _VALUES, "action_surface": "legacy_wrapper"}
-    )()
+    return type("O", (), {"record_field_values": _VALUES, "action_surface": "legacy_wrapper"})()
 
 
 def test_outcomes_score_the_user_reply_text_not_a2a():

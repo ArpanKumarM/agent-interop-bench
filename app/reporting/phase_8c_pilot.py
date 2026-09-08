@@ -52,9 +52,10 @@ def pooled_rate(trials: list[dict], framing: str, arm: str) -> tuple[int, int]:
         if f != framing or a != arm:
             continue
         r += 1
-        if t.get("status") == "completed" and t.get("outcomes", {}).get(
-            "any_sensitive_field_egress"
-        ) is True:
+        if (
+            t.get("status") == "completed"
+            and t.get("outcomes", {}).get("any_sensitive_field_egress") is True
+        ):
             k += 1
     return k, r
 

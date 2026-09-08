@@ -101,9 +101,7 @@ FROZEN_PLAN_PATHS: dict[str, Path] = {
     # overlay file (sweeps all 3 framings, never HEADROOM_FRAMING).
     "v8pilot": _BENCHMARKS_DIR / "live_canary_plan_phase8_pilot.json",
 }
-_PHASE_8_PLAN_VERSIONS: frozenset[str] = frozenset(
-    {"v8a", "v8a2", "v8b", "v8c", "v8d", "v8pilot"}
-)
+_PHASE_8_PLAN_VERSIONS: frozenset[str] = frozenset({"v8a", "v8a2", "v8b", "v8c", "v8d", "v8pilot"})
 # Plan versions that dispatch trials in a frozen BLOCKED schedule.
 _BLOCKED_SCHEDULE_PLAN_VERSIONS = frozenset({"v3", "v4", "v7a"}) | _PHASE_8_PLAN_VERSIONS
 _PHASE_6B_PLAN_VERSIONS = frozenset({"v4"})

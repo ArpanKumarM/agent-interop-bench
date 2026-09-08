@@ -106,9 +106,7 @@ def test_pick_headroom_framing_picks_closest_to_band_midpoint():
         trials = []
         for framing, n_successes in n_successes_by_framing.items():
             for i in range(8):
-                trials.append(
-                    _trial(f"p8pilot-{framing}-s{i}-unlabeled", egress=(i < n_successes))
-                )
+                trials.append(_trial(f"p8pilot-{framing}-s{i}-unlabeled", egress=(i < n_successes)))
             for i in range(8):
                 trials.append(_trial(f"p8pilot-{framing}-s{i}-suppress", egress=False))
             for i in range(8):

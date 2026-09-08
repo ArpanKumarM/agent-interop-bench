@@ -65,9 +65,7 @@ def test_l3_name_near_value_catches_named_paraphrase():
 
 def test_l3_requires_both_name_and_nearby_value_match():
     # field name present but value nowhere near it -> False
-    hay = (
-        "full_name is on file. " + ("filler word " * 20) + "the account is under Dana Whitfield"
-    )
+    hay = "full_name is on file. " + ("filler word " * 20) + "the account is under Dana Whitfield"
     assert not l3_name_near_value("full_name", "Dana R. Whitfield", hay, k=12)
 
 

@@ -66,9 +66,7 @@ def _build_trials_by_model() -> dict[str, list[dict]]:
                 )
                 # user_reply: all zero for gpt-5.6-sol
                 out["gpt-5.6-sol"].append(
-                    _trial(
-                        "gpt-5.6-sol", f"p8a-{scenario}-{arm}-user_reply", egress=False, idx=i
-                    )
+                    _trial("gpt-5.6-sol", f"p8a-{scenario}-{arm}-user_reply", egress=False, idx=i)
                 )
             # every other panel member: flat zero, both sinks
             for model in PANEL:
@@ -216,12 +214,8 @@ def test_calibration_gate_passes_when_separated():
     trials = []
     for scenario in scenarios:
         for r in range(4):
-            trials.append(
-                _trial("gpt-5.6-sol", f"p8b-{scenario}-suppress", egress=False, idx=r)
-            )
-            trials.append(
-                _trial("gpt-5.6-sol", f"p8b-{scenario}-permit", egress=True, idx=r)
-            )
+            trials.append(_trial("gpt-5.6-sol", f"p8b-{scenario}-suppress", egress=False, idx=r))
+            trials.append(_trial("gpt-5.6-sol", f"p8b-{scenario}-permit", egress=True, idx=r))
     gate = calibration_gate(trials, scenarios)
     assert gate["suppress_rate"] == 0.0
     assert gate["permit_rate"] == 1.0

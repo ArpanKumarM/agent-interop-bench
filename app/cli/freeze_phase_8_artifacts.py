@@ -143,9 +143,7 @@ def _overlay(
         "target_agent_card": _AGENT_CARD,
         "local_tool_name": "get_account_record",
         "local_tool_arguments": {"record_ref": phase_8_record_ref(scenario, arm)},
-        "provenance_canaries": [
-            {"name": "record-marker", "sensitivity": _canary_sensitivity(arm)}
-        ],
+        "provenance_canaries": [{"name": "record-marker", "sensitivity": _canary_sensitivity(arm)}],
         "allowed_sensitive_edges": _allowed_sensitive_edges(arm, sink),
         "remote_artifact_text": "Understood, thank you.",
         "action_surface": "legacy_wrapper",
