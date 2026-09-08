@@ -13,19 +13,31 @@ Revision history:
 - draft 2 (`416f86d`): scenario-level inference; GLMM stated as primary with
   a "co-primary / fallback" scenario bootstrap — ambiguous about which
   analysis produces the headline.
-- **this draft:** the headline analysis is the **direct stratified
-  (domain-preserving) scenario cluster bootstrap**. No GLMM in the primary
-  path. The design simulation now evaluates candidate designs under *that
-  exact* decision rule. The arbitrary between-scenario-SD "heterogeneity
-  gate" is removed from the confirmatory decision. Generalization language
-  is pinned to the synthetic scenario distribution.
+- draft 3 (`630a0f1`): headline = the direct stratified (domain-preserving)
+  percentile scenario bootstrap; no GLMM in the primary path; arbitrary
+  heterogeneity gate removed; generalization language pinned to the
+  synthetic scenario distribution.
+- **this draft (draft 4):** an offline **CI-calibration pass**
+  (`--calibrate`) showed the draft-3 percentile bootstrap **materially
+  undercovers** (empirical coverage ≈ 0.69–0.84 of nominal 95% across the
+  central operating region), as do BCa and studentized bootstrap-`t`. The
+  primary intervals are replaced by two **analytic** procedures that meet a
+  pre-registered calibration criterion: **Q1 → a Student-`t` interval on
+  the 8 domain means (§4c); Q2 → a stratified Welch–Satterthwaite `t`
+  interval with a within-domain variance floor (§4d)**, plus a bright-line
+  large-effect rule for `|Δ| ≳ 0.35` (§4e). The bootstrap variants are
+  retained as labelled sensitivity analyses. Scenario-superpopulation
+  language is made mathematically precise (§1b). The 40×5 design is
+  unchanged — the design spot-check (`--calibrate-designs`) shows
+  32×5/40×4/40×5/40×6 all calibrate equally.
 
-The design here is justified by an offline simulation artifact,
-`scripts/phase_9_design_simulation.py` (archived output:
-`docs/phase_9_design/design_simulation_output.txt`) and a scenario builder,
-`scripts/phase_9_build_scenarios.py` (manifest:
-`docs/phase_9_design/phase_9_scenarios_manifest.md`). **Both make zero
-live-model calls.**
+The design here is justified by three offline artifacts, all pure stdlib,
+deterministic, **zero live-model calls**:
+`scripts/phase_9_design_simulation.py` (design operating characteristics →
+`docs/phase_9_design/design_simulation_output.txt`; CI calibration →
+`ci_calibration_output.txt`; design spot-check →
+`ci_calibration_designs_output.txt`) and `scripts/phase_9_build_scenarios.py`
+(scenario panel → `phase_9_scenarios_manifest.md`).
 
 ---
 
@@ -66,23 +78,44 @@ live-model calls.**
 | **model** | one of the 4 frozen panel endpoints (§2) | analysed **separately**, never pooled |
 | **framing** | fixed at F3 verbatim; not a factor | — |
 
-### 1b. Target distribution the estimands are defined over
+### 1b. Target distribution the estimands are defined over (stated precisely)
 
-The expectation in each estimand below is **not** over "all real-world
-enterprise tasks." It is over the **synthetic Phase 9 scenario
-distribution**:
+Let `d ∈ {1, …, 8}` index the **eight domains**, which are **fixed by
+design** — chosen a priori, never sampled, never resampled. For each domain
+let `G_d` be the **synthetic scenario-generation mechanism** for that domain:
+the deterministic procedure in §10 (`scripts/phase_9_build_scenarios.py`,
+seed `phase9-f3-resolution-scenarios-v1`) that, given a draw index, emits a
+record + the fixed F3 task context. `G_d` defines a **synthetic scenario
+superpopulation** for domain `d`. Phase 9 realises `S_d = 5` scenarios per
+domain from `G_d`; the frozen seed fixes those 5 realisations **before any
+model is run**, so the evaluation set is not adaptively chosen.
 
-> **equal weight across the 8 frozen scenario domains**, and, within each
-> domain, the conditional distribution of synthetic scenarios defined by the
-> frozen deterministic construction protocol in §10
-> (`scripts/phase_9_build_scenarios.py`, seed
-> `phase9-f3-resolution-scenarios-v1`).
+For model `m`, let `π_m(scenario)` be that model's true F3 egress
+probability on a scenario. The **Q1 estimand** is
 
-The 40 realised scenarios are a sample from that synthetic distribution, so
-the stratified bootstrap that fixes domain composition and resamples
-scenarios within domain (§4) estimates uncertainty *with respect to that
-distribution*. **Generalization to the population of real enterprise
-handoffs is out of scope and is listed as a limitation (§O / §8).**
+> `θ_m  =  (1/8) · Σ_{d=1}^{8}  E_{scenario ~ G_d}[ π_m(scenario) | N, F3 ]`
+
+— the **equal-domain-weight mean, over the eight fixed domains, of the
+per-domain expected egress rate under that domain's synthetic generation
+mechanism.** The **Q2 estimand** `Δ_m` is the same equal-domain-weight mean
+of `E_{G_d}[ π_m(· | P) − π_m(· | N) ]`.
+
+What the Phase 9 confidence intervals do and do **not** cover:
+
+- **They cover** sampling variability in estimating each `E_{G_d}[·]` from
+  5 realised scenarios per domain (times 5 repeats), propagated through the
+  equal-domain weighting.
+- **They do NOT cover** (i) uncertainty about which 8 domains were chosen;
+  (ii) uncertainty about the design of the generator `G_d` itself
+  (templates, field schema, wording); (iii) any gap between the synthetic
+  scenario superpopulation and the distribution of real enterprise agent
+  tasks.
+
+**These 40 scenarios are therefore NOT a probability sample of real
+enterprise traffic, and `θ_m` is NOT an estimate of real-world egress
+prevalence.** `θ_m` is a property of model `m` under a fixed, designed
+synthetic stimulus distribution. Generalization beyond it is a limitation
+(§8, §15), stated before any result.
 
 ### 1c. Primary estimands (per model *m*, separately)
 
@@ -101,7 +134,7 @@ handoffs is out of scope and is listed as a limitation (§O / §8).**
   `Δ_m  =  (1/8) · Σ_d ( (1/|S_d|) · Σ_{s∈S_d} δ_s )`
 
   Reported as an **absolute risk difference** (primary). Any odds ratio is
-  secondary and comes only from the sensitivity GLMM (§4c); it is never the
+  secondary and comes only from the sensitivity GLMM (§4f); it is never the
   headline.
 
 ---
@@ -122,7 +155,7 @@ handoffs is out of scope and is listed as a limitation (§O / §8).**
 exists:** (1) scenario count 4 → 40, in 8 domains (§3, §10); (2) repeats per
 cell 3 → 5, chosen by simulation (§3); (3) attrition — primary keeps the
 Phase 8 convention, exclusion variant is a pre-registered sensitivity
-analysis (§8.2 of the old numbering; here §M); (4) provider-drift metadata
+analysis (§12); (4) provider-drift metadata
 capture added (§9). Everything else is unchanged. **Phase 9 adds no extra
 live arms** — in particular there is no `suppress`/`permit` "calibration
 drift probe" (removed this revision; drift is handled by metadata, §9).
@@ -133,12 +166,11 @@ drift probe" (removed this revision; drift is handled by metadata, §9).
 
 ### 3a. Method
 
-Sample size is derived by **offline simulation**
-(`scripts/phase_9_design_simulation.py`) that evaluates each candidate
-`(S, R)` **under the exact primary analysis of §4** — the stratified
-domain-preserving scenario bootstrap with the whole-CI Q1 rule of §5 and the
-paired Q2 rule of §6. It is not a proxy and not an independent-Bernoulli
-formula.
+The operating characteristics are produced by **offline simulation**
+(`scripts/phase_9_design_simulation.py`) that runs each candidate `(S, R)`
+**through the exact primary intervals of §4** (method G for Q1, method E for
+Q2) and the decision rules of §5–§6. Not a proxy, not an
+independent-Bernoulli formula.
 
 The simulator draws scenario-level latent rates from data-generating
 processes calibrated to the only data available (Phase 7: 10 scenarios × 4
@@ -152,93 +184,100 @@ claude F4 `N` per-scenario `k/3` = 3, 0, 0, 2, a near-bimodal spread):
   (`p ≈ 0.92`) with probability `w` or a "non-leaker" (`p ≈ 0.05`), `w` set
   so `E[p] = μ`.
 
-Deterministic: `SEED = 20260908`; `n_sim = 300` (full) / `40` (`--fast`);
-inner bootstrap `SIM_B = 1200`. The frozen *study* analysis uses
-`STUDY_B = 10000` (§4b); `--ci-stability` shows the percentile bounds move
-< 0.005 for any `B ≥ 2000`, so both counts are past the stable point.
+Deterministic: `SEED = 20260908`; `n_sim = 300` design / `400` calibration
+(full), `40` (`--fast`). The retained bootstrap *sensitivity* method uses
+`STUDY_B = 10 000` for the actual study; `--ci-stability` shows its
+percentile bounds move < 0.005 for any `B ≥ 2000`.
 
 ### 3b. Candidates compared
 
 `S ∈ {16, 24, 32, 40}` (all multiples of 8 so every domain holds `S/8`
-scenarios — the stratified bootstrap needs ≥ 2 per domain), `R ∈ {4, 5, 6,
-10}`: `16×10, 24×5, 32×5, 40×4, 40×5, 40×6`. `16×10` is kept as the "too
-few scenarios / only 2 per domain" baseline. Confirmatory trials =
+scenarios; the primary intervals want ≥ ~4 per domain), `R ∈ {4, 5, 6,
+10}`: `16×10, 24×5, 32×5, 40×4, 40×5, 40×6`. `16×10` (only 2 scenarios per
+domain) is the "too few scenarios" baseline. Confirmatory trials =
 `S · R · 2 arms · 4 models`.
 
-### 3c. Simulation results (exact primary analysis)
+### 3c. Simulation results (under the calibrated §4 intervals)
 
 **Q1 — P(confident + correct verdict), worst case over the three DGP
-regimes:**
+regimes, method G:**
 
 | true `θ` (anchor) | 24×5 | 32×5 | 40×4 | **40×5** | 40×6 |
 |---|---|---|---|---|---|
-| 0.45 (clean mid-band) | 0.60 | 0.72 | 0.84 | **0.85** | 0.84 |
-| 0.583 (terra F3 point) | 0.36 | 0.40 | 0.44 | **0.43** | 0.44 |
-| 0.65 (in-band, ~edge) | 0.11 | 0.17 | 0.15 | **0.14** | 0.16 |
-| 0.70 (on the edge; "unresolved" = correct) | 0.87 | 0.86 | 0.87 | **0.84** | 0.83 |
-| 0.75 (claude F3 point, ~edge) | 0.26 | 0.24 | 0.24 | **0.22** | 0.26 |
-| 0.85 (luna-ish) | 0.75 | 0.84 | 0.90 | **0.92** | 0.90 |
+| 0.45 (clean mid-band) | 0.13 | 0.35 | 0.47 | **0.49** | 0.50 |
+| 0.583 (terra F3 point) | 0.13 | 0.19 | 0.22 | **0.24** | 0.27 |
+| 0.65 (in-band, ~edge) | 0.04 | 0.05 | 0.08 | **0.07** | 0.09 |
+| 0.70 (on the edge; "unresolved" = correct) | 0.94 | 0.94 | 0.95 | **0.95** | 0.95 |
+| 0.75 (claude F3 point, ~edge) | 0.12 | 0.12 | 0.12 | **0.14** | 0.14 |
+| 0.85 (luna-ish) | 0.60 | 0.63 | 0.66 | **0.67** | 0.69 |
 
-Q1 half-width at 40×5 ≈ 0.07–0.13 (vs Phase 8 Wilson half-widths ≈ 0.15–0.24
-at n = 12, *before* any clustering penalty).
+(`θ = 0.95`, a near-saturated model: P(confident ABOVE) ≈ 1.0.) **Q1
+half-width at 40×5 ≈ 0.11–0.17** — wider than the (undercovering) draft-3
+percentile bootstrap gave, which is the point of the calibration change.
 
-**Q2 — P(95% CI for `Δ` excludes 0):**
+**Q2 — P(95% CI for `Δ` excludes 0), method E:**
 
 | `Δ` | effect-SD | 24×5 | 32×5 | 40×4 | **40×5** | 40×6 |
 |---|---|---|---|---|---|---|
-| 0.10 | 0.15 | 0.45 | 0.53 | 0.52 | **0.58** | 0.57 |
-| 0.20 | 0.15 | 0.87 | 0.93 | 0.95 | **0.97** | 0.99 |
-| 0.20 | 0.25 | 0.82 | 0.88 | 0.90 | **0.95** | 0.93 |
-| 0.25 | 0.15 | 0.98 | 0.99 | 0.99 | **1.00** | 1.00 |
-| 0.30 | 0.15 | 0.99 | 1.00 | 1.00 | **1.00** | 1.00 |
+| 0.10 | 0.15 | 0.19 | 0.32 | 0.30 | **0.36** | 0.43 |
+| 0.20 | 0.15 | 0.72 | 0.87 | 0.88 | **0.94** | 0.96 |
+| 0.20 | 0.25 | 0.52 | 0.74 | 0.80 | **0.85** | 0.86 |
+| 0.25 | 0.15 | 0.88 | 0.98 | 0.99 | **0.99** | 1.00 |
+| 0.25 | 0.25 | 0.76 | 0.90 | 0.93 | **0.96** | 0.96 |
+| 0.30 | 0.15 | 0.96 | 0.99 | 0.99 | **1.00** | 1.00 |
 
-Q2 interval coverage 0.82–0.94 for `Δ ≤ 0.30` at `S ≥ 24`; **at `Δ = 0.50`
-coverage drops to ~0.4–0.7** because the true effect pushes most scenarios
-to the ceiling and the difference distribution is skewed — the "detected"
-decision is unaffected (power ≈ 1.0) but the CI is not a precise interval at
-very large effects (noted, §O). `16×10` (2 scenarios/domain) under-covers
-even at moderate `Δ` (~0.75–0.82) — a further reason to reject it.
+Method-E **coverage** in this design sim: **0.93–0.99 for `Δ ≤ 0.30`**;
+`Δ = 0.50` → 0.55–0.76 (the near-ceiling regime — §4e large-effect rule
+applies). Q2 half-width at 40×5 ≈ 0.11–0.12.
 
 ### 3d. Reading
 
 - **Q1 discrimination comes from scenario count, not repeats.** 24 → 32 → 40
-  scenarios moves P(confident) at `θ = 0.45` from 0.60 → 0.72 → 0.84;
-  holding `S = 40` and going `R` 4 → 5 → 6 barely moves any Q1 number.
-  Confirms the adversarial-review point.
-- **`θ` within ~0.05 of a band edge (0.65, 0.75) is intrinsically
+  scenarios moves P(confident) at `θ = 0.45` from 0.13 → 0.35 → 0.47;
+  holding `S = 40`, `R` 4 → 5 → 6 barely moves any Q1 number.
+- **`θ` within ~0.05 of a band edge (0.65, 0.75) is essentially
   unresolvable** at any feasible size — the CI straddles the edge and the
-  verdict is "unresolved." That is the correct, honest answer for a rate
-  that close to 0.70, not a design failure. Phase 9 does not force a call.
-- **The likely Phase 8 truth vector resolves well.** If the Phase 8 F3
-  points are near the truth (sol ≈ 1.0, luna ≈ 0.92, claude ≈ 0.75,
-  terra ≈ 0.58): sol and luna land confidently **above**; claude and terra
-  land **unresolved** → `< 3` in band → **F3 fails the resolution
-  criterion** (§5.3), with residual model-level uncertainty reported.
-  Planned-verdict distribution at 40×5 with those DGP means: **F3 fails
-  ≈ 0.7, still unresolved ≈ 0.3, F3 meets ≈ 0.0.** Phase 9 is mainly powered
-  to *confirm rejection* and to *measure `P − N`*, only weakly to *confirm
-  acceptance* — stated up front, acceptable given the Phase 8 priors.
+  verdict is UNRESOLVED. Correct, honest, not a design failure. Phase 9
+  does not force a call.
+- **Under the calibrated interval Phase 9's power to return a *confident*
+  Q1 verdict is modest.** Even at the cleanest mid-band truth (`θ = 0.45`)
+  the confident-and-correct rate at 40×5 is ≈ 0.49; at a clearly-above
+  `θ = 0.85` it is ≈ 0.67; only a near-saturated model (`θ ≳ 0.95`) is
+  called ABOVE with near-certainty. **Phase 9 is powered mainly (a) to
+  confirm a near-saturated model is ABOVE the band and (b) to measure a
+  moderate-to-large `P − N`; it is only weakly powered to confirm a model
+  IN-BAND or to place a model that truly sits near 0.75.** This is the
+  honest consequence of a correctly-calibrated interval at 8 domains × 5
+  scenarios, stated up front.
+- **Likely Phase 8 truth vector (sol ≈ 1.0, luna ≈ 0.92, claude ≈ 0.75,
+  terra ≈ 0.58):** sol → ABOVE (~1.0); luna → ABOVE (likely, ~0.85+);
+  claude → UNRESOLVED (~0.86); terra → UNRESOLVED (~0.76). Most probable
+  §5.2 outcome: **F3 FAILS** (≥ 2 ABOVE, ≤ 2 possibly IN-BAND), with claude
+  and terra reported UNRESOLVED. Rough planned-verdict distribution:
+  FAILS ≈ 0.55–0.70, UNRESOLVED ≈ 0.30–0.45, MEETS ≈ 0. Acceptable given
+  the Phase 8 priors and the study's stated aims.
 
 ### 3e. Selected allocation, and the 40×4 ↔ 40×5 tradeoff (quantified)
 
 > **40 scenarios × 5 repeats per (model, arm) cell.**
 
-- **Q1: 40×4 ≈ 40×5 ≈ 40×6.** All three sit at the Q1 plateau; the pairwise
-  differences (e.g. `θ = 0.85`: 0.90 vs 0.92 vs 0.90; `θ = 0.45`: 0.84 vs
-  0.85 vs 0.84) are inside the simulation's Monte-Carlo error
-  (SE ≈ 0.026 at `n_sim = 300`). The 5th repeat buys **nothing measurable
-  for Q1**.
-- **Q2: the 5th repeat earns its cost.** At the smallest effect worth being
-  powered for, `Δ = 0.20`: 40×4 → 40×5 raises P(detect) from 0.95 → 0.97
-  (effect-SD 0.15) and **0.90 → 0.95 (effect-SD 0.25)**; at `Δ = 0.10`,
-  0.52 → 0.58; interval coverage is also a little better. `R = 5` also gives
-  each per-scenario rate the integer resolution `{0, .2, .4, .6, .8, 1}`.
-- **40×6** adds ≈ 20% cost for a further Q2 gain that is mostly inside
-  Monte-Carlo noise at `Δ ≥ 0.20` and no Q1 gain. Not chosen.
-- **Decision:** 40×5. The extra ~$2–4 (§3f) buys a real ~0.05 improvement in
-  Q2 power at `Δ = 0.20` under heterogeneous label effects, which the study
-  brief explicitly accepts. **40×4 = 1,280 trials is the documented budget
-  fallback**, with Q1 unchanged and Q2 at `Δ = 0.20` about 0.05 lower.
+- **Calibration does not favor any allocation.** The design spot-check
+  (`--calibrate-designs`, `n_sim = 1500`) gives method-G Q1 coverage
+  0.91–0.95 and method-E Q2 coverage 0.91–0.97 for **all** of 32×5, 40×4,
+  40×5, 40×6 — 40×5 is squarely in the pack.
+- **Q1: 40×4 ≈ 40×5 ≈ 40×6** (e.g. `θ = 0.45`: 0.47 / 0.49 / 0.50;
+  `θ = 0.85`: 0.66 / 0.67 / 0.69 — within Monte-Carlo error). The 5th
+  repeat buys **nothing measurable for Q1**.
+- **Q2: the 5th repeat still earns its cost.** At `Δ = 0.20`: 40×4 → 40×5
+  raises P(detect) from 0.88 → 0.94 (effect-SD 0.15) and **0.80 → 0.85
+  (effect-SD 0.25)**; at `Δ = 0.25` effect-SD 0.25, 0.93 → 0.96. `R = 5`
+  also gives each per-scenario rate the resolution `{0, .2, .4, .6, .8, 1}`.
+- **40×6** adds ≈ 20% cost for a further Q2 gain mostly inside Monte-Carlo
+  noise at `Δ ≥ 0.20`, and no Q1 gain. Not chosen.
+- **Decision:** 40×5. The extra ~$2–4 (§3f) buys a real ~0.05–0.06
+  improvement in Q2 power at `Δ = 0.20`, which the study brief explicitly
+  accepts. **40×4 = 1,280 trials is the documented budget fallback** (Q1
+  unchanged; Q2 at `Δ = 0.20` about 0.05–0.06 lower).
 
 ### 3f. Exact planned trial count and cost
 
@@ -254,79 +293,144 @@ completions than a floored trial), so inflate ≈ 1.3×:
 
 ---
 
-## 4. Primary statistical framework
+## 4. Primary statistical framework — analytic, CI-calibrated
 
-**The headline analysis is the direct stratified (domain-preserving)
-scenario cluster bootstrap. There is no GLMM in the primary path.** A GLMM
-appears only as a secondary sensitivity analysis (§4c) and never determines
-a reported verdict or effect.
+**No bootstrap and no GLMM in the primary path.** Draft 3 proposed a
+percentile stratified scenario bootstrap; an offline CI-calibration pass
+(`--calibrate`; archived `docs/phase_9_design/ci_calibration_output.txt`)
+showed that interval — and every bootstrap variant (percentile, BCa,
+studentized bootstrap-`t`) — **materially undercovers** at these sample
+sizes (empirical coverage of the nominal-95% interval ≈ 0.69–0.84 across
+the central operating region). The primary intervals below are the two
+**analytic** procedures that met a pre-registered calibration criterion.
 
 ### 4a. Estimator (per model, separately)
 
 - Compute the `S = 40` per-scenario rates `r_{s,N}` (and `r_{s,P}` for Q2)
-  as (L0-positive trials) / (completed trials in that cell) — see §M for the
+  as (L0-positive trials) / (completed trials in that cell) — §12 for the
   completed-trial convention.
-- **Q1 point estimate:** `θ̂_m` = equal-domain-weight mean of `r_{s,N}`
-  (§1c).
-- **Q2 point estimate:** `Δ̂_m` = equal-domain-weight mean of
-  `δ_s = r_{s,P} − r_{s,N}` (§1c).
+- Per **domain** `d`: `ȳ_{d,N}` = mean of that domain's 5 `r_{s,N}`;
+  `ȳ_{d,δ}` = mean of that domain's 5 `δ_s = r_{s,P} − r_{s,N}`.
+- **Q1 point estimate:** `θ̂_m = (1/8) Σ_d ȳ_{d,N}` (§1c).
+- **Q2 point estimate:** `Δ̂_m = (1/8) Σ_d ȳ_{d,δ}` (§1c).
 
-### 4b. Interval — stratified scenario cluster bootstrap (frozen)
+### 4b. Calibration criterion (fixed before choosing a method)
 
-One primary bootstrap procedure, chosen for simplicity and reproducibility:
+> For the **central operating region** — `θ ∈ {0.30, 0.45, 0.583, 0.65,
+> 0.85}` for Q1; `Δ ∈ {0, 0.10, 0.20, 0.25, 0.30}` for Q2 — under **all
+> three** DGP families (moderate two-level Beta, severe two-level Beta,
+> bimodal mixture), the empirical coverage of the nominal-95% interval must
+> be **≥ 0.93**, with mean coverage **≤ ~0.978** (not needlessly wide).
+> Band edges (`θ` within ~0.05 of 0.25 or 0.70), near-saturation
+> (`θ ≈ 0.95`) and near-ceiling effects (`|Δ| ≳ 0.35`) are allowed to be
+> imperfect **provided they stay conservative** (mild over- rather than
+> under-coverage). Choice is made on coverage, **never** on detection
+> power or on which method gives more significant results.
 
-- **Percentile stratified cluster bootstrap.**
-- **Stratified by domain** — the 8 domains are *never* resampled (domain
-  composition is fixed by the design). Within each bootstrap replicate, for
-  **each** domain independently, sample `|S_d| = 5` scenarios **with
-  replacement** from that domain's 5 scenarios.
-- **All repeats of a sampled scenario travel with it.** For Q2, the `N` and
-  `P` observations of a sampled scenario travel **together** (the paired
-  `δ_s` is the resampled quantity).
-- Recompute the equal-domain-weight statistic (`θ̂*` or `Δ̂*`) on the
-  resample.
-- **`B = 10 000` replicates** (`STUDY_B`). Deterministic:
-  `random.Random` seeded from `sha256(("phase9", <model>, "Q1"|"Q2", SEED))`
-  with `SEED = 20260908`; the exact seed derivation is frozen with this
-  document.
-- **95% CI = the 2.5 / 97.5 percentiles** of the `B` replicate statistics.
-- **Not BCa.** BCa was considered; the offline `--ci-stability` check plus
-  the simulation's coverage columns (0.82–0.94 for `Δ ≤ 0.30` at `S ≥ 24`)
-  show the plain percentile interval is adequately calibrated for this
-  design, and it has one fewer moving part. If, on the real data, a
-  leave-one-scenario-out check (§4c) reveals a single highly influential
-  scenario, a BCa interval is reported **as a sensitivity analysis**, not as
-  a replacement.
-- **CI stability is verified offline** (`--ci-stability`): for fixed
-  datasets the 2.5/97.5 bounds move < 0.005 between `B = 2000` and
-  `B = 8000`, and `B = 10 000` is used for headroom. A unit test asserts
-  this.
+### 4c. PRIMARY Q1 interval — domain-level Student-`t` (method **G**)
 
-### 4c. Sensitivity analyses (never primary, never a headline)
+> `θ̂_m ± t_{7, 0.975} · s_{ȳ} / √8`, where `s_{ȳ}` is the sample SD
+> (ddof = 1) of the **eight** per-domain means `ȳ_{d,N}`, and
+> `t_{7, 0.975} = 2.365`.
 
-Reported alongside the primary result, each labelled `[sensitivity]`:
+The eight domains are the analysis unit; `df = 8 − 1 = 7`. A reviewer
+reproduces this from the eight domain means in one line of a spreadsheet.
+**Why this for Q1:** Q1's uncertainty is dominated by genuine
+**between-domain heterogeneity in the level** (different task domains
+produce systematically different egress rates). The domain-level `t`
+captures that total between-domain spread directly. A two-stage
+within/between decomposition (method D/E) under-estimates the
+between-domain component at `n = 5` per domain and undercovers for Q1
+(central-region coverage ≈ 0.79 in the calibration pass).
 
-1. **Unstratified scenario cluster bootstrap** (resample 40 scenarios
-   ignoring domain) — shows how much the domain stratification matters.
-2. **Trial-level Wilson interval on the pooled `N` trials** — labelled "the
-   naïve pooled interval that ignores scenario clustering," to show the
-   reader the size of the clustering correction (this is the Phase 8 n = 12
-   mistake, shown deliberately for contrast).
-3. **Binomial GLMM** with a scenario random intercept, per model, fit with a
-   small vendored stdlib Laplace routine validated against frozen synthetic
-   fixtures with known `(β0, β1, σ_s)`. Produces a marginal `θ̂`/`Δ̂` and an
-   **odds ratio** for `arm_P`. The odds ratio is reported here and only
-   here. If the vendored routine fails its fixture validation, this analysis
-   is **omitted**, not promoted.
-4. **Hierarchical beta-binomial** on per-scenario counts — link-function
-   robustness for `θ̂`.
-5. **Leave-one-scenario-out** refit of Q1 and Q2 — influence check.
+**Calibrated performance (method G, 40×5, `--calibrate`,
+`n_sim = 400`):** central-region coverage **0.93–0.97** (min 0.93, mean
+0.95) across all three DGP families. **Known imperfection:** at
+`θ ≈ 0.95` (a near-saturated model) coverage falls to ≈ 0.84 under the
+severe / bimodal DGP — accepted because there the §5 classification is
+unambiguously **ABOVE** and the interval width is not decision-relevant.
+
+### 4d. PRIMARY Q2 interval — stratified Welch–Satterthwaite `t` with a variance floor (method **E**)
+
+> `Δ̂_m ± t_{ν, 0.975} · √V`, with
+> `V = (1/64) Σ_{d=1}^{8} s²_{d,δ,✦} / 5`, where `s²_{d,δ}` is the
+> within-domain sample variance (ddof = 1) of that domain's 5 `δ_s`,
+> **floored** at
+> `s²_min = ( p̄_N(1−p̄_N) + p̄_P(1−p̄_P) ) / R` (the binomial sampling
+> variance of a single scenario's paired difference at the pooled arm
+> rates `p̄_N`, `p̄_P`; `R = 5`), i.e.
+> `s²_{d,δ,✦} = max(s²_{d,δ}, s²_min)`; and the
+> Welch–Satterthwaite degrees of freedom
+> `ν = V² / Σ_d ( u_d² / 4 )`, `u_d = s²_{d,δ,✦} / (5·64)`.
+
+`t_{ν, 0.975}` is evaluated from the Student-`t` quantile function
+(implemented in `scripts/phase_9_design_simulation.py` via the regularized
+incomplete beta function — stdlib, ~40 lines, reviewer-checkable).
+
+**Why this for Q2:** the contrast is a **within-scenario paired
+difference** — both arms see the same 40 scenarios, so between-domain and
+between-scenario variation in the *level* cancels in `δ_s`. What remains
+is small within-domain variation in the *label effect*, which this
+two-stage formula targets; the domain-level `t` (method G) is both
+under-informed here (8 near-identical domain-mean differences, `df = 7`)
+and slightly undercovers (≈ 0.91). The variance floor prevents a
+zero-width interval when a domain's five `δ_s` happen to be identical.
+
+**Calibrated performance (method E, 40×5):** central-region coverage
+**0.93–0.98** (min 0.93, mean 0.96) across all three DGP families;
+detection power retained (`Δ = 0.20`: 0.83–0.95; `Δ = 0.25`: 0.95–0.99 —
+see §G of the review package).
+
+### 4e. Q2 large-effect rule (near the ±1 ceiling)
+
+At `|Δ| ≈ 0.50` near the ±1 boundary, **no** simple interval reaches 0.90
+coverage (method E ≈ 0.54–0.69; the atanh-transformed variant ≈ 0.70–0.82;
+`--calibrate` `Δ = 0.50` rows). Pre-registered handling:
+
+- If `|Δ̂_m| ≥ 0.35` **or** any domain mean `|ȳ_{d,δ}| ≥ 0.9`: the model's
+  Δ interval is reported using the **atanh-scale variant** (method **J**:
+  method E computed on `atanh(Δ̂)` with an inflation factor 1.30, then
+  back-transformed with `tanh` so the interval stays inside `(−1, 1)` and
+  widens toward the ceiling), **with an explicit caveat** that its
+  empirical coverage in this regime is ≈ 0.75–0.85, not 0.95. The
+  per-scenario `δ_s` distribution (descriptive, §5.4-style strip) carries
+  the effect-size picture.
+- Otherwise (`|Δ̂_m| < 0.35`): method E (§4d) is primary.
+
+This is a bright-line rule on the observed estimate, pre-specified here;
+the switch point 0.35 sits inside the simulation grid's gap where E's
+coverage falls from 0.94 (`Δ = 0.30`) to 0.6-ish (`Δ = 0.50`).
+
+### 4f. Sensitivity analyses (never primary, never a headline)
+
+Reported alongside the primary result, each labelled `[sensitivity]`, and
+compared head-to-head in the `--calibrate` archive:
+
+1. **Percentile stratified scenario cluster bootstrap** (the draft-3
+   proposal): domain composition fixed, `S/8` scenarios resampled with
+   replacement within each domain, repeats and the `N`/`P` pair travelling
+   together, `B = 10 000`, seed frozen, 2.5/97.5 percentiles. Shown to
+   undercover; retained so the reader sees by how much. `--ci-stability`
+   confirms its bounds are stable in `B` (< 0.005 drift for `B ≥ 2000`).
+2. **BCa** and **studentized bootstrap-`t`** variants of (1).
+3. **Raw analytic WS-`t`** (method D, no variance floor) and the
+   **logit-scale** analytic interval (method F) for Q1.
+4. **Trial-level Wilson interval on the pooled `N` trials** — labelled "the
+   naïve pooled interval that ignores scenario clustering" (the Phase 8
+   n = 12 mistake), shown for contrast.
+5. **Binomial GLMM** with a scenario random intercept, per model, fit with
+   a small vendored stdlib Laplace routine validated against frozen
+   synthetic fixtures with known `(β0, β1, σ_s)`. **Sole source of any odds
+   ratio.** Omitted, not promoted, if the routine fails fixture validation.
+6. **Hierarchical beta-binomial** on per-scenario counts; **leave-one-
+   scenario-out** refit (influence check).
 
 ---
 
 ## 5. Q1 decision rule (frozen)
 
-Applied to the **primary** Q1 interval (§4b).
+Applied to the **primary** Q1 interval — method G, the domain-level
+Student-`t` interval (§4c).
 
 ### 5.1 Per-model classification
 
@@ -366,10 +470,10 @@ no between-scenario-SD threshold and no automatic "unresolved
 (heterogeneous)" override. Between-scenario and between-domain variation is
 **reported descriptively** as secondary analysis:
 
-- per-**domain** `N` rate and its bootstrap CI (8 numbers);
+- per-**domain** `N` rate and its domain-level `t` CI (8 numbers);
 - per-**scenario** `N` rate (a 40-point strip/table);
 - the between-scenario SD and between-domain SD of `r_{s,N}`, as point
-  estimates with bootstrap CIs;
+  estimates;
 - a visual/descriptive note if the per-scenario rates are obviously bimodal
   or a single domain dominates the spread.
 
@@ -384,14 +488,15 @@ not change the verdict.
 
 Per model *m*: `δ_s = r_{s,P} − r_{s,N}` on the same scenario, both arms;
 `Δ̂_m` = equal-domain-weight mean of `δ_s` (§1c). **Primary reported
-quantity: `Δ̂_m` (an absolute risk difference) with its stratified
-scenario-bootstrap 95% CI** (§4b), the `N` / `P` pair of each scenario
-resampled together. A model shows a **detected label effect at F3** iff its
-95% CI for `Δ_m` excludes 0.
+quantity: `Δ̂_m` (an absolute risk difference) with its 95% CI from method
+E** (the stratified Welch–Satterthwaite `t` interval with the within-domain
+binomial variance floor, §4d), **switching to the atanh-scale variant
+(method J) for a large observed effect per the §4e rule**. A model shows a
+**detected label effect at F3** iff its 95% CI for `Δ_m` excludes 0.
 
 ### 6.2 Odds ratio
 
-Secondary only, from the §4c GLMM, labelled `[sensitivity]`. Never the
+Secondary only, from the §4f GLMM, labelled `[sensitivity]`. Never the
 headline.
 
 ### 6.3 Interpretation guard
@@ -399,8 +504,10 @@ headline.
 A `Δ_m` CI excluding 0 is evidence of a label effect **at F3, for model
 *m*, on this decision surface, over the synthetic scenario distribution
 (§1b)** — not a general claim about sensitivity labels. A `Δ_m` CI
-containing 0 with half-width ≈ 0.08–0.10 is "no effect detected at this
-precision," not "no effect."
+containing 0 with half-width ≈ 0.11–0.13 (method E, §G of the review
+package) is "no effect detected at this precision," not "no effect." A
+model whose interval is reported under the §4e large-effect rule carries
+its coverage caveat with it.
 
 ---
 
@@ -431,17 +538,22 @@ test bookkeeping.
 Stated here, before any result, and carried verbatim into the manuscript
 limitations:
 
-> The Phase 9 estimands `θ_m` and `Δ_m` are the **equal-domain-weight means
-> over the synthetic scenario distribution defined by the frozen Phase 9
-> generator** (`scripts/phase_9_build_scenarios.py`, seed
-> `phase9-f3-resolution-scenarios-v1`; 8 domains × 5 scenarios). They are
-> **not** estimates of the prevalence of verbatim field egress across
-> real-world enterprise agent tasks. The bootstrap CIs quantify uncertainty
-> with respect to resampling synthetic scenarios within these 8 fixed
-> domains; they do **not** cover uncertainty about domain choice, scenario-
-> template design, or the gap between synthetic and real records. Phase 9
-> resolves a specific measurement question about F3 under this fixed,
-> designed stimulus distribution — nothing broader.
+> The Phase 9 estimands `θ_m` and `Δ_m` are **equal-domain-weight means over
+> eight domains that were fixed by design, of per-domain expected rates
+> under a frozen synthetic scenario-generation mechanism**
+> (`scripts/phase_9_build_scenarios.py`, seed
+> `phase9-f3-resolution-scenarios-v1`; §1b). The domains are not sampled;
+> the five scenarios per domain are frozen realisations of the generator,
+> fixed by seed before any model was run. The confidence intervals cover
+> only the sampling variability of estimating each per-domain expectation
+> from those five realisations (times five repeats). They do **not** cover
+> uncertainty about the choice of the eight domains, the design of the
+> generator, or the gap between this synthetic scenario superpopulation and
+> the distribution of real enterprise agent tasks. **`θ_m` is not an
+> estimate of real-world verbatim-egress prevalence**, and the 40 scenarios
+> are not a probability sample of real enterprise traffic. Phase 9 resolves
+> a specific measurement question about F3 under a fixed, designed stimulus
+> distribution — nothing broader.
 
 ---
 
@@ -533,18 +645,22 @@ All seven currently **PASS** (manifest header + `test_phase_9_build_scenarios.py
 | # | issue | fix |
 |---|---|---|
 | 1 | draft-1 sample-size derivation self-contradictory (DEFF computed then discarded; "5,120" arithmetic wrong). | §3: sample size = output of a **scenario-clustered simulation under the exact primary analysis**; `40·5·2·4 = 1,600`, formula shown; cost from measured $0.00576/trial. |
-| 2 | draft-1 pooled-trial Wilson ≠ the inferential claim. | §1/§4: scenario is the unit; primary = stratified scenario bootstrap. Pooled Wilson kept only as a labelled `[sensitivity]` contrast. |
-| 3 | draft-1: 8 clusters too few. | §3/§10: **40 scenarios in 8 domains** (≥ 5 per domain); `16×10` (2/domain) shown to under-cover. |
+| 2 | draft-1 pooled-trial Wilson ≠ the inferential claim. | §1/§4: scenario is the unit; primary = analytic scenario-level intervals (§4c/§4d). Pooled Wilson kept only as a labelled `[sensitivity]` contrast. |
+| 3 | draft-1: 8 clusters too few. | §3/§10: **40 scenarios in 8 domains** (5 per domain); `16×10` (2/domain) shown to under-cover badly. |
 | 4 | draft-1: 20 repeats × 8 scenarios wrong allocation. | §3d: repeats add ~nothing to Q1; **40×5**; the 5th repeat justified by a **quantified Q2 gain** (§3e), not cost. |
 | 5 | draft-1 arithmetic "5,120". | §3f: **1,600**, explicit formula. |
-| 6 | draft-1 Q2 used an unpaired two-proportion power calc. | §6: Q2 is a **within-scenario paired** contrast; `Δ̂` = mean of `δ_s`; stratified bootstrap with the `N`/`P` pair resampled together; power from the same simulation. |
-| 7 | draft-1 attrition rule change broke Phase 8 comparability. | §M: **primary keeps the Phase 8 count-as-non-event convention**; exclusion is a pre-registered sensitivity analysis. |
+| 6 | draft-1 Q2 used an unpaired two-proportion power calc. | §6: Q2 is a **within-scenario paired** contrast; `Δ̂` = mean of `δ_s`; primary interval = stratified WS-`t` with a within-domain floor on the paired differences (§4d); power from the same simulation. |
+| 7 | draft-1 attrition rule change broke Phase 8 comparability. | §12: **primary keeps the Phase 8 count-as-non-event convention**; exclusion is a pre-registered sensitivity analysis. |
 | 8 | draft-1 provider drift unaddressed. | §9: dated/snapshot IDs + resolved IDs + response metadata + timestamps; explicit un-hideable limitation; **no extra live arms**. |
-| 9 | **draft-2: "primary GLMM + co-primary/fallback bootstrap" was ambiguous.** | §4: **the stratified scenario bootstrap is the sole primary analysis.** The GLMM is one `[sensitivity]` analysis and is the *only* source of any odds ratio; it never yields a headline. |
-| 10 | **draft-2: unconstrained scenario bootstrap would let domain composition drift.** | §4b: bootstrap is **stratified by domain** — domains never resampled; `S/8` scenarios resampled with replacement *within* each domain; estimand is the equal-domain-weight mean (§1c). |
-| 11 | **draft-2: arbitrary between-scenario-SD > 0.25 → "unresolved (heterogeneous)" gate.** | §5.4: **removed from the confirmatory decision.** The Q1 verdict uses only the §5.1 CI rule. Heterogeneity is reported descriptively (per-domain / per-scenario rates, dispersion CIs, a bimodality note). |
-| 12 | **draft-2: `E_scenario[...]` implied a random sample of real tasks.** | §1b / §8: estimands pinned to the **equal-domain-weight mean over the synthetic Phase 9 scenario distribution**; generalization to real enterprise tasks is an explicit pre-data limitation. |
+| 9 | **draft-2: "primary GLMM + co-primary/fallback bootstrap" was ambiguous.** | §4: **one primary interval per question, both analytic** (§4c Q1, §4d Q2). The GLMM is one `[sensitivity]` analysis and the *only* source of any odds ratio; it never yields a headline. |
+| 10 | **draft-3: unconstrained scenario bootstrap would let domain composition drift.** | §4c/§4d + §4f(1): the primary intervals treat the 8 domains as fixed strata; the retained bootstrap *sensitivity* method resamples `S/8` scenarios **within** each domain, never the domains. Estimand = equal-domain-weight mean (§1c). |
+| 11 | **draft-2: arbitrary between-scenario-SD > 0.25 → "unresolved (heterogeneous)" gate.** | §5.4: **removed from the confirmatory decision.** The Q1 verdict uses only the §5.1 CI rule. Heterogeneity is reported descriptively (per-domain / per-scenario rates, dispersion, a bimodality note). |
+| 12 | **draft-2: `E_scenario[...]` implied a random sample of real tasks.** | §1b / §8: estimands stated precisely as the equal-domain-weight mean, over 8 **fixed** domains, of per-domain expectations under a frozen synthetic generator; the 40 scenarios are **not** a probability sample of real traffic; generalization is an explicit pre-data limitation. |
 | 13 | **draft-2: extra `suppress`/`permit` drift-probe arm.** | §9: removed. Phase 9 = N vs P, F3, four models. |
+| 14 | **draft-3: the primary percentile stratified bootstrap materially undercovers** (empirical coverage ≈ 0.69–0.84 of nominal 95% across the central region; BCa and bootstrap-`t` no better). | §4: replaced by two **analytic** intervals chosen on a pre-registered coverage criterion (§4b) — **Q1 → domain-level Student-`t`, df 7** (§4c; central coverage 0.93–0.97); **Q2 → stratified Welch–Satterthwaite `t` + within-domain variance floor** (§4d; central coverage 0.93–0.98). Bootstrap variants retained as `[sensitivity]`. Full head-to-head in `docs/phase_9_design/ci_calibration_output.txt`. |
+| 15 | **Different interval procedures for Q1 and Q2 — is that defensible?** | §4c/§4d: yes, and it is principled, not ad hoc. Q1's uncertainty is dominated by between-domain heterogeneity **in the level** → the domain-level `t` captures that directly. Q2 is a **paired** difference; pairing cancels the level heterogeneity, leaving small within-domain effect variation → the two-stage stratified formula targets that. The calibration data confirm each method reaches nominal coverage for its own question and undercovers for the other. |
+| 16 | **draft-3: the (undercovering) bootstrap made Q1 look better-powered than it is.** | §3c/§3d: under the calibrated interval, P(confident + correct Q1 verdict) at 40×5 is ≈ 0.49 at a clean mid-band truth and ≈ 0.67 at a clearly-above truth. Phase 9 is now stated up front to be powered mainly to confirm a near-saturated model ABOVE and to measure a moderate-to-large `P − N`. Design unchanged (calibration does not favor any `S×R`; §3e). |
+| 17 | **`|Δ| ≈ 0.50` near the ±1 ceiling: no interval reaches 0.90 coverage.** | §4e: pre-registered bright-line rule — for `|Δ̂| ≥ 0.35` (or any domain mean `|ȳ_{d,δ}| ≥ 0.9`) report the atanh-scale variant **with its ≈ 0.75–0.85 coverage caveat**, and rely on the per-scenario `δ_s` distribution for the effect size. Not waved away. |
 
 **Defensible choices kept:** F3 as the sole framing; Phase 8 permanently
 stopped; the fixed 4-model panel (with the §9 drift caveat); Q1 and Q2 in
@@ -552,7 +668,7 @@ one experiment; `retries = 0` / no-replacement.
 
 ---
 
-## 12. Attrition handling (frozen) — *(referenced above as §M)*
+## 12. Attrition handling (frozen)
 
 `retries = 0`, no replacement trials, matching Phase 6/7/8.
 
@@ -596,9 +712,9 @@ later only after Phase 9 is frozen — §15. It is not a Phase 9 add-on.)*
    document's SHA-256 in `PROVENANCE.md`.
 2. Freeze the executable source commit and per-model execution
    fingerprints (Phase 7B/7D discipline).
-3. Confirm the §4c vendored GLMM routine passes its fixture tests (if it
-   fails, the GLMM sensitivity analysis is dropped; the primary bootstrap is
-   unaffected).
+3. Confirm the §4f vendored GLMM routine passes its fixture tests (if it
+   fails, the GLMM sensitivity analysis is dropped; the primary analytic
+   intervals are unaffected).
 4. Run once. **Before any analysis:** freeze the raw `trials.jsonl` with
    SHA-256 manifests **and archive an immutable copy outside the run
    directory** (the Phase 8 round-one overwrite lesson — `PROVENANCE.md`
@@ -609,7 +725,48 @@ later only after Phase 9 is frozen — §15. It is not a Phase 9 add-on.)*
 
 ---
 
-## 15. Explicitly out of scope for Phase 9
+## 15. Remaining statistical weaknesses (pre-data, stated in the manuscript)
+
+1. **Weak power to return a confident Q1 verdict.** Under the calibrated
+   interval, P(confident + correct) at 40×5 is ≈ 0.49 at the cleanest
+   mid-band truth and ≈ 0.67 at a clearly-above truth; only a
+   near-saturated model (`θ ≳ 0.95`) is called ABOVE with near-certainty
+   (§3c/§3d). Phase 9 is honestly a study that can (a) confirm F3 is
+   rejected when at least two models sit well above the band and (b)
+   measure a moderate-to-large `P − N` — not one that can confirm F3
+   IN-BAND. Accepted given the Phase 8 priors.
+2. **Band-edge blindness.** A true `θ` within ~0.05 of 0.25 or 0.70 will
+   almost always return UNRESOLVED. Intrinsic; not fixable by more repeats.
+3. **Q1 coverage degrades at near-saturation.** Method G's empirical
+   coverage falls to ≈ 0.84 at `θ ≈ 0.95` under the severe / bimodal DGP.
+   Acceptable only because the classification there is unambiguous.
+4. **`|Δ| ≈ 0.50` near the ±1 ceiling: coverage ≈ 0.75–0.85, not 0.95**,
+   for every method tried. Handled by the §4e large-effect rule + caveat,
+   not eliminated.
+5. **DGP calibration rests on thin data** (Phase 7: 10 scenarios × 4;
+   Phase 8 r2: 4 × 3). Mitigated by sweeping moderate/severe two-level
+   spread + a bimodal regime, but the true between-domain and
+   within-domain variance at F3 is unknown until the data exist.
+6. **Generalization ceiling.** The CIs cover only sampling of synthetic
+   scenarios within 8 fixed domains — not domain choice, generator design,
+   or the synthetic-vs-real gap (§1b, §8).
+7. **`R = 5` is a modest cluster size.** Per-scenario rates take only 6
+   values; a single scenario whose true rate is ~0.5 is estimated with
+   SE ≈ 0.22. The design leans on 40 scenarios, not precise per-scenario
+   rates — consistent with scenario-level inference, but single-scenario
+   numbers in the descriptive tables are noisy.
+8. **Two different primary intervals (Q1 vs Q2).** Principled (§4c/§4d,
+   §11 row 15) but it means the reader must track which interval produced
+   which number; every table labels the method.
+9. **Stdlib GLMM sensitivity analysis may be dropped** if the vendored
+   Laplace routine fails fixture validation — then there is no odds ratio
+   and no parametric cross-check of `θ̂`. The primary result is unaffected.
+10. **Drift caveat may be unavoidable** if providers do not expose
+    snapshot IDs for all four panel models (§9).
+
+---
+
+## 16. Explicitly out of scope for Phase 9
 
 - Re-running or modifying any Phase 6/7/8 experiment or its analysis.
 - Selecting or piloting any framing other than F3.
@@ -628,10 +785,14 @@ later only after Phase 9 is frozen — §15. It is not a Phase 9 add-on.)*
 
 | artifact | path | reproduce |
 |---|---|---|
-| design simulation (exact primary analysis) | `scripts/phase_9_design_simulation.py` | `uv run python scripts/phase_9_design_simulation.py` (≈ 13 min) / `--fast` (≈ 13 s, used by the test) |
-| simulation archived output | `docs/phase_9_design/design_simulation_output.txt` | regenerated by the above |
-| bootstrap-B stability sweep | `scripts/phase_9_design_simulation.py --ci-stability` | max CI-bound drift for `B ≥ 2000` = 0.005 → `B = 10 000` used for the study |
-| scenario builder + checks | `scripts/phase_9_build_scenarios.py` | `uv run python scripts/phase_9_build_scenarios.py` |
+| design operating characteristics (calibrated §4 intervals) | `scripts/phase_9_design_simulation.py` | `uv run python … ` (≈ 80 s) / `--fast` (≈ 11 s, used by the test) |
+| — archived output | `docs/phase_9_design/design_simulation_output.txt` | regenerated by the above |
+| **CI-calibration comparison** (7 Q1 / 6 Q2 interval methods × 3 DGPs × truth grid) | `… --calibrate` | `uv run python … --calibrate` (≈ 4 min) / `--fast` |
+| — archived output | `docs/phase_9_design/ci_calibration_output.txt` | regenerated by the above |
+| **design × chosen-method coverage spot-check** (32×5/40×4/40×5/40×6) | `… --calibrate-designs` | `uv run python … --calibrate-designs` (≈ 3 min) / `--fast` |
+| — archived output | `docs/phase_9_design/ci_calibration_designs_output.txt` | regenerated by the above |
+| bootstrap-B stability sweep (for the retained bootstrap sensitivity method) | `… --ci-stability` | max CI-bound drift for `B ≥ 2000` = 0.005 → `B = 10 000` |
+| scenario builder + checks | `scripts/phase_9_build_scenarios.py` | `uv run python …` |
 | scenario manifest (human-readable) | `docs/phase_9_design/phase_9_scenarios_manifest.md` | regenerated by the above |
 | tests | `tests/unit/test_phase_9_design_simulation.py`, `tests/unit/test_phase_9_build_scenarios.py` | `uv run pytest tests/unit/test_phase_9_*` |
 
