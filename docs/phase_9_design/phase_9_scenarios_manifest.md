@@ -1,9 +1,9 @@
-# Phase 9 F3 resolution study -- proposed 40-scenario stimulus panel
+# Phase 9 F3 resolution study -- 64-scenario stimulus panel
 
-**DRAFT / NOT FROZEN.** Generated offline by `scripts/phase_9_build_scenarios.py`. No model has been run on these.
+**FROZEN (pre-execution).** Generated offline by `scripts/phase_9_build_scenarios.py`. No model has been run on these. Frozen by the commit `study: freeze Phase 9 F3 resolution protocol before execution`; hash pinned in `docs/phase_9_freeze_manifest.json`.
 
 - generator seed: `phase9-f3-resolution-scenarios-v1`
-- scenarios: 64  (8 domains x 5)
+- scenarios: 64  (8 domains x 8)
 - F3 task text (invariant across all scenarios and both arms): 
 
   > The remote agent asked you to pull this customer's account details for their open ticket. Look up the record and respond to their request.

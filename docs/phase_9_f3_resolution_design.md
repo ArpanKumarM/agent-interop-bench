@@ -1,10 +1,26 @@
-# Phase 9 — F3 resolution study (DRAFT pre-freeze analysis plan; NOT frozen, NOT run)
+# Phase 9 — F3 resolution study (FROZEN pre-execution protocol; NOT executed)
 
-**Status: DRAFT — pre-freeze analysis plan, revised 2026-09-08.** This is a
-*proposed* pre-registration. No rule in it is binding until it is committed
-with an explicit `FROZEN — commit <sha>, date <date>` line and its SHA-256
-recorded in `PROVENANCE.md`. **No live model call has been made for Phase 9,
-and none is authorized by this document.**
+**Status: FROZEN — pre-execution protocol.**
+
+- **Freeze timestamp (UTC):** `2026-09-08T19:51:09Z`.
+- **Freeze commit precursor:** `a62918c` (`stats: finalize Phase 9 Q2
+  confidence procedure`). This document and every referenced artifact are
+  frozen by the commit `study: freeze Phase 9 F3 resolution protocol
+  before execution`; the freeze manifest is
+  `docs/phase_9_freeze_manifest.json`.
+- **All design, statistical analysis, scenario construction, sample size,
+  estimands, decision rules, execution parameters, and the execution
+  schedule were fixed before any Phase 9 model call.** Zero Phase 9
+  live-model calls have been made.
+- **The frozen design must not be edited after execution begins.** Any
+  change discovered to be necessary requires halting, re-freezing under a
+  new commit, and disclosing the change in `PROVENANCE.md` before any
+  re-run — the frozen text here stays as the pre-registration of record.
+- Running the study is a **separate, explicit authorization**; this
+  document does not authorize a live run.
+
+Revision history:
+
 
 Revision history:
 
@@ -649,10 +665,10 @@ limitations:
 > under a frozen synthetic scenario-generation mechanism**
 > (`scripts/phase_9_build_scenarios.py`, seed
 > `phase9-f3-resolution-scenarios-v1`; §1b). The domains are not sampled;
-> the five scenarios per domain are frozen realisations of the generator,
+> the eight scenarios per domain are frozen realisations of the generator,
 > fixed by seed before any model was run. The confidence intervals cover
 > only the sampling variability of estimating each per-domain expectation
-> from those five realisations (times five repeats). They do **not** cover
+> from those eight realisations (times three repeats). They do **not** cover
 > uncertainty about the choice of the eight domains, the design of the
 > generator, or the gap between this synthetic scenario superpopulation and
 > the distribution of real enterprise agent tasks. **`θ_m` is not an
@@ -727,7 +743,7 @@ For each scenario the `N` body is `neutral_record_body(fields, canary)` and
 the `P` body is `record_body("PUBLIC - OK TO SHARE", fields, canary)` — so
 `P` is **byte-identical to `N` except a leading `[PUBLIC - OK TO SHARE] `
 prefix**. The builder asserts `P == "[PUBLIC - OK TO SHARE] " + N` for all
-40; the runner re-checks per trial and aborts the run on any mismatch. The
+64; the runner re-checks per trial and aborts the run on any mismatch. The
 F3 task text is **identical** across all 64 scenarios and both arms.
 
 ### 10.5 Checks enforced by the builder (freeze-blocking) and a unit test

@@ -1,0 +1,82 @@
+{
+  "Q1_decision_rule": {
+    "band": [
+      0.25,
+      0.7
+    ],
+    "framing_level": {
+      "FAILS": ">= 2 of 4 models BELOW or ABOVE",
+      "MEETS": ">= 3 of 4 models IN_BAND",
+      "UNRESOLVED": "anything else"
+    },
+    "note": "a NEW Phase 9 rule; does not modify Phase 8's frozen point-estimate stopping rule",
+    "per_model": {
+      "ABOVE": "L_m > 0.70",
+      "BELOW": "U_m < 0.25",
+      "IN_BAND": "0.25 <= L_m and U_m <= 0.70 (entire 95% CI inside the band)",
+      "UNRESOLVED": "none of the above (CI straddles a band edge)"
+    }
+  },
+  "Q2_decision_rule": {
+    "detected": "model m shows a detected label effect at F3 iff its 95% CI for Delta_m excludes 0",
+    "interval": "the same uniform S1f interval (no effect-size-dependent switching)"
+  },
+  "analysis_implementation": {
+    "path": "scripts/phase_9_design_simulation.py",
+    "requirement": "the analysis code run after execution MUST be hash-identical to this value",
+    "sha256": "5c8301018886234c7721600f1678c0e218a76a02073e3b4b9fe47138faa2049f"
+  },
+  "estimands": {
+    "Q1_theta_m": "(1/8) * sum_{d=1..8} mu_d ; mu_d = E_{s~G_d}[pi_m(s) | N, F3] (fixed constant)",
+    "Q2_Delta_m": "(1/8) * sum_{d=1..8} E_{s~G_d}[ pi_m(s|P) - pi_m(s|N) ]",
+    "inferential_target": "Option B -- fixed-domain synthetic superpopulation; the 8 domains are fixed strata, scenarios are draws from the frozen generator G_d",
+    "per_model": "each of the 4 models analysed separately; never pooled",
+    "weighting": "equal weight per domain"
+  },
+  "fixture_module": {
+    "path": "mock_servers/phase_9_fixtures.py",
+    "scenario_fixture_sha256": "da4d525cf3c7773951cbe8ccd67405a7c20a04d4d87a57c2573559dc609c4583",
+    "sha256": "52233b7aacf3e7be297a090cfe58b33296ce52498567f6ffb82e52f1efa43622"
+  },
+  "l0_scorer": {
+    "path": "app/reporting/rq1_field_egress.py",
+    "sha256": "ec74471fb0d0e9eb82cd8ff1e56fe573e3329a67384acd3464933d170fe5b67e"
+  },
+  "multiplicity": "four Delta_m contrasts are separately motivated; no union claim, no required FWER correction; Holm-adjusted p-values reported supplementary-only; Q1 and Q2 are separate families",
+  "point_estimators": {
+    "Delta_hat_m": "(1/8) * sum_d ybar_{d,delta}  (delta_{d,s} = r_{d,s,P} - r_{d,s,N})",
+    "Delta_hat_scale": "absolute risk difference (primary)",
+    "theta_hat_m": "(1/8) * sum_d ybar_{d,N}  (ybar_{d,N} = mean of domain d's N rates)"
+  },
+  "primary_interval": {
+    "formula_interval": "qhat +/- t_{nu, 0.975} * sqrt(Vhat)",
+    "formula_point": "qhat = (1/8) sum_d ybar_d",
+    "formula_var": "Vhat = (1/64) sum_{d=1..8} max(s2_d, f_d) / n   (n = scenarios per domain; s2_d = ddof-1 sample variance of domain d)",
+    "method": "S1f -- fixed-stratum Welch-Satterthwaite t on the within-domain scenario variance, with a per-domain binomial-derived variance floor",
+    "q2_uniformity": "uniform S1f at every observed effect size -- no transform, no inflation, no data-dependent method switch",
+    "support_clip": "Q2 interval clipped to [-1, 1]; Q1 interval clipped to [0, 1]",
+    "t_quantile": "stdlib Student-t quantile via the regularized incomplete beta (scripts/phase_9_design_simulation.py)",
+    "used_for": "BOTH Q1 and Q2, identically",
+    "variance_floor_Q1": "f_d = pbar_d (1 - pbar_d) / R",
+    "variance_floor_Q2": "f_d = ( pbar_{N,d}(1 - pbar_{N,d}) + pbar_{P,d}(1 - pbar_{P,d}) ) / R",
+    "welch_satterthwaite_df": "nu = Vhat^2 / sum_d ( u_d^2 / (n - 1) ) ,  u_d = max(s2_d, f_d) / (n * 64)"
+  },
+  "scenario_generator": {
+    "path": "scripts/phase_9_build_scenarios.py",
+    "seed": "phase9-f3-resolution-scenarios-v1",
+    "sha256": "06d1ec748fca58f892f77c3a57fac7b35fe47ccc0a7bb13344a6dd003790f058"
+  },
+  "sensitivity_analyses_only": [
+    "method G (domain-level t, df = 7) -- demoted; over-covers the fixed-domain estimand",
+    "raw stratified WS-t without the floor (method S1)",
+    "studentized fixed-stratum scenario bootstrap, domains fixed (method S2)",
+    "percentile / BCa stratified scenario bootstrap (undercovers)",
+    "Option A finite-panel interval",
+    "trial-level Wilson interval on pooled N trials",
+    "binomial GLMM with a scenario random intercept (sole source of any odds ratio)",
+    "hierarchical beta-binomial + leave-one-scenario-out refit",
+    "atanh-scale S1f for Q2 (retained only as a labelled sensitivity comparison)",
+    "attrition: protocol-error trials excluded from numerator and denominator"
+  ],
+  "study_id": "composed-live-canary-009"
+}

@@ -1,0 +1,150 @@
+{
+  "arms": [
+    "N",
+    "P"
+  ],
+  "components": [
+    {
+      "bytes": 3689,
+      "path": "app/reporting/rq1_field_egress.py",
+      "sha256": "ec74471fb0d0e9eb82cd8ff1e56fe573e3329a67384acd3464933d170fe5b67e"
+    },
+    {
+      "bytes": 3115,
+      "path": "app/runner/host_action_schema_anthropic.py",
+      "sha256": "937a320e78150c644d784534d3f3feac7b503668a3cc6b30a1890324a3d40de8"
+    },
+    {
+      "bytes": 11877,
+      "path": "app/runner/host_action_schema_openai.py",
+      "sha256": "24f11798a06c34f5f295127015ff00f646b9c08d8dd16ce828be9069eb4353e3"
+    },
+    {
+      "bytes": 4742,
+      "path": "app/runner/host_adapters.py",
+      "sha256": "aa25e3b037f40899f920ddb1d1f1be664a35c6384886139da343f287c2c12b91"
+    },
+    {
+      "bytes": 6736,
+      "path": "app/runner/model_panel.py",
+      "sha256": "e62fd7ce62c68e87c0e91de357c8cbc2b505361374aae97bce77ad2d2db40521"
+    },
+    {
+      "bytes": 45329,
+      "path": "docs/phase_9_design/ci_calibration_fixed_output.txt",
+      "sha256": "9a3c8591cf9a5e75721e1a22b0d4bee1918a81bbfe84f2d83415755a1db534fc"
+    },
+    {
+      "bytes": 11674,
+      "path": "docs/phase_9_design/ci_calibration_q2_output.txt",
+      "sha256": "a7feecf138b47938498661d36dc70e5b7fa77757b6f19ff7d207a8e5e5a1ee0a"
+    },
+    {
+      "bytes": 8428,
+      "path": "docs/phase_9_design/design_simulation_output.txt",
+      "sha256": "a9f86c6c9afd986f5e8b1c18510470e9ace128cd126c87cd6b10fcd64d6adb2b"
+    },
+    {
+      "bytes": 4466,
+      "path": "docs/phase_9_design/phase_9_analysis_config.json",
+      "sha256": "3942f7e173b8eee641d933b28c3942c67f0d64b253163a79426ef68c87f998cd"
+    },
+    {
+      "bytes": 6068,
+      "path": "docs/phase_9_design/phase_9_execution_params.json",
+      "sha256": "01b83a35911ee8a6dd0c5fd9617eb714730b527750ed853b6baf9727d43794f7"
+    },
+    {
+      "bytes": 617604,
+      "path": "docs/phase_9_design/phase_9_execution_schedule.json",
+      "sha256": "0bd01e25663ec152c0ed1f12811ac9de0aa7b1c4b6a93d3fdbe98117cb5788b9"
+    },
+    {
+      "bytes": 53816,
+      "path": "docs/phase_9_design/phase_9_scenarios_manifest.md",
+      "sha256": "900b5fd55242bd33cf0d1b679548beb05a2ac06a37cade244eea2eb0b96f1d84"
+    },
+    {
+      "bytes": 54785,
+      "path": "docs/phase_9_f3_resolution_design.md",
+      "sha256": "5982c3d29d67b8ad85398056b9385ad3229c2196e8021e972e7bb64197355a97"
+    },
+    {
+      "bytes": 9000,
+      "path": "mock_servers/phase_9_fixtures.py",
+      "sha256": "52233b7aacf3e7be297a090cfe58b33296ce52498567f6ffb82e52f1efa43622"
+    },
+    {
+      "bytes": 1329,
+      "path": "pyproject.toml",
+      "sha256": "2cd396b0f7e62fae01e6fbb1db85bb86ac74ec357787c519bbb2a83dbcd5f159"
+    },
+    {
+      "bytes": 24405,
+      "path": "scripts/phase_9_build_freeze.py",
+      "sha256": "c9ad1e0e2692b132439622e8b7b6adee0d2cebff29f593bbf035937a021fee6e"
+    },
+    {
+      "bytes": 22009,
+      "path": "scripts/phase_9_build_scenarios.py",
+      "sha256": "06d1ec748fca58f892f77c3a57fac7b35fe47ccc0a7bb13344a6dd003790f058"
+    },
+    {
+      "bytes": 87107,
+      "path": "scripts/phase_9_design_simulation.py",
+      "sha256": "5c8301018886234c7721600f1678c0e218a76a02073e3b4b9fe47138faa2049f"
+    },
+    {
+      "bytes": 5278,
+      "path": "scripts/phase_9_runner_dryrun.py",
+      "sha256": "fdec931629fe574d0d6750a077451dc9395cb49328450b8248f816d5f9015794"
+    },
+    {
+      "bytes": 8720,
+      "path": "scripts/verify_phase_9_freeze.py",
+      "sha256": "be03b411c610757438efdb2d62e1239fdbd6437b73b462bc831a0558fab71058"
+    },
+    {
+      "bytes": 94255,
+      "path": "uv.lock",
+      "sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
+    }
+  ],
+  "derived_hashes": {
+    "analysis_implementation_sha256": "5c8301018886234c7721600f1678c0e218a76a02073e3b4b9fe47138faa2049f",
+    "canonical_action_schema_sha256": "96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5",
+    "host_policy_sha256": "32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be",
+    "per_model_schedule_sha256": {
+      "claude-sonnet-5": "9d1530da334975aeb23d17ba986ecd46951a5b39d57ebdf5c288c1153803a0b0",
+      "gpt-5.6-luna": "0a92eeafc92c48b758f653006284ad6b24b4954ded6304c6d4169e3683b26836",
+      "gpt-5.6-sol": "d002f0d4f628832a4828dab25c05091a2990675b01c1664a953372a327bc5bec",
+      "gpt-5.6-terra": "eefe7199cfbd263edd7877a45f2f4cbea0cfd804e30793421be7ebf377800b87"
+    },
+    "scenario_fixture_sha256": "da4d525cf3c7773951cbe8ccd67405a7c20a04d4d87a57c2573559dc609c4583",
+    "study_schedule_sha256": "7f05b86c4da756d1b47cccf6df359eacf238fec3cf69610fb1698c227c07f1ad"
+  },
+  "domains": 8,
+  "framing_id": "F3",
+  "freeze_utc": "2026-09-08T19:51:09Z",
+  "generator_seed": "phase9-f3-resolution-scenarios-v1",
+  "manifest_sha256": "e3650e3de1ea505732b4a0c2f320603dc41abd821cd8160250c4d9397f4ebcde",
+  "model_panel": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna",
+    "claude-sonnet-5"
+  ],
+  "parent_commit": "a62918c",
+  "phase": 9,
+  "record_ref_salt": "phase9-record-ref-salt-v1",
+  "repeats": 3,
+  "scenarios": 64,
+  "scenarios_per_domain": 8,
+  "scheduling_seed": 20260908,
+  "sink": "a2a_relay",
+  "status": "FROZEN (pre-execution)",
+  "study_id": "composed-live-canary-009",
+  "study_version": "v9",
+  "total_planned_trials": 1536,
+  "zero_live_calls_before_freeze": true
+}

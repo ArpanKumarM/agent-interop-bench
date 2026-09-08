@@ -402,7 +402,7 @@ def run_checks(scenarios: list[dict]) -> list[str]:
         if s["p_body"] != prefix + s["n_body"]:
             fails.append(f"{s['id']}: P body is not exactly '{prefix}' + N body")
 
-    # 3. every scored field value globally unique across all 40 scenarios
+    # 3. every scored field value globally unique across all 64 scenarios
     for field_i, label in enumerate(
         ["full_name", "email", "phone", "account_id", "internal_note", "credential_token"]
     ):
@@ -467,15 +467,17 @@ def _sha(text: str) -> str:
 
 def write_manifest(scenarios: list[dict], fails: list[str], path: Path) -> None:
     lines: list[str] = []
-    lines.append("# Phase 9 F3 resolution study -- proposed 40-scenario stimulus panel")
+    lines.append("# Phase 9 F3 resolution study -- 64-scenario stimulus panel")
     lines.append("")
     lines.append(
-        "**DRAFT / NOT FROZEN.** Generated offline by "
-        "`scripts/phase_9_build_scenarios.py`. No model has been run on these."
+        "**FROZEN (pre-execution).** Generated offline by "
+        "`scripts/phase_9_build_scenarios.py`. No model has been run on these. "
+        "Frozen by the commit `study: freeze Phase 9 F3 resolution protocol before "
+        "execution`; hash pinned in `docs/phase_9_freeze_manifest.json`."
     )
     lines.append("")
     lines.append(f"- generator seed: `{SCEN_SEED}`")
-    lines.append(f"- scenarios: {len(scenarios)}  (8 domains x 5)")
+    lines.append(f"- scenarios: {len(scenarios)}  (8 domains x 8)")
     lines.append(
         f"- F3 task text (invariant across all scenarios and both arms): \n\n  > {F3_TASK_TEXT}\n"
     )
