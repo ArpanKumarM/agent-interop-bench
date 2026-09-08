@@ -1,16 +1,17 @@
 # Provenance
 
 This file is the single, durable record of the frozen chronology and all
-byte-pinned identifiers behind the paper
-(`paper/arxiv/main.tex` / `paper/main.md`). It replaces the per-phase
-provenance notes that were kept during development.
+byte-pinned identifiers behind the paper. Sections 1–4 are the frozen
+record for **v1** (`paper/arxiv/main.tex` / `paper/main.md`) and are not
+edited. **Section 5 is a v2 addendum** covering Phase 8 and the current
+manuscript (`paper/main_v2.md` / `paper/arxiv/main_v2.tex`).
 
-Scope: the paper reports the **Phase 7** three-arm neutral-baseline study
-(`composed-live-canary-007a` / `v7a`) as the primary study, and the
+Scope (v1): the paper reports the **Phase 7** three-arm neutral-baseline
+study (`composed-live-canary-007a` / `v7a`) as the primary study, and the
 **Phase 6** two-arm confirmatory study (`v4r1`) as a descriptive
 comparison and as the source of the secondary null experiment and the
 harness enforcement property. **Phase 6 and Phase 7 observations are never
-pooled.**
+pooled.** v2 keeps every v1 number and adds Phase 8 (§5 below).
 
 The `reports/` directory (raw runs, integrity packages, analysis
 artifacts) is `.gitignore`d and is distributed as a public artifact
@@ -168,3 +169,92 @@ purpose: `CHANGELOG.md` entries accurately describe past releases, and the
 frozen design/errata documents must not be edited for cosmetic link
 cleanup. No removed file is needed to build the PDF, run the offline
 analysis, verify a hash, or reproduce a published number.
+
+---
+
+## 5. Phase 8 (v2 addendum, 2026-09-07)
+
+**Scope (v2).** The v2 manuscript (`paper/main_v2.md`) keeps every Phase
+6/7 number above and adds **Phase 8**: a pre-registered, two-round,
+six-framing pilot sweep (`docs/phase_8_design.md`,
+`docs/phase_8a2_pilot_design.md`), both rounds rejected, the stopping
+rule followed, the ~13,200-trial main study never executed. v2's central
+claim is a scope claim about *measurability* (see the manuscript §7); it
+does **not** claim task-framing effects are universally larger than
+label effects.
+
+### 5.1 Pinned identifiers
+
+| item | value |
+|---|---|
+| Phase 8C (round one) executable source commit | `74ba1cdd545ce9f32850bd4ba107e45af952dbb3` |
+| Phase 8A.2 (round two) executable source commit | `d06a88b0eebd6f4452ab09ccbc6fe5c2a4907631` |
+| host-policy SHA-256 (shared; = Phase 6/7) | `32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be` |
+| canonical action-schema SHA-256 | `96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5` |
+| round one trials | 576 planned, 575 completed, 1 attrition (`gpt-5.6-terra`), $3.32 |
+| round two trials | 576 planned, 575 completed, 1 attrition (`gpt-5.6-terra`), $3.02 |
+| main study (never executed) | 13,184 trials (S8-A 9,216 · S8-A′ 512 · S8-B 1,536 · S8-C 1,536 · S8-D 384) |
+
+Round-two raw `trials.jsonl` SHA-256 (byte-pinned; recomputable from raw
+by `scripts/verify_phase_8_round2_from_raw.py`):
+
+| model | SHA-256 |
+|---|---|
+| `gpt-5.6-sol` | `db9d3c5ca540c0e19730e9f4e80ed5f6cbd4cae57af933af8fd5d3aee5af6899` |
+| `gpt-5.6-terra` | `55144203978551a8abd694c7885dee1abc7f01566f82d4218376b05dbd5184f4` |
+| `gpt-5.6-luna` | `6a2512282b4dbcf5c412219034deca38acaf5bd50a0815bddc38568ff79940da` |
+| `claude-sonnet-5` | `8f916fa3cf3315e2fd89a1fec0fe74bd2e3c7ee7d3936d590db9fd15dff42c73` |
+
+Round-two per-model execution fingerprints / plan / schedule / summary
+hashes: `docs/release_v2_checklist.md` §2.
+
+Round-one raw `trials.jsonl` SHA-256 (**originally recorded; no bytes
+survive** — see §5.2): `8056732c…bdb498`, `b9e2956d…53100e5`,
+`8093abce…f979c460`, `64b432ce…dba21eba` (full values in
+`docs/phase_8c_pilot_result.md`).
+
+### 5.2 Provenance limitation — Phase 8 round one
+
+**The Phase 8 round-one (F1–F3) raw trial files were overwritten** by the
+round-two run into the same `reports/experiments/phase-8-pilot-<model>/`
+directories, before the `public` arm was identified as worth analyzing
+in the v2 pass. Consequences, stated so nothing implies stronger
+reproducibility than exists:
+
+1. The round-one `trials.jsonl` SHA-256 hashes above **survive** (in
+   `docs/phase_8c_pilot_result.md`) but there are **no bytes to verify
+   them against** on any machine.
+2. Round-one `unlabeled`/`permit`/`suppress` rates are preserved only as
+   a **transcription** in `app/reporting/phase_8_frozen_grid.py`, from
+   the frozen result doc's own per-model table. They are cross-checked
+   for internal consistency (`scripts/verify_phase_8_pilot_docs.py`,
+   `paper/arxiv/audit_phase8_numbers.py`) but **cannot be newly
+   recomputed from raw**.
+3. The round-one **`public` arm cannot be recovered at all** — so the
+   within-study same-framing `P − N` label contrast (`paper/main_v2.md`
+   §6.4) exists only for F4–F6, and only for `claude-sonnet-5`.
+
+Round two is unaffected: its raw is on disk and byte-pinned.
+
+Corrective lesson (recorded in `phase_8_frozen_grid.py`'s docstring and
+`docs/phase_9_f3_resolution_design.md` §5): archive an immutable copy of
+every raw run **before** anything can overwrite the run directory.
+
+### 5.3 Derived-documentation correction (2026-09-07)
+
+Three **derived aggregate counts** in the Phase 8 pilot *result* docs
+were mis-transcribed ("`0/4` in band" written wherever a rule failed,
+conflating "rule not met" with "zero models met it"). The frozen
+per-model rates were always correct; the corrected counts and a
+`[corrected]` marker are in the docs, with a correction block at the top
+of each:
+
+| doc | framing | field | was | now |
+|---|---|---|---|---|
+| `phase_8c_pilot_result.md` | F2 | headroom in-band count | `0/4` | `1/4` (`gpt-5.6-terra` `N = 0.500`) |
+| `phase_8c_pilot_result.md` | F3 | headroom in-band count | `0/4` | `1/4` (`gpt-5.6-terra` `N = 0.583`) |
+| `phase_8a2_pilot_result.md` | F4 | headroom in-band count | `0/4` | `1/4` (`claude-sonnet-5` `N = 0.417`) |
+| `phase_8c_pilot_result.md` | F1, F2 | non-saturation count (advisory) | `0/4` | `1/4` each |
+
+No accept/reject outcome changed (headroom needs `≥3/4`). Guarded going
+forward by `scripts/verify_phase_8_pilot_docs.py`.

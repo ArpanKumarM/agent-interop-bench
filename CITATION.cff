@@ -1,34 +1,57 @@
 cff-version: 1.2.0
-message: "If you use this artifact, please cite the paper."
+message: "If you use this artifact, please cite the paper (v2)."
 title: >-
-  Public-Sharing Labels and Verbatim Field Egress in an MCP-to-A2A Agent
-  Configuration: A Controlled Multi-Model Study
+  Whether a Sensitivity-Label Effect Can Be Measured at an MCP-to-A2A
+  Handoff Depends on the Task Framing: A Pre-Registered Sweep
 authors:
   - family-names: Mahapatra
     given-names: Arpan Kumar
     email: arpan.arpan.mohapatra@gmail.com
 abstract: >-
-  A controlled measurement of one behavior at a Model Context Protocol
-  (MCP) to Agent2Agent (A2A) handoff: a real-model host reads a local
-  record over MCP and sends a message to a remote A2A agent. A
-  pre-specified, frozen three-arm matched design presents each of 10
-  record scenarios with a CONFIDENTIAL header, with no header, and with a
-  PUBLIC - OK TO SHARE header, holding the six substantive record values
-  byte-identical across arms; the outcome is verbatim occurrence of any of
-  them in the outbound message. Across four models x 3 arms x 4 repeats
-  (480 trials), the confidential-minus-unlabeled contrast is inconclusive
-  and floor-limited in every model, while adding PUBLIC - OK TO SHARE is
-  descriptively (not causally) associated with higher verbatim egress
-  relative to the unlabeled baseline, with strong model dependence.
-version: "1.0"
-date-released: "2026-09-01"
+  A three-phase, pre-registered study of whether an explicit sensitivity
+  label on a locally-read record changes verbatim field egress at a Model
+  Context Protocol (MCP) to Agent2Agent (A2A) handoff, scored by an
+  exact-substring, judge-free detector. Phase 6 (two arms, 640 trials)
+  found a large confidential-vs-public contrast but could not attribute
+  it to either label. Phase 7 added an unlabeled baseline (480 trials);
+  three of four models floored on both the confidential and unlabeled
+  arms, leaving that contrast unmeasured. Phase 8 was a two-round,
+  six-framing task-wording sweep with a stopping rule fixed in advance,
+  seeking a framing whose unlabeled-arm rate lands in [0.25, 0.70] for at
+  least three of four models; no framing met the rule, the stopping rule
+  fired, and the ~13,184-trial main study was not executed. At n = 12,
+  framing F3 remains unresolved under interval analysis. A public-arm
+  contrast collected outside the frozen analysis plan is reported as
+  exploratory. Whether a label's effect can be measured here depends on
+  the task framing; the study does not establish that task-framing
+  effects are universally larger than label effects.
+version: "2.0"
+date-released: "2026-09-08"
 license: MIT
 repository-code: "https://github.com/ArpanKumarM/agent-interop-bench"
-url: "https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v1.0"
+url: "https://github.com/ArpanKumarM/agent-interop-bench"
+identifiers:
+  - type: other
+    value: "arXiv:2609.01693"
+    description: >-
+      arXiv preprint identifier. This artifact accompanies v2 of that
+      preprint (a substantially revised version of the same identifier).
+  - type: url
+    value: "https://arxiv.org/abs/2609.01693"
+    description: arXiv abstract page (version history lists v1 and v2).
 keywords:
   - MCP
   - A2A
-  - agent security
+  - contextual integrity
   - information flow
+  - task framing
+  - pre-registration
   - LLM evaluation
   - reproducibility
+notes: >-
+  v2 status. The manuscript-text license is the author's; a recommended
+  arXiv license is noted in paper/arxiv/ARXIV_METADATA_v2.txt. No DOI or
+  peer-reviewed venue is asserted (preprint). A paper-v2.0 public
+  artifact release adding the Phase 8 pilot traces is prepared but not
+  yet cut (docs/release_v2_checklist.md); update url/date-released when
+  it is.
