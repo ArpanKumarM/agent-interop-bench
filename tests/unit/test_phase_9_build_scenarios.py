@@ -17,14 +17,16 @@ sys.modules[_spec.name] = mod
 _spec.loader.exec_module(mod)
 
 
-def test_builds_exactly_40_scenarios_8x5():
+def test_builds_exactly_64_scenarios_8x8():
     scen = mod.build_scenarios()
-    assert len(scen) == 40
+    assert len(scen) == 64
+    assert mod.DOMAINS_COUNT == 8
+    assert mod.SCENARIOS_PER_DOMAIN == 8
     per_domain: dict[str, int] = {}
     for s in scen:
         per_domain[s["domain"]] = per_domain.get(s["domain"], 0) + 1
     assert sorted(per_domain) == sorted(d for d, _ in mod.DOMAINS)
-    assert set(per_domain.values()) == {5}
+    assert set(per_domain.values()) == {8}
 
 
 def test_all_checks_pass():

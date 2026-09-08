@@ -35,7 +35,6 @@ claude F4 N per-scenario k/3 = 3,0,0,2, near-bimodal):
 
 Run:  uv run python scripts/phase_9_design_simulation.py                    (design OCs)
       uv run python scripts/phase_9_design_simulation.py --calibrate        (CI calibration)
-      uv run python scripts/phase_9_design_simulation.py --calibrate-designs (S x R spot-check)
       uv run python scripts/phase_9_design_simulation.py --ci-stability      (bootstrap B sweep)
       uv run python scripts/phase_9_design_simulation.py --fast             (small; tests)
 """
@@ -70,13 +69,16 @@ def _rng(*parts: object) -> random.Random:
 # domain holds S/8 scenarios (>= 2 needed for a within-domain variance;
 # the primary Q1/Q2 intervals want >= ~4). 16x10 is the "too few
 # scenarios" baseline; the five real candidates follow.
+# (total scenarios, repeats). Total trials = S * R * 2 arms * 4 models.
+# All S are 8 * (scenarios per domain). The design sim runs FIXED-DOMAIN
+# (see --calibrate-fixed): the 8 domain means are held fixed and only
+# scenarios (within each fixed domain) + repeats are resampled.
 CANDIDATE_DESIGNS: tuple[tuple[int, int], ...] = (
-    (16, 10),
-    (24, 5),
-    (32, 5),
-    (40, 4),
-    (40, 5),
-    (40, 6),
+    (40, 5),  # 8 x 5 x 5  = 1600 trials
+    (48, 4),  # 8 x 6 x 4  = 1536
+    (64, 3),  # 8 x 8 x 3  = 1536   <- recommended
+    (64, 4),  # 8 x 8 x 4  = 2048
+    (80, 2),  # 8 x 10 x 2 = 1280
 )
 
 # Plausible true F3 marginal N rates to classify, anchored on the Phase 8
@@ -255,41 +257,53 @@ class Q1Row:
     mean_halfwidth: float
 
 
+_DESIGN_N_CONFIGS = 8  # fixed-domain configs averaged over in the design sim
+
+
 def simulate_q1(n_sim: int, b: int = SIM_B) -> list[Q1Row]:
-    """Operating characteristics of the Q1 whole-CI classification rule
-    under the PRIMARY Q1 interval (method G: domain-level t on the 8
-    domain means; chosen by the --calibrate pass)."""
+    """FIXED-DOMAIN operating characteristics of the Q1 whole-CI
+    classification rule under the PRIMARY Q1 interval (method S1f: the
+    stratified Welch-Satterthwaite t on the WITHIN-domain scenario-rate
+    variance, with a per-domain binomial-derived variance floor). For each
+    of _DESIGN_N_CONFIGS fixed domain configurations the 8 mu_d are held
+    fixed and only scenarios + repeats are resampled."""
     rows: list[Q1Row] = []
     for design in CANDIDATE_DESIGNS:
         s, r = design
-        per_domain = s // DOMAINS
-        for dgp, regime in _dgp_combos():
+        spd = s // DOMAINS
+        for dgp, regime in _fixed_dgps():
+            label = "mixture" if dgp == "mixture" else f"2beta/{regime}"
             for mu in Q1_TRUE_MU:
-                rng = _rng("q1", design, dgp, regime, mu)
                 counts = {"in-band": 0, "below": 0, "above": 0, "unresolved": 0}
                 correct = 0
                 hw = 0.0
                 want = truth_label(mu)
                 near_edge = min(abs(mu - BAND_LOW), abs(mu - BAND_HIGH)) < 0.03
-                for _ in range(n_sim):
-                    dv = _draw_domain_rates(rng, dgp, regime, mu, per_domain, r)
-                    _pt, lo, hi, _pa = m_domain_t(None, dv, b)
-                    cls = classify_q1(lo, hi)
-                    counts[cls] += 1
-                    hw += (hi - lo) / 2
-                    if cls == want or (cls == "unresolved" and near_edge):
-                        correct += 1
+                for c in range(_DESIGN_N_CONFIGS):
+                    crng = _rng("dq1-cfg", dgp, regime, mu, c)
+                    config = draw_fixed_config(crng, dgp, regime, mu)
+                    srng = _rng("dq1-sim", dgp, regime, mu, c, design)
+                    for _ in range(n_sim):
+                        dv = draw_fixed_dv(srng, config, spd, r)
+                        floors = _binom_floors_rate(dv, r)
+                        _pt, lo, hi, _pa = m_strat_ws(None, dv, 0, floors)
+                        cls = classify_q1(lo, hi)
+                        counts[cls] += 1
+                        hw += (hi - lo) / 2
+                        if cls == want or (cls == "unresolved" and near_edge):
+                            correct += 1
+                tot = _DESIGN_N_CONFIGS * n_sim
                 rows.append(
                     Q1Row(
                         design,
-                        dgp if dgp == "mixture" else f"2beta/{regime}",
+                        label,
                         mu,
-                        counts["in-band"] / n_sim,
-                        counts["below"] / n_sim,
-                        counts["above"] / n_sim,
-                        counts["unresolved"] / n_sim,
-                        correct / n_sim,
-                        hw / n_sim,
+                        counts["in-band"] / tot,
+                        counts["below"] / tot,
+                        counts["above"] / tot,
+                        counts["unresolved"] / tot,
+                        correct / tot,
+                        hw / tot,
                     )
                 )
     return rows
@@ -306,47 +320,60 @@ class Q2Row:
 
 
 def simulate_q2(n_sim: int, b: int = SIM_B) -> list[Q2Row]:
-    """Operating characteristics of the Q2 paired contrast under the
-    PRIMARY Q2 interval (method E: stratified Welch t on the per-domain
-    mean paired difference, with the within-domain binomial variance
-    floor; chosen by the --calibrate pass)."""
+    """FIXED-DOMAIN operating characteristics of the Q2 paired contrast
+    under the PRIMARY Q2 interval (method S1f applied to the per-domain
+    mean paired difference, with the within-domain binomial-difference
+    variance floor). The 8 domain means are held fixed per config; only
+    scenarios + repeats are resampled; target = the true Delta."""
     rows: list[Q2Row] = []
-    base_mu = 0.45  # plausible F3 mid N rate
-    kd, kw = TWOBETA_REGIMES["dom.mod/scn.mod"]
+    tot = _DESIGN_N_CONFIGS * n_sim
     for design in CANDIDATE_DESIGNS:
         s, r = design
-        per_domain = s // DOMAINS
+        spd = s // DOMAINS
         for esd in Q2_EFFECT_SD:
             for delta in Q2_TRUE_DELTA:
-                rng = _rng("q2", design, esd, delta)
-                excl = 0
-                cover = 0
-                hw = 0.0
-                for _ in range(n_sim):
-                    p_n = probs_2beta(rng, base_mu, kd, kw, per_domain)
-                    diffs: list[list[float]] = []
-                    nr: list[float] = []
-                    pr: list[float] = []
-                    for row in p_n:
-                        drow: list[float] = []
-                        for p in row:
-                            p_p = _clip01(p + rng.gauss(delta, esd))
-                            kn = draw_rate(rng, p, r)
-                            kp = draw_rate(rng, p_p, r)
-                            drow.append(kp - kn)
-                            nr.append(kn)
-                            pr.append(kp)
-                        diffs.append(drow)
-                    mn = statistics.fmean(nr)
-                    mp = statistics.fmean(pr)
-                    s2_floor = (mn * (1.0 - mn) + mp * (1.0 - mp)) / r
-                    _pt, lo, hi, _pa = m_analytic_ws_floor(None, diffs, b, s2_floor)
-                    if lo > 0 or hi < 0:
-                        excl += 1
-                    if lo <= delta <= hi:
-                        cover += 1
-                    hw += (hi - lo) / 2
-                rows.append(Q2Row(design, esd, delta, excl / n_sim, cover / n_sim, hw / n_sim))
+                # worst (min coverage, min detection, max half-width) over
+                # the moderate and severe between-domain regimes
+                worst_cov, worst_det, worst_hw = 1.0, 1.0, 0.0
+                for regime in TWOBETA_REGIMES:
+                    _kd, kw = TWOBETA_REGIMES[regime]
+                    excl = 0
+                    cover = 0
+                    hw = 0.0
+                    for c in range(_DESIGN_N_CONFIGS):
+                        crng = _rng("dq2-cfg", regime, c)
+                        mu_d = draw_fixed_config(crng, "2beta", regime, 0.45)[1]
+                        srng = _rng("dq2-sim", regime, esd, delta, c, design)
+                        for _ in range(n_sim):
+                            diffs: list[list[float]] = []
+                            dv_n: list[list[float]] = []
+                            dv_p: list[list[float]] = []
+                            for md in mu_d:
+                                drow: list[float] = []
+                                nrow: list[float] = []
+                                prow: list[float] = []
+                                for _ in range(spd):
+                                    p = _beta(srng, md, kw)
+                                    p_p = _clip01(p + srng.gauss(delta, esd))
+                                    kn = draw_rate(srng, p, r)
+                                    kp = draw_rate(srng, p_p, r)
+                                    drow.append(kp - kn)
+                                    nrow.append(kn)
+                                    prow.append(kp)
+                                diffs.append(drow)
+                                dv_n.append(nrow)
+                                dv_p.append(prow)
+                            floors = _binom_floors_diff(dv_n, dv_p, r)
+                            _pt, lo, hi, _pa = m_strat_ws(None, diffs, 0, floors)
+                            if lo > 0 or hi < 0:
+                                excl += 1
+                            if lo <= delta <= hi:
+                                cover += 1
+                            hw += (hi - lo) / 2
+                    worst_cov = min(worst_cov, cover / tot)
+                    worst_det = min(worst_det, excl / tot)
+                    worst_hw = max(worst_hw, hw / tot)
+                rows.append(Q2Row(design, esd, delta, worst_det, worst_cov, worst_hw))
     return rows
 
 
@@ -446,19 +473,41 @@ def student_t_cdf(t: float, df: float) -> float:
     return 1.0 - ib if t > 0.0 else ib
 
 
-def student_t_ppf(p: float, df: float) -> float:
+def _student_t_ppf_exact(p: float, df: float) -> float:
     if p <= 0.0:
         return -math.inf
     if p >= 1.0:
         return math.inf
     lo, hi = -200.0, 200.0
-    for _ in range(200):
+    for _ in range(120):
         mid = 0.5 * (lo + hi)
         if student_t_cdf(mid, df) < p:
             lo = mid
         else:
             hi = mid
     return 0.5 * (lo + hi)
+
+
+# Welch-Satterthwaite df is continuous; the quantile is smooth in df, so a
+# cache keyed to df rounded to 0.05 (and interpolated) is exact to <1e-4
+# and collapses ~100x of repeated bisection in the simulations.
+_TPPF_CACHE: dict[tuple[float, float], float] = {}
+
+
+def student_t_ppf(p: float, df: float) -> float:
+    if df >= 200.0:
+        return _NORM.inv_cdf(p)
+    lo_df = math.floor(df / 0.25) * 0.25
+    lo_df = max(lo_df, 1.0)
+    hi_df = lo_df + 0.25
+    for key_df in (lo_df, hi_df):
+        k = (p, key_df)
+        if k not in _TPPF_CACHE:
+            _TPPF_CACHE[k] = _student_t_ppf_exact(p, key_df)
+    if hi_df == lo_df:
+        return _TPPF_CACHE[p, lo_df]
+    w = (df - lo_df) / (hi_df - lo_df)
+    return (1.0 - w) * _TPPF_CACHE[p, lo_df] + w * _TPPF_CACHE[p, hi_df]
 
 
 def _var_ddof1(d: list[float]) -> tuple[float, float]:
@@ -853,8 +902,9 @@ def total_trials(design: tuple[int, int], arms: int = 2, models: int = 4) -> int
 
 def print_q1(rows: list[Q1Row]) -> tuple[int, int]:
     print("\n" + "=" * 76)
-    print("Q1  whole-CI classification of one model's marginal F3 N rate")
-    print("    PRIMARY Q1 interval = method G: t on the 8 domain means (df=7)")
+    print("Q1  FIXED-DOMAIN whole-CI classification of a model's marginal F3 N rate")
+    print("    PRIMARY interval = method S1f: stratified Welch-Satterthwaite t on")
+    print("    the WITHIN-domain scenario-rate variance + per-domain binomial floor")
     print("=" * 76)
     hdr = "".join(f"{f'th={mu:g}':>8}" for mu in Q1_TRUE_MU)
     print(f"\n{'design':>7} {'trials':>7} {hdr}   (worst-DGP P correct+confident)")
@@ -897,9 +947,9 @@ def print_q1(rows: list[Q1Row]) -> tuple[int, int]:
 
 def print_q2(rows: list[Q2Row]) -> None:
     print("\n" + "=" * 76)
-    print("Q2  paired P - N absolute risk difference at F3")
-    print("    PRIMARY Q2 interval = method E: stratified WS-t on per-domain")
-    print("    mean paired diff + within-domain binomial variance floor")
+    print("Q2  FIXED-DOMAIN paired P - N absolute risk difference at F3")
+    print("    PRIMARY interval = method S1f on the per-domain mean paired diff")
+    print("    + per-domain binomial-difference variance floor (worst over regime)")
     print("=" * 76)
     print(
         f"{'design':>7} {'effect-SD':>10} {'delta':>6} {'P(CI excl 0)':>13} "
@@ -1110,6 +1160,510 @@ def print_calibration(q1: list[CalibRow], q2: list[CalibRow]) -> str:
     return "\n".join(rep)
 
 
+# --------------------------------------------------------------------------- #
+# FIXED-DOMAIN calibration  (`--calibrate-fixed`)
+#
+# The manuscript estimand is  theta = (1/8) * sum_d mu_d  with the 8 domains
+# FIXED by design (mu_d = E_{s ~ G_d}[p_m(s|N)] a fixed constant).  The only
+# randomness in theta_hat is (i) sampling n scenarios within each fixed
+# domain from G_d and (ii) R Bernoulli repeats within each scenario.
+#
+# Method G's SE^2 = s2_ybar / 8 has expectation
+#     E[SE^2_G] = Sigma2_mu / 8  +  (1/64) sum_d V_d / n
+# where Sigma2_mu = (1/7) sum_d (mu_d - mubar)^2 is the FIXED spread of the
+# 8 true domain means and V_d = tau2_d + E[p(1-p)|d]/R.  The second term is
+# the correct fixed-domain variance Psi; the first term is spurious for a
+# fixed-domain estimand -> method G OVER-covers theta (conservative), and
+# its "good" coverage in --calibrate is only because that DGP re-draws the
+# 8 mu_d every replicate, i.e. it targets the random-domain hyper-mean.
+#
+# This section evaluates FIXED-STRATUM intervals under a DGP that holds the
+# 8 mu_d fixed across replicates and resamples only scenarios + repeats.
+# --------------------------------------------------------------------------- #
+
+# (scenarios_per_domain, repeats). Total trials = 8 * spd * R * 2 arms * 4
+# models. Same ~1.3k-2.0k budget, varying how it is split.
+FIXED_CANDIDATES: tuple[tuple[int, int], ...] = (
+    (5, 5),  # 40 scenarios x 5 repeats = 1600 trials
+    (6, 4),  # 48 x 4 = 1536
+    (8, 3),  # 64 x 3 = 1536
+    (8, 4),  # 64 x 4 = 2048
+    (10, 2),  # 80 x 2 = 1280
+)
+
+
+def draw_fixed_config(rng: random.Random, dgp: str, regime: str, mu_hyper: float) -> tuple:
+    """Draw ONE fixed configuration of the 8 domains. Held constant across
+    all replicates of a coverage run; the coverage target is
+    theta = mean(the 8 fixed per-domain means)."""
+    if dgp == "2beta":
+        kd, kw = TWOBETA_REGIMES[regime]
+        mu_d = [_beta(rng, mu_hyper, kd) for _ in range(DOMAINS)]
+        return ("2beta", tuple(mu_d), kw)
+    # mixture: each domain gets a fixed leaker fraction w_d centred on the
+    # value that makes E[p] = mu_hyper, with domain-to-domain spread.
+    p_lo, p_hi, conc = MIX["p_lo"], MIX["p_hi"], MIX["conc"]
+    w0 = _clip01((mu_hyper - p_lo) / (p_hi - p_lo))
+    w_d = [_clip01(rng.gauss(w0, 0.18)) for _ in range(DOMAINS)]
+    return ("mixture", tuple(w_d), (p_lo, p_hi, conc))
+
+
+def fixed_config_theta(config: tuple) -> float:
+    """The fixed-domain coverage target for a config."""
+    kind = config[0]
+    if kind == "2beta":
+        return statistics.fmean(config[1])
+    w_d, (p_lo, p_hi, _c) = config[1], config[2]
+    return statistics.fmean([w * p_hi + (1.0 - w) * p_lo for w in w_d])
+
+
+def draw_fixed_dv(rng: random.Random, config: tuple, spd: int, r: int) -> list[list[float]]:
+    """Sample scenarios (within each fixed domain) + Bernoulli repeats."""
+    kind = config[0]
+    out: list[list[float]] = []
+    if kind == "2beta":
+        _k, mu_d, kw = config
+        for md in mu_d:
+            out.append([draw_rate(rng, _beta(rng, md, kw), r) for _ in range(spd)])
+        return out
+    _k, w_d, (p_lo, p_hi, conc) = config
+    for w in w_d:
+        row: list[float] = []
+        for _ in range(spd):
+            p = _beta(rng, p_hi, conc) if rng.random() < w else _beta(rng, p_lo, conc)
+            row.append(draw_rate(rng, p, r))
+        out.append(row)
+    return out
+
+
+# --- fixed-stratum interval methods ------------------------------------- #
+def m_strat_ws(
+    rng: random.Random | None,
+    dv: list[list[float]],
+    b: int,
+    floors: list[float] | None = None,
+) -> tuple[float, float, float, bool]:
+    """S1 -- stratified Welch-Satterthwaite t on the WITHIN-domain scenario
+    variance. Var_hat(theta) = (1/H^2) sum_d s2_{r,d} / n_d ; WS df. This is
+    an unbiased estimator of the fixed-domain variance Psi (E[s2_{r,d}] =
+    V_d). Optionally floor each domain's s2 at floors[d]."""
+    h_ = len(dv)
+    h2 = h_ * h_
+    sum_y = 0.0
+    var = 0.0
+    dfden = 0.0
+    for i, d in enumerate(dv):
+        n = len(d)
+        mean, s2 = _var_ddof1(d)
+        sum_y += mean
+        if floors is not None and s2 < floors[i]:
+            s2 = floors[i]
+        u = s2 / (n * h2)
+        var += u
+        if n > 1:
+            dfden += (u * u) / (n - 1)
+    theta = sum_y / h_
+    if var <= 0.0:
+        return theta, theta, theta, True
+    df = (var * var) / dfden if dfden > 0.0 else float(h_ - 1)
+    hw = student_t_ppf(0.975, max(df, 1.0)) * math.sqrt(var)
+    return theta, theta - hw, theta + hw, False
+
+
+def _binom_floors_rate(dv: list[list[float]], r: int) -> list[float]:
+    """Per-domain lower bound on V_d from the Bernoulli component:
+    pbar_d(1-pbar_d)/R.  Derivation: V_d = tau2_d + E[p(1-p)|d]/R and
+    pbar_d(1-pbar_d)/R = (E[p(1-p)|d] + tau2_d)/R, so
+    V_d - pbar_d(1-pbar_d)/R = tau2_d(1 - 1/R) >= 0  =>  the floor never
+    exceeds the true V_d (it can only help coverage)."""
+    out = []
+    for d in dv:
+        pbar = statistics.fmean(d)
+        out.append(pbar * (1.0 - pbar) / r)
+    return out
+
+
+def _binom_floors_diff(dv_n: list[list[float]], dv_p: list[list[float]], r: int) -> list[float]:
+    """Per-domain Bernoulli lower bound for the paired difference:
+    (pbarN(1-pbarN) + pbarP(1-pbarP)) / R  (repeats independent across arms)."""
+    out = []
+    for dn, dp in zip(dv_n, dv_p, strict=True):
+        pn = statistics.fmean(dn)
+        pp = statistics.fmean(dp)
+        out.append((pn * (1.0 - pn) + pp * (1.0 - pp)) / r)
+    return out
+
+
+def m_strat_scn_boot_t(
+    rng: random.Random,
+    dv: list[list[float]],
+    b: int,
+    floors: list[float] | None = None,
+) -> tuple[float, float, float, bool]:
+    """S2 -- studentized stratified SCENARIO bootstrap, DOMAINS FIXED.
+    Resample the n scenarios WITH replacement WITHIN each fixed domain
+    (domains are never resampled), recompute theta* and its stratified SE*,
+    studentize, and invert the empirical t* quantiles."""
+    theta_hat, se_hat_sq, _df = _strat_var_only(dv)
+    se_hat = math.sqrt(se_hat_sq) if se_hat_sq > 0 else 0.0
+    if se_hat <= 0.0:
+        return theta_hat, theta_hat, theta_hat, True
+    choices = rng.choices
+    h_ = len(dv)
+    h2 = h_ * h_
+    sizes = [len(d) for d in dv]
+    sqrt = math.sqrt
+    ts: list[float] = []
+    for _ in range(b):
+        sum_y = 0.0
+        var = 0.0
+        for k in range(h_):
+            x = choices(dv[k], k=sizes[k])
+            n = sizes[k]
+            s = 0.0
+            ss = 0.0
+            for v in x:
+                s += v
+                ss += v * v
+            sum_y += s / n
+            s2 = (ss - s * s / n) / (n - 1) if n > 1 else 0.0
+            var += s2 / (n * h2)
+        if var > 0.0:
+            ts.append((sum_y / h_ - theta_hat) / sqrt(var))
+    if len(ts) < 0.5 * b:
+        return theta_hat, theta_hat, theta_hat, True
+    ts.sort()
+    q_lo = _pct(ts, 0.025)
+    q_hi = _pct(ts, 0.975)
+    return theta_hat, theta_hat - q_hi * se_hat, theta_hat - q_lo * se_hat, False
+
+
+def _strat_var_only(dv: list[list[float]]) -> tuple[float, float, float]:
+    h_ = len(dv)
+    h2 = h_ * h_
+    sum_y = 0.0
+    var = 0.0
+    dfden = 0.0
+    for d in dv:
+        n = len(d)
+        mean, s2 = _var_ddof1(d)
+        sum_y += mean
+        u = s2 / (n * h2)
+        var += u
+        if n > 1:
+            dfden += (u * u) / (n - 1)
+    df = (var * var) / dfden if dfden > 0.0 else float(h_ - 1)
+    return sum_y / h_, var, max(df, 1.0)
+
+
+def m_finite_panel(
+    rng: random.Random | None,
+    dv: list[list[float]],
+    b: int,
+    r: int = 5,
+) -> tuple[float, float, float, bool]:
+    """OPTION A -- the finite frozen panel. theta_A = (1/N) sum_s p_s ; the
+    ONLY randomness is the R Bernoulli repeats per fixed scenario.
+    Var_hat(theta_A) = (1/N^2) sum_s r_s(1-r_s)/(R-1).  Normal quantile
+    (large effective df).  Covers 'the mean over exactly these N scenarios
+    at infinite repeats' -- it does NOT generalise to other scenarios."""
+    flat = [x for d in dv for x in d]
+    n = len(flat)
+    theta = statistics.fmean(flat)
+    if r < 2:
+        return theta, 0.0, 1.0, True
+    v = sum(x * (1.0 - x) / (r - 1) for x in flat) / (n * n)
+    hw = _NORM.inv_cdf(0.975) * math.sqrt(v)
+    return theta, theta - hw, theta + hw, False
+
+
+@dataclass
+class FixedRow:
+    quantity: str
+    method: str
+    dgp: str
+    design: tuple[int, int]
+    truth: float
+    coverage: float
+    mean_width: float
+    op_char: float  # Q1 P(correct+confident); Q2 P(CI excludes 0)
+    p_unresolved: float
+
+
+def _fixed_dgps() -> list[tuple[str, str]]:
+    return [("2beta", k) for k in TWOBETA_REGIMES] + [("mixture", "mixture")]
+
+
+Q1_METHODS_FIXED = (
+    "S1_strat_ws",
+    "S1f_strat_ws_binomfloor",
+    "S2_scn_boot_t",
+    "G_domain_t",
+    "A_finite_panel",
+)
+Q2_METHODS_FIXED = ("S1_strat_ws", "S1f_strat_ws_binomfloor", "G_domain_t")
+
+
+# design(s) on which the SLOW studentized scenario bootstrap (method S2)
+# is also evaluated -- a comparison point, not a likely primary, so it is
+# spot-checked at the selected allocation only.
+_BOOT_DESIGNS = ((8, 3),)  # spd form, matches FIXED_CANDIDATES
+
+
+def simulate_calibration_fixed(
+    n_configs: int,
+    n_sim: int,
+    b: int,
+    designs: tuple[tuple[int, int], ...],
+    n_sim_boot: int = 200,
+) -> tuple[list[FixedRow], list[FixedRow]]:
+    """Fixed-domain coverage of Q1 and Q2 intervals. For each of n_configs
+    fixed domain configurations, hold the 8 mu_d fixed and resample only
+    scenarios (within each fixed domain) + Bernoulli repeats."""
+    q1_rows: list[FixedRow] = []
+    q2_rows: list[FixedRow] = []
+    analytic_q1 = [m for m in Q1_METHODS_FIXED if m != "S2_scn_boot_t"]
+
+    # ---- Q1: all three DGP families ----
+    for design in designs:
+        spd, r = design
+        for dgp, regime in _fixed_dgps():
+            label = "mixture" if dgp == "mixture" else f"2beta/{regime}"
+            for mu in CALIB_Q1_MU:
+                want = truth_label(mu)
+                near_edge = min(abs(mu - BAND_LOW), abs(mu - BAND_HIGH)) < 0.03
+                agg = {m: [0.0, 0.0, 0.0, 0.0] for m in Q1_METHODS_FIXED}
+                nseen = 0
+                do_boot = design in _BOOT_DESIGNS and mu in CALIB_Q1_CENTRAL
+                nboot = 0
+                for c in range(n_configs):
+                    crng = _rng("fx-cfg-q1", dgp, regime, mu, c)
+                    config = draw_fixed_config(crng, dgp, regime, mu)
+                    tgt = fixed_config_theta(config)
+                    srng = _rng("fx-sim-q1", dgp, regime, mu, c, design)
+                    for i in range(n_sim):
+                        dv = draw_fixed_dv(srng, config, spd, r)
+                        floors = _binom_floors_rate(dv, r)
+                        res = {
+                            "S1_strat_ws": m_strat_ws(None, dv, 0, None),
+                            "S1f_strat_ws_binomfloor": m_strat_ws(None, dv, 0, floors),
+                            "G_domain_t": m_domain_t(None, dv, 0),
+                            "A_finite_panel": m_finite_panel(None, dv, 0, r),
+                        }
+                        if do_boot and i < n_sim_boot:
+                            brng = _rng("fx-boot-q1", dgp, regime, mu, c, i)
+                            res["S2_scn_boot_t"] = m_strat_scn_boot_t(brng, dv, b, None)
+                            nboot += 1
+                        for name, (_pt, lo, hi, _pa) in res.items():
+                            a = agg[name]
+                            a[0] += 1.0 if lo <= tgt <= hi else 0.0
+                            a[1] += hi - lo
+                            cls = classify_q1(lo, hi)
+                            if cls == want or (cls == "unresolved" and near_edge):
+                                a[2] += 1.0
+                            if cls == "unresolved":
+                                a[3] += 1.0
+                        nseen += 1
+                for name in analytic_q1:
+                    cov, wid, ok, unr = (v / nseen for v in agg[name])
+                    q1_rows.append(FixedRow("Q1", name, label, design, mu, cov, wid, ok, unr))
+                if do_boot and nboot:
+                    a = agg["S2_scn_boot_t"]
+                    q1_rows.append(
+                        FixedRow(
+                            "Q1",
+                            "S2_scn_boot_t",
+                            label,
+                            design,
+                            mu,
+                            a[0] / nboot,
+                            a[1] / nboot,
+                            a[2] / nboot,
+                            a[3] / nboot,
+                        )
+                    )
+
+    # ---- Q2: 2beta regimes only (the paired effect model does not depend
+    # on a bimodal N-rate DGP); target = the true Delta ----
+    for design in designs:
+        spd, r = design
+        for regime in TWOBETA_REGIMES:
+            _kd, kw = TWOBETA_REGIMES[regime]
+            for esd in CALIB_Q2_EFFECT_SD:
+                for delta in CALIB_Q2_DELTA:
+                    agg2 = {m: [0.0, 0.0, 0.0] for m in Q2_METHODS_FIXED}
+                    nseen = 0
+                    for c in range(n_configs):
+                        crng = _rng("fx-cfg-q2", regime, c)
+                        config = draw_fixed_config(crng, "2beta", regime, 0.45)
+                        mu_d = config[1]
+                        srng = _rng("fx-sim-q2", regime, esd, delta, c, design)
+                        for _ in range(n_sim):
+                            dv_diff: list[list[float]] = []
+                            dv_n: list[list[float]] = []
+                            dv_p: list[list[float]] = []
+                            for md in mu_d:
+                                drow: list[float] = []
+                                nrow: list[float] = []
+                                prow: list[float] = []
+                                for _ in range(spd):
+                                    p = _beta(srng, md, kw)
+                                    p_p = _clip01(p + srng.gauss(delta, esd))
+                                    kn = draw_rate(srng, p, r)
+                                    kp = draw_rate(srng, p_p, r)
+                                    drow.append(kp - kn)
+                                    nrow.append(kn)
+                                    prow.append(kp)
+                                dv_diff.append(drow)
+                                dv_n.append(nrow)
+                                dv_p.append(prow)
+                            floors = _binom_floors_diff(dv_n, dv_p, r)
+                            res = {
+                                "S1_strat_ws": m_strat_ws(None, dv_diff, 0, None),
+                                "S1f_strat_ws_binomfloor": m_strat_ws(None, dv_diff, 0, floors),
+                                "G_domain_t": m_domain_t(None, dv_diff, 0),
+                            }
+                            for name, (_pt, lo, hi, _pa) in res.items():
+                                a = agg2[name]
+                                a[0] += 1.0 if lo <= delta <= hi else 0.0
+                                a[1] += hi - lo
+                                a[2] += 1.0 if (lo > 0.0 or hi < 0.0) else 0.0
+                            nseen += 1
+                    for name in Q2_METHODS_FIXED:
+                        cov, wid, det = (v / nseen for v in agg2[name])
+                        q2_rows.append(
+                            FixedRow(
+                                "Q2",
+                                name,
+                                f"{regime[:8]}/eSD{esd}",
+                                design,
+                                delta,
+                                cov,
+                                wid,
+                                det,
+                                0.0,
+                            )
+                        )
+    return q1_rows, q2_rows
+
+
+def print_calibration_fixed(q1: list[FixedRow], q2: list[FixedRow]) -> str:
+    rep: list[str] = []
+    designs = list(dict.fromkeys(r.design for r in q1))
+    q1m = list(dict.fromkeys(r.method for r in q1))
+    q2m = list(dict.fromkeys(r.method for r in q2))
+    q1x = {(r.dgp, r.method, r.design, round(r.truth, 4)): r for r in q1}
+    q2x = {(r.dgp, r.method, r.design, round(r.truth, 4)): r for r in q2}
+    dgps1 = list(dict.fromkeys(r.dgp for r in q1))
+    dgps2 = list(dict.fromkeys(r.dgp for r in q2))
+
+    rep.append("=" * 100)
+    rep.append(
+        "FIXED-DOMAIN CALIBRATION -- coverage of theta = (1/8) sum_d mu_d, the 8 mu_d HELD FIXED"
+    )
+    rep.append(
+        "  (scenarios resampled within each fixed domain; repeats resampled within scenario)"
+    )
+    rep.append(
+        f"  central region {CALIB_Q1_CENTRAL} / {CALIB_Q2_CENTRAL}; "
+        f"target {COVERAGE_TARGET_LO}-{COVERAGE_TARGET_HI}"
+    )
+    rep.append("=" * 100)
+
+    def _worst_op(m: str, design: tuple[int, int], mu: float) -> float:
+        vals = [
+            q1x[d, m, design, round(mu, 4)].op_char
+            for d in dgps1
+            if (d, m, design, round(mu, 4)) in q1x
+        ]
+        return min(vals) if vals else 0.0
+
+    for design in designs:
+        spd, r = design
+        tot = DOMAINS * spd * r * 2 * 4
+        rep.append(
+            f"\n### design 8 x {spd} x {r}  "
+            f"({DOMAINS * spd} scenarios x {r} repeats = {tot} trials)"
+        )
+        rep.append("\n-- Q1 coverage --")
+        rep.append(f"{'dgp':>22} {'theta':>6} " + "".join(f"{_short(m):>10}" for m in q1m))
+        for dgp in dgps1:
+            for mu in CALIB_Q1_MU:
+                cells = ""
+                for m in q1m:
+                    row = q1x.get((dgp, m, design, round(mu, 4)))
+                    cells += (
+                        f"{row.coverage:>7.2f}{_cov_flag(row.coverage):<3}" if row else " " * 10
+                    )
+                rep.append(f"{dgp:>22} {mu:>6.3f} {cells}")
+        rep.append("\n-- Q1 mean width --")
+        rep.append(f"{'dgp':>22} {'theta':>6} " + "".join(f"{_short(m):>10}" for m in q1m))
+        for dgp in dgps1:
+            for mu in CALIB_Q1_MU:
+                cells = "".join(
+                    f"{q1x[dgp, m, design, round(mu, 4)].mean_width:>10.3f}"
+                    for m in q1m
+                    if (dgp, m, design, round(mu, 4)) in q1x
+                )
+                rep.append(f"{dgp:>22} {mu:>6.3f} {cells}")
+        rep.append("\n-- Q1 classification P(correct+confident), worst over DGP --")
+        rep.append(f"{'theta':>10} " + "".join(f"{_short(m):>10}" for m in q1m))
+        for mu in CALIB_Q1_MU:
+            cells = "".join(f"{_worst_op(m, design, mu):>10.2f}" for m in q1m)
+            rep.append(f"{mu:>10.3f} {cells}")
+        rep.append("\n-- Q2 coverage --")
+        rep.append(f"{'effect-SD':>12} {'delta':>6} " + "".join(f"{_short(m):>10}" for m in q2m))
+        for dgp in dgps2:
+            for delta in CALIB_Q2_DELTA:
+                cells = "".join(
+                    f"{q2x[dgp, m, design, round(delta, 4)].coverage:>7.2f}"
+                    f"{_cov_flag(q2x[dgp, m, design, round(delta, 4)].coverage):<3}"
+                    for m in q2m
+                    if (dgp, m, design, round(delta, 4)) in q2x
+                )
+                rep.append(f"{dgp:>12} {delta:>6.2f} {cells}")
+        rep.append("\n-- Q2 detection P(CI excl 0) --")
+        rep.append(f"{'effect-SD':>12} {'delta':>6} " + "".join(f"{_short(m):>10}" for m in q2m))
+        for dgp in dgps2:
+            for delta in CALIB_Q2_DELTA:
+                cells = "".join(
+                    f"{q2x[dgp, m, design, round(delta, 4)].op_char:>10.2f}"
+                    for m in q2m
+                    if (dgp, m, design, round(delta, 4)) in q2x
+                )
+                rep.append(f"{dgp:>12} {delta:>6.2f} {cells}")
+
+    # central-region summary per method x design
+    rep.append("\n" + "=" * 100)
+    rep.append(
+        "CENTRAL-REGION SUMMARY  (min / mean coverage over the central truth grid, worst over DGP)"
+    )
+    rep.append("=" * 100)
+    rep.append(
+        f"{'design':>10} {'method':>26} {'Q1 min':>8} {'Q1 mean':>9} {'Q2 min':>8} {'Q2 mean':>9}"
+    )
+    for design in designs:
+        spd, r = design
+        tag = f"8x{spd}x{r}"
+        for m in q1m:
+            q1c = [
+                q1x[d, m, design, round(t, 4)].coverage
+                for d in dgps1
+                for t in CALIB_Q1_CENTRAL
+                if (d, m, design, round(t, 4)) in q1x
+            ]
+            q2c = [
+                q2x[d, m, design, round(t, 4)].coverage
+                for d in dgps2
+                for t in CALIB_Q2_CENTRAL
+                if (d, m, design, round(t, 4)) in q2x
+            ]
+            q1s = f"{min(q1c):>8.2f} {sum(q1c) / len(q1c):>9.2f}" if q1c else f"{'-':>8} {'-':>9}"
+            q2s = f"{min(q2c):>8.2f} {sum(q2c) / len(q2c):>9.2f}" if q2c else f"{'-':>8} {'-':>9}"
+            rep.append(f"{tag:>10} {m:>26} {q1s} {q2s}")
+    return "\n".join(rep)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--fast", action="store_true", help="small n_sim/B for CI/tests")
@@ -1124,11 +1678,26 @@ def main() -> int:
         help="only run the interval-method calibration comparison",
     )
     ap.add_argument(
-        "--calibrate-designs",
+        "--calibrate-fixed",
         action="store_true",
-        help="spot-check the chosen-method coverage across 32x5/40x4/40x5/40x6",
+        help="FIXED-DOMAIN calibration: coverage of theta=(1/8)sum_d mu_d with "
+        "the 8 mu_d held fixed; compares fixed-stratum intervals and "
+        "scenarios/domain x repeats allocations",
     )
     args = ap.parse_args()
+
+    if args.calibrate_fixed:
+        if args.fast:
+            n_configs, n_sim, b, nsb = 3, 40, 150, 20
+        else:
+            n_configs, n_sim, b, nsb = 12, 600, 400, 150
+        print(
+            f"Phase 9 FIXED-DOMAIN calibration  (SEED={SEED}, n_configs={n_configs}, "
+            f"n_sim={n_sim}, bootstrap B={b} / n_sim_boot={nsb}, domains={DOMAINS})"
+        )
+        q1f, q2f = simulate_calibration_fixed(n_configs, n_sim, b, FIXED_CANDIDATES, n_sim_boot=nsb)
+        print(print_calibration_fixed(q1f, q2f))
+        return 0
 
     if args.calibrate:
         n_sim, b = (40, 250) if args.fast else (400, 1200)
@@ -1141,67 +1710,6 @@ def main() -> int:
         print(print_calibration(q1c, q2c))
         return 0
 
-    if args.calibrate_designs:
-        n_sim = 250 if args.fast else 1500
-        print(
-            f"Phase 9 chosen-method coverage vs design  (SEED={SEED}, n_sim={n_sim})\n"
-            "  Q1 method G (domain-level t);  Q2 method E (stratified WS-t + floor).\n"
-            "  Coverage of the nominal-95% interval, worst over the 3 DGP regimes,\n"
-            "  at the central truth grid.  target 0.93-0.97.\n"
-        )
-        designs = ((32, 5), (40, 4), (40, 5), (40, 6))
-        print(f"{'quantity':>9} {'truth':>7} " + "".join(f"{_fmt_design(d):>8}" for d in designs))
-        for mu in CALIB_Q1_CENTRAL:
-            cells = ""
-            for d in designs:
-                s, r = d
-                pd = s // DOMAINS
-                worst = 1.0
-                for dgp, regime in _dgp_combos():
-                    gen = _rng("cd-q1", d, dgp, regime, mu)
-                    cov = 0
-                    for _ in range(n_sim):
-                        dv = _draw_domain_rates(gen, dgp, regime, mu, pd, r)
-                        _p, lo, hi, _pa = m_domain_t(None, dv, 0)
-                        cov += 1 if lo <= mu <= hi else 0
-                    worst = min(worst, cov / n_sim)
-                cells += f"{worst:>8.2f}"
-            print(f"{'Q1':>9} {mu:>7.3f} {cells}")
-        kd, kw = TWOBETA_REGIMES["dom.mod/scn.mod"]
-        for delta in CALIB_Q2_CENTRAL:
-            cells = ""
-            for d in designs:
-                s, r = d
-                pd = s // DOMAINS
-                worst = 1.0
-                for esd in CALIB_Q2_EFFECT_SD:
-                    gen = _rng("cd-q2", d, esd, delta)
-                    cov = 0
-                    for _ in range(n_sim):
-                        p_n = probs_2beta(gen, 0.45, kd, kw, pd)
-                        diffs: list[list[float]] = []
-                        nr: list[float] = []
-                        pr: list[float] = []
-                        for rowp in p_n:
-                            drow: list[float] = []
-                            for p in rowp:
-                                pp = _clip01(p + gen.gauss(delta, esd))
-                                kn = draw_rate(gen, p, r)
-                                kp = draw_rate(gen, pp, r)
-                                drow.append(kp - kn)
-                                nr.append(kn)
-                                pr.append(kp)
-                            diffs.append(drow)
-                        mn = statistics.fmean(nr)
-                        mp = statistics.fmean(pr)
-                        fl = (mn * (1 - mn) + mp * (1 - mp)) / r
-                        _p, lo, hi, _pa = m_analytic_ws_floor(None, diffs, 0, fl)
-                        cov += 1 if lo <= delta <= hi else 0
-                    worst = min(worst, cov / n_sim)
-                cells += f"{worst:>8.2f}"
-            print(f"{'Q2':>9} {delta:>7.3f} {cells}")
-        return 0
-
     if args.ci_stability:
         import json
 
@@ -1212,11 +1720,14 @@ def main() -> int:
         print("PASS" if max(drifts) < 0.012 else "FAIL")
         return 0 if max(drifts) < 0.012 else 1
 
-    n_sim = 40 if args.fast else 300
+    n_sim = 30 if args.fast else 250
 
     print(
-        f"Phase 9 design simulation  (SEED={SEED}, n_sim={n_sim}, domains={DOMAINS}; "
-        "Q1 interval=method G, Q2 interval=method E -- both analytic)"
+        f"Phase 9 FIXED-DOMAIN design simulation  (SEED={SEED}, n_sim={n_sim}, "
+        f"n_configs={_DESIGN_N_CONFIGS}, domains={DOMAINS}; interval=method S1f)\n"
+        "  estimand: theta = (1/8) sum_d mu_d with the 8 mu_d HELD FIXED.\n"
+        "  See docs/phase_9_design/ci_calibration_fixed_output.txt for the\n"
+        "  interval-method comparison (S1 / S1f / G / A / S2)."
     )
     _designs = " ".join(_fmt_design(x) for x in CANDIDATE_DESIGNS)
     print(f"band = [{BAND_LOW}, {BAND_HIGH}]   designs = {_designs}")
@@ -1228,17 +1739,18 @@ def main() -> int:
 
     print("\nSUMMARY")
     print(
-        "  Q1-only heuristic pick (worst-DGP P(correct+confident) at "
-        f"th in (0.45, 0.583, 0.85)): {_fmt_design(best)} "
+        "  best design by worst-DGP P(correct+confident) at "
+        f"th in (0.45, 0.583, 0.85): {_fmt_design(best)} "
         f"({total_trials(best)} N+P trials)."
     )
     print(
-        "  Q1 alone does NOT separate 40x4 / 40x5 / 40x6 -- the pairwise\n"
-        "  differences are within this run's Monte-Carlo error. The\n"
-        "  RECOMMENDED design is 40x5 (1600 N+P trials): identical Q1, plus a\n"
-        "  quantified Q2 power gain at delta=0.20 under heterogeneous label\n"
-        "  effects (see docs/phase_9_f3_resolution_design.md section 3e).\n"
-        "  40x4 (1280) is the documented budget fallback."
+        "  RECOMMENDED allocation: 64 x 3  (8 domains x 8 scenarios x 3 repeats\n"
+        "  = 1536 N+P trials). More scenarios-per-domain -- not more repeats --\n"
+        "  shrinks the WITHIN-domain scenario-variance term that drives the\n"
+        "  fixed-domain interval, so 64x3 gives markedly better Q1 power than\n"
+        "  40x5 at ~the same cost. 64x4 (2048) adds little; 80x2 (1280) is the\n"
+        "  budget floor but R=2 hurts Q2 and attrition-robustness.\n"
+        "  See docs/phase_9_f3_resolution_design.md section 3."
     )
     return 0
 

@@ -1,0 +1,711 @@
+Phase 9 FIXED-DOMAIN calibration  (SEED=20260908, n_configs=12, n_sim=600, bootstrap B=400 / n_sim_boot=150, domains=8)
+====================================================================================================
+FIXED-DOMAIN CALIBRATION -- coverage of theta = (1/8) sum_d mu_d, the 8 mu_d HELD FIXED
+  (scenarios resampled within each fixed domain; repeats resampled within scenario)
+  central region (0.3, 0.45, 0.583, 0.65, 0.85) / (0.0, 0.1, 0.2, 0.25, 0.3); target 0.93-0.97
+====================================================================================================
+
+### design 8 x 5 x 5  (40 scenarios x 5 repeats = 1600 trials)
+
+-- Q1 coverage --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200    0.95      0.96      0.98+     0.87!!           
+ 2beta/dom.mod/scn.mod  0.250    0.95      0.96      0.99+     0.88!!           
+ 2beta/dom.mod/scn.mod  0.300    0.95      0.96      0.98+     0.87!!           
+ 2beta/dom.mod/scn.mod  0.450    0.95      0.96      0.99+     0.87!!           
+ 2beta/dom.mod/scn.mod  0.583    0.95      0.96      0.99+     0.88!!           
+ 2beta/dom.mod/scn.mod  0.650    0.95      0.96      0.98+     0.86!!           
+ 2beta/dom.mod/scn.mod  0.700    0.95      0.96      0.99+     0.87!!           
+ 2beta/dom.mod/scn.mod  0.750    0.95      0.96      0.98+     0.87!!           
+ 2beta/dom.mod/scn.mod  0.850    0.94      0.95      0.98+     0.87!!           
+ 2beta/dom.mod/scn.mod  0.950    0.93!     0.94      0.95      0.85!!           
+2beta/dom.severe/scn.severe  0.200    0.95      0.96      0.99+     0.79!!           
+2beta/dom.severe/scn.severe  0.250    0.95      0.96      0.99++    0.79!!           
+2beta/dom.severe/scn.severe  0.300    0.95      0.95      0.99++    0.79!!           
+2beta/dom.severe/scn.severe  0.450    0.95      0.95      0.99++    0.79!!           
+2beta/dom.severe/scn.severe  0.583    0.95      0.96      0.99++    0.79!!           
+2beta/dom.severe/scn.severe  0.650    0.95      0.96      0.99++    0.79!!           
+2beta/dom.severe/scn.severe  0.700    0.95      0.96      0.99++    0.79!!           
+2beta/dom.severe/scn.severe  0.750    0.95      0.95      0.99+     0.79!!           
+2beta/dom.severe/scn.severe  0.850    0.95      0.95      0.98+     0.78!!           
+2beta/dom.severe/scn.severe  0.950    0.92!     0.92!     0.93      0.78!!           
+               mixture  0.200    0.95      0.95      0.98+     0.44!!           
+               mixture  0.250    0.95      0.95      0.98+     0.44!!           
+               mixture  0.300    0.95      0.95      0.98+     0.40!!           
+               mixture  0.450    0.95      0.95      0.98+     0.39!!           
+               mixture  0.583    0.95      0.95      0.98+     0.40!!           
+               mixture  0.650    0.95      0.95      0.98+     0.43!!           
+               mixture  0.700    0.95      0.95      0.98+     0.44!!           
+               mixture  0.750    0.94      0.94      0.97      0.49!!           
+               mixture  0.850    0.94      0.95      0.96      0.57!!           
+               mixture  0.950    0.93      0.94      0.94      0.67!!           
+
+-- Q1 mean width --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200      0.136     0.141     0.209     0.102
+ 2beta/dom.mod/scn.mod  0.250      0.146     0.151     0.220     0.108
+ 2beta/dom.mod/scn.mod  0.300      0.154     0.160     0.235     0.115
+ 2beta/dom.mod/scn.mod  0.450      0.169     0.175     0.273     0.126
+ 2beta/dom.mod/scn.mod  0.583      0.168     0.173     0.258     0.125
+ 2beta/dom.mod/scn.mod  0.650      0.163     0.169     0.237     0.122
+ 2beta/dom.mod/scn.mod  0.700      0.158     0.163     0.245     0.118
+ 2beta/dom.mod/scn.mod  0.750      0.146     0.151     0.216     0.109
+ 2beta/dom.mod/scn.mod  0.850      0.124     0.128     0.186     0.092
+ 2beta/dom.mod/scn.mod  0.950      0.077     0.079     0.106     0.054
+2beta/dom.severe/scn.severe  0.200      0.154     0.156     0.252     0.093
+2beta/dom.severe/scn.severe  0.250      0.164     0.166     0.284     0.099
+2beta/dom.severe/scn.severe  0.300      0.174     0.176     0.319     0.106
+2beta/dom.severe/scn.severe  0.450      0.188     0.191     0.319     0.115
+2beta/dom.severe/scn.severe  0.583      0.185     0.187     0.336     0.113
+2beta/dom.severe/scn.severe  0.650      0.181     0.183     0.323     0.110
+2beta/dom.severe/scn.severe  0.700      0.176     0.178     0.311     0.107
+2beta/dom.severe/scn.severe  0.750      0.164     0.166     0.278     0.099
+2beta/dom.severe/scn.severe  0.850      0.136     0.138     0.227     0.081
+2beta/dom.severe/scn.severe  0.950      0.088     0.089     0.130     0.050
+               mixture  0.200      0.224     0.224     0.341     0.062
+               mixture  0.250      0.224     0.225     0.335     0.062
+               mixture  0.300      0.251     0.251     0.374     0.063
+               mixture  0.450      0.272     0.272     0.409     0.066
+               mixture  0.583      0.267     0.268     0.404     0.068
+               mixture  0.650      0.253     0.253     0.380     0.069
+               mixture  0.700      0.246     0.247     0.357     0.070
+               mixture  0.750      0.223     0.224     0.318     0.071
+               mixture  0.850      0.189     0.190     0.265     0.072
+               mixture  0.950      0.158     0.160     0.219     0.072
+
+-- Q1 classification P(correct+confident), worst over DGP --
+     theta         S1       S1f         G         A        S2
+     0.200       0.11      0.11      0.06      0.47      0.00
+     0.250       0.88      0.88      0.92      0.53      0.00
+     0.300       0.16      0.16      0.03      0.33      0.00
+     0.450       0.74      0.74      0.25      0.94      0.00
+     0.583       0.45      0.45      0.12      0.74      0.00
+     0.650       0.15      0.15      0.03      0.37      0.00
+     0.700       0.94      0.94      0.97      0.71      0.00
+     0.750       0.26      0.26      0.17      0.54      0.00
+     0.850       0.68      0.67      0.48      0.94      0.00
+     0.950       0.88      0.87      0.72      0.98      0.00
+
+-- Q2 coverage --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00    0.96      0.97+     0.95   
+dom.mod//eSD0.15   0.10    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.20    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.25    0.94      0.97      0.94   
+dom.mod//eSD0.15   0.30    0.94      0.95      0.93   
+dom.mod//eSD0.15   0.50    0.62!!    0.68!!    0.72!! 
+dom.mod//eSD0.25   0.00    0.95      0.96      0.95   
+dom.mod//eSD0.25   0.10    0.95      0.96      0.95   
+dom.mod//eSD0.25   0.20    0.95      0.96      0.94   
+dom.mod//eSD0.25   0.25    0.93!     0.94      0.93!  
+dom.mod//eSD0.25   0.30    0.91!     0.93!     0.91!  
+dom.mod//eSD0.25   0.50    0.47!!    0.51!!    0.59!! 
+dom.seve/eSD0.15   0.00    0.95      0.98+     0.95   
+dom.seve/eSD0.15   0.10    0.95      0.97+     0.95   
+dom.seve/eSD0.15   0.20    0.93!     0.96      0.93!  
+dom.seve/eSD0.15   0.25    0.90!!    0.94      0.92!  
+dom.seve/eSD0.15   0.30    0.84!!    0.89!!    0.88!! 
+dom.seve/eSD0.15   0.50    0.30!!    0.35!!    0.56!! 
+dom.seve/eSD0.25   0.00    0.95      0.97      0.95   
+dom.seve/eSD0.25   0.10    0.95      0.96      0.95   
+dom.seve/eSD0.25   0.20    0.90!     0.93!     0.91!  
+dom.seve/eSD0.25   0.25    0.86!!    0.88!!    0.88!! 
+dom.seve/eSD0.25   0.30    0.79!!    0.82!!    0.84!! 
+dom.seve/eSD0.25   0.50    0.25!!    0.27!!    0.48!! 
+
+-- Q2 detection P(CI excl 0) --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00       0.04      0.03      0.05
+dom.mod//eSD0.15   0.10       0.47      0.40      0.39
+dom.mod//eSD0.15   0.20       0.96      0.94      0.91
+dom.mod//eSD0.15   0.25       1.00      0.99      0.98
+dom.mod//eSD0.15   0.30       1.00      1.00      1.00
+dom.mod//eSD0.15   0.50       1.00      1.00      1.00
+dom.mod//eSD0.25   0.00       0.05      0.04      0.05
+dom.mod//eSD0.25   0.10       0.34      0.31      0.29
+dom.mod//eSD0.25   0.20       0.89      0.87      0.80
+dom.mod//eSD0.25   0.25       0.97      0.96      0.93
+dom.mod//eSD0.25   0.30       1.00      1.00      0.98
+dom.mod//eSD0.25   0.50       1.00      1.00      1.00
+dom.seve/eSD0.15   0.00       0.04      0.02      0.05
+dom.seve/eSD0.15   0.10       0.46      0.37      0.39
+dom.seve/eSD0.15   0.20       0.96      0.94      0.91
+dom.seve/eSD0.15   0.25       1.00      0.99      0.98
+dom.seve/eSD0.15   0.30       1.00      1.00      1.00
+dom.seve/eSD0.15   0.50       1.00      1.00      1.00
+dom.seve/eSD0.25   0.00       0.05      0.03      0.05
+dom.seve/eSD0.25   0.10       0.34      0.30      0.28
+dom.seve/eSD0.25   0.20       0.86      0.84      0.76
+dom.seve/eSD0.25   0.25       0.96      0.95      0.91
+dom.seve/eSD0.25   0.30       0.99      0.99      0.97
+dom.seve/eSD0.25   0.50       1.00      1.00      1.00
+
+### design 8 x 6 x 4  (48 scenarios x 4 repeats = 1536 trials)
+
+-- Q1 coverage --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200    0.95      0.96      0.98+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.250    0.95      0.96      0.98+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.300    0.95      0.96      0.98+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.450    0.95      0.96      0.99+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.583    0.95      0.96      0.98+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.650    0.95      0.96      0.98+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.700    0.95      0.96      0.99+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.750    0.95      0.96      0.99+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.850    0.95      0.96      0.98+     0.88!!           
+ 2beta/dom.mod/scn.mod  0.950    0.92!     0.93!     0.95      0.87!!           
+2beta/dom.severe/scn.severe  0.200    0.95      0.95      0.98+     0.81!!           
+2beta/dom.severe/scn.severe  0.250    0.95      0.96      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.300    0.95      0.96      1.00++    0.82!!           
+2beta/dom.severe/scn.severe  0.450    0.95      0.96      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.583    0.95      0.95      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.650    0.95      0.96      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.700    0.95      0.95      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.750    0.95      0.95      0.99+     0.82!!           
+2beta/dom.severe/scn.severe  0.850    0.94      0.95      0.98+     0.81!!           
+2beta/dom.severe/scn.severe  0.950    0.91!     0.92!     0.94      0.78!!           
+               mixture  0.200    0.95      0.95      0.98+     0.47!!           
+               mixture  0.250    0.95      0.95      0.98+     0.48!!           
+               mixture  0.300    0.95      0.95      0.98+     0.44!!           
+               mixture  0.450    0.95      0.95      0.99+     0.41!!           
+               mixture  0.583    0.95      0.95      0.99+     0.44!!           
+               mixture  0.650    0.95      0.95      0.99+     0.47!!           
+               mixture  0.700    0.95      0.95      0.98+     0.49!!           
+               mixture  0.750    0.95      0.95      0.98+     0.53!!           
+               mixture  0.850    0.94      0.94      0.96      0.62!!           
+               mixture  0.950    0.93      0.94      0.96      0.70!!           
+
+-- Q1 mean width --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200      0.132     0.137     0.207     0.103
+ 2beta/dom.mod/scn.mod  0.250      0.141     0.146     0.219     0.111
+ 2beta/dom.mod/scn.mod  0.300      0.149     0.155     0.233     0.117
+ 2beta/dom.mod/scn.mod  0.450      0.164     0.170     0.271     0.129
+ 2beta/dom.mod/scn.mod  0.583      0.162     0.168     0.256     0.128
+ 2beta/dom.mod/scn.mod  0.650      0.158     0.164     0.235     0.125
+ 2beta/dom.mod/scn.mod  0.700      0.153     0.159     0.241     0.120
+ 2beta/dom.mod/scn.mod  0.750      0.142     0.147     0.214     0.111
+ 2beta/dom.mod/scn.mod  0.850      0.120     0.124     0.184     0.094
+ 2beta/dom.mod/scn.mod  0.950      0.073     0.075     0.103     0.055
+2beta/dom.severe/scn.severe  0.200      0.145     0.147     0.247     0.095
+2beta/dom.severe/scn.severe  0.250      0.154     0.156     0.280     0.101
+2beta/dom.severe/scn.severe  0.300      0.165     0.167     0.314     0.108
+2beta/dom.severe/scn.severe  0.450      0.179     0.181     0.314     0.118
+2beta/dom.severe/scn.severe  0.583      0.175     0.177     0.333     0.115
+2beta/dom.severe/scn.severe  0.650      0.171     0.173     0.319     0.113
+2beta/dom.severe/scn.severe  0.700      0.166     0.169     0.305     0.109
+2beta/dom.severe/scn.severe  0.750      0.155     0.157     0.275     0.101
+2beta/dom.severe/scn.severe  0.850      0.129     0.130     0.225     0.083
+2beta/dom.severe/scn.severe  0.950      0.081     0.082     0.127     0.051
+               mixture  0.200      0.203     0.204     0.328     0.063
+               mixture  0.250      0.203     0.204     0.324     0.063
+               mixture  0.300      0.227     0.228     0.356     0.065
+               mixture  0.450      0.248     0.248     0.390     0.067
+               mixture  0.583      0.244     0.244     0.384     0.069
+               mixture  0.650      0.230     0.230     0.365     0.071
+               mixture  0.700      0.224     0.225     0.342     0.071
+               mixture  0.750      0.204     0.204     0.305     0.072
+               mixture  0.850      0.172     0.173     0.256     0.073
+               mixture  0.950      0.145     0.147     0.211     0.074
+
+-- Q1 classification P(correct+confident), worst over DGP --
+     theta         S1       S1f         G         A        S2
+     0.200       0.12      0.12      0.06      0.46      0.00
+     0.250       0.86      0.86      0.92      0.54      0.00
+     0.300       0.19      0.18      0.04      0.32      0.00
+     0.450       0.82      0.82      0.31      0.94      0.00
+     0.583       0.53      0.53      0.16      0.74      0.00
+     0.650       0.18      0.18      0.04      0.37      0.00
+     0.700       0.94      0.94      0.97      0.72      0.00
+     0.750       0.29      0.28      0.17      0.54      0.00
+     0.850       0.74      0.73      0.50      0.94      0.00
+     0.950       0.90      0.90      0.74      0.98      0.00
+
+-- Q2 coverage --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.10    0.95      0.97+     0.95   
+dom.mod//eSD0.15   0.20    0.95      0.97      0.94   
+dom.mod//eSD0.15   0.25    0.95      0.97      0.94   
+dom.mod//eSD0.15   0.30    0.94      0.96      0.94   
+dom.mod//eSD0.15   0.50    0.61!!    0.66!!    0.71!! 
+dom.mod//eSD0.25   0.00    0.95      0.96      0.94   
+dom.mod//eSD0.25   0.10    0.95      0.97      0.95   
+dom.mod//eSD0.25   0.20    0.94      0.96      0.94   
+dom.mod//eSD0.25   0.25    0.92!     0.94      0.93!  
+dom.mod//eSD0.25   0.30    0.89!!    0.91!     0.91!  
+dom.mod//eSD0.25   0.50    0.44!!    0.49!!    0.58!! 
+dom.seve/eSD0.15   0.00    0.95      0.97+     0.94   
+dom.seve/eSD0.15   0.10    0.95      0.97+     0.95   
+dom.seve/eSD0.15   0.20    0.92!     0.95      0.93!  
+dom.seve/eSD0.15   0.25    0.89!!    0.93      0.90!  
+dom.seve/eSD0.15   0.30    0.83!!    0.89!!    0.87!! 
+dom.seve/eSD0.15   0.50    0.29!!    0.34!!    0.56!! 
+dom.seve/eSD0.25   0.00    0.94      0.96      0.94   
+dom.seve/eSD0.25   0.10    0.94      0.96      0.95   
+dom.seve/eSD0.25   0.20    0.90!     0.93!     0.91!  
+dom.seve/eSD0.25   0.25    0.86!!    0.89!!    0.88!! 
+dom.seve/eSD0.25   0.30    0.78!!    0.82!!    0.83!! 
+dom.seve/eSD0.25   0.50    0.22!!    0.25!!    0.46!! 
+
+-- Q2 detection P(CI excl 0) --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00       0.05      0.03      0.05
+dom.mod//eSD0.15   0.10       0.46      0.40      0.39
+dom.mod//eSD0.15   0.20       0.96      0.95      0.91
+dom.mod//eSD0.15   0.25       1.00      1.00      0.99
+dom.mod//eSD0.15   0.30       1.00      1.00      1.00
+dom.mod//eSD0.15   0.50       1.00      1.00      1.00
+dom.mod//eSD0.25   0.00       0.05      0.04      0.06
+dom.mod//eSD0.25   0.10       0.38      0.33      0.32
+dom.mod//eSD0.25   0.20       0.90      0.88      0.81
+dom.mod//eSD0.25   0.25       0.98      0.97      0.94
+dom.mod//eSD0.25   0.30       1.00      0.99      0.98
+dom.mod//eSD0.25   0.50       1.00      1.00      1.00
+dom.seve/eSD0.15   0.00       0.05      0.03      0.06
+dom.seve/eSD0.15   0.10       0.47      0.38      0.39
+dom.seve/eSD0.15   0.20       0.96      0.94      0.91
+dom.seve/eSD0.15   0.25       1.00      0.99      0.98
+dom.seve/eSD0.15   0.30       1.00      1.00      1.00
+dom.seve/eSD0.15   0.50       1.00      1.00      1.00
+dom.seve/eSD0.25   0.00       0.06      0.04      0.06
+dom.seve/eSD0.25   0.10       0.38      0.32      0.31
+dom.seve/eSD0.25   0.20       0.89      0.86      0.79
+dom.seve/eSD0.25   0.25       0.98      0.97      0.93
+dom.seve/eSD0.25   0.30       1.00      0.99      0.98
+dom.seve/eSD0.25   0.50       1.00      1.00      1.00
+
+### design 8 x 8 x 3  (64 scenarios x 3 repeats = 1536 trials)
+
+-- Q1 coverage --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200    0.95      0.96      0.98+     0.90!!           
+ 2beta/dom.mod/scn.mod  0.250    0.94      0.95      0.98+     0.90!!           
+ 2beta/dom.mod/scn.mod  0.300    0.95      0.96      0.98+     0.90!     0.95   
+ 2beta/dom.mod/scn.mod  0.450    0.95      0.96      0.99++    0.91!     0.94   
+ 2beta/dom.mod/scn.mod  0.583    0.95      0.96      0.99+     0.90!     0.95   
+ 2beta/dom.mod/scn.mod  0.650    0.95      0.96      0.98+     0.90!     0.95   
+ 2beta/dom.mod/scn.mod  0.700    0.95      0.95      0.99+     0.90!!           
+ 2beta/dom.mod/scn.mod  0.750    0.95      0.96      0.98+     0.90!!           
+ 2beta/dom.mod/scn.mod  0.850    0.95      0.95      0.98+     0.90!!    0.97   
+ 2beta/dom.mod/scn.mod  0.950    0.93!     0.93      0.95      0.89!!           
+2beta/dom.severe/scn.severe  0.200    0.95      0.95      0.99+     0.85!!           
+2beta/dom.severe/scn.severe  0.250    0.95      0.95      0.99++    0.84!!           
+2beta/dom.severe/scn.severe  0.300    0.95      0.96      1.00++    0.84!!    0.95   
+2beta/dom.severe/scn.severe  0.450    0.95      0.95      0.99++    0.85!!    0.94   
+2beta/dom.severe/scn.severe  0.583    0.95      0.95      1.00++    0.84!!    0.94   
+2beta/dom.severe/scn.severe  0.650    0.95      0.95      0.99++    0.85!!    0.96   
+2beta/dom.severe/scn.severe  0.700    0.94      0.95      0.99++    0.84!!           
+2beta/dom.severe/scn.severe  0.750    0.95      0.95      0.99++    0.84!!           
+2beta/dom.severe/scn.severe  0.850    0.95      0.95      0.99+     0.85!!    0.95   
+2beta/dom.severe/scn.severe  0.950    0.92!     0.92!     0.95      0.82!!           
+               mixture  0.200    0.95      0.95      0.98+     0.53!!           
+               mixture  0.250    0.95      0.95      0.98+     0.52!!           
+               mixture  0.300    0.95      0.95      0.99+     0.49!!    0.97   
+               mixture  0.450    0.95      0.95      0.99++    0.46!!    0.95   
+               mixture  0.583    0.95      0.95      0.99++    0.49!!    0.95   
+               mixture  0.650    0.94      0.94      0.99+     0.51!!    0.95   
+               mixture  0.700    0.95      0.95      0.98+     0.54!!           
+               mixture  0.750    0.94      0.95      0.98+     0.59!!           
+               mixture  0.850    0.94      0.94      0.98+     0.67!!    0.96   
+               mixture  0.950    0.94      0.95      0.97      0.76!!           
+
+-- Q1 mean width --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200      0.124     0.128     0.202     0.103
+ 2beta/dom.mod/scn.mod  0.250      0.133     0.138     0.213     0.111
+ 2beta/dom.mod/scn.mod  0.300      0.141     0.145     0.226     0.117     0.141
+ 2beta/dom.mod/scn.mod  0.450      0.155     0.160     0.266     0.129     0.154
+ 2beta/dom.mod/scn.mod  0.583      0.153     0.158     0.250     0.128     0.154
+ 2beta/dom.mod/scn.mod  0.650      0.150     0.154     0.230     0.124     0.150
+ 2beta/dom.mod/scn.mod  0.700      0.145     0.149     0.236     0.121
+ 2beta/dom.mod/scn.mod  0.750      0.134     0.138     0.208     0.111
+ 2beta/dom.mod/scn.mod  0.850      0.113     0.116     0.180     0.093     0.116
+ 2beta/dom.mod/scn.mod  0.950      0.069     0.070     0.102     0.055
+2beta/dom.severe/scn.severe  0.200      0.133     0.135     0.240     0.095
+2beta/dom.severe/scn.severe  0.250      0.142     0.144     0.272     0.101
+2beta/dom.severe/scn.severe  0.300      0.151     0.153     0.308     0.108     0.152
+2beta/dom.severe/scn.severe  0.450      0.165     0.167     0.303     0.118     0.165
+2beta/dom.severe/scn.severe  0.583      0.161     0.163     0.322     0.115     0.162
+2beta/dom.severe/scn.severe  0.650      0.157     0.160     0.310     0.113     0.158
+2beta/dom.severe/scn.severe  0.700      0.153     0.155     0.298     0.109
+2beta/dom.severe/scn.severe  0.750      0.142     0.144     0.267     0.101
+2beta/dom.severe/scn.severe  0.850      0.117     0.119     0.218     0.083     0.121
+2beta/dom.severe/scn.severe  0.950      0.074     0.074     0.125     0.050
+               mixture  0.200      0.176     0.176     0.310     0.063
+               mixture  0.250      0.176     0.176     0.304     0.063
+               mixture  0.300      0.198     0.198     0.335     0.064     0.199
+               mixture  0.450      0.215     0.215     0.365     0.067     0.215
+               mixture  0.583      0.211     0.211     0.363     0.069     0.213
+               mixture  0.650      0.200     0.200     0.344     0.070     0.201
+               mixture  0.700      0.195     0.195     0.322     0.071
+               mixture  0.750      0.177     0.178     0.286     0.072
+               mixture  0.850      0.150     0.151     0.245     0.073     0.156
+               mixture  0.950      0.129     0.130     0.203     0.074
+
+-- Q1 classification P(correct+confident), worst over DGP --
+     theta         S1       S1f         G         A        S2
+     0.200       0.15      0.15      0.05      0.47      0.00
+     0.250       0.83      0.83      0.92      0.54      0.00
+     0.300       0.21      0.20      0.04      0.30      0.22
+     0.450       0.90      0.90      0.42      0.94      0.91
+     0.583       0.62      0.62      0.17      0.73      0.65
+     0.650       0.21      0.21      0.05      0.36      0.21
+     0.700       0.93      0.93      0.97      0.74      0.00
+     0.750       0.33      0.33      0.17      0.54      0.00
+     0.850       0.81      0.80      0.51      0.96      0.74
+     0.950       0.93      0.93      0.76      0.99      0.00
+
+-- Q2 coverage --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.10    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.20    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.25    0.94      0.96      0.94   
+dom.mod//eSD0.15   0.30    0.93!     0.95      0.94   
+dom.mod//eSD0.15   0.50    0.58!!    0.63!!    0.70!! 
+dom.mod//eSD0.25   0.00    0.95      0.96      0.95   
+dom.mod//eSD0.25   0.10    0.95      0.97      0.95   
+dom.mod//eSD0.25   0.20    0.94      0.95      0.94   
+dom.mod//eSD0.25   0.25    0.92!     0.94      0.93!  
+dom.mod//eSD0.25   0.30    0.88!!    0.91!     0.90!  
+dom.mod//eSD0.25   0.50    0.40!!    0.44!!    0.56!! 
+dom.seve/eSD0.15   0.00    0.95      0.97+     0.95   
+dom.seve/eSD0.15   0.10    0.94      0.97      0.95   
+dom.seve/eSD0.15   0.20    0.92!     0.95      0.93   
+dom.seve/eSD0.15   0.25    0.89!!    0.93!     0.91!  
+dom.seve/eSD0.15   0.30    0.82!!    0.87!!    0.86!! 
+dom.seve/eSD0.15   0.50    0.25!!    0.29!!    0.53!! 
+dom.seve/eSD0.25   0.00    0.94      0.96      0.94   
+dom.seve/eSD0.25   0.10    0.94      0.96      0.94   
+dom.seve/eSD0.25   0.20    0.90!!    0.92!     0.91!  
+dom.seve/eSD0.25   0.25    0.84!!    0.87!!    0.88!! 
+dom.seve/eSD0.25   0.30    0.75!!    0.80!!    0.81!! 
+dom.seve/eSD0.25   0.50    0.17!!    0.20!!    0.42!! 
+
+-- Q2 detection P(CI excl 0) --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00       0.05      0.03      0.05
+dom.mod//eSD0.15   0.10       0.50      0.43      0.41
+dom.mod//eSD0.15   0.20       0.97      0.96      0.92
+dom.mod//eSD0.15   0.25       1.00      0.99      0.99
+dom.mod//eSD0.15   0.30       1.00      1.00      1.00
+dom.mod//eSD0.15   0.50       1.00      1.00      1.00
+dom.mod//eSD0.25   0.00       0.05      0.04      0.05
+dom.mod//eSD0.25   0.10       0.42      0.38      0.34
+dom.mod//eSD0.25   0.20       0.93      0.92      0.84
+dom.mod//eSD0.25   0.25       0.99      0.99      0.96
+dom.mod//eSD0.25   0.30       1.00      1.00      0.99
+dom.mod//eSD0.25   0.50       1.00      1.00      1.00
+dom.seve/eSD0.15   0.00       0.05      0.03      0.05
+dom.seve/eSD0.15   0.10       0.52      0.43      0.43
+dom.seve/eSD0.15   0.20       0.97      0.95      0.91
+dom.seve/eSD0.15   0.25       1.00      1.00      0.98
+dom.seve/eSD0.15   0.30       1.00      1.00      1.00
+dom.seve/eSD0.15   0.50       1.00      1.00      1.00
+dom.seve/eSD0.25   0.00       0.06      0.04      0.06
+dom.seve/eSD0.25   0.10       0.41      0.35      0.33
+dom.seve/eSD0.25   0.20       0.91      0.89      0.82
+dom.seve/eSD0.25   0.25       0.99      0.98      0.94
+dom.seve/eSD0.25   0.30       1.00      1.00      0.99
+dom.seve/eSD0.25   0.50       1.00      1.00      1.00
+
+### design 8 x 8 x 4  (64 scenarios x 4 repeats = 2048 trials)
+
+-- Q1 coverage --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200    0.94      0.95      0.99+     0.88!!           
+ 2beta/dom.mod/scn.mod  0.250    0.95      0.96      0.99+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.300    0.95      0.96      0.99+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.450    0.95      0.96      0.99++    0.88!!           
+ 2beta/dom.mod/scn.mod  0.583    0.95      0.95      0.99+     0.88!!           
+ 2beta/dom.mod/scn.mod  0.650    0.95      0.96      0.99+     0.88!!           
+ 2beta/dom.mod/scn.mod  0.700    0.95      0.96      0.99++    0.89!!           
+ 2beta/dom.mod/scn.mod  0.750    0.95      0.95      0.99+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.850    0.94      0.95      0.98+     0.89!!           
+ 2beta/dom.mod/scn.mod  0.950    0.93      0.94      0.96      0.88!!           
+2beta/dom.severe/scn.severe  0.200    0.95      0.95      0.99++    0.81!!           
+2beta/dom.severe/scn.severe  0.250    0.95      0.95      1.00++    0.81!!           
+2beta/dom.severe/scn.severe  0.300    0.95      0.95      1.00++    0.82!!           
+2beta/dom.severe/scn.severe  0.450    0.95      0.95      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.583    0.95      0.95      1.00++    0.81!!           
+2beta/dom.severe/scn.severe  0.650    0.95      0.95      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.700    0.95      0.95      0.99++    0.81!!           
+2beta/dom.severe/scn.severe  0.750    0.95      0.95      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.850    0.95      0.95      0.99++    0.82!!           
+2beta/dom.severe/scn.severe  0.950    0.92!     0.92!     0.95      0.80!!           
+               mixture  0.200    0.95      0.95      0.98+     0.48!!           
+               mixture  0.250    0.95      0.95      0.99+     0.48!!           
+               mixture  0.300    0.95      0.95      0.99+     0.43!!           
+               mixture  0.450    0.95      0.95      0.99++    0.42!!           
+               mixture  0.583    0.95      0.95      0.99+     0.43!!           
+               mixture  0.650    0.95      0.95      0.99++    0.46!!           
+               mixture  0.700    0.95      0.95      0.98+     0.48!!           
+               mixture  0.750    0.95      0.95      0.98+     0.54!!           
+               mixture  0.850    0.95      0.95      0.98+     0.62!!           
+               mixture  0.950    0.93      0.94      0.96      0.70!!           
+
+-- Q1 mean width --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200      0.113     0.116     0.192     0.090
+ 2beta/dom.mod/scn.mod  0.250      0.121     0.124     0.204     0.096
+ 2beta/dom.mod/scn.mod  0.300      0.127     0.131     0.216     0.102
+ 2beta/dom.mod/scn.mod  0.450      0.140     0.144     0.252     0.112
+ 2beta/dom.mod/scn.mod  0.583      0.139     0.143     0.238     0.111
+ 2beta/dom.mod/scn.mod  0.650      0.135     0.139     0.219     0.108
+ 2beta/dom.mod/scn.mod  0.700      0.131     0.134     0.227     0.104
+ 2beta/dom.mod/scn.mod  0.750      0.121     0.124     0.198     0.096
+ 2beta/dom.mod/scn.mod  0.850      0.102     0.105     0.171     0.081
+ 2beta/dom.mod/scn.mod  0.950      0.062     0.063     0.097     0.048
+2beta/dom.severe/scn.severe  0.200      0.124     0.125     0.234     0.082
+2beta/dom.severe/scn.severe  0.250      0.132     0.133     0.266     0.088
+2beta/dom.severe/scn.severe  0.300      0.141     0.142     0.300     0.094
+2beta/dom.severe/scn.severe  0.450      0.153     0.154     0.295     0.102
+2beta/dom.severe/scn.severe  0.583      0.150     0.151     0.317     0.100
+2beta/dom.severe/scn.severe  0.650      0.146     0.148     0.301     0.098
+2beta/dom.severe/scn.severe  0.700      0.142     0.143     0.291     0.095
+2beta/dom.severe/scn.severe  0.750      0.132     0.133     0.259     0.088
+2beta/dom.severe/scn.severe  0.850      0.109     0.110     0.214     0.072
+2beta/dom.severe/scn.severe  0.950      0.068     0.069     0.121     0.044
+               mixture  0.200      0.173     0.173     0.309     0.055
+               mixture  0.250      0.173     0.173     0.303     0.055
+               mixture  0.300      0.195     0.195     0.332     0.056
+               mixture  0.450      0.213     0.213     0.363     0.058
+               mixture  0.583      0.209     0.209     0.359     0.060
+               mixture  0.650      0.197     0.197     0.342     0.061
+               mixture  0.700      0.192     0.192     0.318     0.062
+               mixture  0.750      0.174     0.174     0.283     0.063
+               mixture  0.850      0.146     0.147     0.241     0.064
+               mixture  0.950      0.123     0.125     0.198     0.064
+
+-- Q1 classification P(correct+confident), worst over DGP --
+     theta         S1       S1f         G         A        S2
+     0.200       0.15      0.15      0.05      0.49      0.00
+     0.250       0.82      0.83      0.92      0.51      0.00
+     0.300       0.24      0.24      0.04      0.37      0.00
+     0.450       0.92      0.92      0.43      0.95      0.00
+     0.583       0.63      0.63      0.17      0.76      0.00
+     0.650       0.21      0.21      0.05      0.42      0.00
+     0.700       0.93      0.93      0.97      0.71      0.00
+     0.750       0.34      0.34      0.18      0.60      0.00
+     0.850       0.82      0.82      0.52      0.97      0.00
+     0.950       0.94      0.94      0.77      0.99      0.00
+
+-- Q2 coverage --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.10    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.20    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.25    0.94      0.96      0.95   
+dom.mod//eSD0.15   0.30    0.93!     0.95      0.93   
+dom.mod//eSD0.15   0.50    0.50!!    0.55!!    0.66!! 
+dom.mod//eSD0.25   0.00    0.95      0.96      0.95   
+dom.mod//eSD0.25   0.10    0.95      0.96      0.95   
+dom.mod//eSD0.25   0.20    0.93!     0.94      0.93   
+dom.mod//eSD0.25   0.25    0.91!     0.93      0.93!  
+dom.mod//eSD0.25   0.30    0.88!!    0.90!!    0.89!! 
+dom.mod//eSD0.25   0.50    0.32!!    0.35!!    0.48!! 
+dom.seve/eSD0.15   0.00    0.95      0.97      0.95   
+dom.seve/eSD0.15   0.10    0.94      0.97      0.94   
+dom.seve/eSD0.15   0.20    0.91!     0.94      0.92!  
+dom.seve/eSD0.15   0.25    0.86!!    0.91!     0.90!! 
+dom.seve/eSD0.15   0.30    0.79!!    0.85!!    0.85!! 
+dom.seve/eSD0.15   0.50    0.17!!    0.20!!    0.48!! 
+dom.seve/eSD0.25   0.00    0.95      0.96      0.95   
+dom.seve/eSD0.25   0.10    0.94      0.95      0.95   
+dom.seve/eSD0.25   0.20    0.88!!    0.90!     0.91!  
+dom.seve/eSD0.25   0.25    0.81!!    0.85!!    0.86!! 
+dom.seve/eSD0.25   0.30    0.72!!    0.75!!    0.80!! 
+dom.seve/eSD0.25   0.50    0.12!!    0.14!!    0.38!! 
+
+-- Q2 detection P(CI excl 0) --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00       0.05      0.03      0.05
+dom.mod//eSD0.15   0.10       0.59      0.53      0.49
+dom.mod//eSD0.15   0.20       0.99      0.99      0.97
+dom.mod//eSD0.15   0.25       1.00      1.00      1.00
+dom.mod//eSD0.15   0.30       1.00      1.00      1.00
+dom.mod//eSD0.15   0.50       1.00      1.00      1.00
+dom.mod//eSD0.25   0.00       0.05      0.04      0.05
+dom.mod//eSD0.25   0.10       0.48      0.45      0.39
+dom.mod//eSD0.25   0.20       0.96      0.95      0.90
+dom.mod//eSD0.25   0.25       1.00      0.99      0.98
+dom.mod//eSD0.25   0.30       1.00      1.00      1.00
+dom.mod//eSD0.25   0.50       1.00      1.00      1.00
+dom.seve/eSD0.15   0.00       0.05      0.03      0.05
+dom.seve/eSD0.15   0.10       0.60      0.52      0.50
+dom.seve/eSD0.15   0.20       0.99      0.99      0.96
+dom.seve/eSD0.15   0.25       1.00      1.00      1.00
+dom.seve/eSD0.15   0.30       1.00      1.00      1.00
+dom.seve/eSD0.15   0.50       1.00      1.00      1.00
+dom.seve/eSD0.25   0.00       0.05      0.04      0.05
+dom.seve/eSD0.25   0.10       0.49      0.43      0.38
+dom.seve/eSD0.25   0.20       0.95      0.94      0.87
+dom.seve/eSD0.25   0.25       1.00      0.99      0.97
+dom.seve/eSD0.25   0.30       1.00      1.00      1.00
+dom.seve/eSD0.25   0.50       1.00      1.00      1.00
+
+### design 8 x 10 x 2  (80 scenarios x 2 repeats = 1280 trials)
+
+-- Q1 coverage --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200    0.95      0.95      0.98+     0.91!            
+ 2beta/dom.mod/scn.mod  0.250    0.94      0.95      0.98+     0.91!            
+ 2beta/dom.mod/scn.mod  0.300    0.95      0.96      0.99+     0.91!            
+ 2beta/dom.mod/scn.mod  0.450    0.95      0.96      0.99+     0.92!            
+ 2beta/dom.mod/scn.mod  0.583    0.95      0.96      0.98+     0.91!            
+ 2beta/dom.mod/scn.mod  0.650    0.95      0.96      0.98+     0.92!            
+ 2beta/dom.mod/scn.mod  0.700    0.95      0.96      0.99+     0.91!            
+ 2beta/dom.mod/scn.mod  0.750    0.95      0.96      0.98+     0.91!            
+ 2beta/dom.mod/scn.mod  0.850    0.94      0.95      0.98+     0.91!            
+ 2beta/dom.mod/scn.mod  0.950    0.93!     0.93!     0.95      0.89!!           
+2beta/dom.severe/scn.severe  0.200    0.95      0.95      0.99+     0.87!!           
+2beta/dom.severe/scn.severe  0.250    0.95      0.95      0.99++    0.87!!           
+2beta/dom.severe/scn.severe  0.300    0.95      0.96      1.00++    0.88!!           
+2beta/dom.severe/scn.severe  0.450    0.95      0.95      0.99++    0.88!!           
+2beta/dom.severe/scn.severe  0.583    0.95      0.95      1.00++    0.88!!           
+2beta/dom.severe/scn.severe  0.650    0.95      0.95      0.99++    0.87!!           
+2beta/dom.severe/scn.severe  0.700    0.95      0.95      0.99++    0.88!!           
+2beta/dom.severe/scn.severe  0.750    0.95      0.95      0.99+     0.88!!           
+2beta/dom.severe/scn.severe  0.850    0.95      0.95      0.99+     0.87!!           
+2beta/dom.severe/scn.severe  0.950    0.92!     0.92!     0.95      0.83!!           
+               mixture  0.200    0.94      0.94      0.99++    0.59!!           
+               mixture  0.250    0.95      0.95      0.99+     0.60!!           
+               mixture  0.300    0.95      0.95      0.99++    0.55!!           
+               mixture  0.450    0.95      0.95      0.99++    0.55!!           
+               mixture  0.583    0.95      0.95      0.99++    0.57!!           
+               mixture  0.650    0.95      0.95      1.00++    0.59!!           
+               mixture  0.700    0.95      0.95      0.99+     0.62!!           
+               mixture  0.750    0.94      0.94      0.98+     0.66!!           
+               mixture  0.850    0.94      0.95      0.98+     0.74!!           
+               mixture  0.950    0.94      0.94      0.97+     0.80!!           
+
+-- Q1 mean width --
+                   dgp  theta         S1       S1f         G         A        S2
+ 2beta/dom.mod/scn.mod  0.200      0.130     0.133     0.206     0.113
+ 2beta/dom.mod/scn.mod  0.250      0.138     0.142     0.219     0.121
+ 2beta/dom.mod/scn.mod  0.300      0.146     0.151     0.233     0.128
+ 2beta/dom.mod/scn.mod  0.450      0.161     0.166     0.270     0.141
+ 2beta/dom.mod/scn.mod  0.583      0.159     0.164     0.255     0.140
+ 2beta/dom.mod/scn.mod  0.650      0.155     0.160     0.236     0.136
+ 2beta/dom.mod/scn.mod  0.700      0.150     0.155     0.242     0.132
+ 2beta/dom.mod/scn.mod  0.750      0.139     0.143     0.214     0.122
+ 2beta/dom.mod/scn.mod  0.850      0.117     0.120     0.184     0.102
+ 2beta/dom.mod/scn.mod  0.950      0.070     0.071     0.103     0.060
+2beta/dom.severe/scn.severe  0.200      0.133     0.135     0.240     0.104
+2beta/dom.severe/scn.severe  0.250      0.142     0.144     0.272     0.111
+2beta/dom.severe/scn.severe  0.300      0.151     0.154     0.307     0.118
+2beta/dom.severe/scn.severe  0.450      0.165     0.167     0.306     0.129
+2beta/dom.severe/scn.severe  0.583      0.161     0.164     0.323     0.126
+2beta/dom.severe/scn.severe  0.650      0.158     0.160     0.310     0.123
+2beta/dom.severe/scn.severe  0.700      0.153     0.155     0.298     0.120
+2beta/dom.severe/scn.severe  0.750      0.142     0.145     0.268     0.111
+2beta/dom.severe/scn.severe  0.850      0.117     0.119     0.219     0.091
+2beta/dom.severe/scn.severe  0.950      0.073     0.074     0.124     0.055
+               mixture  0.200      0.162     0.162     0.302     0.069
+               mixture  0.250      0.162     0.162     0.295     0.069
+               mixture  0.300      0.180     0.181     0.323     0.070
+               mixture  0.450      0.197     0.197     0.352     0.073
+               mixture  0.583      0.193     0.193     0.348     0.076
+               mixture  0.650      0.184     0.184     0.333     0.077
+               mixture  0.700      0.179     0.180     0.310     0.078
+               mixture  0.750      0.164     0.165     0.278     0.079
+               mixture  0.850      0.141     0.142     0.240     0.080
+               mixture  0.950      0.124     0.125     0.202     0.081
+
+-- Q1 classification P(correct+confident), worst over DGP --
+     theta         S1       S1f         G         A        S2
+     0.200       0.17      0.17      0.05      0.43      0.00
+     0.250       0.81      0.81      0.92      0.56      0.00
+     0.300       0.22      0.21      0.04      0.29      0.00
+     0.450       0.90      0.90      0.49      0.93      0.00
+     0.583       0.62      0.62      0.17      0.71      0.00
+     0.650       0.24      0.23      0.06      0.32      0.00
+     0.700       0.92      0.92      0.97      0.76      0.00
+     0.750       0.35      0.35      0.17      0.50      0.00
+     0.850       0.84      0.84      0.53      0.95      0.00
+     0.950       0.94      0.94      0.77      0.98      0.00
+
+-- Q2 coverage --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.10    0.95      0.96      0.95   
+dom.mod//eSD0.15   0.20    0.95      0.97      0.95   
+dom.mod//eSD0.15   0.25    0.94      0.96      0.95   
+dom.mod//eSD0.15   0.30    0.94      0.95      0.94   
+dom.mod//eSD0.15   0.50    0.62!!    0.67!!    0.73!! 
+dom.mod//eSD0.25   0.00    0.95      0.96      0.95   
+dom.mod//eSD0.25   0.10    0.95      0.96      0.95   
+dom.mod//eSD0.25   0.20    0.93      0.95      0.94   
+dom.mod//eSD0.25   0.25    0.92!     0.94      0.93   
+dom.mod//eSD0.25   0.30    0.89!!    0.91!     0.90!  
+dom.mod//eSD0.25   0.50    0.43!!    0.48!!    0.58!! 
+dom.seve/eSD0.15   0.00    0.95      0.97+     0.95   
+dom.seve/eSD0.15   0.10    0.95      0.97+     0.95   
+dom.seve/eSD0.15   0.20    0.92!     0.95      0.93!  
+dom.seve/eSD0.15   0.25    0.90!     0.94      0.91!  
+dom.seve/eSD0.15   0.30    0.84!!    0.89!!    0.88!! 
+dom.seve/eSD0.15   0.50    0.30!!    0.35!!    0.57!! 
+dom.seve/eSD0.25   0.00    0.94      0.97      0.95   
+dom.seve/eSD0.25   0.10    0.94      0.96      0.94   
+dom.seve/eSD0.25   0.20    0.89!!    0.93!     0.90!  
+dom.seve/eSD0.25   0.25    0.84!!    0.88!!    0.88!! 
+dom.seve/eSD0.25   0.30    0.77!!    0.82!!    0.83!! 
+dom.seve/eSD0.25   0.50    0.20!!    0.24!!    0.45!! 
+
+-- Q2 detection P(CI excl 0) --
+   effect-SD  delta         S1       S1f         G
+dom.mod//eSD0.15   0.00       0.05      0.03      0.05
+dom.mod//eSD0.15   0.10       0.44      0.38      0.37
+dom.mod//eSD0.15   0.20       0.95      0.94      0.88
+dom.mod//eSD0.15   0.25       1.00      0.99      0.98
+dom.mod//eSD0.15   0.30       1.00      1.00      1.00
+dom.mod//eSD0.15   0.50       1.00      1.00      1.00
+dom.mod//eSD0.25   0.00       0.05      0.04      0.05
+dom.mod//eSD0.25   0.10       0.39      0.34      0.32
+dom.mod//eSD0.25   0.20       0.91      0.89      0.82
+dom.mod//eSD0.25   0.25       0.98      0.98      0.94
+dom.mod//eSD0.25   0.30       1.00      1.00      0.99
+dom.mod//eSD0.25   0.50       1.00      1.00      1.00
+dom.seve/eSD0.15   0.00       0.05      0.03      0.05
+dom.seve/eSD0.15   0.10       0.47      0.38      0.39
+dom.seve/eSD0.15   0.20       0.95      0.92      0.88
+dom.seve/eSD0.15   0.25       1.00      0.99      0.98
+dom.seve/eSD0.15   0.30       1.00      1.00      0.99
+dom.seve/eSD0.15   0.50       1.00      1.00      1.00
+dom.seve/eSD0.25   0.00       0.06      0.03      0.05
+dom.seve/eSD0.25   0.10       0.39      0.32      0.31
+dom.seve/eSD0.25   0.20       0.89      0.86      0.79
+dom.seve/eSD0.25   0.25       0.98      0.97      0.93
+dom.seve/eSD0.25   0.30       1.00      1.00      0.98
+dom.seve/eSD0.25   0.50       1.00      1.00      1.00
+
+====================================================================================================
+CENTRAL-REGION SUMMARY  (min / mean coverage over the central truth grid, worst over DGP)
+====================================================================================================
+    design                     method   Q1 min   Q1 mean   Q2 min   Q2 mean
+     8x5x5                S1_strat_ws     0.94      0.95     0.79      0.92
+     8x5x5    S1f_strat_ws_binomfloor     0.95      0.95     0.82      0.94
+     8x5x5                 G_domain_t     0.96      0.98     0.84      0.93
+     8x5x5             A_finite_panel     0.39      0.70        -         -
+     8x5x5              S2_scn_boot_t        -         -        -         -
+     8x6x4                S1_strat_ws     0.94      0.95     0.78      0.92
+     8x6x4    S1f_strat_ws_binomfloor     0.94      0.95     0.82      0.94
+     8x6x4                 G_domain_t     0.96      0.99     0.83      0.93
+     8x6x4             A_finite_panel     0.41      0.73        -         -
+     8x6x4              S2_scn_boot_t        -         -        -         -
+     8x8x3                S1_strat_ws     0.94      0.95     0.75      0.91
+     8x8x3    S1f_strat_ws_binomfloor     0.94      0.95     0.80      0.94
+     8x8x3                 G_domain_t     0.98      0.99     0.81      0.92
+     8x8x3             A_finite_panel     0.46      0.76        -         -
+     8x8x3              S2_scn_boot_t     0.94      0.95        -         -
+     8x8x4                S1_strat_ws     0.94      0.95     0.72      0.90
+     8x8x4    S1f_strat_ws_binomfloor     0.95      0.95     0.75      0.93
+     8x8x4                 G_domain_t     0.98      0.99     0.80      0.92
+     8x8x4             A_finite_panel     0.42      0.73        -         -
+     8x8x4              S2_scn_boot_t        -         -        -         -
+    8x10x2                S1_strat_ws     0.94      0.95     0.77      0.92
+    8x10x2    S1f_strat_ws_binomfloor     0.95      0.95     0.82      0.94
+    8x10x2                 G_domain_t     0.98      0.99     0.83      0.93
+    8x10x2             A_finite_panel     0.55      0.80        -         -
+    8x10x2              S2_scn_boot_t        -         -        -         -
