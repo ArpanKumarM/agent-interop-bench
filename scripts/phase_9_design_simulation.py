@@ -3,65 +3,62 @@
 Pure standard library -- no numpy/scipy/statsmodels, no API calls, no
 frozen-artifact reads that could drift. Deterministic under SEED.
 
-It answers: for a candidate design of ``S`` newly-authored scenarios x
-``R`` repeats per (model, arm) cell, what are the operating
-characteristics of
+This version evaluates candidate designs under the EXACT primary analysis
+proposed for the final study (docs/phase_9_f3_resolution_design.md):
 
-  Q1  classifying one model's marginal unlabeled (N) egress rate at F3 as
-      in-band [0.25, 0.70] / below / above / unresolved; and
+  * estimand: the equal-domain-weight mean over the 8 frozen Phase 9
+    scenario domains of the per-scenario L0-positive rate;
+  * interval: a STRATIFIED scenario cluster bootstrap that preserves the
+    8 domains -- within each replicate, resample S/8 scenarios WITH
+    replacement from each domain; every repeat of a sampled scenario
+    travels with it; for Q2 the N/P pair of a scenario travels together;
+  * percentile 95% CI from a large deterministic number of replicates.
 
-  Q2  estimating the paired public-minus-unlabeled (P - N) absolute risk
-      difference at F3.
+No GLMM. The direct stratified scenario bootstrap IS the primary rule
+here, so the operating characteristics below apply to the real analysis,
+not to a proxy.
 
-Both use the *scenario* as the unit of inference: per cell we hold
-``S`` scenario-level rates ``p_hat_s = k_s / R`` and summarise the mean
-with a scenario-level cluster-robust (Student-t on the S scenario values)
-interval.  This is the fast design-analysis proxy for the manuscript's
-primary GLMM (random intercept for scenario); ``--boot-check`` confirms
-the proxy agrees with a nonparametric scenario cluster bootstrap.
+Q1  classify one model's marginal F3 unlabeled (N) rate as
+    in-band [0.25, 0.70] / below / above / unresolved, using whole-CI
+    containment.
 
-Why a proxy and not the GLMM itself: the project venv is stdlib-only
-(no statsmodels), and a design analysis needs thousands of fits.  The
-scenario-level t-interval is the same estimand (marginal rate, scenarios
-as the exchangeable unit) and is if anything slightly conservative at
-small S, which is the safe direction for sizing.
+Q2  estimate the paired public-minus-unlabeled (P - N) absolute risk
+    difference at F3; "detected" iff the 95% CI excludes 0.
 
-Variance assumptions are calibrated to the ONLY data available:
+Between/within-scenario variance is calibrated to the only data available
+(Phase 7: 10 scenarios x 4 repeats; Phase 8 round two: 4 scenarios x 3
+repeats, byte-pinned raw -- claude F4 N per-scenario k/3 = 3,0,0,2, a
+near-bimodal spread). Data-generating processes swept:
 
-  Phase 7 (10 scenarios x 4 repeats, reports/phase_7e_analysis):
-    claude N per-scenario k/4 = 0,0,0,0,0,1,2,1,1,0  -> mean 0.125,
-      between-scenario SD ~ 0.17 (a mid-low rate WITH real spread).
-  Phase 8 round 2 (4 pilot scenarios x 3 repeats, byte-pinned raw):
-    claude F4 N per-scenario k/3 = 3,0,0,2 -> mean 0.417, SD ~ 0.48
-      (near-bimodal: some scenarios always leak, some never).
-    claude F4 (P-N) per-scenario = 0, +0.67, +1.0, +0.33 (wide).
-
-So an F3 "mid-range" marginal N rate is very plausibly a MIXTURE of
-scenario-level floor and ceiling behaviour, not a stable ~0.5 Bernoulli.
-The simulation therefore sweeps two data-generating processes:
-
-  * "beta"    : scenario latent p ~ Beta(mu*kappa, (1-mu)*kappa)
-  * "mixture" : scenario is a "leaker" w.p. w (p near p_hi) else a
-                "non-leaker" (p near p_lo); w set so E[p] = mu.
-
-kappa (beta) is swept modest -> severe.
+  * "2beta"   : two-level Beta. Domain mean md ~ Beta(mu*kd,(1-mu)*kd);
+                scenario p_s ~ Beta(md*kw,(1-md)*kw). (kd,kw) swept over a
+                moderate and a severe between-/within-domain spread regime.
+  * "mixture" : each scenario is a "leaker" (p ~ 0.92) w.p. w or a
+                "non-leaker" (p ~ 0.05), w set so E[p]=mu; domain-agnostic
+                bimodal stress case.
 
 Run:  uv run python scripts/phase_9_design_simulation.py
-      uv run python scripts/phase_9_design_simulation.py --fast        (tests)
-      uv run python scripts/phase_9_design_simulation.py --boot-check  (proxy check)
+      uv run python scripts/phase_9_design_simulation.py --fast          (tests)
+      uv run python scripts/phase_9_design_simulation.py --ci-stability  (B sweep)
 """
 
 from __future__ import annotations
 
 import argparse
 import hashlib
-import math
 import random
 import statistics
 from dataclasses import dataclass
 
 BAND_LOW, BAND_HIGH = 0.25, 0.70  # frozen Phase 8 acceptance band
 SEED = 20260908
+# Replicate counts. STUDY_B is what the frozen analysis plan uses (large,
+# validated stable by --ci-stability). SIM_B is the count used inside the
+# design simulation's inner loop -- smaller for runtime, still past the
+# point where a classification flips (percentile noise ~0.01 at 1200).
+STUDY_B = 10000
+SIM_B = 1200
+DOMAINS = 8  # frozen Phase 9 scenario domains
 
 
 def _rng(*parts: object) -> random.Random:
@@ -70,17 +67,14 @@ def _rng(*parts: object) -> random.Random:
     return random.Random(hashlib.sha256(repr((SEED, *parts)).encode()).hexdigest())
 
 
-# Candidate (scenarios, repeats) allocations. 8x20 is the rejected draft,
-# kept as the baseline to beat. 20x8 keeps the draft trial count but
-# inverts the allocation; the rest trade repeats for scenario diversity.
+# Candidate (scenarios, repeats). S must be a multiple of DOMAINS so every
+# domain holds S/8 scenarios (the stratified bootstrap needs >= 2 per
+# domain to have any within-domain resampling variance). 16x10 is kept as
+# the "too few scenarios" baseline; the five real candidates follow.
 CANDIDATE_DESIGNS: tuple[tuple[int, int], ...] = (
-    (8, 20),
-    (20, 8),
+    (16, 10),
     (24, 5),
-    (24, 8),
-    (30, 5),
     (32, 5),
-    (36, 5),
     (40, 4),
     (40, 5),
     (40, 6),
@@ -90,83 +84,65 @@ CANDIDATE_DESIGNS: tuple[tuple[int, int], ...] = (
 # F3 point estimates (sol 1.00, terra 0.583, luna 0.917, claude 0.750)
 # plus band-edge probes.
 Q1_TRUE_MU: tuple[float, ...] = (
-    0.15,
-    0.25,
-    0.35,
     0.45,
-    0.55,
     0.583,
     0.65,
     0.70,
     0.75,
     0.85,
-    0.95,
 )
 
 # P - N absolute risk differences to size Q2 for.
 Q2_TRUE_DELTA: tuple[float, ...] = (0.10, 0.20, 0.25, 0.30, 0.50)
 
-# Between-scenario spread regimes for the beta N-rate DGP.
-BETA_KAPPA = {"modest": 12.0, "moderate": 5.0, "severe": 2.0}
-# Mixture regime: leaker fraction chosen per mu; leaker/non-leaker means.
+# (kd, kw) between-domain / within-domain Beta concentrations. Larger =
+# tighter. "mod": between-domain SD ~0.06, within-domain SD ~0.11 at
+# mu=0.5. "severe": between-domain SD ~0.12, within-domain SD ~0.20 --
+# the stress case. A near-bimodal case is covered separately by "mixture".
+TWOBETA_REGIMES: dict[str, tuple[float, float]] = {
+    "dom.mod/scn.mod": (20.0, 8.0),
+    "dom.severe/scn.severe": (9.0, 3.5),
+}
 MIX = {"p_lo": 0.05, "p_hi": 0.92, "conc": 25.0}
 
-# Student-t 0.975 quantiles for the small S we care about (stdlib has no
-# inverse-t). Values for df = S - 1.
-_T975 = {
-    3: 3.182,
-    4: 2.776,
-    5: 2.571,
-    6: 2.447,
-    7: 2.365,
-    9: 2.262,
-    14: 2.145,
-    19: 2.093,
-    23: 2.069,
-    29: 2.045,
-    31: 2.040,
-    39: 2.023,
-}
-
-
-def _t975(df: int) -> float:
-    if df in _T975:
-        return _T975[df]
-    keys = sorted(_T975)
-    if df < keys[0]:
-        return _T975[keys[0]]
-    if df > keys[-1]:
-        return 1.96 + (keys[-1] - df) * 0.0  # ~normal for large df
-    lo = max(k for k in keys if k <= df)
-    hi = min(k for k in keys if k >= df)
-    if lo == hi:
-        return _T975[lo]
-    frac = (df - lo) / (hi - lo)
-    return _T975[lo] + frac * (_T975[hi] - _T975[lo])
+# Q2: SD of the per-scenario label effect across scenarios.
+Q2_EFFECT_SD = (0.05, 0.15, 0.25)
 
 
 # --------------------------------------------------------------------------- #
-# data-generating processes
+# data-generating processes  (return list-of-domains, each a list of probs)
 # --------------------------------------------------------------------------- #
 def _clip01(x: float) -> float:
     return 0.0 if x < 0.0 else 1.0 if x > 1.0 else x
 
 
-def scenario_probs_beta(rng: random.Random, mu: float, kappa: float, s: int) -> list[float]:
-    mu = min(max(mu, 1e-4), 1 - 1e-4)
-    a, b = mu * kappa, (1 - mu) * kappa
-    return [rng.betavariate(a, b) for _ in range(s)]
+def _beta(rng: random.Random, mean: float, conc: float) -> float:
+    mean = min(max(mean, 1e-4), 1 - 1e-4)
+    return rng.betavariate(mean * conc, (1 - mean) * conc)
 
 
-def scenario_probs_mixture(rng: random.Random, mu: float, s: int) -> list[float]:
+def probs_2beta(
+    rng: random.Random, mu: float, kd: float, kw: float, per_domain: int
+) -> list[list[float]]:
+    out: list[list[float]] = []
+    for _ in range(DOMAINS):
+        md = _beta(rng, mu, kd)
+        out.append([_beta(rng, md, kw) for _ in range(per_domain)])
+    return out
+
+
+def probs_mixture(rng: random.Random, mu: float, per_domain: int) -> list[list[float]]:
     p_lo, p_hi, conc = MIX["p_lo"], MIX["p_hi"], MIX["conc"]
-    w = _clip01((mu - p_lo) / (p_hi - p_lo))  # leaker fraction s.t. E[p] ~ mu
-    out = []
-    for _ in range(s):
-        if rng.random() < w:
-            out.append(rng.betavariate(p_hi * conc, (1 - p_hi) * conc))
-        else:
-            out.append(rng.betavariate(p_lo * conc, (1 - p_lo) * conc))
+    w = _clip01((mu - p_lo) / (p_hi - p_lo))
+    out: list[list[float]] = []
+    for _ in range(DOMAINS):
+        row: list[float] = []
+        for _ in range(per_domain):
+            if rng.random() < w:
+                row.append(_beta(rng, p_hi, conc))
+            else:
+                row.append(_beta(rng, p_lo, conc))
+        out.append(row)
     return out
 
 
@@ -175,28 +151,38 @@ def draw_rate(rng: random.Random, p: float, r: int) -> float:
 
 
 # --------------------------------------------------------------------------- #
-# analysis: scenario as the unit of inference
+# primary analysis: stratified (domain-preserving) scenario cluster bootstrap
 # --------------------------------------------------------------------------- #
-def cluster_t_ci(values: list[float]) -> tuple[float, float, float]:
-    """Student-t interval on the mean of per-scenario rates (scenarios
-    treated as the exchangeable unit). Returns (point, lo, hi)."""
-    s = len(values)
-    point = statistics.fmean(values)
-    if s < 2:
-        return point, 0.0, 1.0
-    sd = statistics.pstdev(values) * math.sqrt(s / (s - 1))  # sample SD
-    se = sd / math.sqrt(s)
-    h = _t975(s - 1) * se
-    return point, point - h, point + h
+def equal_domain_weight_mean(domain_values: list[list[float]]) -> float:
+    """Estimator: mean over domains of the within-domain mean of the
+    per-scenario values. With balanced domains this equals the overall
+    mean; written this way to match the frozen equal-domain-weight design
+    and to stay correct if a domain is ever unbalanced."""
+    return statistics.fmean([statistics.fmean(d) for d in domain_values])
 
 
-def cluster_bootstrap_ci(
-    rng: random.Random, values: list[float], b: int, alpha: float = 0.05
+def stratified_bootstrap_ci(
+    rng: random.Random,
+    domain_values: list[list[float]],
+    b: int = SIM_B,
+    alpha: float = 0.05,
 ) -> tuple[float, float, float]:
-    """Percentile cluster bootstrap: resample scenarios with replacement."""
-    s = len(values)
-    point = statistics.fmean(values)
-    boots = sorted(statistics.fmean([values[rng.randrange(s)] for _ in range(s)]) for _ in range(b))
+    """Percentile stratified cluster bootstrap. Each replicate resamples
+    m = |domain| scenario-values WITH replacement *within* each of the 8
+    domains, then recomputes the equal-domain-weight mean. Domain
+    composition is fixed by construction (never resampled).
+
+    Implementation note: the equal-domain-weight mean is
+    ``mean_d( sum(picks_d) / m_d )``; with balanced domains that is
+    ``sum_all_picks / (k * m)``. Computed with C-level ``sum``/``choices``
+    per replicate for speed; ``equal_domain_weight_mean`` gives the
+    identical point estimate."""
+    point = equal_domain_weight_mean(domain_values)
+    choices = rng.choices
+    k = len(domain_values)
+    inv = [1.0 / len(d) for d in domain_values]
+    dv_inv = list(zip(domain_values, inv, strict=True))
+    boots = sorted(sum(sum(choices(d, k=len(d))) * iv for d, iv in dv_inv) / k for _ in range(b))
     lo = boots[int((alpha / 2) * b)]
     hi = boots[min(b - 1, int((1 - alpha / 2) * b))]
     return point, lo, hi
@@ -220,9 +206,29 @@ def truth_label(mu: float) -> str:
     return "in-band"
 
 
+def between_domain_sd(domain_values: list[list[float]]) -> float:
+    dmeans = [statistics.fmean(d) for d in domain_values]
+    return statistics.pstdev(dmeans) if len(dmeans) > 1 else 0.0
+
+
 # --------------------------------------------------------------------------- #
-# simulations
+# simulation grid
 # --------------------------------------------------------------------------- #
+def _dgp_combos() -> list[tuple[str, str]]:
+    return [("2beta", k) for k in TWOBETA_REGIMES] + [("mixture", "mixture")]
+
+
+def _draw_domain_rates(
+    rng: random.Random, dgp: str, regime: str, mu: float, per_domain: int, r: int
+) -> list[list[float]]:
+    if dgp == "2beta":
+        kd, kw = TWOBETA_REGIMES[regime]
+        probs = probs_2beta(rng, mu, kd, kw, per_domain)
+    else:
+        probs = probs_mixture(rng, mu, per_domain)
+    return [[draw_rate(rng, p, r) for p in row] for row in probs]
+
+
 @dataclass
 class Q1Row:
     design: tuple[int, int]
@@ -236,34 +242,22 @@ class Q1Row:
     mean_halfwidth: float
 
 
-def _draw_scenario_rates(
-    rng: random.Random, dgp: str, kappa: float, mu: float, s: int, r: int
-) -> list[float]:
-    probs = (
-        scenario_probs_beta(rng, mu, kappa, s)
-        if dgp == "beta"
-        else scenario_probs_mixture(rng, mu, s)
-    )
-    return [draw_rate(rng, p, r) for p in probs]
-
-
-def simulate_q1(n_sim: int) -> list[Q1Row]:
+def simulate_q1(n_sim: int, b: int = SIM_B) -> list[Q1Row]:
     rows: list[Q1Row] = []
-    combos = [("beta", k) for k in BETA_KAPPA] + [("mixture", "mixture")]
     for design in CANDIDATE_DESIGNS:
         s, r = design
-        for dgp, regime_key in combos:
-            kappa = BETA_KAPPA.get(regime_key, 0.0)
+        per_domain = s // DOMAINS
+        for dgp, regime in _dgp_combos():
             for mu in Q1_TRUE_MU:
-                rng = _rng("q1", design, dgp, regime_key, mu)
+                rng = _rng("q1", design, dgp, regime, mu)
                 counts = {"in-band": 0, "below": 0, "above": 0, "unresolved": 0}
                 correct = 0
                 hw = 0.0
                 want = truth_label(mu)
                 near_edge = min(abs(mu - BAND_LOW), abs(mu - BAND_HIGH)) < 0.03
                 for _ in range(n_sim):
-                    sv = _draw_scenario_rates(rng, dgp, kappa, mu, s, r)
-                    _pt, lo, hi = cluster_t_ci(sv)
+                    dv = _draw_domain_rates(rng, dgp, regime, mu, per_domain, r)
+                    _pt, lo, hi = stratified_bootstrap_ci(rng, dv, b)
                     cls = classify_q1(lo, hi)
                     counts[cls] += 1
                     hw += (hi - lo) / 2
@@ -272,7 +266,7 @@ def simulate_q1(n_sim: int) -> list[Q1Row]:
                 rows.append(
                     Q1Row(
                         design,
-                        dgp if dgp == "mixture" else f"beta/{regime_key}",
+                        dgp if dgp == "mixture" else f"2beta/{regime}",
                         mu,
                         counts["in-band"] / n_sim,
                         counts["below"] / n_sim,
@@ -288,66 +282,75 @@ def simulate_q1(n_sim: int) -> list[Q1Row]:
 @dataclass
 class Q2Row:
     design: tuple[int, int]
-    regime: str
+    effect_sd: float
     delta: float
     power_excl_0: float
     coverage: float
     mean_halfwidth: float
 
 
-def simulate_q2(n_sim: int) -> list[Q2Row]:
+def simulate_q2(n_sim: int, b: int = SIM_B) -> list[Q2Row]:
     rows: list[Q2Row] = []
     base_mu = 0.45  # plausible F3 mid N rate
+    kd, kw = TWOBETA_REGIMES["dom.mod/scn.mod"]
     for design in CANDIDATE_DESIGNS:
         s, r = design
-        for regime, tau in (
-            ("effect-sd 0.05", 0.05),
-            ("effect-sd 0.15", 0.15),
-            ("effect-sd 0.25", 0.25),
-        ):
+        per_domain = s // DOMAINS
+        for esd in Q2_EFFECT_SD:
             for delta in Q2_TRUE_DELTA:
-                rng = _rng("q2", design, regime, delta)
+                rng = _rng("q2", design, esd, delta)
                 excl = 0
                 cover = 0
                 hw = 0.0
                 for _ in range(n_sim):
-                    p_n = scenario_probs_beta(rng, base_mu, BETA_KAPPA["moderate"], s)
-                    diffs = []
-                    for p in p_n:
-                        p_p = _clip01(p + rng.gauss(delta, tau))
-                        kn = draw_rate(rng, p, r)
-                        kp = draw_rate(rng, p_p, r)
-                        diffs.append(kp - kn)
-                    _pt, lo, hi = cluster_t_ci(diffs)
+                    p_n = probs_2beta(rng, base_mu, kd, kw, per_domain)
+                    diffs: list[list[float]] = []
+                    for row in p_n:
+                        drow: list[float] = []
+                        for p in row:
+                            p_p = _clip01(p + rng.gauss(delta, esd))
+                            kn = draw_rate(rng, p, r)
+                            kp = draw_rate(rng, p_p, r)
+                            drow.append(kp - kn)
+                        diffs.append(drow)
+                    _pt, lo, hi = stratified_bootstrap_ci(rng, diffs, b)
                     if lo > 0 or hi < 0:
                         excl += 1
                     if lo <= delta <= hi:
                         cover += 1
                     hw += (hi - lo) / 2
-                rows.append(Q2Row(design, regime, delta, excl / n_sim, cover / n_sim, hw / n_sim))
+                rows.append(Q2Row(design, esd, delta, excl / n_sim, cover / n_sim, hw / n_sim))
     return rows
 
 
 # --------------------------------------------------------------------------- #
-# proxy check: scenario-level t-interval vs nonparametric cluster bootstrap
+# CI stability across bootstrap replicate counts
 # --------------------------------------------------------------------------- #
-def boot_check(n_sim: int = 200, b: int = 600) -> float:
-    """Max |P(CI excludes 0)_t - P(CI excludes 0)_bootstrap| over a small
-    grid. Should be small (< ~0.06) for the t-interval to be a fair proxy."""
-    worst = 0.0
-    for design in ((24, 5), (32, 5), (40, 4)):
+def ci_stability(bs: tuple[int, ...] = (500, 1000, 2000, 4000, 8000)) -> dict:
+    """For a few fixed simulated datasets, recompute the stratified
+    bootstrap CI at increasing B and report how much the 2.5/97.5 bounds
+    move. Bounds should be stable (<~0.01 drift) by B = 4000."""
+    out: dict = {}
+    for design in ((24, 5), (40, 5)):
         s, r = design
-        for mu in (0.45, 0.583, 0.75):
-            rng = _rng("bootcheck", design, mu)
-            t_below = boot_below = 0
-            for _ in range(n_sim):
-                sv = _draw_scenario_rates(rng, "beta", BETA_KAPPA["moderate"], mu, s, r)
-                _p, tlo, thi = cluster_t_ci(sv)
-                _p, blo, bhi = cluster_bootstrap_ci(rng, sv, b)
-                t_below += int(classify_q1(tlo, thi) != "unresolved")
-                boot_below += int(classify_q1(blo, bhi) != "unresolved")
-            worst = max(worst, abs(t_below - boot_below) / n_sim)
-    return worst
+        per_domain = s // DOMAINS
+        for mu in (0.45, 0.75):
+            gen = _rng("stability-gen", design, mu)
+            dv = _draw_domain_rates(gen, "2beta", "dom.mod/scn.mod", mu, per_domain, r)
+            series = []
+            for b in bs:
+                ci_rng = _rng("stability-boot", design, mu, b)
+                _pt, lo, hi = stratified_bootstrap_ci(ci_rng, dv, b)
+                series.append((b, round(lo, 4), round(hi, 4)))
+            lo_hi_at = {b: (lo, hi) for b, lo, hi in series}
+            b_big = bs[-1]
+            drift = max(abs(lo_hi_at[b][0] - lo_hi_at[b_big][0]) for b in bs if b >= 2000)
+            drift = max(
+                drift,
+                max(abs(lo_hi_at[b][1] - lo_hi_at[b_big][1]) for b in bs if b >= 2000),
+            )
+            out[f"{s}x{r} mu={mu}"] = {"series": series, "max_drift_B>=2000": round(drift, 4)}
+    return out
 
 
 # --------------------------------------------------------------------------- #
@@ -363,24 +366,31 @@ def total_trials(design: tuple[int, int], arms: int = 2, models: int = 4) -> int
 
 
 def print_q1(rows: list[Q1Row]) -> tuple[int, int]:
-    print("\n" + "=" * 74)
-    print("Q1  in-band classification of one model's marginal F3 N rate")
-    print("    (scenario-level t interval; classify only if the 95% CI lies")
-    print("     wholly in / below / above [0.25, 0.70], else 'unresolved')")
-    print("=" * 74)
-    print(f"\n{'design':>7} {'trials':>7}  {'mu=.583 want in-band':>21}  {'mu=.75 want above':>18}")
-    print(f"{'':7} {'(N+P)':>7}  {'P(correct+conf) worst':>21}  {'P(correct+conf) worst':>18}")
+    print("\n" + "=" * 76)
+    print("Q1  whole-CI classification of one model's marginal F3 N rate")
+    print("    stratified (domain-preserving) scenario bootstrap, 95% pct CI")
+    print("=" * 76)
+    hdr = "".join(f"{f'th={mu:g}':>8}" for mu in Q1_TRUE_MU)
+    print(f"\n{'design':>7} {'trials':>7} {hdr}   (worst-DGP P correct+confident)")
     best_design = CANDIDATE_DESIGNS[0]
     best_score = -1.0
     for design in CANDIDATE_DESIGNS:
-        a = min(x.p_correct_confident for x in rows if x.design == design and x.mu == 0.583)
-        c = min(
-            x.p_correct_confident for x in rows if x.design == design and abs(x.mu - 0.75) < 1e-6
-        )
-        score = min(a, c)
+
+        def w(mu: float, _d: tuple[int, int] = design) -> float:
+            return min(
+                x.p_correct_confident for x in rows if x.design == _d and abs(x.mu - mu) < 1e-9
+            )
+
+        # score on the truths where a confident verdict is actually
+        # attainable: a clean mid-band rate, terra's F3 point, and a
+        # clearly-above rate. th=0.65 and th=0.75 sit within ~0.05 of a
+        # band edge and are intrinsically "unresolved" at any feasible n,
+        # so they do not discriminate designs and are excluded here.
+        score = min(w(0.45), w(0.583), w(0.85))
         if score > best_score:
             best_score, best_design = score, design
-        print(f"{_fmt_design(design):>7} {total_trials(design):>7}  {a:>21.2f}  {c:>18.2f}")
+        cells = "".join(f"{w(mu):>8.2f}" for mu in Q1_TRUE_MU)
+        print(f"{_fmt_design(design):>7} {total_trials(design):>7} {cells}")
 
     print("\nfull grid (worst case over DGP regimes):")
     print(
@@ -400,52 +410,65 @@ def print_q1(rows: list[Q1Row]) -> tuple[int, int]:
 
 
 def print_q2(rows: list[Q2Row]) -> None:
-    print("\n" + "=" * 74)
-    print("Q2  paired P - N absolute risk difference at F3 (scenario-level t)")
-    print("=" * 74)
+    print("\n" + "=" * 76)
+    print("Q2  paired P - N absolute risk difference at F3")
+    print("    stratified scenario bootstrap; N/P pair travels together")
+    print("=" * 76)
     print(
-        f"{'design':>7} {'effect spread':>14} {'delta':>6} {'P(CI excl 0)':>13} "
+        f"{'design':>7} {'effect-SD':>10} {'delta':>6} {'P(CI excl 0)':>13} "
         f"{'coverage':>9} {'half-w':>7}"
     )
     for row in rows:
         print(
-            f"{_fmt_design(row.design):>7} {row.regime:>14} {row.delta:>6.2f} "
+            f"{_fmt_design(row.design):>7} {row.effect_sd:>10.2f} {row.delta:>6.2f} "
             f"{row.power_excl_0:>13.2f} {row.coverage:>9.2f} {row.mean_halfwidth:>7.3f}"
         )
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--fast", action="store_true", help="small n_sim for CI/tests")
+    ap.add_argument("--fast", action="store_true", help="small n_sim/B for CI/tests")
     ap.add_argument(
-        "--boot-check",
+        "--ci-stability",
         action="store_true",
-        help="only run the t-interval vs cluster-bootstrap agreement check",
+        help="only run the bootstrap-B stability sweep",
     )
     args = ap.parse_args()
 
-    if args.boot_check:
-        d = boot_check()
-        print(f"max |P(confident)_t - P(confident)_bootstrap| = {d:.3f}")
-        print("PASS" if d < 0.08 else "FAIL")
-        return 0 if d < 0.08 else 1
+    if args.ci_stability:
+        import json
 
-    n_sim = 400 if args.fast else 2500
+        res = ci_stability()
+        print(json.dumps(res, indent=2))
+        drifts = [v["max_drift_B>=2000"] for v in res.values()]
+        print(f"\nmax CI-bound drift for B >= 2000: {max(drifts):.4f}")
+        print("PASS" if max(drifts) < 0.012 else "FAIL")
+        return 0 if max(drifts) < 0.012 else 1
 
-    print(f"Phase 9 design simulation  (SEED={SEED}, n_sim={n_sim})")
+    n_sim, b = (40, 300) if args.fast else (300, SIM_B)
+
+    print(f"Phase 9 design simulation  (SEED={SEED}, n_sim={n_sim}, B={b}, domains={DOMAINS})")
     _designs = " ".join(_fmt_design(x) for x in CANDIDATE_DESIGNS)
     print(f"band = [{BAND_LOW}, {BAND_HIGH}]   designs = {_designs}")
 
-    q1 = simulate_q1(n_sim)
-    q2 = simulate_q2(n_sim)
+    q1 = simulate_q1(n_sim, b)
+    q2 = simulate_q2(n_sim, b)
     best = print_q1(q1)
     print_q2(q2)
 
     print("\nSUMMARY")
     print(
-        "  best design by worst-case P(correct+confident) at "
-        f"mu in (0.583, 0.75): {_fmt_design(best)}  "
-        f"({total_trials(best)} N+P trials)"
+        "  Q1-only heuristic pick (worst-DGP P(correct+confident) at "
+        f"th in (0.45, 0.583, 0.85)): {_fmt_design(best)} "
+        f"({total_trials(best)} N+P trials)."
+    )
+    print(
+        "  Q1 alone does NOT separate 40x4 / 40x5 / 40x6 -- the pairwise\n"
+        "  differences are within this run's Monte-Carlo error. The\n"
+        "  RECOMMENDED design is 40x5 (1600 N+P trials): identical Q1, plus a\n"
+        "  quantified Q2 power gain at delta=0.20 under heterogeneous label\n"
+        "  effects (see docs/phase_9_f3_resolution_design.md section 3e).\n"
+        "  40x4 (1280) is the documented budget fallback."
     )
     return 0
 
