@@ -1,14 +1,16 @@
 # gitleaks configuration for a2avalidator.
 #
 # Uses the full default rule set, plus a narrow allowlist for a known
-# non-secret literal introduced by the Phase 7A/7B neutral-baseline study:
-# the overlay field ``canary_case_key`` carries the deterministic scenario
-# tag ``phase7a-scenario-<pair_id>`` (a hyphenated slug, never a
-# credential). gitleaks' ``generic-api-key`` heuristic matches it because
-# the field name ends in "key" and the value has moderate entropy. The
-# value is fully reproducible from
-# ``mock_servers.phase_7a_neutral_fixtures.phase7a_canary_key`` and appears
-# only in committed fixture YAML / docs / tests.
+# non-secret literal introduced by the Phase 7A/7B neutral-baseline study
+# (and, identically, by the Phase 9 F3 resolution study): the overlay field
+# ``canary_case_key`` carries the deterministic scenario tag
+# ``phase7a-scenario-<pair_id>`` / ``phase9-scenario-<scenario_id>`` (a
+# hyphenated slug, never a credential). gitleaks' ``generic-api-key``
+# heuristic matches it because the field name ends in "key" and the value
+# has moderate entropy. The value is fully reproducible from
+# ``mock_servers.phase_7a_neutral_fixtures.phase7a_canary_key`` /
+# ``mock_servers.phase_9_fixtures`` and appears only in committed fixture
+# YAML / docs / tests.
 
 title = "a2avalidator gitleaks config"
 
@@ -16,9 +18,11 @@ title = "a2avalidator gitleaks config"
 useDefault = true
 
 [allowlist]
-description = "Phase 7A/7B canary_case_key literal is a deterministic scenario tag, not a secret."
+description = "Phase 7A/7B and Phase 9 canary_case_key literals are deterministic scenario tags, not secrets."
 regexTarget = "line"
 regexes = [
   '''canary_case_key["'\s:=]+phase7a-scenario-[a-z0-9-]+''',
+  '''canary_case_key["'\s:=]+phase9-scenario-[a-z0-9_-]+''',
   '''phase7a-record-ref-salt-v1''',
+  '''phase9-record-ref-salt-v1''',
 ]

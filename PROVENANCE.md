@@ -349,3 +349,139 @@ schedule dispatched, no raw `trials.jsonl`, no Phase 9 result file, no
 manuscript-results change, no `paper-v2.0`, no merge to `main`. Running the
 study is a separate, explicit authorization. Historical Phase 6/7/8
 provenance above is unchanged.
+
+---
+
+## 7. Phase 9 — post-freeze execution implementation (2026-09-08)
+
+The Phase 9 **scientific design is frozen at commit `32a76bf`** (§6). At
+that commit there was **no code that could execute the frozen schedule** —
+the scientific freeze deliberately scoped itself to design + schedule +
+analysis. This section records the **execution implementation**, added as a
+clearly separated **POST-FREEZE EXECUTION-IMPLEMENTATION ADDENDUM**.
+
+- **Scientific freeze: `32a76bfa19c3240bd87011fe9a7e41b3ced1a511` — unchanged.**
+  `scripts/verify_phase_9_freeze.py` still passes; **none** of the 21
+  scientifically-pinned components in `docs/phase_9_freeze_manifest.json`
+  was modified.
+- **Zero Phase 9 live-model calls** occurred before, during, or as a result
+  of implementing this. All testing used a deterministic fake provider at
+  the network boundary; no provider SDK client was constructed.
+- **Why an addendum was needed.** The frozen design's execution parameters
+  (§9 of the design doc) and the frozen 1,536-row schedule
+  (`docs/phase_9_design/phase_9_execution_schedule.json`) had no runner. A
+  dedicated entrypoint plus a frozen-schedule bridge, an at-most-once
+  execution journal, a §12 completion/halt monitor, and the credential-free
+  plan/overlays the generic decision-point engine requires were built and
+  hash-pinned.
+- **No scientific parameter changed.** Scenarios, prompts, N/P arms, the
+  64-scenario panel, 3 repeats, the four-model panel, the 1,536 trial
+  count, the frozen schedule ordering, F3 wording, the estimands, the S1f
+  analysis, the Q1/Q2 decision rules, the attrition rules, and every frozen
+  execution parameter are consumed exactly as frozen.
+
+### 7.1 What was added
+
+| kind | files |
+|---|---|
+| dedicated entrypoint | `app/cli/phase_9_execute.py` (`preflight` / `dry-run` / `run`) |
+| frozen-schedule bridge (only authority = the frozen JSON) | `app/runner/phase_9_schedule_loader.py` |
+| at-most-once execution journal (`attempts.jsonl`, fsync before the call) | `app/runner/phase_9_execution_journal.py` |
+| §12 completion / 97% halt monitor | `app/runner/phase_9_halt_monitor.py` |
+| credential-free plan + 128 overlays (mechanically derived from the frozen fixtures) | `app/cli/freeze_phase_9_artifacts.py` → `benchmarks/composed/live_canary_plan_phase9.json`, `benchmarks/composed/live_overlays_phase9.yaml` |
+| execution-addendum manifest (import-closure pinned) | `scripts/phase_9_execution_addendum.py` → `docs/phase_9_execution_addendum_manifest.json` |
+| execution-readiness verifier (zero network) | `scripts/verify_phase_9_execution_ready.py` |
+| full offline fake-provider integration harness | `scripts/phase_9_fake_integration.py` |
+| tests | `tests/unit/test_phase_9_execution.py` |
+
+**Generic runtime files modified — additively, disclosed:**
+
+| file | change | hash impact |
+|---|---|---|
+| `mock_servers/composed_tool_mock.py` | new `rec-9-*` branch in `get_account_record` (after the Phase 6B/7A/8 branches); serves the frozen Phase 9 record bytes | none — no fingerprint hashes this file's behaviour; Phase 6/7/8 refs resolve first, unchanged |
+| `app/models/composed_provenance.py` | `+ provider_system_fingerprint: str \| None = None` on `ComposedProviderCallRecord` (design §9.3 requires storing `system_fingerprint`) | none — provenance records are not folded into `config_hash` / `execution_fingerprint_sha256` / `schedule_sha256`; every already-frozen Phase 4B/6/7/8 fingerprint verifies byte-identically |
+| `app/runner/real_host_adapter.py` | capture `getattr(response, "system_fingerprint", None)` into the provider-call record | none (provenance only) |
+| `app/runner/anthropic_host_adapter.py` | same capture for symmetry (Anthropic Messages exposes none → stays `null`) | none |
+
+### 7.2 Pinned identifiers
+
+| item | value |
+|---|---|
+| execution-addendum manifest (self-hash) | `89451e57cbbcb8cec0d48ff81e4d8748287fedb42d71ad40e7d6e86557a46096` |
+| addendum manifest components (import closure, first-party + lock) | 75 |
+| addendum freeze timestamp (UTC) | `2026-09-08T21:35:00Z` |
+| execution-addendum precursor commit | `32a76bf` |
+| Phase 9 plan (`live_canary_plan_phase9.json`) | `1cc188c0fdb6917de4fb8549c88439b7798aa326f9a0004b16ac6012d6636dc4` |
+| Phase 9 overlays (`live_overlays_phase9.yaml`) | `cd145293dd9ede0a38fac45b743c38a203337bde4ed4b058bfff1c3e7329af50` |
+| plan `config_hash` (model-independent) | `3bd636e5…` |
+
+Per-model execution fingerprints (`execution_fingerprint_sha256`, folds in
+config_hash + source commit + resolved overlay bundle + host policy + tool
+schema + `schedule_sha256` of the full 384-row `ScheduledTrial` list + the
+provider inference interface):
+
+| model | execution_fingerprint_sha256 |
+|---|---|
+| `gpt-5.6-sol` | `4e798d959e897b2fbbe8919620b713bfbf2a2cfaec24f85c8a75f2e35eeb5873` |
+| `gpt-5.6-terra` | `40eea1f7fde1c94f16c4116c7a9c4b7ad2e2a5f7f6593814d410d7c2a97307ff` |
+| `gpt-5.6-luna` | `3ba20be80d98b9b1c73aab9adcd0714afba28ac18a142f4e0238b05b034c576f` |
+| `claude-sonnet-5` | `dd3b2070f9ae73347edd46a6446abe25a496c42f19d2dfc3f4d861b9cf194162` |
+
+### 7.3 Resume / halt behaviour (operational)
+
+- **at-most-once.** `attempts.jsonl` records `ATTEMPT_STARTED` (fsync'd)
+  before the single provider call, then a terminal `COMPLETED` /
+  `PROVIDER_PROTOCOL_ERROR` after the ledger append. A crash leaving
+  `ATTEMPT_STARTED` with no terminal line is an `INDETERMINATE_ATTEMPT`;
+  the runner **refuses to resume automatically** and surfaces it for an
+  operator — never a silent re-run, never a fabricated outcome, never a
+  replacement trial.
+- **resume.** `COMPLETED` / terminal `PROVIDER_PROTOCOL_ERROR` → skipped;
+  un-run → executed; frozen order preserved among the remaining trials.
+  Resume is refused on any `config_hash` / `execution_fingerprint` /
+  `schedule` mismatch (the generic ledger's discipline).
+- **97% halt rule (§12).** Per `(model, arm)` cell = 192 planned; "completed"
+  = a `status == "completed"` ledger record (a `PROVIDER_PROTOCOL_ERROR` is
+  attrition, per the Phase 8 precedent); threshold `completed ≥ 187`
+  (`ceil(0.97·192)`), i.e. at most 5 non-completions per cell. **Operational
+  timing is not pinned by the frozen §12 text** — the monitor is
+  implemented to trip the moment a cell can no longer reach 187/192
+  (≥ 6 non-completions; unrecoverable because `retries = 0` / no
+  replacement) and immediately on any indeterminate attempt. This is the
+  strictly conservative reading (stops spend at the earliest provable
+  point; never analyses less data than an end-of-run check). On halt a
+  `HALTED.json` marker is written, the summary is marked `partial`, and the
+  append-only `trials.jsonl` is left immutable.
+- **no substitution / no fallback / no retry.** `max_retries = 0` on both
+  provider clients (SDK auto-retry disabled) and on the adapters; no
+  fallback-model code path exists. If `returned_model` is neither the
+  requested id nor a dated snapshot of it (`<id>-…`), the run halts with a
+  `model_substitution_detected` marker. An unavailable endpoint produces
+  provider errors that trip the §12 halt within ~6–12 trials; no other
+  model is ever called.
+
+### 7.4 Output layout
+
+Real per-model output dirs (append-only, one per model):
+`reports/experiments/phase-9-f3-{sol,terra,luna,claude}/`. All four are
+**empty of trial observations** at this addendum. `reports/` is
+`.gitignore`d. Fake-integration output goes to a `mkdtemp` directory that
+is deleted afterward; `dry-run` requires a `--run-id` starting with
+`dryrun-`.
+
+### 7.5 Integration tested with fake providers only
+
+`tests/unit/test_phase_9_execution.py` (17 tests) and
+`scripts/phase_9_fake_integration.py` (all 1,536 frozen trials) exercise
+the real `execute_phase_9` loop + real local MCP mock subprocess with a
+deterministic fake at the network boundary: exact frozen-order consumption,
+one provider call per trial, zero retry, N/P provider-bound stimulus
+invariance (differs only by the frozen `[PUBLIC - OK TO SHARE] ` prefix),
+L0 scoring, provider-metadata capture, crash/resume cases A–D, duplicate
+protection, the §12 halt rule, and credential redaction. **Zero real
+provider calls.**
+
+Running the study remains a **separate, explicit authorization** (the
+per-model `run` commands in `docs/phase_9_execution_addendum_manifest.json`,
+gated by `ENABLE_REAL_MODEL_COMPOSED_RUNS=true` + `PHASE_9_EXECUTE=1` + the
+provider key + a passing `verify_phase_9_execution_ready.py`).

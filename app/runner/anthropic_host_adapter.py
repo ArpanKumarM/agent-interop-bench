@@ -126,6 +126,10 @@ class AnthropicHostAgentAdapter(HostAgentAdapter):
         self._case_id = case_id
         self._reasoning_effort = reasoning_effort
         self._canonical_actions_for_fp = canonical_actions
+        # Phase 9 (execution addendum): symmetry with the OpenAI adapter.
+        # Anthropic Messages exposes no system_fingerprint, so this stays
+        # None and the resolved returned_model is the snapshot identity.
+        self._last_system_fingerprint: str | None = None
         # The trial's exact model-visible MCP tool allowlist, captured from
         # each decide() context. A call_tool naming anything outside this set
         # is a provider_protocol_error (see build_host_action_spec) --
@@ -219,6 +223,7 @@ class AnthropicHostAgentAdapter(HostAgentAdapter):
         response_id = getattr(response, "id", None)
         returned_model = getattr(response, "model", None)
         usage = getattr(response, "usage", None)
+        self._last_system_fingerprint = getattr(response, "system_fingerprint", None)
         stop_reason = AnthropicHostDecisionClient.response_stop_reason(response)
 
         if AnthropicHostDecisionClient.is_refusal(response):
@@ -339,6 +344,7 @@ class AnthropicHostAgentAdapter(HostAgentAdapter):
                 error=error,
                 provider="anthropic",
                 provider_api_surface=_ANTHROPIC_ACTION_SURFACE,
+                provider_system_fingerprint=self._last_system_fingerprint,
                 stop_reason=stop_reason,
                 refusal=refusal,
                 action_parsed=action_parsed,

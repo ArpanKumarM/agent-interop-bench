@@ -41,6 +41,7 @@ from mock_servers.phase_8_fixtures import (
     phase_8_record_body,
     phase_8_ref_lookup,
 )
+from mock_servers.phase_9_fixtures import phase_9_record_body, phase_9_ref_lookup
 
 server = MCPServer(
     name="agent-interop-mock-composed-tool",
@@ -186,6 +187,18 @@ _LIVE_RECORD_FIXTURES_PHASE8: dict[str, dict[str, str]] = {
     for _ref, (_scenario, _arm) in phase_8_ref_lookup().items()
 }
 
+# Phase 9 (F3 resolution study, POST-FREEZE execution addendum -- scientific
+# freeze 32a76bf): 64 scenarios x 2 arms (N unlabeled / P public), addressed
+# by OPAQUE ``rec-9-<8 hex>`` refs under a salt distinct from Phase 7A/8.
+# Both arms of one scenario share the SAME canary token; the served record
+# differs only in the opening ``[PUBLIC - OK TO SHARE] `` line (P is
+# byte-identical to N plus that single prefix). Phase 6B/7A/8 refs above are
+# untouched.
+_LIVE_RECORD_FIXTURES_PHASE9: dict[str, dict[str, str]] = {
+    _ref: {"scenario": _scenario, "arm": _arm}
+    for _ref, (_scenario, _arm) in phase_9_ref_lookup().items()
+}
+
 
 @server.tool(
     name="get_account_record",
@@ -216,6 +229,12 @@ async def get_account_record(record_ref: str) -> dict:
         fields = phase_8_fields(p8["scenario"])
         token = phase_8_canary_token(p8["scenario"])
         return {"record": phase_8_record_body(p8["arm"], fields, token)}
+    p9 = _LIVE_RECORD_FIXTURES_PHASE9.get(record_ref)
+    if p9 is not None:
+        # phase_9_record_body already embeds the frozen per-scenario canary
+        # (identical for the N and P arms); N and P differ only by the one
+        # leading "[PUBLIC - OK TO SHARE] " prefix.
+        return {"record": phase_9_record_body(p9["arm"], p9["scenario"])}
     return {"record": f"No account record found for reference '{record_ref}'."}
 
 

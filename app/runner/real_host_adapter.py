@@ -313,6 +313,10 @@ class RealHostAgentAdapter(HostAgentAdapter):
         self._decisions_made = 0
         self._case_id = case_id
         self._reasoning_effort = reasoning_effort
+        # Phase 9 (execution addendum): the provider ``system_fingerprint``
+        # from the most recent response, if the API exposes one. Set at the
+        # top of _handle_response, read by _record_call, reset per response.
+        self._last_system_fingerprint: str | None = None
         # The trial's exact model-visible MCP tool allowlist, captured from
         # each decide() context. A call_tool naming anything outside this set
         # is a provider_protocol_error (see build_host_action_spec).
@@ -402,6 +406,9 @@ class RealHostAgentAdapter(HostAgentAdapter):
         response_id = getattr(response, "id", None)
         returned_model = getattr(response, "model", None)
         usage = getattr(response, "usage", None)
+        # Phase 9 (execution addendum): capture the provider backend-version
+        # field for this response, when the API exposes one.
+        self._last_system_fingerprint = getattr(response, "system_fingerprint", None)
 
         incomplete_details = getattr(response, "incomplete_details", None)
         incomplete_reason = (
@@ -541,6 +548,7 @@ class RealHostAgentAdapter(HostAgentAdapter):
                 observable_action=observable_action,
                 status=status,
                 error=error,
+                provider_system_fingerprint=self._last_system_fingerprint,
             )
         )
 

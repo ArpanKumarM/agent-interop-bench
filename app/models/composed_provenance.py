@@ -48,6 +48,13 @@ class ComposedProviderCallRecord(BaseModel):
     """``openai`` | ``anthropic``."""
     provider_api_surface: str | None = None
     """e.g. ``openai.responses`` | ``anthropic.messages``."""
+    provider_system_fingerprint: str | None = None
+    """Phase 9 (execution addendum): the provider's ``system_fingerprint`` /
+    backend-version field from the response, when the API exposes one
+    (OpenAI). ``None`` when the provider does not expose it (Anthropic
+    Messages has no such field; the resolved ``returned_model`` is then the
+    snapshot identity) or when no response was received. Provenance only;
+    never folded into any hash."""
     stop_reason: str | None = None
     """Provider-reported stop reason (OpenAI ``incomplete_details.reason`` or
     completion status; Anthropic ``stop_reason``). Never reasoning content."""

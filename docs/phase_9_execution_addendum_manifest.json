@@ -1,0 +1,405 @@
+{
+  "addendum_freeze_utc": "2026-09-08T21:35:00Z",
+  "addendum_manifest_sha256": "89451e57cbbcb8cec0d48ff81e4d8748287fedb42d71ad40e7d6e86557a46096",
+  "component_count": 75,
+  "components": [
+    {
+      "bytes": 0,
+      "path": "app/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 146,
+      "path": "app/cli/__init__.py",
+      "sha256": "257364d7bb202c78124926a019d2df2775c7be1a4c1d0b894225ee7439bbaa29"
+    },
+    {
+      "bytes": 26666,
+      "path": "app/cli/composed_live_pilot.py",
+      "sha256": "e8bf108acb321a06412b9092e1214fd8755efe21b0b0f178bb8937fa9b848085"
+    },
+    {
+      "bytes": 7438,
+      "path": "app/cli/freeze_phase_9_artifacts.py",
+      "sha256": "b3599770be14d322e73235ddb64be8f348cebde178d441d175681c51f21243a6"
+    },
+    {
+      "bytes": 8088,
+      "path": "app/cli/freeze_v4_artifacts.py",
+      "sha256": "f149bb43d21f15710f5f9e43d46c7812718ee8e527365f7ef33cc4288ee47539"
+    },
+    {
+      "bytes": 27671,
+      "path": "app/cli/phase_9_execute.py",
+      "sha256": "6e0b8a460a1e53e74b24535c668debf59db3422ca7ead1a8f4cb0ab98af49520"
+    },
+    {
+      "bytes": 0,
+      "path": "app/core/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1181,
+      "path": "app/core/baseline_policy.py",
+      "sha256": "8001e4693a02749c86c4022b70b7f6e152ab7b60365f0a4c65171e1e18714834"
+    },
+    {
+      "bytes": 5075,
+      "path": "app/core/config.py",
+      "sha256": "281a188db893e2d62081c39a316571486b6daf5b4698fb7d703cfc4b915317c0"
+    },
+    {
+      "bytes": 605,
+      "path": "app/core/live_overlays.py",
+      "sha256": "5ac57f1cf856b72171837fe56f52ca26cc2f54f91ae117a4036201896be40d0e"
+    },
+    {
+      "bytes": 0,
+      "path": "app/discovery/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 820,
+      "path": "app/discovery/mcp_discovery.py",
+      "sha256": "12013f8b720fd4223ba0f2ab8f177f44a3298d52c2811ea5bc4824ee994c4281"
+    },
+    {
+      "bytes": 0,
+      "path": "app/evaluators/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3190,
+      "path": "app/evaluators/composed_egress.py",
+      "sha256": "092dda2efcb94846e29f2f75ccfc6bbbdcb9a89e662ce7c98f9c714d21ac41f5"
+    },
+    {
+      "bytes": 1996,
+      "path": "app/evaluators/composed_provenance.py",
+      "sha256": "f5f1ca70ecdc3a6fc8a97a3322c357c9edd4eb3b510fc998511be6edede40c43"
+    },
+    {
+      "bytes": 0,
+      "path": "app/models/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 14998,
+      "path": "app/models/a2a.py",
+      "sha256": "fbc24eece37fa0a595fcad5f2b1f490df8c7815b8dff5a439249b1cb7a4bb602"
+    },
+    {
+      "bytes": 9115,
+      "path": "app/models/benchmark.py",
+      "sha256": "c89a5b414efb75093c4526e5519427643afb56cfc9ddb37a8d355aa9fe6fb021"
+    },
+    {
+      "bytes": 14195,
+      "path": "app/models/composed.py",
+      "sha256": "eafd9a775cedf75399b3b0916ab8e51cb9b14c1cd1e893704bc1b3acbac07bd0"
+    },
+    {
+      "bytes": 5696,
+      "path": "app/models/composed_provenance.py",
+      "sha256": "ba971fe99f99407cd39a4592133a1bead63df6e253529826ef9c73be86e3158d"
+    },
+    {
+      "bytes": 1322,
+      "path": "app/models/enums.py",
+      "sha256": "a76a44289fbb81b75154e0e480f15c3cc798aafcc31fdacab27113deed478e48"
+    },
+    {
+      "bytes": 5806,
+      "path": "app/models/evaluation.py",
+      "sha256": "1aea8bd2574bc82e7e7fc5ef27c8ab5934fe596c0a346e204c390c2664c2fa5b"
+    },
+    {
+      "bytes": 5313,
+      "path": "app/models/execution.py",
+      "sha256": "5581d13a5a2f22515863d9b31a50f8b0783a45cee6d86c3d2c3ddf397b1c4db7"
+    },
+    {
+      "bytes": 2058,
+      "path": "app/models/execution_fingerprint.py",
+      "sha256": "31ac22b12175551c0fae822f015632bb16d10df08fed0acc8851555b004e02f4"
+    },
+    {
+      "bytes": 2585,
+      "path": "app/models/host_context.py",
+      "sha256": "46d2c2ab159177aa7a635674a32dab4cf455f445f80546586074c5b6b86c85a1"
+    },
+    {
+      "bytes": 8051,
+      "path": "app/models/live_overlay.py",
+      "sha256": "1d2871fb02bc27e180d37824111a9c444938584a1eb5e038312821fed20b0be3"
+    },
+    {
+      "bytes": 3984,
+      "path": "app/models/pilot_plan.py",
+      "sha256": "be9677f37e92e165b717714e9bac45f6246e98a71c1370bacef46a87fabf7aa4"
+    },
+    {
+      "bytes": 2958,
+      "path": "app/models/provenance.py",
+      "sha256": "7205b217b5d76e7fe5d1a191b4320a95863014cc19367e91a64970b4a9b77055"
+    },
+    {
+      "bytes": 1751,
+      "path": "app/models/tools.py",
+      "sha256": "fac5d9b6ee69ea657fb557b5c5a23be8a8388a30c40b8a8bc3f928f5a429fe25"
+    },
+    {
+      "bytes": 4470,
+      "path": "app/models/trial_ledger.py",
+      "sha256": "baa4a6a1c6af59e16a6da2085002164e8f878d3f6e07243eb2689f0be9aaf284"
+    },
+    {
+      "bytes": 0,
+      "path": "app/reporting/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 19484,
+      "path": "app/reporting/pilot_analysis.py",
+      "sha256": "689969726f5e4504dcc239e319ea7c0dc0db5cf469f94bc1316ce19967aba1f6"
+    },
+    {
+      "bytes": 9981,
+      "path": "app/reporting/pilot_outcomes.py",
+      "sha256": "84bb44da9e7291aa827f7c09b8f90e52c9a71da5d15c7d8909004bd96338be4e"
+    },
+    {
+      "bytes": 3689,
+      "path": "app/reporting/rq1_field_egress.py",
+      "sha256": "ec74471fb0d0e9eb82cd8ff1e56fe573e3329a67384acd3464933d170fe5b67e"
+    },
+    {
+      "bytes": 0,
+      "path": "app/runner/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3557,
+      "path": "app/runner/adapters.py",
+      "sha256": "3b1bb8964a146a5ecd23423cc835d6a6b2a0e30a068e7da6a36062e1867bc3f8"
+    },
+    {
+      "bytes": 3148,
+      "path": "app/runner/anthropic_adapter.py",
+      "sha256": "e1f7a2c631219966a815e68a2c87c838b4e4f41a48206163386427cdb4cb2d2d"
+    },
+    {
+      "bytes": 15198,
+      "path": "app/runner/anthropic_host_adapter.py",
+      "sha256": "3f850c503206395a6ad2ea4cccad1d237cfb64c6eeae9f806db0fed37fcdab0e"
+    },
+    {
+      "bytes": 28606,
+      "path": "app/runner/blocked_schedule.py",
+      "sha256": "952875ab1c53b2deafdfaf2ac45e282ea03529429e030691c18d789ab6a1fb00"
+    },
+    {
+      "bytes": 22392,
+      "path": "app/runner/composed_engine.py",
+      "sha256": "2fa0e54368bd632668d02718dfad6eb36b70199487c7dba2e96890cfa51416b8"
+    },
+    {
+      "bytes": 13714,
+      "path": "app/runner/decision_point_pilot.py",
+      "sha256": "951bc861b3f6b1ebf800f07d889fdd12966d8fdd597bca3887dd1ea2fbde6b7b"
+    },
+    {
+      "bytes": 12293,
+      "path": "app/runner/execution_fingerprint.py",
+      "sha256": "b3acf27b287d1999a80f2cc2774db66c5075ee82fafecf646476ad4d16baef9c"
+    },
+    {
+      "bytes": 3115,
+      "path": "app/runner/host_action_schema_anthropic.py",
+      "sha256": "937a320e78150c644d784534d3f3feac7b503668a3cc6b30a1890324a3d40de8"
+    },
+    {
+      "bytes": 11877,
+      "path": "app/runner/host_action_schema_openai.py",
+      "sha256": "24f11798a06c34f5f295127015ff00f646b9c08d8dd16ce828be9069eb4353e3"
+    },
+    {
+      "bytes": 4742,
+      "path": "app/runner/host_adapters.py",
+      "sha256": "aa25e3b037f40899f920ddb1d1f1be664a35c6384886139da343f287c2c12b91"
+    },
+    {
+      "bytes": 10740,
+      "path": "app/runner/host_decision_client.py",
+      "sha256": "d3772820414a0ddcd48db0a8f15ce22575d65e091e951fab3290fc0f0a28e5cd"
+    },
+    {
+      "bytes": 6736,
+      "path": "app/runner/model_panel.py",
+      "sha256": "e62fd7ce62c68e87c0e91de357c8cbc2b505361374aae97bce77ad2d2db40521"
+    },
+    {
+      "bytes": 649,
+      "path": "app/runner/mutation_gate.py",
+      "sha256": "a518f47f1dd25a8e05acf39847949d846b1bba32c669cc83831f8d3eaaff5932"
+    },
+    {
+      "bytes": 18643,
+      "path": "app/runner/openai_adapter.py",
+      "sha256": "b68e3334d174020f3e83ece90e3ae15b2261c4e565501c6fb107ee7ae3533653"
+    },
+    {
+      "bytes": 7380,
+      "path": "app/runner/phase_9_execution_journal.py",
+      "sha256": "5a5fd872dc0d03c74b839442d5a053c9d9f064161dab366bf1c79f52d5250338"
+    },
+    {
+      "bytes": 5924,
+      "path": "app/runner/phase_9_halt_monitor.py",
+      "sha256": "5aaf794e000eeca5dd99dfa07dfe29b1c28013ff6f69bab217d521230bafbb2f"
+    },
+    {
+      "bytes": 8985,
+      "path": "app/runner/phase_9_schedule_loader.py",
+      "sha256": "9e5207ad552f286beab34fc0e66f9067d0b19e6c860094eb476cf363ce1fa097"
+    },
+    {
+      "bytes": 2794,
+      "path": "app/runner/pilot_budget.py",
+      "sha256": "9bc7d2ceb0f6bb57ad957df4faf819dd79025bc913815320d1f9964d0b3ef3d1"
+    },
+    {
+      "bytes": 7214,
+      "path": "app/runner/pilot_ledger.py",
+      "sha256": "2b7a9b219347ec77bed5eb17828be3571b5847bf1e6e2d5ff5d694bd0784c319"
+    },
+    {
+      "bytes": 7110,
+      "path": "app/runner/pilot_runner.py",
+      "sha256": "c2f52f56c7fd1c9ee13931219e6f78a8e407c68bb739d78231fadc8100275083"
+    },
+    {
+      "bytes": 24281,
+      "path": "app/runner/real_host_adapter.py",
+      "sha256": "e66508626bc4f2a6f36f4583b0b297606dbe61b0fb06379301606747fec76cc8"
+    },
+    {
+      "bytes": 3985,
+      "path": "app/runner/tool_schema_openai.py",
+      "sha256": "70374bb91f131b1056fe857199775736149dea4354964682d7ea0e3a89e58a86"
+    },
+    {
+      "bytes": 5508,
+      "path": "app/runner/transport.py",
+      "sha256": "051e2a284e4ea804a53fd3465345f9544a1bdf58289b965a0bb9001fb56e1899"
+    },
+    {
+      "bytes": 4336,
+      "path": "benchmarks/composed/live_canary_plan_phase9.json",
+      "sha256": "1cc188c0fdb6917de4fb8549c88439b7798aa326f9a0004b16ac6012d6636dc4"
+    },
+    {
+      "bytes": 392265,
+      "path": "benchmarks/composed/live_overlays_phase9.yaml",
+      "sha256": "cd145293dd9ede0a38fac45b743c38a203337bde4ed4b058bfff1c3e7329af50"
+    },
+    {
+      "bytes": 4466,
+      "path": "docs/phase_9_design/phase_9_analysis_config.json",
+      "sha256": "3942f7e173b8eee641d933b28c3942c67f0d64b253163a79426ef68c87f998cd"
+    },
+    {
+      "bytes": 6068,
+      "path": "docs/phase_9_design/phase_9_execution_params.json",
+      "sha256": "01b83a35911ee8a6dd0c5fd9617eb714730b527750ed853b6baf9727d43794f7"
+    },
+    {
+      "bytes": 617604,
+      "path": "docs/phase_9_design/phase_9_execution_schedule.json",
+      "sha256": "0bd01e25663ec152c0ed1f12811ac9de0aa7b1c4b6a93d3fdbe98117cb5788b9"
+    },
+    {
+      "bytes": 0,
+      "path": "mock_servers/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7006,
+      "path": "mock_servers/a2a_mock.py",
+      "sha256": "307bb102159540edff52be842d6f9f445b41498e512ea956bfa114ae2ca80974"
+    },
+    {
+      "bytes": 17929,
+      "path": "mock_servers/composed_record_fixtures.py",
+      "sha256": "f4ef885f1448cb8754cf13266965122d5149d9ce4b037c1c45381596d4fd5310"
+    },
+    {
+      "bytes": 14175,
+      "path": "mock_servers/composed_tool_mock.py",
+      "sha256": "48172ca0e2bc49ec8f26f09f02ce100c34e8c0f7056a32a9ba97f96b6efe1ea2"
+    },
+    {
+      "bytes": 7868,
+      "path": "mock_servers/phase_7a_neutral_fixtures.py",
+      "sha256": "ee4cd625db397541b59a6f095d349aac97c984d20913ae7fe40ab3b1241114f6"
+    },
+    {
+      "bytes": 23336,
+      "path": "mock_servers/phase_8_fixtures.py",
+      "sha256": "66008cc01582c11f7b8f5f00a2bb8f18642aec6030d5085d01b7122885d6585d"
+    },
+    {
+      "bytes": 9000,
+      "path": "mock_servers/phase_9_fixtures.py",
+      "sha256": "52233b7aacf3e7be297a090cfe58b33296ce52498567f6ffb82e52f1efa43622"
+    },
+    {
+      "bytes": 1329,
+      "path": "pyproject.toml",
+      "sha256": "2cd396b0f7e62fae01e6fbb1db85bb86ac74ec357787c519bbb2a83dbcd5f159"
+    },
+    {
+      "bytes": 22009,
+      "path": "scripts/phase_9_build_scenarios.py",
+      "sha256": "06d1ec748fca58f892f77c3a57fac7b35fe47ccc0a7bb13344a6dd003790f058"
+    },
+    {
+      "bytes": 8777,
+      "path": "scripts/phase_9_execution_addendum.py",
+      "sha256": "be9b9d94608a34d02d748cbd5f6d474e62693d6104a9b142392f86f7dc6f4bc5"
+    },
+    {
+      "bytes": 3405,
+      "path": "scripts/verify_phase_9_execution_ready.py",
+      "sha256": "cc370afd1f68a38182cc237173493802d889516e29c3c26267e06e6af024ec78"
+    },
+    {
+      "bytes": 94255,
+      "path": "uv.lock",
+      "sha256": "6b0d8279010a57be250d134ca291403061b4a8f7937fd2c93563ef9f6243fb56"
+    }
+  ],
+  "execution_addendum_precursor_commit": "32a76bf",
+  "integration_tested_with_fake_providers_only": true,
+  "kind": "POST-FREEZE EXECUTION-IMPLEMENTATION ADDENDUM",
+  "live_entrypoint": "python -m app.cli.phase_9_execute run --model <MODEL_ID>",
+  "no_scientific_parameter_changed": true,
+  "per_model_commands": {
+    "claude-sonnet-5": "ENABLE_REAL_MODEL_COMPOSED_RUNS=true PHASE_9_EXECUTE=1 uv run python -m app.cli.phase_9_execute run --model claude-sonnet-5",
+    "gpt-5.6-luna": "ENABLE_REAL_MODEL_COMPOSED_RUNS=true PHASE_9_EXECUTE=1 uv run python -m app.cli.phase_9_execute run --model gpt-5.6-luna",
+    "gpt-5.6-sol": "ENABLE_REAL_MODEL_COMPOSED_RUNS=true PHASE_9_EXECUTE=1 uv run python -m app.cli.phase_9_execute run --model gpt-5.6-sol",
+    "gpt-5.6-terra": "ENABLE_REAL_MODEL_COMPOSED_RUNS=true PHASE_9_EXECUTE=1 uv run python -m app.cli.phase_9_execute run --model gpt-5.6-terra"
+  },
+  "phase": 9,
+  "real_output_dirs": {
+    "claude-sonnet-5": "reports/experiments/phase-9-f3-claude/",
+    "gpt-5.6-luna": "reports/experiments/phase-9-f3-luna/",
+    "gpt-5.6-sol": "reports/experiments/phase-9-f3-sol/",
+    "gpt-5.6-terra": "reports/experiments/phase-9-f3-terra/"
+  },
+  "scientific_freeze_commit": "32a76bfa19c3240bd87011fe9a7e41b3ced1a511",
+  "scientific_freeze_manifest_sha256": "e3650e3de1ea505732b4a0c2f320603dc41abd821cd8160250c4d9397f4ebcde",
+  "scientific_freeze_unchanged": true,
+  "verifier_command": "uv run python scripts/verify_phase_9_execution_ready.py --model <MODEL_ID>",
+  "zero_live_calls_before_implementation": true
+}
