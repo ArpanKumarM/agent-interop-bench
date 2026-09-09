@@ -3,6 +3,20 @@
 - scientific freeze `32a76bf` / execution freeze `a347a8b` / attempt-002 freeze `e8fd793`
 - analysis implementation SHA-256 `5c8301018886234c7721600f1678c0e218a76a02073e3b4b9fe47138faa2049f` (matches the frozen pin)
 - band [0.25, 0.7] ; R=3 ; 1,536 completed trials ; 0 protocol errors
+- repeat index: engine block_index in {0,1,2} == frozen scientific repeat in {1,2,3} minus 1 (repeat = block_index + 1); verified for all 1,536 trials
+
+## RAW egress-count reconciliation (straight from frozen trials.jsonl)
+
+| model | N egress / 192 | N rate | P egress / 192 | P rate | Delta (raw P - N) |
+|---|---|---|---|---|---|
+| `gpt-5.6-sol` | 192/192 | 1.000000 | 192/192 | 1.000000 | +0.000000 |
+| `gpt-5.6-terra` | 158/192 | 0.822917 | 190/192 | 0.989583 | +0.166667 |
+| `gpt-5.6-luna` | 192/192 | 1.000000 | 190/192 | 0.989583 | -0.010417 |
+| `claude-sonnet-5` | 162/192 | 0.843750 | 182/192 | 0.947917 | +0.104167 |
+
+(with equal scenarios/domain and equal repeats the fixed-domain equal-weight
+mean == the pooled mean, so these reconcile exactly with the frozen Q1 theta_hat
+and Q2 Delta_hat below.)
 
 ## CONFIRMATORY -- Q1 (fixed-domain theta_m, method S1f)
 
@@ -15,9 +29,15 @@
 
 **Panel Q1 verdict: `FAILS`**
 
+> BOUNDARY-DEGENERACY NOTE. gpt-5.6-sol and gpt-5.6-luna egressed on ALL 192 unlabeled trials (every one of the 64 scenarios at repeat-rate 1.0), so every within-domain sample variance s2_d = 0 and every binomial floor pbar_d(1-pbar_d)/R = 0 -> Var_hat = 0 -> the frozen S1f estimator returns a degenerate zero-width interval [1.000, 1.000] (pathological=True). This is exactly the committed implementation, not a computation bug. The ABOVE classification does NOT depend on this degeneracy: (i) the point estimate is at the ceiling, far above the 0.70 threshold; (ii) 4 of the 5 pre-registered Q1 sensitivity procedures (method G, raw S1, Option A, S2 bootstrap) are ALSO variance-based and degenerate identically to [1.000, 1.000] on this boundary dataset; (iii) the one non-degenerate procedure, the trial-level Wilson interval on the pooled N trials, gives [0.9804, 1.0000], entirely above 0.70. A defensible reading is: under the frozen primary method the boundary dataset yields a degenerate interval; the ABOVE verdict is insensitive to it (192/192 trials egressed and the non-degenerate Wilson interval is also entirely above the headroom threshold). The Q2 [0,0] interval for gpt-5.6-sol is the same kind of artefact: both arms are saturated at 1.0, so the study is CEILING-LIMITED for that model -- the observed public-label difference is 0 but there is no observed headroom in which a positive effect could appear; it is not evidence that the underlying label effect is exactly zero.
+
 ## CONFIRMATORY -- Q2 (paired P - N absolute risk difference Delta_m, uniform S1f)
 
-| model | Delta_hat | 95% CI | half-width | detected (CI excludes 0) | Holm-adj p |
+The PRIMARY pre-registered criterion is: 95% S1f CI excludes 0. The Holm-adjusted
+p-value column is SUPPLEMENTARY robustness only (design section 7) -- it is NOT the
+primary criterion and does not override the CI decision.
+
+| model | Delta_hat | 95% CI | half-width | detected (primary: CI excludes 0) | Holm-adj p (suppl.) |
 |---|---|---|---|---|---|
 | `gpt-5.6-sol` | +0.0000 | [+0.0000, +0.0000] | 0.0000 | **False** | 1 |
 | `gpt-5.6-terra` | +0.1667 | [+0.1054, +0.2279] | 0.0612 | **True** | 6.208e-06 |

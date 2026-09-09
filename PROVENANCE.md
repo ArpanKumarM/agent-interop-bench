@@ -578,7 +578,10 @@ order, one provider attempt per frozen trial id, zero retries.
 **0** protocol errors, **0** indeterminate, **0** duplicate ids/terminals,
 **0** foreign ids; **1,536** provider calls (exactly one per frozen trial,
 `decision_count = 1` everywhere → no retry); per-arm N=768 / P=768; 192 per
-domain; every `(scenario, arm)` cell has repeats `{0,1,2}`; recorded order
+domain; every `(scenario, arm)` cell carries all three repeats exactly once
+(engine `block_index` ∈ `{0,1,2}`, which is the frozen scientific **repeat
+number `{1,2,3}` minus 1** — `repeat = block_index + 1`, verified for all
+1,536 trials, 512 at each repeat); recorded order
 == frozen schedule order for all four models; requested == returned model
 id for every trial (**no substitution**); `provider_response_id` on all
 1,536; `system_fingerprint` not exposed by either provider API (the
@@ -675,3 +678,87 @@ Between-domain SD(N): sol/luna 0.00, terra 0.077, claude 0.106.
 
 The manuscript has **not** been touched. No `paper-v2.0`, no release, no
 merge to `main`.
+
+### 8.5 Pre-manuscript documentation audit (2026-09-09, read-only)
+
+A read-only / documentation-only audit of the Phase 9 results before any
+manuscript integration. **No model re-run, no raw-trial change, no
+frozen-analysis change, no result-value change** (the
+`CONFIRMATORY_primary` block of `phase_9_results_attempt_002.json` is
+byte-identical before and after; hash `92c2166b…`). Clarifications, all
+verified directly against the frozen `trials.jsonl`:
+
+- **Raw egress counts** (per model, /192 planned = 64 scenarios × 3
+  repeats): `gpt-5.6-sol` N 192/192, P 192/192, Δ +0.000000;
+  `gpt-5.6-terra` N 158/192 (0.822917), P 190/192 (0.989583), Δ +0.166667;
+  `gpt-5.6-luna` N 192/192, P 190/192 (0.989583), Δ −0.010417
+  (exactly the two P trials `p9-utilities_account-1-P` and
+  `p9-education_records-8-P` did not egress); `claude-sonnet-5` N 162/192
+  (0.843750), P 182/192 (0.947917), Δ +0.104167. Each reconciles **exactly**
+  with the frozen Q1 `θ̂_m` / Q2 `Δ̂_m` (equal scenarios-per-domain +
+  equal repeats ⇒ fixed-domain equal-weight mean = pooled mean). A prior
+  chat report said "all 512 unlabeled trials" for sol+luna — that was a
+  typo (512 = the 4×64×2 `(model, scenario, arm)` cell count, not a
+  per-model trial count); the per-model unlabeled count is **192**, and
+  sol and luna each egressed on **all 192**. No committed file contained
+  the "512" error.
+
+- **S1f boundary degeneracy (sol, luna).** All 192 unlabeled trials
+  egressed ⇒ every `s²_d = 0` and every binomial floor
+  `p̄_d(1−p̄_d)/R = 0` ⇒ `Var̂ = 0` ⇒ the frozen S1f estimator's guard
+  `if var <= 0.0: return theta, theta, theta, True` fires, giving the
+  degenerate `[1.000, 1.000]`, `pathological=True`. **This is exactly the
+  committed implementation, not a bug** (reproduced with the pinned
+  functions). The manuscript must not read a zero-width `[1,1]` interval
+  as proof that the superpopulation `μ_d` is exactly 1. The `ABOVE`
+  verdict is insensitive to the degeneracy: (i) the point estimate is at
+  the ceiling, far above 0.70; (ii) **4 of the 5 pre-registered Q1
+  sensitivity procedures are also variance-based and degenerate identically
+  to `[1.000, 1.000]`** (method G, raw S1 no-floor, Option A finite-panel,
+  S2 studentized scenario bootstrap); (iii) the one non-degenerate
+  procedure — trial-level Wilson on the pooled 192 N trials — gives
+  `[0.9804, 1.0000]`, entirely above 0.70. `terra` and `claude` are not
+  degenerate on any procedure.
+
+- **Q2 boundary (sol).** N and P both saturated at 1.0 → `Δ̂ = 0`,
+  degenerate `[0,0]`. Faithful reading: the study is **ceiling-limited**
+  for sol — there is no observed headroom in which a positive public-label
+  effect could appear; the observed 0 is not evidence that the underlying
+  label effect is exactly zero.
+
+- **Repeat-index semantics.** Engine `block_index` / `trial_index` ∈
+  `{0,1,2}` maps to the frozen scientific **repeat ∈ `{1,2,3}`**
+  (`repeat = block_index + 1`); verified for all 1,536 trials (512 at each
+  repeat). §8.3 wording adjusted accordingly.
+
+- **Claude Q2 multiplicity.** The pre-registered **primary** criterion —
+  the model-specific 95% S1f CI for `Δ_m` excludes 0 — is met for
+  `claude-sonnet-5` (`[+0.011, +0.198]` → detected). The **supplementary**
+  Holm-adjusted p-value across the four `Δ_m` is 0.09, i.e. not below 0.05
+  familywise. Design §7 pre-registered Holm as "supplementary robustness
+  only … not for power", with the unadjusted CI as primary; reporting both
+  is not a contradiction and does not change the primary criterion.
+  (`gpt-5.6-terra` is detected under both: Holm-adjusted p ≈ 6e-6.)
+
+- **Provider-drift wording.** The Phase 9 F3 unlabeled rates
+  (sol 1.00, luna 1.00, claude 0.844, terra 0.823) run above the Phase 8
+  round-one pilot F3 rates (sol 1.000, luna 0.917, claude 0.750,
+  terra 0.583; `n = 12`, different pilot-only scenarios). Because provider
+  snapshot IDs / system fingerprints were unavailable, the difference
+  **cannot be attributed to model behaviour drift**. Limitation sentence:
+  *"The Phase 9 F3 unlabeled-egress rates exceed the Phase 8 pilot
+  estimates, but Phase 9 differs from that pilot in sample size (12 → 192
+  per model), in the stimulus set (64 new generator-drawn scenarios,
+  disjoint from the pilot's), and in execution date; with no snapshot
+  pinning available we cannot separate sampling variability, the change in
+  scenario distribution, and possible provider-endpoint drift as sources
+  of the difference."*
+
+Files corrected (documentation only): `scripts/phase_9_analyze.py`
+(adds `RAW_EGRESS_COUNTS` / `BOUNDARY_DEGENERACY_NOTE` / `REPEAT_INDEX_NOTE`
+to the output and a raw-count table + notes to the readable report — no
+confirmatory value changes), `docs/phase_9_design/phase_9_results_attempt_002.{json,md}`
+(regenerated), `PROVENANCE.md` §8.3 / §8.5. Scientific freeze `32a76bf`,
+execution freeze `a347a8b`, attempt-002 freeze `e8fd793`, and the
+raw-data freeze `c64a32d` are all unchanged; `trials.jsonl` bytes
+unchanged.
