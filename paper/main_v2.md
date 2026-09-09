@@ -81,9 +81,9 @@ models above the band, with Sol and Luna fully saturated. Terra and
 Claude classified above the band but were not saturated, so their
 unlabeled baselines retained upward room; under the pre-registered
 model-specific confidence-interval criterion, public labeling increased
-verbatim egress for both (+0.167 and +0.104), showing that lying inside
-the pre-specified panel band is not a necessary condition for detecting a
-model-specific directional effect. Claude did not remain below 0.05 under
+verbatim egress for both (+0.167 and +0.104), showing that, in this
+setting, lying inside the pre-specified panel band is not a necessary
+condition for detecting a model-specific directional effect. Claude did not remain below 0.05 under
 the supplementary Holm adjustment. These results show that baseline
 saturation is an important measurement constraint for label-effect
 experiments: boundary operating regimes can prevent an effect in the
@@ -184,12 +184,13 @@ fully saturated; Terra and Claude were above the band but not saturated;
 under the pre-registered *primary* model-specific CI rule a positive
 `P − N` effect was detected for Terra and Claude, and Terra also survived
 the supplementary Holm familywise adjustment while Claude did not. (3)
-**An empirical demonstration that floor/ceiling saturation is a
-directional measurement constraint** across the study arc: near a bound,
-an effect in the saturated direction cannot be observed regardless of
-sample size. This is stated narrowly for this fixed decision surface and
-carries no claim about how prevalent saturation is in deployed agent
-tasks. (4) **A pre-registered pilot-search and stopping procedure that
+**An empirical demonstration that floor/ceiling saturation constrains
+directional measurement** across the study arc: as a baseline approaches
+a bound, available headroom in that direction shrinks; once the bound is
+reached, additional movement toward it is structurally unobservable
+regardless of sample size. This is stated narrowly for this fixed
+decision surface and carries no claim about how prevalent saturation is
+in deployed agent tasks. (4) **A pre-registered pilot-search and stopping procedure that
 was followed exactly**: two rounds over six task formulations, a fixed
 acceptance rule, and termination before the planned ≈13,184-trial main
 study when no formulation placed at least three of four models inside the

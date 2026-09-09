@@ -1,6 +1,7 @@
-r"""Build the deterministic public reproducibility release for ``paper-v2.5``.
+r"""Build the deterministic public reproducibility release for ``paper-v2.6``.
 
-``paper-v2.5`` is an evidence-alignment revision over ``paper-v2.4``: the
+``paper-v2.6`` is a three-line wording patch of ``paper-v2.5`` (contribution (3)
+no-longer-overstated, abstract necessity claim scoped to this setting): the
 manuscript now separates the conservative panel-level headroom screen
 from model-specific directional detectability (Terra/Claude were above
 the ``[0.25, 0.70]`` band but not saturated, and a positive P-N effect
@@ -45,7 +46,7 @@ import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "agent-interop-bench-paper-v2.5"
+PREFIX = "agent-interop-bench-paper-v2.6"
 OUT = ROOT / "dist" / f"{PREFIX}.tar.gz"
 
 # git-ignored published raw-data trees, added from disk by allow-list.
@@ -126,6 +127,7 @@ _ARCHIVE_EXCLUDE = {
     "docs/release_v2_3_notes.md",
     "docs/release_v2_4_notes.md",
     "docs/release_v2_5_notes.md",
+    "docs/release_v2_6_notes.md",
 }
 
 
