@@ -14,6 +14,14 @@
 
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 
+% unmarked first-page footnote (no in-text symbol, no footnote number)
+\newcommand{\blfootnote}[1]{%
+  \begingroup
+    \renewcommand\thefootnote{}\footnote{#1}%
+    \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
 \title{Whether a Sensitivity-Label Effect Can Be Measured at an MCP-to-A2A Handoff Depends on the Task Framing: \\ A Pre-Registered Sweep}
 
 % Authors must not appear in the submitted version (tmlr renders an
@@ -22,6 +30,7 @@
 
 \begin{document}
 \maketitle
+\blfootnote{Generative AI tools (ChatGPT and Claude) were used during development for code drafting and debugging, for drafting and editing the manuscript text, and for critique of the experimental, statistical, and reproducibility procedures. The authors reviewed and approved the resulting design decisions, verified the executed experiments and analyses against deterministic audits, and take responsibility for the manuscript and its claims.}
 
 \begin{abstract}
 Measuring a sensitivity label's effect on agent behavior requires a task

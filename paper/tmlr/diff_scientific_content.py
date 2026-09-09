@@ -145,9 +145,10 @@ def main() -> int:
     print(f"  section/paragraph headings   : {len(ph)} (anon adds only {sorted(allowed_new)})")
     print(f"  table data rows              : {len(pr)}")
     print("  abstract text                : byte-identical (whitespace-normalized)")
-    print("  allowed differences          : preamble, front-matter arXiv note,")
-    print("     Public-artifact vs Reproducibility-artifacts paragraph, commit-SHA")
-    print("     relabelling, bib style, and relocation of tab:p7diag + tab:xphase.")
+    print("  allowed differences          : preamble, TMLR first-page LLM-use")
+    print("     disclosure footnote, front-matter arXiv note, Public-artifact vs")
+    print("     Reproducibility-artifacts paragraph, commit-SHA relabelling, bib")
+    print("     style, and relocation of tab:p7diag + tab:xphase.")
     return 0
 
 

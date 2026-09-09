@@ -39,6 +39,19 @@ TITLE = (
     "Handoff Depends on the Task Framing: \\\\ A Pre-Registered Sweep"
 )
 
+# Required TMLR first-page disclosure of generative-AI use. Anonymous;
+# reflects the actual workflow (AI used for code, manuscript drafting, and
+# procedure critique -- not merely copyediting).
+LLM_DISCLOSURE = (
+    "Generative AI tools (ChatGPT and Claude) were used during development "
+    "for code drafting and debugging, for drafting and editing the "
+    "manuscript text, and for critique of the experimental, statistical, "
+    "and reproducibility procedures. The authors reviewed and approved the "
+    "resulting design decisions, verified the executed experiments and "
+    "analyses against deterministic audits, and take responsibility for the "
+    "manuscript and its claims."
+)
+
 PREAMBLE = r"""\documentclass[10pt]{article}
 % Anonymized TMLR submission. Derived from the public manuscript by
 % paper/tmlr/build_tmlr_tex.py -- scientific content is identical; see
@@ -55,6 +68,14 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 
+% unmarked first-page footnote (no in-text symbol, no footnote number)
+\newcommand{\blfootnote}[1]{%
+  \begingroup
+    \renewcommand\thefootnote{}\footnote{#1}%
+    \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
 \title{__TITLE__}
 
 % Authors must not appear in the submitted version (tmlr renders an
@@ -63,7 +84,8 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 
 \begin{document}
 \maketitle
-""".replace("__TITLE__", TITLE)
+\blfootnote{__LLM_DISCLOSURE__}
+""".replace("__TITLE__", TITLE).replace("__LLM_DISCLOSURE__", LLM_DISCLOSURE)
 
 ANON_ARTIFACT_PARA = r"""\paragraph{Reproducibility artifacts.}
 The code, the frozen harness, all byte-pinned raw traces, the Phase~9

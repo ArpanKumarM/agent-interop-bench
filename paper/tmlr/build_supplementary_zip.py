@@ -79,6 +79,7 @@ _FILES = [
     "paper/tmlr/build_pdf_tmlr.sh",
     "paper/tmlr/build_tmlr_tex.py",
     "paper/tmlr/diff_scientific_content.py",
+    "paper/tmlr/verify_anon_equivalence.py",
     "paper/tmlr/TRANSFORM_LOG.txt",
 ]
 # top-level docs shipped only as scrubbed copies, under new names
@@ -127,26 +128,27 @@ _SUBS = [
     (re.compile(r"arXiv:2609\.01693(?:v\d+)?"), "an earlier version by the same authors"),
     (re.compile(r"\b2609\.01693\b"), "[prior-version-id]"),
 ]
-# git commit SHAs (40 hex) -> placeholder. Applied to human-facing files
-# (manuscript, docs, scripts) so the redaction is consistent between the
-# scrubbed `scripts/phase_9_analyze.py` and the frozen result JSON it
-# regenerates. NOT applied inside `reports/` -- those frozen run artifacts
-# are shipped byte-exact for reproduction, and a `source_commit_sha`
-# buried in a fingerprint JSON is a weaker vector than one in the PDF.
-_SHA_SUB = (re.compile(r"\b[0-9a-f]{40}\b"), "[commit]")
-# the specific GitHub-searchable freeze / execution commit SHAs -- redacted
-# everywhere, including inside reports/ run artifacts.
+# neutral marker for redacted repository-identifying git identifiers.
+_MARK = "[redacted-for-double-blind]"
+# blanket 40-hex git-commit shape -> _MARK. Applied ONLY to human-facing
+# files OUTSIDE reports/ (manuscript, docs, scripts). NOT applied inside
+# reports/ -- a random 40-hex run id there is not a locator, and a
+# blanket sub could touch analysis-adjacent fields.
+_SHA_SUB = (re.compile(r"\b[0-9a-f]{40}\b"), _MARK)
+# the specific public / GitHub-searchable freeze / execution commit SHAs.
+# These CAN act as direct locators to the (now public) repository, so they
+# are redacted EVERYWHERE -- including inside reports/ .jsonl trial records
+# and .json fingerprints -- as full strings and unique 7/12-char prefixes.
 _KNOWN_COMMITS = (
-    "32a76bfa19c3240bd87011fe9a7e41b3ced1a511",
-    "a347a8b3c2b29b77586a113fdabf8bd310e92e85",
-    "e8fd793940458a88f5fd122a7065737bf4a109c5",
-    "c64a32d73e9d4b52fb03d4b6a91c8d3fa05f3bfe",
-    "ffaae077e791148bb05a039749d835d308ce85a1",
-    "74ba1cdd545ce9f32850bd4ba107e45af952dbb3",
-    "d06a88b0eebd6f4452ab09ccbc6fe5c2a4907631",
+    "32a76bfa19c3240bd87011fe9a7e41b3ced1a511",  # scientific-design freeze
+    "a347a8b3c2b29b77586a113fdabf8bd310e92e85",  # execution-implementation freeze
+    "e8fd793940458a88f5fd122a7065737bf4a109c5",  # attempt-002 freeze / exec source
+    "c64a32d73e9d4b52fb03d4b6a91c8d3fa05f3bfe",  # raw-data freeze
+    "ffaae077e791148bb05a039749d835d308ce85a1",  # pre-manuscript audit
+    "74ba1cdd545ce9f32850bd4ba107e45af952dbb3",  # Phase 8 round-one exec source
+    "d06a88b0eebd6f4452ab09ccbc6fe5c2a4907631",  # Phase 8 round-two exec source
+    "89c0542",                                     # frozen-analysis commit (short)
 )
-_TEXT_EXT = {".md", ".tex", ".txt", ".py", ".toml", ".cfg", ".sh", ".bib", ".yaml", ".yml",
-             ".json", ".cff", ".bst", ".sty"}
 _TEXT_EXT = {".md", ".tex", ".txt", ".py", ".toml", ".cfg", ".sh", ".bib", ".yaml", ".yml",
              ".json", ".cff", ".bst", ".sty"}
 
@@ -161,29 +163,44 @@ _IDENTITY_RX = [
     ("github-repo-url", re.compile(rb"github\.com/[A-Za-z0-9_-]+/agent-interop-bench")),
     ("home-path", re.compile(rb"/(?:Users|home)/[a-z][A-Za-z0-9_.-]{2,}/")),
     ("release-tag-url", re.compile(rb"releases/tag/paper-v")),
+    *[("known-commit-sha", re.compile(re.escape(c).encode()))
+      for c in _KNOWN_COMMITS if len(c) >= 40],
+    *[("known-commit-prefix", re.compile(re.escape(c[:12]).encode()))
+      for c in _KNOWN_COMMITS if len(c) >= 40],
 ]
 _SCAN_ALLOW = (b"FAKE", b"REDACTED", b"shouldneverappear", b"abcdefghij1234567890")
 
 
+def _redact_known_commits(text: str, *, prefixes: bool) -> str:
+    for c in _KNOWN_COMMITS:
+        text = text.replace(c, _MARK)
+        if prefixes and len(c) >= 40:
+            text = text.replace(c[:12], _MARK).replace(c[:7], _MARK)
+    return text
+
+
 def _scrub(name: str, data: bytes) -> bytes:
-    if Path(name).suffix.lower() not in _TEXT_EXT:
+    ext = Path(name).suffix.lower()
+    is_text = ext in _TEXT_EXT
+    is_jsonl = ext == ".jsonl"
+    if not (is_text or is_jsonl):
         return data
     try:
         text = data.decode()
     except UnicodeDecodeError:
         return data
-    for rx, repl in _SUBS:
-        text = rx.sub(repl, text)
-    # `reports/` frozen run artifacts are shipped byte-exact so their
-    # SHA-256s self-verify; a `source_commit_sha` in a provenance field
-    # there (build metadata, not a name/URL) is a documented residual.
+    if is_jsonl:
+        # trial records: touch ONLY the repository-locating commit SHAs
+        # (full strings), nothing else -- no name subs, no prefix subs, no
+        # blanket 40-hex. Every model output / stimulus / action / score /
+        # trial id / condition / analysis value is preserved byte-for-byte.
+        return _redact_known_commits(text, prefixes=False).encode()
+    # other text: full known-commit redaction (incl. 7/12-char prefixes in
+    # prose) so scripts and the result JSON they regenerate stay consistent.
+    text = _redact_known_commits(text, prefixes=True)
     if not name.startswith("reports/"):
-        for c in _KNOWN_COMMITS:
-            text = (
-                text.replace(c, "[commit]")
-                .replace(c[:12], "[commit]")
-                .replace(c[:7], "[commit]")
-            )
+        for rx, repl in _SUBS:
+            text = rx.sub(repl, text)
         text = _SHA_SUB[0].sub(_SHA_SUB[1], text)
     return text.encode()
 
@@ -245,41 +262,60 @@ inference**.
   document how it was derived from the (withheld) camera-ready source and
   prove the scientific content is unchanged.
 - `REPRODUCE.md` -- step-by-step offline reproduction (sections A-J).
-- `PROVENANCE_anon.md` -- full freeze/provenance record with git commit
-  SHAs redacted to `[commit]` (content SHA-256 hashes are kept).
+- `PROVENANCE_anon.md` -- full freeze/provenance record with
+  repository-identifying git commit identifiers redacted to
+  `[redacted-for-double-blind]` (content SHA-256 hashes are kept).
 - `app/`, `scripts/`, `tests/`, `mock_servers/`, `policies/`,
   `benchmarks/composed/`, `pyproject.toml`, `uv.lock` -- the harness and
   the offline verifiers / analysis.
-- `docs/phase_*` -- frozen design / result / manifest docs.
-- `reports/` -- the published Phase 6/7/8/9 raw-data trees, the Phase 9
-  raw-data-freeze archive, and the aborted attempt-001 archive
-  (operational provenance only: 9 rejected quota requests, 0 successful
-  responses, 0 tokens, 0 scientific observations).
+- `docs/phase_*` -- frozen design / result docs (self-hashed provenance
+  manifests are omitted; raw-data integrity is checked via `shasum` and
+  the in-package `MANIFEST.sha256`).
+- `reports/` -- double-blind derivative copies of the published
+  Phase 6/7/8/9 raw-data trees, the Phase 9 raw-data-freeze archive, and
+  the aborted attempt-001 archive (operational provenance only: 9
+  rejected quota requests, 0 successful responses, 0 tokens, 0 scientific
+  observations).
 
 ## Redacted for double-blind review
 Author name, email, GitHub username, the code repository URL, artifact
-release tags, the earlier-version arXiv id, and git commit SHAs in the
-manuscript / docs / scripts. The identifying camera-ready manuscript,
+release tags, the earlier-version arXiv id, and every
+repository-identifying git commit SHA (full strings and unique 7/12-char
+prefixes) -- in the manuscript, the docs, the scripts, **and inside the
+raw trace files**. The identifying camera-ready manuscript,
 `CITATION.cff`, `LICENSE`, and `README.md` are not included. None of this
 affects reproduction.
 
-Residual: the frozen `reports/` run artifacts are shipped **byte-exact**
-so every `trials.jsonl` SHA-256 self-verifies; a provenance field
-`execution_fingerprint.source_commit_sha` there still holds one build
-commit hash (`e8fd793…`). It is machine metadata -- not a name, URL, or
-link -- and redacting it would break the raw-data hash chain.
+The raw trace files in this anonymous review package are double-blind
+derivative copies of the canonical frozen artifacts. Repository-identifying
+provenance fields have been redacted. No model output, stimulus, action,
+score, trial identifier, experimental condition, or analysis-relevant
+value was modified. Canonical byte-identical artifacts and original
+provenance hashes will be provided in the non-anonymous artifact release.
+
+`verify_anon_equivalence.py` re-derives the frozen Phase 9 analysis from
+these sanitized traces (calling the pinned analysis functions directly)
+and checks every analysis-relevant value -- N/P counts, theta, Delta,
+95% CIs, Q1 classifications, panel verdict, Q2 detected/not-detected,
+Holm p, and every pre-registered sensitivity result -- against the
+canonical analysis. The only per-record difference is the redacted
+provenance field `provenance.execution_fingerprint.source_commit_sha`.
+
+The canonical byte-for-byte freeze verifiers
+(`scripts/verify_phase_9_freeze.py`, `scripts/phase_9_analyze.py`'s
+frozen-data gate, `scripts/verify_phase_8_round2_from_raw.py`'s SHA-256
+step) key on the *canonical* raw bytes; they are expected to report a
+hash mismatch on these double-blind derivative copies and are superseded
+here by `verify_anon_equivalence.py` and this package's `MANIFEST.sha256`.
 
 ## Quick start
 ```
 uv sync --frozen
-uv run python scripts/verify_phase_9_freeze.py
-uv run python scripts/phase_9_build_freeze.py --check
-uv run python scripts/phase_9_execution_addendum.py --check
-uv run python scripts/phase_9_raw_data_freeze.py --check
-uv run python scripts/phase_9_analyze.py          # reproduces the frozen result byte-for-byte
-uv run python scripts/verify_phase_8_round2_from_raw.py
-bash paper/tmlr/build_pdf_tmlr.sh
+uv run python paper/tmlr/verify_anon_equivalence.py   # -> ANON_RAW_SCIENTIFIC_EQUIVALENCE: PASS
+bash paper/tmlr/build_pdf_tmlr.sh                      # rebuilds this anonymized PDF
 ```
+(`diff_scientific_content.py` needs the withheld public source; it is run
+in the non-anonymous release.)
 """
 
 
