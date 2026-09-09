@@ -14,12 +14,13 @@ Arpan Kumar Mahapatra · `arpan.arpan.mohapatra@gmail.com`
 > left interval-ambiguous — F3 — to 1,536 trials (64 scenarios × 3 repeats
 > × unlabeled/public arms × four models; 1,536 completed, no attrition).
 > At that resolution F3 fails the headroom rule decisively: every model's
-> unlabeled-arm egress rate sits entirely above the band, so the apparent
-> ambiguity was a ceiling, not a hidden measurable middle. For the two
-> models that retained headroom, the public-sharing label raised verbatim
-> egress (paired risk difference +0.167 and +0.104, 95% CIs excluding
-> zero); the other two were saturated on the unlabeled arm and leave no
-> room to observe a label effect. Phase 9 is a follow-up resolution study,
+> unlabeled-arm egress rate is above the band (Sol and Luna fully
+> saturated), so the apparent ambiguity resolved to a high-egress regime,
+> not a hidden measurable one. For the two models that retained upward
+> headroom, the public-sharing label raised verbatim egress (paired risk
+> difference +0.167 and +0.104, 95% CIs excluding zero); the other two
+> were saturated on the unlabeled arm, leaving no upward headroom in which
+> a positive effect could appear. Phase 9 is a follow-up resolution study,
 > not a reopening of the frozen Phase 8 sweep. **Correction to an earlier draft of this note:** it previously
 > said v1's Phase 6/7 results are "retained in full." That was not
 > accurate at the time it was written. It is now: v1's per-model
@@ -57,58 +58,55 @@ Arpan Kumar Mahapatra · `arpan.arpan.mohapatra@gmail.com`
 ## Abstract
 
 Measuring a sensitivity label's effect on agent behavior requires a task
-framing that gives the behavior room to move. We report a four-study,
-pre-registered MCP-to-A2A handoff investigation, scored by an
-exact-substring, judge-free detector. A two-arm study (640 trials) found a large
-confidential-vs-public contrast but could not attribute it to either
-label. Adding an unlabeled baseline (480 trials) resolved that ambiguity
-but drove three of four models to a floor on both the confidential and
-unlabeled arms: the confidentiality effect is unresolved by a floor, not
-a genuine null. A two-round, six-framing task-wording sweep followed,
-with a stopping rule fixed in advance. Round one (576 trials) drove two
-of four models to a near-complete ceiling; round two (576 trials),
-designed to give withholding a structural reason rather than a softer
-tone, drove three of four models back to a floor. No framing met the acceptance rule
-(an unlabeled-arm rate inside [0.25, 0.70] for at least three of four
-models on one framing). For five of the six framings this holds under any
-reasonable reading of the n = 12 pilot cells; for the sixth (F3), three
-of four models' 95% intervals overlapped the band, so at pilot resolution
-its classification could not be distinguished between rejection and
-acceptance. The stopping rule fired after round two: the ~13,200-trial
-main study was never run. A separately pre-registered resolution study
-(Phase 9) then took F3 to 1,536 trials — 64 scenarios, three repeats,
-unlabeled and public arms, four models, all completed with no attrition —
-and settled it: F3 fails the headroom rule for every model, its
-unlabeled-arm egress rate sitting entirely above the band, so the
-pilot-scale ambiguity was a ceiling rather than a hidden measurable
-regime. Where headroom remained (two models), the public-sharing label
-raised verbatim egress by a paired risk difference of +0.167 and +0.104
-(95% CIs excluding zero); the two ceiling-saturated models leave no
-observable room for a label effect. Whether a label's effect is
-measurable here therefore depends on the task framing, and no framing yet
-tested leaves the whole four-model panel in a regime where the contrast
-can be read. The
-pilots also carried a public-sharing-label arm outside the frozen
-analysis plan; analyzed post hoc, it contains one within-study
-measurement — at the single framing that left a model's baseline in
-range, the public label moved verbatim egress by +0.50 (one model,
-n = 12, exploratory). Calibration reliability was itself
+framing that leaves the behavior directional headroom to move. We report
+a four-study, pre-registered MCP-to-A2A handoff investigation, scored by
+an exact-substring, judge-free detector. A two-arm study (640 trials)
+found the confidential and public labels far apart on verbatim egress
+but could not attribute the gap to either label. Adding an unlabeled baseline (480 trials) resolved that
+ambiguity but drove three of four models to a floor on both the
+confidential and unlabeled arms: the confidentiality effect is unresolved
+by a floor, not a genuine null. A two-round, six-framing task-wording
+sweep followed, with a stopping rule fixed in advance. Round one (576
+trials) drove two of four models to a near-complete ceiling; round two
+(576 trials), designed to give withholding a structural reason rather
+than a softer tone, drove three of four models back to a floor. No
+framing met the acceptance rule (an unlabeled-arm rate inside
+[0.25, 0.70] for at least three of four models on one framing). Five
+framings were clearly inconsistent with the panel headroom criterion at
+pilot resolution; F3 alone remained interval-wise ambiguous at n = 12,
+with three of four models' 95% intervals overlapping the band. The
+stopping rule fired after round two: the ~13,200-trial main study was
+never run. A separately pre-registered resolution study (Phase 9) then
+took F3 to 1,536 trials — 64 scenarios, three repeats, unlabeled and
+public arms, four models, all completed with no attrition — and resolved
+it: F3's unlabeled-arm egress rate is above the pre-registered headroom
+band for all four models (Sol and Luna fully saturated at 1.000), so the
+panel verdict is a decisive failure and the pilot ambiguity resolved to a
+high-egress regime, not a hidden measurable one. Where upward headroom
+remained — Terra and Claude — the public-sharing label raised verbatim
+egress (paired risk difference +0.167 and +0.104, 95% CIs excluding
+zero); for the two saturated models no additional positive effect could
+be observed. Task framing sets the baseline operating regime and
+therefore the directional headroom available for detecting a
+label-induced change: near a floor further decreases are hard to observe,
+near a ceiling further increases are, and intermediate baselines give
+headroom in both directions. Calibration reliability was itself
 framing-dependent, and no model's in-band behavior in one round persisted
 into the next. At one framing, an explicit "share everything" instruction
 produced far lower compliance than the same model's own unlabeled
 baseline — 11 of 12 trials relayed unprompted, 1 of 12 complied with the
 explicit instruction — an unexplained inversion, reported with no
-mechanism proposed. Findings
-are scoped to one host policy, one decision surface, and six framings
-authored by a single researcher — not the space of possible framings.
-This is not evidence that sensitivity labels are ineffective in agent
-systems generally, that task framing outweighs labels, or that a public
-label always increases leakage; it is a report that whether a label
-contrast can be measured at this handoff is framing-conditioned, that a
-pre-registered six-framing sweep found none that put the whole panel in a
-measurable regime, and that the one framing taken to higher resolution
-(F3, Phase 9) failed the same rule decisively while showing a
-public-label effect for the two models that still had room to move.
+mechanism proposed. Findings are scoped to one controlled handoff, one
+host policy, one decision surface, and six framings authored by a single
+researcher — not the space of possible agent tasks. This is not evidence
+that sensitivity labels are ineffective in agent systems generally, that
+task framing outweighs labels, or that a public label always increases
+leakage; it is a report that whether a label contrast can be measured at
+this handoff is framing-conditioned, that a pre-registered six-framing
+sweep found none that placed the whole panel inside the headroom band,
+and that the one interval-ambiguous framing (F3, Phase 9) resolved above
+the band for all four models while showing a positive public-label effect
+for the two models that retained upward headroom.
 
 ## 1. Introduction
 
@@ -128,22 +126,23 @@ here depends on the task framing.** A pre-registered two-round sweep of
 six task framings did not find one that met its acceptance criterion —
 an unlabeled-arm rate inside `[0.25, 0.70]` for at least three of four
 models on the same framing. On point estimates no framing placed more
-than one model in that band. At the pilot's n = 12 per cell, a Wilson
-95% interval leaves five of the six framings still clearly short; the
-sixth, F3, had three of four models' intervals overlapping the band, so
-at that sample size its classification could not be distinguished between
-rejection and acceptance (§5.3). A stopping rule fixed before either
-pilot ran ended the search after the second round rather than permitting
-a third, fourth, or fifth attempt — so the sweep's negative result is
-what a two-round pilot could establish, not what a powered study
-concluded. A separately pre-registered resolution study (Phase 9, §5.4)
-then took F3 alone to 192 trials per model and settled it: the
-unlabeled-arm egress rate is entirely above the `[0.25, 0.70]` band for
-all four models, so F3 fails the headroom rule rather than passing it —
-the pilot-scale ambiguity was a ceiling, not a usable middle. Against the
-two models that retained headroom at F3, the public label raised verbatim
-egress (paired risk difference +0.167 and +0.104, 95% CIs excluding
-zero).
+than one model in that band. At the pilot's n = 12 per cell,
+five framings were clearly inconsistent with the panel headroom
+criterion; F3 alone remained interval-wise ambiguous, with three of four
+models' 95% Wilson intervals overlapping the band, so at that sample size
+its classification could not be distinguished between rejection and
+acceptance (§5.3). A stopping rule fixed before either pilot ran ended
+the search after the second round rather than permitting a third,
+fourth, or fifth attempt — so the sweep's negative result is what a
+two-round pilot could establish, not what a powered study concluded. A
+separately pre-registered resolution study (Phase 9, §5.4) then took F3
+alone to 192 trials per model and resolved it: the unlabeled-arm egress
+rate is above the `[0.25, 0.70]` band for all four models (Sol and Luna
+fully saturated), so F3 fails the headroom rule rather than passing it —
+the pilot ambiguity resolved to a high-egress regime, not a usable
+middle. Against the two models that retained upward headroom at F3, the
+public label raised verbatim egress (paired risk difference +0.167 and
++0.104, 95% CIs excluding zero).
 
 **The arc.** A two-arm study (Phase 6, confidential vs. public labels)
 found a large label contrast but could not say which of the two active
@@ -180,10 +179,11 @@ the arc lacks: at F4, the one framing that left a model's baseline in
 range, adding the public label moved `claude-sonnet-5`'s rate by +0.500
 (n = 12, exploratory). The **Phase 9 resolution study** then closes the
 arc on F3 specifically: at 192 trials per model the unlabeled baseline is
-at the ceiling for the whole panel, and a within-study public-label
-effect is measurable only for the two models not yet saturated there —
-`gpt-5.6-terra` +0.167 and `claude-sonnet-5` +0.104, both 95% CIs
-excluding zero (§5.4).
+above the headroom band for all four models (`gpt-5.6-sol` and
+`gpt-5.6-luna` fully saturated), and a within-study positive public-label
+effect is detectable only for the two models that retained upward
+headroom — `gpt-5.6-terra` +0.167 and `claude-sonnet-5` +0.104, both
+95% CIs excluding zero (§5.4).
 
 **Contributions.** (1) A validated measurement instrument: a
 suppress/permit calibration check that separates in the intended
@@ -205,16 +205,19 @@ four models simultaneously, and whether a label effect is measurable at
 all is itself framing-dependent. A separately pre-registered resolution
 study (Phase 9) took the one framing the pilot left unresolved (F3) to
 192 trials per model: it fails the headroom rule for all four models —
-the unlabeled baseline is at the ceiling, not in a usable middle — while
-the public-sharing label raises verbatim egress for the two models that
-retain headroom there (paired risk difference +0.167 and +0.104, 95% CIs
-excluding zero). (4) A methodological result carried by the arc as a
-whole: a safety intervention can be unmeasurable because the baseline is
-near 0 (Phase 7's floor) or near 1 (Phase 8's ceiling, and F3's ceiling
-at Phase 9 resolution), and adding samples does not fix saturation —
-Phase 9's more-than-tenfold increase in n left F3's baseline at the
-ceiling for every model and revealed another high-egress regime rather
-than a hidden middle. The pre-registration process also surfaced two
+the unlabeled baseline is above the band, with two models fully
+saturated — while the public-sharing label raises verbatim egress for
+the two models that retain upward headroom (paired risk difference
++0.167 and +0.104, 95% CIs excluding zero). (4) A methodological result
+carried by the arc as a whole: the direction in which a label effect
+could be detected depends on where the framing places the baseline —
+near a floor, further decreases are hard to observe; near a ceiling,
+further increases are; an intermediate baseline gives headroom both
+ways. Across the arc no framing placed the whole panel at an intermediate
+baseline, and adding samples does not create headroom where the baseline
+is saturated: Phase 9's more-than-tenfold increase in n left F3's
+baseline above the band for every model (two fully saturated) and
+resolved it to another high-egress regime rather than a hidden middle. The pre-registration process also surfaced two
 incidental findings: an instrument-sensitivity check whose reliability
 turned out to be framing-dependent rather than a fixed model property,
 and a single unexplained inversion — an explicit "share everything"
@@ -679,9 +682,9 @@ override the CI decision).
 
 | model | P egress / 192 | `Δ̂_m` (raw P − N) | 95% CI | detected (primary) | Holm-adj `p` (suppl.) |
 |---|---|---|---|---|---|
-| gpt-5.6-sol | 192/192 | +0.000 | [+0.000, +0.000] | no — ceiling-limited | 1.0 |
+| gpt-5.6-sol | 192/192 | +0.000 | [+0.000, +0.000] | no (both arms saturated) | 1.0 |
 | gpt-5.6-terra | 190/192 | +0.167 | [+0.105, +0.228] | yes | 6 × 10⁻⁶ |
-| gpt-5.6-luna | 190/192 | −0.010 | [−0.026, +0.005] | no — ceiling-limited | 0.36 |
+| gpt-5.6-luna | 190/192 | −0.010 | [−0.026, +0.005] | no (N saturated) | 0.36 |
 | claude-sonnet-5 | 182/192 | +0.104 | [+0.011, +0.198] | yes | 0.09 |
 
 `gpt-5.6-terra`'s public-label effect is detected under both the primary
@@ -692,23 +695,33 @@ under the pre-registered primary criterion — its 95% CI for `Δ_m`,
 `p` across the four contrasts was 0.09, i.e. it did not remain below 0.05
 after familywise adjustment; Holm was pre-registered as a robustness
 check, not the primary rule, and reporting both is not a contradiction.
-For `gpt-5.6-sol` and `gpt-5.6-luna` the outcome is *not* "the label had
-no effect": both are ceiling-limited in the unlabeled condition (192/192
-and 192/192), leaving little or no observable room for a positive
-public-label effect. `gpt-5.6-sol`'s `Δ̂ = 0` and `gpt-5.6-luna`'s
-`Δ̂ = −0.010` (two public trials that did not egress) are descriptive,
-not evidence that the underlying label effect is zero or negative. The
-atanh-scale Q2 sensitivity analysis gives the same detected /
-not-detected pattern.
+For `gpt-5.6-sol` and `gpt-5.6-luna` the outcome is *not* a demonstration
+that the label has no effect. `gpt-5.6-sol` egressed on all 192 unlabeled
+and all 192 public trials, so both arms are saturated and there is no
+upward headroom in which a positive `P − N` increase could be observed.
+`gpt-5.6-luna`'s unlabeled arm is saturated (192/192) and its public arm
+is 190/192, so the positive direction is ceiling-limited and no effect is
+detected. The claim for both is an inability to detect an additional
+positive public-label increase, not the absence of every label effect;
+`gpt-5.6-sol`'s `Δ̂ = 0` and `gpt-5.6-luna`'s `Δ̂ = −0.010` (two public
+trials that did not egress) are descriptive, not evidence that the
+underlying label effect is zero or negative. The atanh-scale Q2
+sensitivity analysis gives the same detected / not-detected pattern.
 
-**The operating-regime reading.** Table 2 places every model's
-unlabeled baseline in each study on one scale — floor (near 0),
-measurable middle (inside the band), or ceiling (near 1) — and a label
-contrast is only identifiable in the middle. F3 at Phase 9 resolution
-puts `gpt-5.6-sol` and `gpt-5.6-luna` at the ceiling and `gpt-5.6-terra`
-and `claude-sonnet-5` just above the band; none of the four is in the
-middle. The pilot-scale interval ambiguity at F3 was a lack of
-resolution, not a hidden usable regime.
+**The operating-regime reading.** Task framing sets the baseline
+operating regime and therefore the *directional headroom* available for
+detecting a label-induced change. Near a floor, further decreases are
+difficult or impossible to observe; near a ceiling, further increases
+are; an intermediate baseline provides headroom in both directions.
+Because the public-label effects of interest here are positive `P − N`
+differences, a baseline near the ceiling is the binding constraint: it
+prevents detecting a further positive increase. Table 2 places every
+model's unlabeled baseline in each study on this scale. F3 at Phase 9
+resolution puts all four models above the headroom band — `gpt-5.6-sol`
+and `gpt-5.6-luna` fully saturated, `gpt-5.6-terra` and `claude-sonnet-5`
+above the band but not saturated; none is at an intermediate baseline.
+The pilot-scale interval ambiguity at F3 was a lack of resolution, not a
+hidden usable regime.
 
 **Table 2. Unlabeled-baseline operating regime, by model and study.**
 `N` is the pooled unlabeled-arm relay/egress rate; the Phase 8 column is
@@ -716,9 +729,9 @@ the range across F1–F6 (Table 1).
 
 | model | Phase 7 `N` | Phase 8 `N` (F1–F6 range) | Phase 9 F3 `N` | Phase 9 F3 regime |
 |---|---|---|---|---|
-| gpt-5.6-sol | 0.000 | 0.000–1.000 | 1.000 | ceiling |
+| gpt-5.6-sol | 0.000 | 0.000–1.000 | 1.000 | saturated |
 | gpt-5.6-terra | 0.000 | 0.000–0.917 | 0.823 | above band |
-| gpt-5.6-luna | 0.000 | 0.000–1.000 | 1.000 | ceiling |
+| gpt-5.6-luna | 0.000 | 0.000–1.000 | 1.000 | saturated |
 | claude-sonnet-5 | 0.125 | 0.417–1.000 | 0.844 | above band |
 
 ## 6. Secondary Findings
@@ -846,44 +859,51 @@ This is one model, three framings, n = 12, reported as exploratory.
 
 ## 7. Discussion
 
-The claim this paper supports is deliberately narrow: **whether a
-sensitivity label's effect on this behavior can be measured at an
-MCP-to-A2A handoff depends on the task framing, because the framing sets
-the unlabeled operating regime — floor, measurable middle, or ceiling —
-and the label contrast is only identifiable in the middle.** The
+The claim this paper supports is deliberately narrow: **in this
+controlled handoff, task framing strongly changes the baseline
+disclosure regime and therefore the directional headroom available for
+estimating a sensitivity label's effect — near a floor a further
+decrease is hard to observe, near a ceiling a further increase is, and
+only an intermediate baseline gives headroom both ways.** The
 pre-registered headroom rule (§5.3) required a model's `unlabeled`-arm
 rate inside `[0.25, 0.70]` for at least three of four models on the same
-framing. On point estimates no framing reached two; under a Wilson 95%
-interval at n = 12, five of six framings are clearly short, and the
-sixth (F3) had three of four models' intervals overlapping the band —
-three of four being the threshold itself. The pre-registered two-round
-sweep therefore rejected every framing, and F3's rejection was, at
-n = 12, not distinguishable from an acceptance. A separately
-pre-registered resolution study (Phase 9, §5.4) took F3 to 192 trials
-per model and settled it: the unlabeled baseline is entirely above the
-band for all four models, so the pilot-scale ambiguity was a ceiling,
-not a hidden usable regime. Where a model still had headroom at F3, the
-public-sharing label raised verbatim egress (`gpt-5.6-terra` +0.167,
-`claude-sonnet-5` +0.104, 95% CIs excluding zero); the two
-ceiling-saturated models leave no observable room for the contrast.
+framing. On point estimates no framing reached two; at n = 12 five
+framings were clearly inconsistent with the panel headroom criterion,
+and F3 alone remained interval-wise ambiguous, with three of four
+models' 95% intervals overlapping the band — three of four being the
+threshold itself. The pre-registered two-round sweep therefore rejected
+every framing, and F3's rejection was, at n = 12, not distinguishable
+from an acceptance. A separately pre-registered resolution study
+(Phase 9, §5.4) took F3 to 192 trials per model and resolved it: the
+unlabeled baseline is above the band for all four models (`gpt-5.6-sol`
+and `gpt-5.6-luna` fully saturated), so the pilot ambiguity resolved to
+a high-egress regime, not a hidden measurable one. Where upward headroom
+remained, the public-sharing label raised verbatim egress
+(`gpt-5.6-terra` +0.167, `claude-sonnet-5` +0.104, 95% CIs excluding
+zero); for the two saturated models no additional positive effect could
+be observed.
 
-**A methodological reading.** Across the arc a safety intervention has
-been unmeasurable for the same structural reason at both ends of the
-scale: near a floor (Phase 7, and F4–F6 in Phase 8) and near a ceiling
-(F1–F3 in Phase 8, and F3 again at Phase 9 resolution). Adding samples
-does not fix saturation — Phase 9 increased the per-model sample more
-than tenfold over the pilot and F3's baseline stayed at the ceiling for
-every model; the extra resolution turned an apparent interval ambiguity
-into a decisive rejection and revealed a second high-egress regime rather
-than a hidden middle. The practical consequence is that a label or
-policy intervention should be evaluated only against a baseline that is
-demonstrably off both bounds.
+**A methodological reading.** Across the arc a label effect has been
+undetectable in one or both directions for the same structural reason:
+the baseline sat too close to a bound. Near a floor (Phase 7, and F4–F6
+in Phase 8) a further decrease cannot be seen; near a ceiling (F1–F3 in
+Phase 8, and F3 again at Phase 9 resolution) a further increase cannot.
+Adding samples does not create headroom where the baseline is saturated
+— Phase 9 increased the per-model sample more than tenfold over the
+pilot and F3's baseline stayed above the band for every model (two fully
+saturated); the extra resolution turned an apparent interval ambiguity
+into a decisive rejection and revealed a second high-egress regime
+rather than a hidden middle. The practical consequence is that a label
+or policy intervention should be evaluated only against a baseline that
+has headroom in the direction the effect is expected to move.
 
 Four things this does not claim. First, it does not claim task framing
 generally outweighs labels: the arc measures *whether a label contrast
 is readable*, not a contest between the two. Second, it does not claim
-the label has no effect where it is unmeasured: for the models on a
-floor or a ceiling the effect is unobserved, not observed-and-absent.
+the label has no effect where the direction of interest is
+unobservable: for a model whose baseline sits at a floor or a ceiling,
+an effect in the saturated direction is unobserved, not
+observed-and-absent.
 Third, it does not claim that six framings — a small, hand-authored
 sample — represent the space of possible framings; F3 is now resolved,
 but F1–F2 and F4–F6 remain point-estimate calls, and other framings are
@@ -905,7 +925,12 @@ numerically equated. *(ii)* Single-decision trials: no multi-turn
 negotiation, no opportunity for the model to ask a clarifying question
 before deciding. *(iii)* Six task framings, authored by one researcher,
 evaluated in two rounds of three; not a systematic or random sample of
-possible framings. *(iv)* Small per-cell sample size in the pilots (12
+possible framings. "Framing" here spans surface wording and
+task-structural cues — the recipient's identity, whether the literal
+request needs the record's specifics, and the offered action set — so
+the manipulation is not a pure change of tone; this is deliberate, since
+the search was for any wording that yields an intermediate unlabeled
+baseline, not for an isolated tone effect. *(iv)* Small per-cell sample size in the pilots (12
 trials per model per arm per framing). At n = 12 the in-band/out
 classification is not resolvable for every cell: a Wilson 95% interval
 on a 6/12 rate spans the whole acceptance band, and at F3 three of four

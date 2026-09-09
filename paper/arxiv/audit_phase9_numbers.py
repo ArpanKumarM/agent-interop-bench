@@ -308,6 +308,21 @@ _STALE = [
         r"Phase 9[^.]{0,40}(?:never run|not run|never executed|not executed|was not run)",
         "Phase-9-not-run",
     ),
+    # -- claim-strength traps (overstated / over-general wording) --
+    (r"\bdominates\b", "overstated: 'dominates'"),
+    (r"\bswamps\b", "overstated: 'swamps'"),
+    (r"only identifiable in the middle", "over-general: 'only identifiable in the middle'"),
+    (r"contrast is only identifiable", "over-general: 'contrast is only identifiable'"),
+    (r"at the ceiling for every model", "imprecise: not all models are at the ceiling"),
+    (r"at the ceiling for the whole panel", "imprecise: not all models are at the ceiling"),
+    (
+        r"(?<!not )(?<!not\" )the label had no effect(?!\")",
+        "overstated: bare 'the label had no effect' assertion",
+    ),
+    (
+        r"(?:leave|leaving) (?:little or )?no observable room for (?:a label effect|the contrast)",
+        "over-general: 'no observable room for a label effect' (should be directional)",
+    ),
 ]
 
 
@@ -323,12 +338,40 @@ def audit_no_stale_language() -> None:
             )
 
 
+# --------------------------------------------------------------------------- #
+# 6. Directional-headroom framing present; exploratory F4 +0.50 kept out of
+#    the abstract (it belongs in Results/Discussion with its label).
+# --------------------------------------------------------------------------- #
+def audit_directional_headroom_and_abstract_scope() -> None:
+    for doc_name, doc in DOCS:
+        check(
+            "directional headroom" in doc,
+            f"{doc_name}: the directional-headroom framing must be stated "
+            "(floor blocks decreases, ceiling blocks increases, middle gives both)",
+        )
+
+    # abstract = text between "Abstract" / \begin{abstract} and the first
+    # section heading.
+    md_abs = MAIN_V2.split("## 1. Introduction", 1)[0]
+    md_abs = md_abs.split("## Abstract", 1)[-1]
+    tex_abs = MAIN_V2_TEX.split(r"\end{abstract}", 1)[0]
+    tex_abs = tex_abs.split(r"\begin{abstract}", 1)[-1]
+    for doc_name, abs_text in (("main_v2.md", md_abs), ("main_v2.tex", tex_abs)):
+        for tok in ("+0.50", "+0.500", "0.500 (F4)", "F4"):
+            check(
+                tok not in abs_text,
+                f"{doc_name}: the exploratory Phase 8 F4 public-arm figure ({tok!r}) is back "
+                "in the abstract; keep it in Results/Discussion with its exploratory label",
+            )
+
+
 def main() -> int:
     audit_frozen_results_self_consistency()
     audit_manuscript_numbers()
     audit_claude_multiplicity_wording()
     audit_provider_drift_sentence()
     audit_no_stale_language()
+    audit_directional_headroom_and_abstract_scope()
 
     if _failures:
         print(f"=== {len(_failures)} PHASE 9 AUDIT FAILURE(S) ===", file=sys.stderr)
