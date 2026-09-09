@@ -72,7 +72,18 @@ a narrower statement: a pre-registered pilot could not resolve, at its
 own sample size, whether any of six task framings met its acceptance
 criterion, and the one within-study label measurement it contains (from
 an arm outside the frozen analysis plan, \S\ref{subsec:publicarm}) is
-exploratory. v1's per-model contrast-summary table with
+exploratory. \textbf{A separately pre-registered follow-up (Phase~9)}
+then took the one framing the pilot left interval-ambiguous --- F3 ---
+to 1{,}536 trials (64 scenarios $\times$ 3 repeats $\times$
+unlabeled/public arms $\times$ four models; 1{,}536 completed, no
+attrition). At that resolution F3 fails the headroom rule decisively:
+every model's unlabeled-arm egress rate sits entirely above the band, so
+the apparent ambiguity was a ceiling, not a hidden measurable middle.
+For the two models that retained headroom the public-sharing label
+raised verbatim egress (paired risk difference $+0.167$ and $+0.104$,
+95\% CIs excluding zero); the other two were saturated on the unlabeled
+arm. Phase~9 is a follow-up resolution study, not a reopening of the
+frozen Phase~8 sweep. v1's per-model contrast-summary table with
 sign counts and medians, its secondary-diagnostics table, its
 per-scenario contrast tables, and its Phase-6-vs-Phase-7 cross-phase
 reproducibility check are all reproduced here
@@ -88,7 +99,11 @@ analysis artifacts v1 used; Phase~8 pilot results against the frozen
 pilot artifacts and, for round two, a live recomputation from the raw
 trial bytes; the restored v1 tables row-for-row against v1; the derived
 quantities in the abstract and introduction against the frozen grid; and
-every cited arXiv id against a hand-verified set. This is verification
+every cited arXiv id against a hand-verified set. Phase~9's numbers are
+checked the same way, against the frozen analysis output
+(\code{docs/phase_9_design/phase_9_results_attempt_002.json}), by
+\code{paper/arxiv/audit_phase9_numbers.py}, which also fails the build on
+stale pre-Phase-9 language. This is verification
 rather than generation --- v1's \code{gen_tables.py} regenerates its
 tables from artifacts, whereas here the prose is written and then checked
 --- and it is aimed where both v1's errors and this revision's occurred:
@@ -100,9 +115,9 @@ prose claims in the abstract and introduction, not table cells.
 
 \begin{abstract}
 Measuring a sensitivity label's effect on agent behavior requires a task
-framing that gives the behavior room to move. We report a three-phase,
-pre-registered MCP-to-A2A handoff study, scored by an exact-substring,
-judge-free detector. A two-arm study (640 trials) found a large
+framing that gives the behavior room to move. We report a four-study,
+pre-registered MCP-to-A2A handoff investigation, scored by an
+exact-substring, judge-free detector. A two-arm study (640 trials) found a large
 confidential-vs-public contrast but could not attribute it to either
 label. Adding an unlabeled baseline (480 trials) resolved that ambiguity
 but drove three of four models to a floor on both the confidential and
@@ -115,12 +130,23 @@ tone, drove three of four models back to a floor. No framing met the
 acceptance rule (an unlabeled-arm rate inside $[0.25, 0.70]$ for at
 least three of four models on one framing). For five of the six framings
 this holds under any reasonable reading of the $n = 12$ pilot cells; for
-the sixth (F3), three of four models' $95\%$ intervals overlap the band,
-so at pilot resolution its rejection cannot be distinguished from an
-acceptance. The stopping rule fired after round two: the
-$\sim$13{,}200-trial main study was never run. Whether a label's effect
-is measurable here therefore depends on the task framing, and for most
-model-framing pairs it stayed unresolved. The pilots also carried a
+the sixth (F3), three of four models' $95\%$ intervals overlapped the
+band, so at pilot resolution its classification could not be
+distinguished between rejection and acceptance. The stopping rule fired
+after round two: the $\sim$13{,}200-trial main study was never run. A
+separately pre-registered resolution study (Phase~9) then took F3 to
+1{,}536 trials --- 64 scenarios, three repeats, unlabeled and public
+arms, four models, all completed with no attrition --- and settled it:
+F3 fails the headroom rule for every model, its unlabeled-arm egress rate
+sitting entirely above the band, so the pilot-scale ambiguity was a
+ceiling rather than a hidden measurable regime. Where headroom remained
+(two models), the public-sharing label raised verbatim egress by a
+paired risk difference of $+0.167$ and $+0.104$ ($95\%$ CIs excluding
+zero); the two ceiling-saturated models leave no observable room for a
+label effect. Whether a label's effect is measurable here therefore
+depends on the task framing, and no framing yet tested leaves the whole
+four-model panel in a regime where the contrast can be read. The pilots
+also carried a
 public-sharing-label arm outside the frozen analysis plan; analyzed post
 hoc, it contains one within-study measurement --- at the single framing
 that left a model's baseline in range, the public label moved verbatim
@@ -134,10 +160,13 @@ unexplained inversion, reported with no mechanism proposed. Findings are
 scoped to one host policy, one decision surface, and six framings
 authored by a single researcher --- not the space of possible framings.
 This is not evidence that sensitivity labels are ineffective in agent
-systems generally; it is a report that a pre-registered pilot could not
-resolve, at its own sample size, whether any of six framings met its
-acceptance criterion, and that the one label measurement it contains is
-exploratory.
+systems generally, that task framing outweighs labels, or that a public
+label always increases leakage; it is a report that whether a label
+contrast can be measured at this handoff is framing-conditioned, that a
+pre-registered six-framing sweep found none that put the whole panel in a
+measurable regime, and that the one framing taken to higher resolution
+(F3, Phase~9) failed the same rule decisively while showing a
+public-label effect for the two models that still had room to move.
 \end{abstract}
 
 % ===========================================================================
@@ -150,7 +179,8 @@ to local tools; Agent2Agent (A2A)~\citep{a2a-spec} lets one agent
 delegate to another. This paper measures one narrow behavior at that
 handoff --- does an explicit sensitivity label on a locally-read record
 change whether a real-model host copies the record's values verbatim into
-an outbound message --- across three successive, pre-registered studies
+an outbound message --- across four successive, pre-registered studies (a
+three-study arc, plus a separately pre-registered resolution study)
 conducted over the same fixed decision surface with the same judge-free
 scoring pipeline.
 
@@ -162,13 +192,21 @@ criterion --- an unlabeled-arm rate inside $[0.25, 0.70]$ for at least
 three of four models on the same framing. On point estimates no framing
 placed more than one model in that band. At the pilot's $n = 12$ per
 cell, a Wilson $95\%$ interval leaves five of the six framings still
-clearly short; the sixth, F3, has three of four models' intervals
-overlapping the band, so at this sample size its rejection cannot be
-distinguished from an acceptance (\S\ref{subsec:phase8}). A stopping
-rule fixed before either pilot ran ended the search after the second
-round rather than permitting a third, fourth, or fifth attempt --- so
-the negative result is what a two-round pilot could establish, not what
-a powered study concluded.
+clearly short; the sixth, F3, had three of four models' intervals
+overlapping the band, so at that sample size its classification could
+not be distinguished between rejection and acceptance
+(\S\ref{subsec:phase8}). A stopping rule fixed before either pilot ran
+ended the search after the second round rather than permitting a third,
+fourth, or fifth attempt --- so the sweep's negative result is what a
+two-round pilot could establish, not what a powered study concluded. A
+separately pre-registered resolution study (Phase~9,
+\S\ref{subsec:phase9}) then took F3 alone to 192 trials per model and
+settled it: the unlabeled-arm egress rate is entirely above the
+$[0.25, 0.70]$ band for all four models, so F3 fails the headroom rule
+rather than passing it --- the pilot-scale ambiguity was a ceiling, not
+a usable middle. Against the two models that retained headroom at F3,
+the public label raised verbatim egress (paired risk difference $+0.167$
+and $+0.104$, $95\%$ CIs excluding zero).
 
 \paragraph{The arc.}
 A two-arm study (Phase~6, confidential vs.\ public labels) found a large
@@ -192,8 +230,10 @@ task wording that would give the other three models a baseline in a
 measurable range too, so a label's influence could be read across the
 panel rather than for one model at one framing. It did not find one that
 cleared the acceptance rule on point estimates --- though at F3 the
-pilot's $n = 12$ leaves that rejection indistinguishable from an
-acceptance (\S\ref{subsec:phase8}). The first round's three framings
+pilot's $n = 12$ left that classification unresolved between rejection
+and acceptance (\S\ref{subsec:phase8}), which a separate resolution
+study (Phase~9) later settled as a rejection (\S\ref{subsec:phase9}).
+The first round's three framings
 drove \code{sol} and \code{luna} to a near-complete ceiling and left
 \code{terra} and \code{claude} more variable, \code{terra} briefly
 inside the target band; the second round's three, designed to give
@@ -204,7 +244,13 @@ analysis plan. Analyzed post hoc (\S\ref{subsec:publicarm}), that arm
 supplies the within-study, same-framing label measurement the rest of
 the arc lacks: at F4, the one framing that left a model's baseline in
 range, adding the public label moved \code{claude-sonnet-5}'s rate by
-$+0.500$ ($n = 12$, exploratory).
+$+0.500$ ($n = 12$, exploratory). The \textbf{Phase~9 resolution study}
+then closes the arc on F3 specifically: at 192 trials per model the
+unlabeled baseline is at the ceiling for the whole panel, and a
+within-study public-label effect is measurable only for the two models
+not yet saturated there --- \code{gpt-5.6-terra} $+0.167$ and
+\code{claude-sonnet-5} $+0.104$, both $95\%$ CIs excluding zero
+(\S\ref{subsec:phase9}).
 
 \paragraph{Contributions.}
 (1)~A validated measurement instrument: a suppress/permit calibration
@@ -223,16 +269,27 @@ fixed and followed --- the rule fired on schedule, and the
 $\sim$13{,}200-trial main study it would have gated was never executed.
 (3)~The central finding: across six framings authored by one researcher,
 no framing produced an unlabeled-arm rate in the pre-registered band for
-three of four models simultaneously; at the pilot's sample size the
-rejection of the closest framing (F3) is not resolvable, and whether a
-label effect is measurable at all is itself framing-dependent. (4)~Two further
-findings produced by the pre-registration process itself, not merely
-alongside it: an instrument-sensitivity check whose reliability turned
-out to be framing-dependent rather than a fixed model property, and a
-single unexplained inversion --- an explicit ``share everything''
-instruction producing sharply \emph{lower} compliance than the same
-model's unprompted baseline --- reported as an open anomaly with no
-mechanism claimed.
+three of four models simultaneously, and whether a label effect is
+measurable at all is itself framing-dependent. A separately
+pre-registered resolution study (Phase~9) took the one framing the pilot
+left unresolved (F3) to 192 trials per model: it fails the headroom rule
+for all four models --- the unlabeled baseline is at the ceiling, not in
+a usable middle --- while the public-sharing label raises verbatim egress
+for the two models that retain headroom there (paired risk difference
+$+0.167$ and $+0.104$, $95\%$ CIs excluding zero). (4)~A methodological
+result carried by the arc as a whole: a safety intervention can be
+unmeasurable because the baseline is near 0 (Phase~7's floor) or near 1
+(Phase~8's ceiling, and F3's ceiling at Phase~9 resolution), and adding
+samples does not fix saturation --- Phase~9's more-than-tenfold increase
+in $n$ left F3's baseline at the ceiling for every model and revealed
+another high-egress regime rather than a hidden middle. The
+pre-registration process also surfaced two incidental findings: an
+instrument-sensitivity check whose reliability turned out to be
+framing-dependent rather than a fixed model property, and a single
+unexplained inversion --- an explicit ``share everything'' instruction
+producing sharply \emph{lower} compliance than the same model's
+unprompted baseline --- reported as an open anomaly with no mechanism
+claimed.
 
 % ===========================================================================
 \section{Background and System Model}
@@ -244,7 +301,7 @@ tools~\citep[revision 2025-06-18]{mcp-spec}; tool annotations
 obtained from a trusted server.'' A2A lets a client agent delegate to a
 remote agent via an Agent Card, a task/\code{TaskState} machine,
 messages, and artifacts~\citep{a2a-spec}. Both legs are local,
-in-process, deterministic fixtures across all three phases (MCP Python
+in-process, deterministic fixtures across all four studies (MCP Python
 SDK \code{mcp==2.0.0}; A2A HTTP+JSON/REST binding shapes); the MCP
 fixture's discovered tool annotations are taken as ground truth for a
 tool's mutating status, since it is the trusted local component.
@@ -263,7 +320,7 @@ sink name, framing id, or evaluator state. Two provider adapters (OpenAI
 Responses, Anthropic Messages) share one provider-neutral decision seam:
 a single canonical action schema compiled to each provider's tool-use
 format and mapped back through one shared post-parse path, unchanged
-across all three phases.
+across all four studies.
 
 \paragraph{Enforcement (a harness property, not a result).}
 An independent predicate
@@ -282,8 +339,8 @@ Phase~8.
 
 \emph{MCPHunt}~\citep{mcphunt2026} evaluates cross-boundary data
 propagation within multi-server MCP agents; our flow instead crosses from
-a local MCP result into a remote A2A message (Phases~6--7) or a direct
-user reply (Phase~8) under a matched, pre-registered label or framing
+a local MCP result into a remote A2A message (Phases~6--7 and~9) or a
+direct user reply (Phase~8) under a matched, pre-registered label or framing
 intervention. \emph{AgentRFC}~\citep{agentrfc2026} (security design
 principles, TLA+ invariants, a ``Composition Safety'' principle) and
 \emph{Formal Security Analysis of Agent Protocol
@@ -344,7 +401,7 @@ rule none of the six gave that contrast room to be read across the panel
 \section{Instrument}
 \label{sec:instrument}
 
-\paragraph{Decision-point execution (unchanged across all three phases).}
+\paragraph{Decision-point execution (unchanged across all four studies).}
 Each trial has exactly one measured model decision. The engine first
 builds the situation with no model involvement --- it runs the local MCP
 \code{get_account_record} call so a real \code{mcp_tool_result} exists ---
@@ -437,7 +494,7 @@ be reported only as trial-level agreement with L0--L3, never as an
 outcome in its own right.
 
 % ===========================================================================
-\section{The Three-Phase Arc}
+\section{The Study Arc}
 \label{sec:arc}
 
 \subsection{Phase 6 --- two-arm study: a confound}
@@ -686,14 +743,188 @@ intervals reach the band). \textbf{F3 is the exception} --- three of
 four models' $95\%$ intervals overlap $[0.25, 0.70]$ there
 (\code{terra} $0.583 \to [0.32, 0.81]$, \code{luna} $0.917 \to [0.65,
 0.99]$, \code{claude} $0.750 \to [0.47, 0.91]$; only \code{sol}, 12/12,
-is firmly outside). Three of four is the acceptance threshold, so at
-this sample size F3's rejection cannot be distinguished from an
-acceptance. The stopping rule fired correctly given the rule as written;
-but the sweep's negative result turns on a resolution the pilot did not
-have, and F3 is the concrete candidate for a follow-up at higher $n$. It
-is also the framing whose round-one \code{public} arm was lost to a
-raw-data overwrite (\S\ref{subsec:publicarm}), so that follow-up would
-have to re-collect it.
+is firmly outside). Three of four is the acceptance threshold, so at the
+pilot's sample size F3's classification could not be distinguished
+between rejection and acceptance. The stopping rule fired correctly given
+the rule as written; the sweep's negative result on F3 turned on a
+resolution the pilot did not have. F3 is therefore the one framing
+carried forward to a separate, higher-resolution study --- Phase~9
+(\S\ref{subsec:phase9}) --- which resolves it. F3's round-one
+\code{public} arm had also been lost to a raw-data overwrite
+(\S\ref{subsec:publicarm}); Phase~9 collects a fresh \code{public} arm at
+F3 over 64 new scenarios.
+
+\subsection{Phase 9 --- the F3 resolution study}
+\label{subsec:phase9}
+
+\paragraph{Why F3, and why a separate study.}
+Phase~8's interval re-analysis (\S\ref{subsec:phase8}) left F3, and only
+F3, with three of four models' $n = 12$ Wilson intervals reaching the
+$[0.25, 0.70]$ band --- the acceptance threshold itself --- so the
+pilot's point-estimate rejection of F3 could not be told apart from an
+acceptance. Phase~9 is a new study that resolves that one question at
+adequate $n$. It does not reopen the Phase~8 sweep, does not inherit its
+point-estimate rule, and does not revisit F1--F2 or F4--F6: selecting F3
+follows the ambiguity the pilot itself flagged, and the choice, the
+design, the estimands, and the decision rules were all fixed and
+committed before any Phase~9 model call (Appendix~\ref{app:pinned}).
+
+\paragraph{Design.}
+One framing --- the verbatim Phase~8 F3 \code{a2a_relay} prompt --- and
+two arms: \code{unlabeled} (\code{N}) and \code{public} (\code{P} $=$
+\code{N} prefixed with \code{[PUBLIC - OK TO SHARE]}, byte-identical
+otherwise). Eight fixed domains $\times$ eight generator-drawn scenarios
+$= 64$ scenarios; three repeats per (scenario, arm); the same four-model
+panel; $64 \times 3 \times 2 \times 4 = 1{,}536$ trials. Decision surface
+\code{{relay_to_remote, stop}} under \code{a2a_relay}, the strict host
+policy whose hash matches Phases~6--8, and the L0 exact-substring outcome
+unchanged since Phase~6. All 1{,}536 trials completed: zero protocol
+errors, zero attrition, zero retries, and no model substitution (the
+requested model id was returned on every trial). The raw trials were
+frozen byte-for-byte before any analysis was run, and the analysis
+implementation was hash-pinned (Appendix~\ref{app:pinned}).
+
+\paragraph{Estimands and interval.}
+For each model the Q1 estimand is a fixed-domain, equal-weight mean
+$\theta_m = (1/8) \sum_d \mu_d$, where $\mu_d$ is that model's expected
+unlabeled egress rate over the domain's scenario superpopulation; the Q2
+estimand is the paired public-minus-unlabeled risk difference
+$\Delta_m = (1/8) \sum_d \mathbb{E}[\pi(s \mid P) - \pi(s \mid N)]$. Both
+use the same pre-registered interval, method S1f: a fixed-stratum
+Welch--Satterthwaite $t$ on the within-domain scenario variance plus a
+per-domain binomial variance floor, applied uniformly for Q2 (no
+transform, no inflation, no data-dependent switch).
+
+\paragraph{Decision rules.}
+Q1, per model: \code{IN_BAND} iff the whole $95\%$ CI lies within
+$[0.25, 0.70]$; \code{BELOW} iff its upper limit $< 0.25$; \code{ABOVE}
+iff its lower limit $> 0.70$; \code{UNRESOLVED} otherwise. Panel:
+\code{MEETS} iff at least three of four models are \code{IN_BAND};
+\code{FAILS} iff at least two are \code{BELOW} or \code{ABOVE};
+\code{UNRESOLVED} otherwise. Q2: a model's public-label effect is
+\emph{detected} iff its $95\%$ CI for $\Delta_m$ excludes 0. A Holm
+adjustment across the four $\Delta_m$ contrasts was pre-registered as
+supplementary robustness only, not as the primary criterion.
+
+\paragraph{Q1 result: F3 fails the headroom rule for every model.}
+The raw unlabeled-arm egress counts (out of 192 planned $= 64$ scenarios
+$\times$ 3 repeats) are \code{gpt-5.6-sol} $192/192$,
+\code{gpt-5.6-terra} $158/192$, \code{gpt-5.6-luna} $192/192$,
+\code{claude-sonnet-5} $162/192$. Every model's $95\%$ CI on $\theta_m$
+sits entirely above 0.70, so all four classify \code{ABOVE} and the
+\textbf{panel verdict is \code{FAILS}}: F3's unlabeled-arm egress rate
+does not meet the headroom band for any panel model.
+
+\begin{table}[t]
+\centering
+\caption{Phase~9 Q1 --- unlabeled-arm egress at F3 (fixed-domain
+$\theta_m$, method S1f; band $[0.25, 0.70]$). \dag~marks a degenerate
+zero-width interval at saturation (see text); the non-degenerate
+trial-level Wilson interval on the pooled 192 unlabeled trials is
+$[0.980, 1.000]$, also entirely above 0.70. Panel Q1 verdict: FAILS
+(4/4 ABOVE).}
+\label{tab:p9q1}
+\small
+\begin{tabular}{@{}lccccl@{}}
+\toprule
+model & N egress / 192 & N rate & $\hat\theta_m$ & $95\%$ CI & classification \\
+\midrule
+gpt-5.6-sol     & $192/192$ & $1.000$ & $1.000$ & $[1.000, 1.000]$\dag & ABOVE \\
+gpt-5.6-terra   & $158/192$ & $0.823$ & $0.823$ & $[0.759, 0.887]$     & ABOVE \\
+gpt-5.6-luna    & $192/192$ & $1.000$ & $1.000$ & $[1.000, 1.000]$\dag & ABOVE \\
+claude-sonnet-5 & $162/192$ & $0.844$ & $0.844$ & $[0.762, 0.926]$     & ABOVE \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For \code{gpt-5.6-sol} and \code{gpt-5.6-luna} every unlabeled trial
+egressed, so every within-domain scenario variance and every per-domain
+binomial floor is exactly zero; the frozen S1f estimator's variance is
+then zero and its guard returns the point interval $[1.000, 1.000]$
+(flagged \code{pathological}). This is the committed implementation, not
+a computation error, and the zero-width interval must \textbf{not} be
+read as evidence that the domain means are exactly 1. The \code{ABOVE}
+classification does not depend on it: the point estimate is at the
+ceiling, well above 0.70; four of the five pre-registered Q1 sensitivity
+procedures (method G, raw S1 without the floor, the finite-panel Option
+A, and the studentized scenario bootstrap S2) are also variance-based and
+degenerate identically to $[1.000, 1.000]$; and the one non-degenerate
+procedure --- a trial-level Wilson interval on the pooled 192 unlabeled
+trials --- gives $[0.980, 1.000]$, still entirely above 0.70.
+\code{gpt-5.6-terra} and \code{claude-sonnet-5} are not degenerate on any
+procedure.
+
+\paragraph{Q2 result: a public-label effect where headroom remains.}
+The raw public-arm egress counts are \code{gpt-5.6-sol} $192/192$,
+\code{gpt-5.6-terra} $190/192$, \code{gpt-5.6-luna} $190/192$,
+\code{claude-sonnet-5} $182/192$.
+
+\begin{table}[t]
+\centering
+\caption{Phase~9 Q2 --- paired public $-$ unlabeled risk difference at F3
+($\Delta_m$, method S1f; \emph{detected} iff the $95\%$ CI excludes 0).
+The Holm-adjusted $p$ column is supplementary robustness only and does
+not override the CI decision.}
+\label{tab:p9q2}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+model & P egress / 192 & $\hat\Delta_m$ & $95\%$ CI & detected & Holm-adj $p$ \\
+\midrule
+gpt-5.6-sol     & $192/192$ & $+0.000$ & $[+0.000, +0.000]$ & no --- ceiling-limited & $1.0$ \\
+gpt-5.6-terra   & $190/192$ & $+0.167$ & $[+0.105, +0.228]$ & yes                    & $6 \times 10^{-6}$ \\
+gpt-5.6-luna    & $190/192$ & $-0.010$ & $[-0.026, +0.005]$ & no --- ceiling-limited & $0.36$ \\
+claude-sonnet-5 & $182/192$ & $+0.104$ & $[+0.011, +0.198]$ & yes                    & $0.09$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\code{gpt-5.6-terra}'s public-label effect is detected under both the
+primary criterion (CI $[+0.105, +0.228]$ excludes 0) and the
+supplementary Holm-adjusted $p$ ($\approx 6 \times 10^{-6}$).
+\code{claude-sonnet-5}'s effect is detected under the pre-registered
+primary criterion --- its $95\%$ CI for $\Delta_m$, $[+0.011, +0.198]$,
+excludes 0 --- while the supplementary Holm-adjusted $p$ across the four
+contrasts was 0.09, i.e.\ it did not remain below 0.05 after familywise
+adjustment; Holm was pre-registered as a robustness check, not the
+primary rule, and reporting both is not a contradiction. For
+\code{gpt-5.6-sol} and \code{gpt-5.6-luna} the outcome is \emph{not}
+``the label had no effect'': both are ceiling-limited in the unlabeled
+condition ($192/192$ and $192/192$), leaving little or no observable room
+for a positive public-label effect. \code{gpt-5.6-sol}'s
+$\hat\Delta = 0$ and \code{gpt-5.6-luna}'s $\hat\Delta = -0.010$ (two
+public trials that did not egress) are descriptive, not evidence that the
+underlying label effect is zero or negative. The atanh-scale Q2
+sensitivity analysis gives the same detected~/ not-detected pattern.
+
+\paragraph{The operating-regime reading.}
+Table~\ref{tab:regime} places every model's unlabeled baseline in each
+study on one scale --- floor (near 0), measurable middle (inside the
+band), or ceiling (near 1) --- and a label contrast is only identifiable
+in the middle. F3 at Phase~9 resolution puts \code{gpt-5.6-sol} and
+\code{gpt-5.6-luna} at the ceiling and \code{gpt-5.6-terra} and
+\code{claude-sonnet-5} just above the band; none of the four is in the
+middle. The pilot-scale interval ambiguity at F3 was a lack of
+resolution, not a hidden usable regime.
+
+\begin{table}[t]
+\centering
+\caption{Unlabeled-baseline operating regime, by model and study.
+\code{N} is the pooled unlabeled-arm relay/egress rate; the Phase~8
+column is the range across F1--F6 (Table~\ref{tab:grid}).}
+\label{tab:regime}
+\small
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+model & Phase~7 \code{N} & Phase~8 \code{N} (F1--F6 range) & Phase~9 F3 \code{N} & Phase~9 F3 regime \\
+\midrule
+gpt-5.6-sol     & $0.000$ & $0.000$--$1.000$ & $1.000$ & ceiling \\
+gpt-5.6-terra   & $0.000$ & $0.000$--$0.917$ & $0.823$ & above band \\
+gpt-5.6-luna    & $0.000$ & $0.000$--$1.000$ & $1.000$ & ceiling \\
+claude-sonnet-5 & $0.125$ & $0.417$--$1.000$ & $0.844$ & above band \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 % ===========================================================================
 \section{Secondary Findings}
@@ -846,37 +1077,59 @@ as exploratory.
 \section{Discussion}
 \label{sec:discussion}
 
-The claim this paper supports is deliberately narrow: \textbf{a
-pre-registered two-round pilot could not resolve, at its own sample
-size, whether any of six task framings met its acceptance criterion, and
-the one label measurement it contains is exploratory.} The
+The claim this paper supports is deliberately narrow: \textbf{whether a
+sensitivity label's effect on this behavior can be measured at an
+MCP-to-A2A handoff depends on the task framing, because the framing sets
+the unlabeled operating regime --- floor, measurable middle, or ceiling
+--- and the label contrast is only identifiable in the middle.} The
 pre-registered headroom rule (\S\ref{subsec:phase8}) required a model's
 \code{unlabeled}-arm rate inside $[0.25, 0.70]$ for at least three of
 four models on the same framing. On point estimates no framing reached
 two; under a Wilson $95\%$ interval at $n = 12$, five of six framings
-are still clearly short, and the sixth (F3) has three of four models'
+are clearly short, and the sixth (F3) had three of four models'
 intervals overlapping the band --- three of four being the threshold
-itself. So the pre-registered rule rejected every framing, and for F3
-that rejection is not distinguishable from an acceptance at this $n$.
-Whether a sensitivity label's effect can be \emph{measured} at this
-decision surface is therefore itself a function of the task wording: for
-most model-framing pairs the baseline floored or ceilinged and no
-contrast was readable; at F4, where \code{claude-sonnet-5}'s baseline
-was in range, the \code{public} label moved it $+0.500$
-(\S\ref{subsec:publicarm}, exploratory).
+itself. The pre-registered two-round sweep therefore rejected every
+framing, and F3's rejection was, at $n = 12$, not distinguishable from
+an acceptance. A separately pre-registered resolution study (Phase~9,
+\S\ref{subsec:phase9}) took F3 to 192 trials per model and settled it:
+the unlabeled baseline is entirely above the band for all four models,
+so the pilot-scale ambiguity was a ceiling, not a hidden usable regime.
+Where a model still had headroom at F3, the public-sharing label raised
+verbatim egress (\code{gpt-5.6-terra} $+0.167$, \code{claude-sonnet-5}
+$+0.104$, $95\%$ CIs excluding zero); the two ceiling-saturated models
+leave no observable room for the contrast.
 
-Three things this does not claim. First, it does not claim the label has
-no effect: for three of four models the effect is unmeasured, not
-measured-and-absent, and that is still true after Phase~8. Second, it
-does not claim six framings represent the space of possible framings ---
-they are a small, hand-authored sample, and F3 in particular invites a
-higher-$n$ follow-up that this pilot could not settle. Third, it does
-not claim the Phase~8 \code{public}-arm result as a finding: it is one
-model at three framings, $n = 12$, analyzed outside the frozen plan.
-What the paper does establish is the process: the acceptance rule, the
-stopping rule, and the disclosure of every arm collected --- including
-the one the plan did not ask us to report --- were fixed or followed
-rather than chosen after seeing the numbers.
+\paragraph{A methodological reading.}
+Across the arc a safety intervention has been unmeasurable for the same
+structural reason at both ends of the scale: near a floor (Phase~7, and
+F4--F6 in Phase~8) and near a ceiling (F1--F3 in Phase~8, and F3 again
+at Phase~9 resolution). Adding samples does not fix saturation ---
+Phase~9 increased the per-model sample more than tenfold over the pilot
+and F3's baseline stayed at the ceiling for every model; the extra
+resolution turned an apparent interval ambiguity into a decisive
+rejection and revealed a second high-egress regime rather than a hidden
+middle.
+The practical consequence is that a label or policy intervention should
+be evaluated only against a baseline that is demonstrably off both
+bounds.
+
+Four things this does not claim. First, it does not claim task framing
+generally outweighs labels: the arc measures \emph{whether a label
+contrast is readable}, not a contest between the two. Second, it does
+not claim the label has no effect where it is unmeasured: for the models
+on a floor or a ceiling the effect is unobserved, not
+observed-and-absent. Third, it does not claim that six framings --- a
+small, hand-authored sample --- represent the space of possible
+framings; F3 is now resolved, but F1--F2 and F4--F6 remain
+point-estimate calls, and other framings are untested. Fourth, it does
+not claim the public label always increases leakage: Phase~9 detected a
+positive public-label effect for the two models with headroom at F3,
+while the Phase~8 \code{public}-arm result (\S\ref{subsec:publicarm}) is
+one model at three framings, $n = 12$, outside the frozen plan. What the
+paper does establish is the process: the acceptance rule, the stopping
+rule, the separate pre-registration of the F3 resolution study, and the
+disclosure of every arm collected were fixed or followed rather than
+chosen after seeing the numbers.
 
 % ===========================================================================
 \section{Limitations}
@@ -893,12 +1146,12 @@ sample of possible framings. \emph{(iv)} Small per-cell sample size in
 the pilots (12 trials per model per arm per framing). At $n = 12$ the
 in-band/out classification is not resolvable for every cell: a Wilson
 $95\%$ interval on a $6/12$ rate spans the whole acceptance band, and at
-F3 three of four models' intervals overlap it (\S\ref{subsec:phase8}),
-so F3's rejection under the pre-registered rule cannot be distinguished
-from an acceptance. The F5 anomaly (\S\ref{subsec:f5}), terra's
-round-two separation (\S\ref{subsec:calib}), and the
-\S\ref{subsec:publicarm} \mbox{$P - N$} values are all at this
-resolution. \emph{(v)} The F1--F3 \code{public} arm was overwritten
+F3 three of four models' intervals overlapped it (\S\ref{subsec:phase8}),
+so at the pilot's $n$ the F3 classification was not resolvable ---
+Phase~9 (\S\ref{subsec:phase9}) resolves it, at 192 trials per model, as
+a rejection. The F5 anomaly (\S\ref{subsec:f5}), terra's round-two
+separation (\S\ref{subsec:calib}), and the \S\ref{subsec:publicarm}
+\mbox{$P - N$} values are all at this pilot resolution. \emph{(v)} The F1--F3 \code{public} arm was overwritten
 before it was analyzed and is unrecoverable (\S\ref{subsec:publicarm});
 the within-study label contrast therefore exists only for F4--F6, and
 only for one model. \emph{(vi)} The \code{reply_to_user} sink was
@@ -912,7 +1165,39 @@ plan, and its $p$-value is one uncorrected comparison selected from
 twelve. \emph{(ix)} The main study this sweep was designed to gate was
 never executed; every Phase~8 finding in this paper is a pilot-scale
 finding, not a confirmatory one. \emph{(x)} The held-out judge (L4) has
-not been run.
+not been run. \emph{(xi)} Phase~9 tests one framing (F3) over 64
+synthetic, generator-drawn scenarios; it is not a sweep and says nothing
+about F1--F2 or F4--F6 at higher $n$. \emph{(xii)} Phase~9's Q1 estimand
+is an equal-weight mean over eight hand-selected fixed domains --- a
+synthetic superpopulation, not an estimate for enterprise domains at
+large. \emph{(xiii)} For \code{gpt-5.6-sol} and \code{gpt-5.6-luna} the
+frozen S1f interval degenerates to a zero-width $[1.000, 1.000]$ on the
+all-successes boundary (\S\ref{subsec:phase9}); the \code{ABOVE} verdict
+for those two rests on the point estimate, the non-degenerate trial-level
+Wilson interval $[0.980, 1.000]$, and four sensitivity procedures, not on
+the primary interval's width. \emph{(xiv)} Phase~9's Q2 is
+ceiling-limited for \code{gpt-5.6-sol} and \code{gpt-5.6-luna}: their
+unlabeled arms are saturated, so $\hat\Delta = 0$ / $-0.010$ is
+descriptive and not evidence of a zero or negative label effect.
+\emph{(xv)} \code{claude-sonnet-5}'s Phase~9 Q2 effect is detected under
+the pre-registered primary CI criterion, but the supplementary
+Holm-adjusted $p$ ($\approx 0.09$) did not stay below 0.05 after
+familywise adjustment (\S\ref{subsec:phase9}). \emph{(xvi)} Phase~9's 64
+scenarios are disjoint from the four Phase~8 F3 pilot scenarios, so
+Phase~9 is a higher-resolution study of the same framing, not a
+like-for-like replication of the pilot cell. \emph{(xvii)} The Phase~9
+F3 unlabeled-egress rates exceed the Phase~8 pilot estimates, but
+Phase~9 differs from that pilot in sample size ($12 \to 192$ per model),
+in the stimulus set (64 new generator-drawn scenarios, disjoint from the
+pilot's), and in execution date; with no provider snapshot pinning
+available we cannot separate sampling variability, the change in scenario
+distribution, and possible provider-endpoint drift as sources of the
+difference. \emph{(xviii)} The primary outcome L0 is verbatim
+exact-substring egress of six field values, not a semantic disclosure
+judge; paraphrased or transformed disclosure is outside the primary
+contrast (the L1--L3 near-match detectors, \S\ref{subsec:validation}, are
+descriptive only). The panel is four models from two providers and is
+not a random sample of deployed models.
 
 % ===========================================================================
 \section{Reproducibility}
@@ -935,15 +1220,32 @@ fingerprints, and manifest hashes are byte-pinned
 (\code{app/reporting/phase_8c_pilot.py}) is committed and tested against
 synthetic fixtures independent of this paper's own numbers.
 
+\paragraph{Phase 9.}
+The F3 resolution study was pre-registered as a separate protocol --- its
+design, 64-scenario construction, sample size, estimands, S1f interval,
+and Q1/Q2 decision rules were frozen and committed before any Phase~9
+model call. The 1{,}536-trial run was executed exactly as frozen (zero
+retries, no model substitution); the raw trials were frozen
+byte-for-byte \emph{before} the analysis was run, and the analysis
+implementation is hash-pinned, so the frozen decision rules were applied
+to the frozen data with no code touched after outcomes existed. An
+earlier run attempt was aborted on an external provider-billing failure
+before any model returned a response --- it contributed zero successful
+responses, zero tokens, and zero measurements, and was excluded before
+any analysis (Appendix~\ref{app:pinned}). The freeze commits, hashes,
+per-model raw \code{trials.jsonl} SHA-256s, and the aborted-attempt
+provenance are in Appendix~\ref{app:pinned}.
+
 \paragraph{Public artifact.}
 Code, the frozen harness, and byte-pinned raw traces are released at
 \url{https://github.com/ArpanKumarM/agent-interop-bench}. The Phase~6/7
 artifacts are in the \code{paper-v1.0} release; the Phase~8 pilot traces
---- round two's four arms in full, round one's raw having been
-overwritten before the \code{public} arm was analyzed
-(\S\ref{subsec:publicarm}) --- will be added in a \code{paper-v2.0}
-release. \emph{[The \code{paper-v2.0} tag URL is inserted here on
-posting; it does not yet exist.]}
+(round two's four arms in full, round one's raw having been overwritten
+before the \code{public} arm was analyzed, \S\ref{subsec:publicarm}) and
+the Phase~9 F3 resolution study's raw traces, execution fingerprints, and
+frozen analysis output will be added in a \code{paper-v2.0} release.
+\emph{[The \code{paper-v2.0} tag URL is inserted here on posting; it does
+not yet exist.]}
 
 % ===========================================================================
 \appendix
@@ -1068,9 +1370,10 @@ raw \code{trials.jsonl}, gpt-5.6-sol     & \code{db9d3c5ca540c0e19730e9f4e80ed5f
 \end{center}
 
 \paragraph{Other counts.}
-L1--L3 false-positive check: 952 checks, $0.0\%$ for L1, L2, and L3. Main
-study (never executed): 13{,}184 trials (S8-A 9{,}216 $\cdot$ S8-A$'$ 512
-$\cdot$ S8-B 1{,}536 $\cdot$ S8-C 1{,}536 $\cdot$ S8-D 384).
+L1--L3 false-positive check: 952 checks, $0.0\%$ for L1, L2, and L3.
+Phase~8 main study (never executed): 13{,}184 trials (S8-A 9{,}216
+$\cdot$ S8-A$'$ 512 $\cdot$ S8-B 1{,}536 $\cdot$ S8-C 1{,}536 $\cdot$
+S8-D 384).
 
 \paragraph{Provenance.}
 {\sloppy
@@ -1081,6 +1384,52 @@ above from the bytes and checks it (run by
 by round two's run before this need was anticipated; round-one hashes are
 transcribed from \code{docs/phase_8c_pilot_result.md} and cannot now be
 re-derived from bytes on this machine.\par}
+
+\paragraph{Phase 9 --- F3 resolution study.}
+Separate pre-registration. Frozen 1{,}536-trial run (64 scenarios
+$\times$ 3 repeats $\times$ N/P $\times$ 4 models); 1{,}536 completed,
+0 attrition, 0 retries, 0 model substitutions, no halt. Raw data frozen
+before analysis; analysis implementation hash-pinned; the frozen S1f
+interval and Q1/Q2 decision rules were applied to the frozen data with no
+code changed after outcomes existed. Frozen analysis output:
+\code{docs/phase_9_design/phase_9_results_attempt_002.{json,md}}.
+
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}p{0.34\linewidth}p{0.6\linewidth}@{}}
+\toprule
+item & value \\
+\midrule
+scientific-design freeze commit & \code{32a76bfa19c3240bd87011fe9a7e41b3ced1a511} \\
+execution-implementation freeze (post-freeze addendum) & \code{a347a8b3c2b29b77586a113fdabf8bd310e92e85} \\
+attempt-002 freeze commit & \code{e8fd793940458a88f5fd122a7065737bf4a109c5} \\
+raw-data freeze commit & \code{c64a32d73e9d4b52fb03d4b6a91c8d3fa05f3bfe} \\
+frozen-analysis commit & \code{89c0542} \\
+pre-manuscript documentation audit & \code{ffaae077e791148bb05a039749d835d308ce85a1} \\
+execution schedule (\code{study_schedule_sha256}) & \code{7f05b86c4da756d1b47cccf6df359eacf238fec3cf69610fb1698c227c07f1ad} \\
+scenario fixture (\code{phase_9_scenario_table}) & \code{da4d525cf3c7773951cbe8ccd67405a7c20a04d4d87a57c2573559dc609c4583} \\
+analysis implementation (\code{phase_9_design_simulation.py}) & \code{5c8301018886234c7721600f1678c0e218a76a02073e3b4b9fe47138faa2049f} \\
+host-policy hash (= Phases 6--8) & \code{32e6ba77c56554de69705f85d547b3e3c48d9d2e2be35d07ed093570d893f2be} \\
+canonical action-schema hash (= Phase 8) & \code{96c91c0be27b33a30cd9a9f5699acbc19e3d15227111c6a34b17d8dc156e65b5} \\
+raw \code{trials.jsonl}, gpt-5.6-sol     & \code{7d5cd35ba3102fc3bfc2501d74bb9ec758cd220395f44e79980a20370ffe02fc} \\
+\hspace{1em}gpt-5.6-terra   & \code{fc658ac3ccf3f79054ee3c38e54543932dce0c076fa9012fd4e0539c7e54d1e6} \\
+\hspace{1em}gpt-5.6-luna    & \code{0d45e5bd1b3419bf52481e3c2d968cc92a2f0b1b432f5129937f34fdfc3e1ce0} \\
+\hspace{1em}claude-sonnet-5 & \code{f09c30cbc0c1e7688e672341bec70767deb0e6885999d85e12074b7b57e06313} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+{\sloppy
+\emph{Aborted attempt.} An earlier authorized run halted itself after 9
+provider calls, all \code{gpt-5.6-sol}, every one returning HTTP 429
+\code{insufficient_quota} on the provider account. It produced
+\textbf{0} successful model responses, \textbf{0} generated tokens,
+\textbf{0} billed cost, and \textbf{0} scientific observations, and was
+excluded before any analysis under the frozen \S12 rule. It is not an
+outcome-based re-run: no model output was ever observed. Its 8 run files
+are archived byte-identically at
+\code{reports/_phase9_aborted_billing_attempt_001/}; attempt 002 is the
+run analysed here.\par}
 
 \section{Phase 7 scenario-level contrast tables}
 \label{app:scenario}
