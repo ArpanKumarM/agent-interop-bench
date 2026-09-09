@@ -1,0 +1,6 @@
+# transient LaTeX build products (main_tmlr.bbl IS tracked for bibtex-free builds)
+main_tmlr.pdf
+main_tmlr.aux
+main_tmlr.blg
+main_tmlr.out
+main_tmlr.log
