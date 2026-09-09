@@ -1404,8 +1404,9 @@ claude-sonnet-5 & public       & $37/40 = 0.925$ & $3.050$ & $0/40$ & $37/40$ & 
 \paragraph{Cross-phase reproducibility check.}
 Phase~6 (\S\ref{subsec:phase6}) used only the confidential and public
 arms; its \mbox{$C - P$} contrast can be compared, descriptively only, to
-the same contrast recomputed on Phase~7 data. Different times, different
-provider snapshots, not pooled, no statistical test. The direction
+the same contrast recomputed on Phase~7 data. Different execution
+windows; provider snapshot identity was not pinned. The runs are not
+pooled and no cross-phase statistical test is performed. The direction
 reproduces for the three non-floor models; \code{gpt-5.6-terra} is a
 floor in both.
 

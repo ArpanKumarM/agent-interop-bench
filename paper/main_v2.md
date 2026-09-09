@@ -493,8 +493,9 @@ cell.
 **Cross-phase reproducibility check.** Phase 6 (§5.1) used only the
 confidential and public arms; its C − P contrast can be compared,
 descriptively only, to the same contrast recomputed on Phase 7 data.
-Different times, different provider snapshots, not pooled, no
-statistical test. The direction reproduces for the three non-floor
+Different execution windows; provider snapshot identity was not pinned.
+The runs are not pooled and no cross-phase statistical test is
+performed. The direction reproduces for the three non-floor
 models; `gpt-5.6-terra` is a floor in both.
 
 | model | earlier C − P | earlier +/0/− | Phase 7 C − P | Phase 7 +/0/− | direction |

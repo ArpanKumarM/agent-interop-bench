@@ -1,9 +1,9 @@
-r"""Build the deterministic public reproducibility release for ``paper-v2.2``.
+r"""Build the deterministic public reproducibility release for ``paper-v2.3``.
 
-``paper-v2.2`` is a wording-consistency patch of ``paper-v2.1`` (which is
-itself a claim-scope revision of ``paper-v2.0``): the manuscript
-and its numeric audits changed; the canonical raw data and every frozen
-scientific output are byte-identical to ``paper-v2.0``.
+``paper-v2.3`` is a wording-consistency patch of ``paper-v2.2`` (itself a
+patch of ``paper-v2.1``, itself a claim-scope revision of ``paper-v2.0``):
+the manuscript and its numeric audits changed; the canonical raw data and
+every frozen scientific output are byte-identical to ``paper-v2.0``.
 
 Contents:
   * the full tracked source tree at HEAD (``git archive HEAD``) -- app/,
@@ -37,7 +37,7 @@ import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "agent-interop-bench-paper-v2.2"
+PREFIX = "agent-interop-bench-paper-v2.3"
 OUT = ROOT / "dist" / f"{PREFIX}.tar.gz"
 
 # git-ignored published raw-data trees, added from disk by allow-list.
@@ -115,6 +115,7 @@ _ARCHIVE_EXCLUDE = {
     "docs/release_v2_notes.md",
     "docs/release_v2_1_notes.md",
     "docs/release_v2_2_notes.md",
+    "docs/release_v2_3_notes.md",
 }
 
 

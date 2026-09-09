@@ -128,6 +128,30 @@ _SUBS = [
     (re.compile(r"arXiv:2609\.01693(?:v\d+)?"), "an earlier version by the same authors"),
     (re.compile(r"\b2609\.01693\b"), "[prior-version-id]"),
 ]
+# Legacy provenance prose that asserted literally *different provider
+# snapshots* between runs. Provider snapshot identifiers were never
+# pinned, so the anonymous review derivative rewords these to the
+# "identity not pinned" framing. This is a documentation / report /
+# help / docstring string transformation only -- no executable path,
+# numeric output, score, constant, model id, scenario record, raw
+# trace, experiment config, or analytical behaviour depends on this
+# wording. Applied to every shipped text member (incl. under reports/).
+_PROSE_SUBS = [
+    (re.compile(r"[Dd]ifferent runs at\s+different provider snapshots;\s*"
+                r"NO statistical test between phases\."),
+     "Different execution windows; provider snapshot identity was not pinned; "
+     "NO statistical test between phases."),
+    (re.compile(r"[Dd]ifferent runs at\s+different provider snapshots"),
+     "Different runs in different execution windows; provider snapshot identity "
+     "was not pinned"),
+    (re.compile(r"[Dd]ifferent times,\s*different provider snapshots,\s*"
+                r"not pooled,\s*no statistical test\."),
+     "Different execution windows; provider snapshot identity was not pinned. "
+     "The runs are not pooled and no cross-phase statistical test is performed."),
+    (re.compile(r"different provider snapshots"),
+     "provider endpoints whose snapshot identity was not pinned"),
+]
+
 # neutral marker for redacted repository-identifying git identifiers.
 _MARK = "[redacted-for-double-blind]"
 # blanket 40-hex git-commit shape -> _MARK. Applied ONLY to human-facing
@@ -198,6 +222,11 @@ def _scrub(name: str, data: bytes) -> bytes:
     # other text: full known-commit redaction (incl. 7/12-char prefixes in
     # prose) so scripts and the result JSON they regenerate stay consistent.
     text = _redact_known_commits(text, prefixes=True)
+    # legacy provider-snapshot prose -> "identity not pinned" framing.
+    # Documentation / report / docstring text only; applied everywhere,
+    # including under reports/ (analysis_report.md).
+    for rx, repl in _PROSE_SUBS:
+        text = rx.sub(repl, text)
     if not name.startswith("reports/"):
         for rx, repl in _SUBS:
             text = rx.sub(repl, text)
@@ -285,6 +314,12 @@ prefixes) -- in the manuscript, the docs, the scripts, **and inside the
 raw trace files**. The identifying camera-ready manuscript,
 `CITATION.cff`, `LICENSE`, and `README.md` are not included. None of this
 affects reproduction.
+
+Legacy provenance text that referred to differing provider snapshots
+between phases has been wording-sanitized in this anonymous review copy
+because provider snapshot identifiers were not pinned; this change is
+documentation-only and does not affect experimental data, code behavior,
+or numerical results.
 
 The raw trace files in this anonymous review package are double-blind
 derivative copies of the canonical frozen artifacts. Repository-identifying

@@ -289,6 +289,16 @@ def audit_provider_drift_sentence() -> None:
         for bad in ("provider drift occurred", "endpoint drift occurred",
                     "drift from pricing", "drift from infrastructure"):
             check(bad not in low, f"{doc_name}: must not assert provider drift ({bad!r})")
+        # legacy "different provider snapshots" wording is banned outright:
+        # provider snapshot identifiers were never pinned, so literal
+        # snapshot difference cannot be asserted (fixed in paper-v2.3).
+        for stale in ("different provider snapshots",
+                      "different runs at different provider snapshots"):
+            check(
+                stale not in low,
+                f"{doc_name}: banned stale wording {stale!r}; snapshot identifiers "
+                "were not pinned -- use 'provider snapshot identity was not pinned'",
+            )
 
 
 # --------------------------------------------------------------------------- #
