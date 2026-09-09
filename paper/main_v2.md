@@ -1017,13 +1017,14 @@ Appendix B.
 
 **Public artifact.** Code, the frozen harness, and byte-pinned raw traces
 are released at `github.com/ArpanKumarM/agent-interop-bench`. The Phase
-6/7 artifacts are in the `paper-v1.0` release; the Phase 8 pilot traces
-(round two's four arms in full, round one's raw having been overwritten
-before the `public` arm was analyzed, §6.4) and the Phase 9 F3
-resolution study's raw traces, execution fingerprints, and frozen
-analysis output will be added in a `paper-v2.0` release. *[The
-`paper-v2.0` tag URL is inserted here on posting; it does not yet
-exist.]*
+6/7 artifacts are in the `paper-v1.0` release; the Phase 8 round-two
+pilot traces (four arms in full; round one's raw was overwritten before
+the `public` arm was analyzed, §6.4) and the Phase 9 F3 resolution
+study's raw traces, execution fingerprints, and frozen analysis output
+are in the `paper-v2.0` release,
+`https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v2.0`
+(deterministic reproducibility bundle; its SHA-256 and a `REPRODUCE.md`
+offline walkthrough are in the release notes).
 
 ## Appendix A — Framings piloted and discarded
 

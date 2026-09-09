@@ -29,8 +29,8 @@ uv sync --frozen
 needed to *run* live experiments — they are **not** required for any
 verification below. Installing them additionally lets ~35 offline
 SDK-contract integration tests collect (`uv sync --frozen --extra openai
---extra anthropic`); without them the suite is 947 + 5 skipped, with them
-986, all passing.
+--extra anthropic`). The suite is **1071 passed, 3 skipped** (the skips
+are "no prior attempt artifacts on this machine").
 
 ---
 
@@ -40,8 +40,7 @@ SDK-contract integration tests collect (`uv sync --frozen --extra openai
 uv run pytest -q
 ```
 
-**Success:** `986 passed` (or `947 passed, 5 skipped` without the SDK
-extras; the 5 skips are "no prior attempt artifacts on this machine").
+**Success:** `1071 passed, 3 skipped`.
 
 ```bash
 uv run ruff check .          # lint  -> "All checks passed!"
@@ -137,11 +136,25 @@ arXiv id against a hand-verified set (`VERIFIED_ARXIV_IDS`); the `.tex`
 mirror of all of the above; `references_v2.bib` + `\cite` resolution; two
 non-fatal qualifier lints.
 
-**Expected while pre-publication:** exit 1 with `3 POSTING GATE(S) OPEN`
-(the `paper-v2.0` tag URL is still a placeholder; the `\date{}` TODO is
-still present). These are deliberate build-failing gates that clear only
-when the release is cut and the date is set. **No numeric-integrity check
-fails** (there is no `AUDIT FAILURE(S)` block).
+In the `paper-v2.0` release the `\date{}` and the tag URL are set, so this
+prints `All Phase 8 numeric checks passed; posting gates clear`. **No
+numeric-integrity check fails** (there is no `AUDIT FAILURE(S)` block) at
+any point.
+
+---
+
+## 5a. Phase 9 F3 resolution study (no API calls)
+
+The Phase 9 offline path — scientific-freeze / execution-addendum /
+raw-data-freeze verification, the deterministic frozen analysis, its
+expected result hashes, and `paper/arxiv/audit_phase9_numbers.py` — is
+written out step by step in **`REPRODUCE.md` §D–I**. Summary: all four
+verifiers exit 0, `scripts/phase_9_analyze.py` reproduces
+`docs/phase_9_design/phase_9_results_attempt_002.{json,md}` byte-for-byte,
+and the panel Q1 verdict is `FAILS` (4/4 ABOVE). The aborted attempt-001
+archive (`reports/_phase9_aborted_billing_attempt_001/`) is operational
+provenance only: 9 rejected quota requests, 0 successful responses, 0
+tokens, 0 scientific observations.
 
 ---
 
@@ -151,7 +164,7 @@ fails** (there is no `AUDIT FAILURE(S)` block).
 bash paper/arxiv/build_pdf_v2.sh
 ```
 
-Deterministic (`SOURCE_DATE_EPOCH` fixed). **Success:** `main_v2.pdf: 15
+Deterministic (`SOURCE_DATE_EPOCH` fixed). **Success:** `main_v2.pdf: 19
 pages … no overfull/undefined warnings`, and the SHA-256 is stable across
 rebuilds on the same TeX Live.
 
@@ -191,7 +204,7 @@ API keys in `.env`, and real spend.
 | any `app.cli.*` entry point that constructs a real provider adapter | live model inference | varies |
 | the (never-run) Phase 8 main study S8-A…D | 13,184 live trials | ~$45–65 (projected; never at risk) |
 | the held-out L4 judge (`app/reporting/llm_judge_crosscheck.py`) | one live `claude-haiku` call per trial | quarantined; not run |
-| **Phase 9** (`docs/phase_9_f3_resolution_design.md`) | a new confirmatory study at F3 | designed, **not run**; see that doc |
+| a **new** Phase 9 live run (`app/cli/phase_9_execute.py … run`) | re-collect the F3 resolution study from scratch | ~$25–30 (measured; **not needed** — the frozen raw is in the release and the analysis in §D–G of `REPRODUCE.md` is fully offline) |
 
 ---
 
@@ -204,5 +217,11 @@ uv run pytest -q
 uv run python scripts/verify_phase_8_round2_from_raw.py
 uv run python scripts/verify_phase_8_pilot_docs.py
 uv run python paper/arxiv/audit_numbers.py            # v1
-uv run python paper/arxiv/audit_phase8_numbers.py     # v2 (exit 1 = posting gates only)
+uv run python paper/arxiv/audit_phase8_numbers.py     # v2
+uv run python scripts/verify_phase_9_freeze.py
+uv run python scripts/phase_9_build_freeze.py --check
+uv run python scripts/phase_9_execution_addendum.py --check
+uv run python scripts/phase_9_raw_data_freeze.py --check
+uv run python scripts/phase_9_analyze.py
+uv run python paper/arxiv/audit_phase9_numbers.py
 ```
