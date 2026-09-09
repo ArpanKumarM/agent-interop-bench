@@ -94,8 +94,10 @@ confidence-interval criterion; Claude did not remain below 0.05 under the
 supplementary Holm adjustment. These results show that baseline
 saturation is an important measurement constraint for label-effect
 experiments: boundary operating regimes can prevent an effect in the
-saturated direction from being observed, and adding samples does not
-create headroom. This study measures verbatim field propagation, not
+saturated direction from being observed, and additional samples can
+improve resolution around a baseline but do not, by themselves, create
+directional headroom when the operating regime is saturated. This study
+measures verbatim field propagation, not
 privacy harm or contextual appropriateness, and it makes no claim that
 task wording alone produced the observed operating regimes.
 
@@ -136,8 +138,8 @@ four arms they compared, so *within-round* formulation contrasts are
 matched with respect to record content. But the two rounds used
 **disjoint** pilot sets — round one's four scenarios overlapped the
 main-study 24 and were replaced, before round two, with four
-purpose-built pilot-only records — and were executed at different times.
-Round one's fixed set sat predominantly in high-egress regimes; round
+purpose-built pilot-only records — and were executed in different
+windows. Round one's fixed set sat predominantly in high-egress regimes; round
 two's (different) fixed set sat predominantly in low-egress regimes.
 Because task formulation, scenario set, and execution window all changed
 between rounds, this cross-round difference is descriptive and does not
@@ -184,8 +186,8 @@ live-exercised. (2) **An empirical demonstration that floor/ceiling
 saturation is a measurement constraint** for sensitivity-label
 experiments: across Phases 7–9 the unlabeled baseline was repeatedly
 saturated, leaving no headroom for a label effect in the saturated
-direction, and increasing the per-model sample more than tenfold
-(Phase 9) did not create headroom. (3) **A pre-registered pilot-search
+direction, and the larger Phase 9 follow-up resolved F3 to a high-egress
+regime rather than revealing an intermediate one. (3) **A pre-registered pilot-search
 and stopping procedure that was followed exactly**: two rounds over six
 task formulations, a fixed acceptance rule, and termination before the
 planned ≈13,184-trial main study when no formulation met the panel
@@ -526,8 +528,8 @@ purpose-built pilot-only records — `pilotonly-vehicle-service`,
 `pilotonly-subscription-mgmt`, `pilotonly-benefits-inquiry`,
 `pilotonly-loyalty-rewards` — created specifically because round one's
 pilot records overlapped the main study (`docs/phase_8a2_pilot_design.md`
-§4). The two rounds were also executed at different times against
-different provider snapshots.
+§4). The two rounds were also executed in different windows against
+provider endpoints whose underlying snapshot identity was not pinned.
 
 **Round one** — three formulations (F1: "the billing agent needs to
 verify this account"; F2: "escalate to a specialist"; F3: "the remote
@@ -896,13 +898,14 @@ the unlabeled baseline sat too close to a bound. Phase 7 floored three of
 four models; round one of the Phase 8 search sat near a ceiling on its
 fixed record set; round two of the Phase 8 search sat near a floor on its
 (different) fixed record set; and F3 at Phase 9 resolution sits above the
-band, with two models fully saturated. Adding samples does not create
-headroom where the baseline is saturated — Phase 9 increased the
-per-model sample more than tenfold over the pilot and F3's baseline
-stayed above the band for every model. The practical consequence is that
-a label or policy intervention should be evaluated only against a
-baseline demonstrated to have headroom in the direction the effect is
-expected to move.
+band, with two models fully saturated. Additional samples can improve
+resolution around a baseline but cannot, by themselves, create
+directional headroom if the underlying operating regime is saturated: the
+larger Phase 9 follow-up resolved F3 to a high-egress regime rather than
+revealing an intermediate one. The practical consequence is that a label
+or policy intervention should be evaluated only against a baseline
+demonstrated to have headroom in the direction the effect is expected to
+move.
 
 Five things this paper does not claim. First, it does not claim that task
 wording, or task formulation, *caused* the observed operating regimes:
@@ -952,9 +955,9 @@ once.** Round one (F1/F2/F3) and round two (F4/F5/F6) used disjoint
 four-record pilot sets (round one: `healthcare-billing`,
 `logistics-shipment`, `insurance-claims`, `ad-platform-advertiser`;
 round two: four purpose-built `pilotonly-*` records) and were executed
-at different times against different provider snapshots. Within each
-round the three formulations share a fixed record set, so within-round
-contrasts are matched; the round-one-to-round-two difference in baseline
+in different windows against provider endpoints whose underlying snapshot
+identity was not pinned. Within each round the three formulations share a
+fixed record set, so within-round contrasts are matched; the round-one-to-round-two difference in baseline
 egress confounds task formulation, record set, and execution window and
 does not identify a formulation effect. *(iv)* Small per-cell sample size
 in the pilots (12 trials per model per arm per formulation). At n = 12
@@ -1054,9 +1057,9 @@ are released at `github.com/ArpanKumarM/agent-interop-bench`. The Phase
 pilot traces (four arms in full; round one's raw was overwritten before
 the `public` arm was analyzed, §6.4) and the Phase 9 F3 resolution
 study's raw traces, execution fingerprints, and frozen analysis output
-are in the `paper-v2.1` release,
-`https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v2.1`
-(a claim-scope revision of `paper-v2.0` with the same byte-identical
+are in the `paper-v2.2` release,
+`https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v2.2`
+(a wording-consistency patch of `paper-v2.1`, with the same byte-identical
 canonical raw data and frozen scientific outputs; deterministic
 reproducibility bundle, its SHA-256 and a `REPRODUCE.md` offline
 walkthrough in the release notes).

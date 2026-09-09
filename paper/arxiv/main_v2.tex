@@ -151,7 +151,9 @@ not remain below 0.05 under the supplementary Holm adjustment. These
 results show that baseline saturation is an important measurement
 constraint for label-effect experiments: boundary operating regimes can
 prevent an effect in the saturated direction from being observed, and
-adding samples does not create headroom. This study measures verbatim
+additional samples can improve resolution around a baseline but do not,
+by themselves, create directional headroom when the operating regime is
+saturated. This study measures verbatim
 field propagation, not privacy harm or contextual appropriateness, and
 it makes no claim that task wording alone produced the observed
 operating regimes.
@@ -199,7 +201,7 @@ across the three formulations and four arms they compared, so
 record content. But the two rounds used \textbf{disjoint} pilot sets ---
 round one's four scenarios overlapped the main-study 24 and were
 replaced, before round two, with four purpose-built pilot-only records
---- and were executed at different times. Round one's fixed set sat
+--- and were executed in different windows. Round one's fixed set sat
 predominantly in high-egress regimes; round two's (different) fixed set
 sat predominantly in low-egress regimes. Because task formulation,
 scenario set, and execution window all changed between rounds, this
@@ -250,8 +252,9 @@ delivery channel (direct user reply) built and live-exercised.
 (2)~\textbf{An empirical demonstration that floor/ceiling saturation is a
 measurement constraint} for sensitivity-label experiments: across
 Phases~7--9 the unlabeled baseline was repeatedly saturated, leaving no
-headroom for a label effect in the saturated direction, and increasing
-the per-model sample more than tenfold (Phase~9) did not create headroom.
+headroom for a label effect in the saturated direction, and the larger
+Phase~9 follow-up resolved F3 to a high-egress regime rather than
+revealing an intermediate one.
 (3)~\textbf{A pre-registered pilot-search and stopping procedure that was
 followed exactly}: two rounds over six task formulations, a fixed
 acceptance rule, and termination before the planned
@@ -676,7 +679,8 @@ purpose-built pilot-only records --- \code{pilotonly-vehicle-service},
 \code{pilotonly-loyalty-rewards} --- created specifically because round
 one's pilot records overlapped the main study
 (\code{docs/phase_8a2_pilot_design.md} \S4). The two rounds were also
-executed at different times against different provider snapshots.
+executed in different windows against provider endpoints whose underlying
+snapshot identity was not pinned.
 
 \textbf{Round one} --- three formulations (F1: ``the billing agent needs
 to verify this account''; F2: ``escalate to a specialist''; F3: ``the
@@ -1129,10 +1133,11 @@ too close to a bound. Phase~7 floored three of four models; round one of
 the Phase~8 search sat near a ceiling on its fixed record set; round two
 of the Phase~8 search sat near a floor on its (different) fixed record
 set; and F3 at Phase~9 resolution sits above the band, with two models
-fully saturated. Adding samples does not create headroom where the
-baseline is saturated --- Phase~9 increased the per-model sample more
-than tenfold over the pilot and F3's baseline stayed above the band for
-every model. The practical consequence is that a label or policy
+fully saturated. Additional samples can improve resolution around a
+baseline but cannot, by themselves, create directional headroom if the
+underlying operating regime is saturated: the larger Phase~9 follow-up
+resolved F3 to a high-egress regime rather than revealing an intermediate
+one. The practical consequence is that a label or policy
 intervention should be evaluated only against a baseline demonstrated to
 have headroom in the direction the effect is expected to move.
 
@@ -1188,8 +1193,9 @@ rounds changed three things at once.} Round one (F1/F2/F3) and round two
 (F4/F5/F6) used disjoint four-record pilot sets (round one:
 \code{healthcare-billing}, \code{logistics-shipment},
 \code{insurance-claims}, \code{ad-platform-advertiser}; round two: four
-purpose-built \code{pilotonly-*} records) and were executed at different
-times against different provider snapshots. Within each round the three
+purpose-built \code{pilotonly-*} records) and were executed in different
+windows against provider endpoints whose underlying snapshot identity was
+not pinned. Within each round the three
 formulations share a fixed record set, so within-round contrasts are
 matched; the round-one-to-round-two difference in baseline egress
 confounds task formulation, record set, and execution window and does
@@ -1302,9 +1308,9 @@ artifacts are in the \code{paper-v1.0} release; the Phase~8 round-two
 pilot traces (four arms in full; round one's raw was overwritten before
 the \code{public} arm was analyzed, \S\ref{subsec:publicarm}) and the
 Phase~9 F3 resolution study's raw traces, execution fingerprints, and
-frozen analysis output are in the \code{paper-v2.1} release,
-\url{https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v2.1}
-(a claim-scope revision of \code{paper-v2.0} with the same byte-identical
+frozen analysis output are in the \code{paper-v2.2} release,
+\url{https://github.com/ArpanKumarM/agent-interop-bench/releases/tag/paper-v2.2}
+(a wording-consistency patch of \code{paper-v2.1}, with the same byte-identical
 canonical raw data and frozen scientific outputs; deterministic
 reproducibility bundle, its SHA-256 and a \code{REPRODUCE.md} offline
 walkthrough in the release notes).
