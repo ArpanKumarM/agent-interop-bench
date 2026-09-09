@@ -1,0 +1,278 @@
+{
+  "analysis_not_yet_run": true,
+  "attempt_001_note": "the aborted billing attempt 001 (9 gpt-5.6-sol calls, all HTTP 429, 0 successful responses, 0 tokens) is archived separately at reports/_phase9_aborted_billing_attempt_001/ and contributes NOTHING to this raw-data freeze or to any Phase 9 analysis.",
+  "attempt_002_freeze_commit": "e8fd793940458a88f5fd122a7065737bf4a109c5",
+  "attempt_id": "002",
+  "execution_implementation_freeze_commit": "a347a8b3c2b29b77586a113fdabf8bd310e92e85",
+  "execution_integrity": {
+    "attempted": 1536,
+    "completed": 1536,
+    "expected_total_trials": 1536,
+    "indeterminate": 0,
+    "per_arm_total": {
+      "N": 768,
+      "P": 768
+    },
+    "per_domain_total": {
+      "benefits_inquiry": 192,
+      "education_records": 192,
+      "healthcare_billing": 192,
+      "loyalty_rewards": 192,
+      "subscription_mgmt": 192,
+      "travel_booking": 192,
+      "utilities_account": 192,
+      "vehicle_service": 192
+    },
+    "per_model": {
+      "claude-sonnet-5": {
+        "all_trials_carry_execution_fingerprint": true,
+        "by_arm": {
+          "N": 192,
+          "P": 192
+        },
+        "cells": 128,
+        "completed": 384,
+        "domain_balance_ok": true,
+        "execution_fingerprint_sha256": "53bddf60946d9ffed7256600dc73b757e6d9480fa663a3704279509e3badcc07",
+        "finished_at": "2026-09-09T00:53:06.456744+00:00",
+        "indeterminate": 0,
+        "no_retry": true,
+        "protocol_error": 0,
+        "provider_calls": 384,
+        "recorded": 384,
+        "recorded_order_equals_frozen_schedule": true,
+        "requested_model": [
+          "claude-sonnet-5"
+        ],
+        "returned_model": [
+          "claude-sonnet-5"
+        ],
+        "started_at": "2026-09-09T00:24:11.226508+00:00",
+        "tokens_input": 1057281,
+        "tokens_output": 66260
+      },
+      "gpt-5.6-luna": {
+        "all_trials_carry_execution_fingerprint": true,
+        "by_arm": {
+          "N": 192,
+          "P": 192
+        },
+        "cells": 128,
+        "completed": 384,
+        "domain_balance_ok": true,
+        "execution_fingerprint_sha256": "e6e8d8e2bd2d0f4ada55955ed1dc6ff4790405ee572d6098b772e3b8902a3033",
+        "finished_at": "2026-09-09T00:22:12.527135+00:00",
+        "indeterminate": 0,
+        "no_retry": true,
+        "protocol_error": 0,
+        "provider_calls": 384,
+        "recorded": 384,
+        "recorded_order_equals_frozen_schedule": true,
+        "requested_model": [
+          "gpt-5.6-luna"
+        ],
+        "returned_model": [
+          "gpt-5.6-luna"
+        ],
+        "started_at": "2026-09-08T23:56:47.723593+00:00",
+        "tokens_input": 586989,
+        "tokens_output": 69221
+      },
+      "gpt-5.6-sol": {
+        "all_trials_carry_execution_fingerprint": true,
+        "by_arm": {
+          "N": 192,
+          "P": 192
+        },
+        "cells": 128,
+        "completed": 384,
+        "domain_balance_ok": true,
+        "execution_fingerprint_sha256": "57a3a6e7cc5065ad8103d11d81ec2163f6c74c94ee259d8c24a1a6622b6c7e53",
+        "finished_at": "2026-09-08T23:27:19.247164+00:00",
+        "indeterminate": 0,
+        "no_retry": true,
+        "protocol_error": 0,
+        "provider_calls": 384,
+        "recorded": 384,
+        "recorded_order_equals_frozen_schedule": true,
+        "requested_model": [
+          "gpt-5.6-sol"
+        ],
+        "returned_model": [
+          "gpt-5.6-sol"
+        ],
+        "started_at": "2026-09-08T22:54:45.781848+00:00",
+        "tokens_input": 586989,
+        "tokens_output": 74559
+      },
+      "gpt-5.6-terra": {
+        "all_trials_carry_execution_fingerprint": true,
+        "by_arm": {
+          "N": 192,
+          "P": 192
+        },
+        "cells": 128,
+        "completed": 384,
+        "domain_balance_ok": true,
+        "execution_fingerprint_sha256": "fb8953564c6a9eb8e5ae560850156d6483f9a91bb6408729543f191d0cca0db5",
+        "finished_at": "2026-09-08T23:56:05.829696+00:00",
+        "indeterminate": 0,
+        "no_retry": true,
+        "protocol_error": 0,
+        "provider_calls": 384,
+        "recorded": 384,
+        "recorded_order_equals_frozen_schedule": true,
+        "requested_model": [
+          "gpt-5.6-terra"
+        ],
+        "returned_model": [
+          "gpt-5.6-terra"
+        ],
+        "started_at": "2026-09-08T23:29:15.944896+00:00",
+        "tokens_input": 586989,
+        "tokens_output": 72439
+      }
+    },
+    "problems": [],
+    "protocol_error": 0,
+    "tokens_input_total": 2818248,
+    "tokens_output_total": 282479,
+    "tokens_total": 3100727,
+    "total_provider_calls": 1536,
+    "verdict": "PASS"
+  },
+  "immutable_archive": "reports/_phase9_raw_data_freeze_attempt_002/  (git-ignored; byte-identical copy, SHA-256 verified)",
+  "kind": "RAW-DATA FREEZE (pre-analysis)",
+  "live_run_dirs": {
+    "claude-sonnet-5": "reports/experiments/phase-9-f3-claude/",
+    "gpt-5.6-luna": "reports/experiments/phase-9-f3-luna/",
+    "gpt-5.6-sol": "reports/experiments/phase-9-f3-sol/",
+    "gpt-5.6-terra": "reports/experiments/phase-9-f3-terra/"
+  },
+  "phase": 9,
+  "raw_artifact_sha256": {
+    "claude-sonnet-5": {
+      "attempts.jsonl": {
+        "bytes": 205680,
+        "sha256": "a1d17f3aa3bc39b97bd66afceed8f119e0027b18a8a584d082dda466bb21c270"
+      },
+      "execution_fingerprint.json": {
+        "bytes": 990,
+        "sha256": "58cc5ec666e9d4080aac38b9940db6998534e9d8afb5d69a99c7c46eef3724e6"
+      },
+      "phase_9_frozen_trial_map.json": {
+        "bytes": 40419,
+        "sha256": "e59223613a587759e77296e0c1c047a3dffd703fc5c91ffadc51cbafd9803984"
+      },
+      "plan.json": {
+        "bytes": 4461,
+        "sha256": "a979df8e74fbd4da7eca6e285a24d3dd8733cdf8859879015ffca0c581d7d18a"
+      },
+      "schedule.json": {
+        "bytes": 93140,
+        "sha256": "b62cbde75e3a010384e3c92fa66505ace6be5fe80d4a10c413d3aeecda7104bd"
+      },
+      "summary.json": {
+        "bytes": 1238,
+        "sha256": "12d17b98a0f0efbe30d06c9af9151918fff1e192c34bed3b5e2a10b8968c94c9"
+      },
+      "trials.jsonl": {
+        "bytes": 3035167,
+        "sha256": "f09c30cbc0c1e7688e672341bec70767deb0e6885999d85e12074b7b57e06313"
+      }
+    },
+    "gpt-5.6-luna": {
+      "attempts.jsonl": {
+        "bytes": 202224,
+        "sha256": "cdf40d07d15b604ff7b922ca86927b6ca8826b1924be1809efea60556ffe4e4b"
+      },
+      "execution_fingerprint.json": {
+        "bytes": 990,
+        "sha256": "a4c74972956bd8ea6c214c707ef6c52b591c38a0d6dc2e1ac1f4266b32e2a8ab"
+      },
+      "phase_9_frozen_trial_map.json": {
+        "bytes": 39267,
+        "sha256": "ed5ad38f0b5b986d08f94dc49cbe3e17aca8c9322f02be91ddc563f4b6bf17ec"
+      },
+      "plan.json": {
+        "bytes": 4458,
+        "sha256": "37047c91a4e911aaf1020c42d59126ea63d10d2e0e7d21145cc0474e42871338"
+      },
+      "schedule.json": {
+        "bytes": 91988,
+        "sha256": "fc71e7435051cf9900f5db9281c2cc45ca5fec3e63743016c3f515151160d20e"
+      },
+      "summary.json": {
+        "bytes": 1226,
+        "sha256": "f89f6940fb4a25180d176abd274cd10de06cb1830a07c80b7d350afdc8aa4c3f"
+      },
+      "trials.jsonl": {
+        "bytes": 2872748,
+        "sha256": "0d45e5bd1b3419bf52481e3c2d968cc92a2f0b1b432f5129937f34fdfc3e1ce0"
+      }
+    },
+    "gpt-5.6-sol": {
+      "attempts.jsonl": {
+        "bytes": 201072,
+        "sha256": "b6c861ab13ca01bc86392f79f9ef95c6879bd6e7bef575d552abe8b60073aa2e"
+      },
+      "execution_fingerprint.json": {
+        "bytes": 990,
+        "sha256": "059b7b198fa28f800f391a766ce342c02b334c8f85ca48d4915831bb37d26a2c"
+      },
+      "phase_9_frozen_trial_map.json": {
+        "bytes": 38883,
+        "sha256": "3069129f9bb45b2d5cf1a3801cf13e01f5f9b3c575ac7ed097ae4c74e6bc7a90"
+      },
+      "plan.json": {
+        "bytes": 4457,
+        "sha256": "a25dbf59e631eed2d2c6aa98a9e0a5b6d78c692e502af6d09721759cb0471e18"
+      },
+      "schedule.json": {
+        "bytes": 91604,
+        "sha256": "35d0a72b1f7d13658320afca96b568f2f8eaad3e8598fe6dc7bb46c1adc0e6a2"
+      },
+      "summary.json": {
+        "bytes": 1222,
+        "sha256": "4fd6befc6de18183dffaa9c003430865520ba41867d1504c5afd0d41e905eaa8"
+      },
+      "trials.jsonl": {
+        "bytes": 2908174,
+        "sha256": "7d5cd35ba3102fc3bfc2501d74bb9ec758cd220395f44e79980a20370ffe02fc"
+      }
+    },
+    "gpt-5.6-terra": {
+      "attempts.jsonl": {
+        "bytes": 203376,
+        "sha256": "71f8a7a054fe0b6b027b3fc95a44db440a04c757297c58188f52de6732ad0496"
+      },
+      "execution_fingerprint.json": {
+        "bytes": 990,
+        "sha256": "02f6124e2dde01aff72d0f7a79ae52e15329b2ffc25e407d9b96a83f67764a0e"
+      },
+      "phase_9_frozen_trial_map.json": {
+        "bytes": 39651,
+        "sha256": "9ae0119b85f6fac73e07d73a13d7d9dae47e4b49eb54fe5b338127a5fad0aaa3"
+      },
+      "plan.json": {
+        "bytes": 4459,
+        "sha256": "d0b3e993f741597d0d7ba826e459f850258b7a37b5e8deed2971b512e08532ee"
+      },
+      "schedule.json": {
+        "bytes": 92372,
+        "sha256": "74702a72079b094a744af92ad2efdfd600e71601b38c93e9fa9001f9b0900f5f"
+      },
+      "summary.json": {
+        "bytes": 1230,
+        "sha256": "0353b6fd54df76e0e9b7374c7a834ca5cd9115cc2899246bbfcc1b3dc35be6f9"
+      },
+      "trials.jsonl": {
+        "bytes": 2880725,
+        "sha256": "fc658ac3ccf3f79054ee3c38e54543932dce0c076fa9012fd4e0539c7e54d1e6"
+      }
+    }
+  },
+  "raw_data_freeze_manifest_sha256": "f00636208890f17ddb008938d7dbb517a1083b33135d3f903240a68f6e63d818",
+  "raw_data_freeze_utc": "2026-09-09T00:54:27Z",
+  "scientific_freeze_commit": "32a76bfa19c3240bd87011fe9a7e41b3ced1a511"
+}

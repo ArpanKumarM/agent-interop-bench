@@ -560,3 +560,61 @@ attempt 001's `b7f01aac…` — automatically, with no parameter change.
 Attempt 002 does not overwrite attempt 001's journal.
 
 **A live run of attempt 002 is a separate, explicit authorization.**
+
+### 8.3 Attempt 002 — EXECUTED, 2026-09-08 → 2026-09-09 (raw-data freeze)
+
+Authorized and executed as frozen, four models sequentially in the frozen
+order, one provider attempt per frozen trial id, zero retries.
+
+| model | UTC start → end | trials | completed | protocol-err | tokens in / out |
+|---|---|---|---|---|---|
+| `gpt-5.6-sol` | `22:54:45Z` → `23:27:19Z` | 384 | 384 | 0 | 586,989 / 74,559 |
+| `gpt-5.6-terra` | `23:29:15Z` → `23:56:05Z` | 384 | 384 | 0 | 586,989 / 72,439 |
+| `gpt-5.6-luna` | `23:56:47Z` → `2026-09-09T00:22:12Z` | 384 | 384 | 0 | 586,989 / 69,221 |
+| `claude-sonnet-5` | `00:24:11Z` → `00:53:06Z` | 384 | 384 | 0 | 1,057,281 / 66,260 |
+| **total** | | **1,536** | **1,536** | **0** | **2,818,248 / 282,479** (3,100,727) |
+
+**Execution integrity audit: PASS.** 1,536 attempted = 1,536 completed;
+**0** protocol errors, **0** indeterminate, **0** duplicate ids/terminals,
+**0** foreign ids; **1,536** provider calls (exactly one per frozen trial,
+`decision_count = 1` everywhere → no retry); per-arm N=768 / P=768; 192 per
+domain; every `(scenario, arm)` cell has repeats `{0,1,2}`; recorded order
+== frozen schedule order for all four models; requested == returned model
+id for every trial (**no substitution**); `provider_response_id` on all
+1,536; `system_fingerprint` not exposed by either provider API (the
+resolved `returned_model` is the identity); every trial carries its
+model's execution fingerprint. No halt fired. `run_complete = true`,
+`partial = false` on all four summaries.
+
+Per-model execution fingerprints (run under attempt-002 commit `e8fd793`):
+
+| model | `execution_fingerprint_sha256` |
+|---|---|
+| `gpt-5.6-sol` | `57a3a6e7cc5065ad8103d11d81ec2163f6c74c94ee259d8c24a1a6622b6c7e53` |
+| `gpt-5.6-terra` | `fb8953564c6a9eb8e5ae560850156d6483f9a91bb6408729543f191d0cca0db5` |
+| `gpt-5.6-luna` | `e6e8d8e2bd2d0f4ada55955ed1dc6ff4790405ee572d6098b772e3b8902a3033` |
+| `claude-sonnet-5` | `53bddf60946d9ffed7256600dc73b757e6d9480fa663a3704279509e3badcc07` |
+
+**Raw-data freeze (before any scientific computation).** The four run
+directories were copied byte-identically (SHA-256 verified before and
+after) to `reports/_phase9_raw_data_freeze_attempt_002/` (git-ignored,
+with its own `MANIFEST.sha256` self-hash
+`6e86a4cf00ab99636de84d86428fae3d7b708ff2498ec62fe19e43f7852e760f`). The
+committed manifest `docs/phase_9_raw_data_freeze_attempt_002_manifest.json`
+(self-hash
+`f00636208890f17ddb008938d7dbb517a1083b33135d3f903240a68f6e63d818`) pins
+the SHA-256 of every raw artifact plus the full integrity summary. Frozen
+raw `trials.jsonl` SHA-256:
+
+| model | `trials.jsonl` SHA-256 (bytes) |
+|---|---|
+| `gpt-5.6-sol` | `7d5cd35ba3102fc3bfc2501d74bb9ec758cd220395f44e79980a20370ffe02fc` (2,908,174) |
+| `gpt-5.6-terra` | `fc658ac3ccf3f79054ee3c38e54543932dce0c076fa9012fd4e0539c7e54d1e6` (2,880,725) |
+| `gpt-5.6-luna` | `0d45e5bd1b3419bf52481e3c2d968cc92a2f0b1b432f5129937f34fdfc3e1ce0` (2,872,748) |
+| `claude-sonnet-5` | `f09c30cbc0c1e7688e672341bec70767deb0e6885999d85e12074b7b57e06313` (3,035,167) |
+
+Attempt 001 (§8.1) contributes **nothing** to this freeze or to any
+Phase 9 analysis. Scientific freeze `32a76bf`, execution-implementation
+freeze `a347a8b`, and attempt-002 freeze `e8fd793` are all unchanged
+(`verify_phase_9_freeze.py` and `phase_9_execution_addendum.py --check`
+pass throughout).
