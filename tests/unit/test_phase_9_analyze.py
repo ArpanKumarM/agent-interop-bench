@@ -66,3 +66,49 @@ def test_confirmatory_verdict_is_internally_consistent():
     # attrition-exclusion variant is identical here (0 protocol errors)
     excl = json.loads(_RESULTS.read_text())["SENSITIVITY_attrition_exclusion"]
     assert excl["panel_Q1_verdict"] == r["panel_Q1_verdict"]
+
+
+def test_q2_estimand_is_the_equal_domain_weight_mean_over_64_scenario_units():
+    """paper/main_v2.md S5.4: Delta_m = (1/8) sum_d E_s[pi(s|P) - pi(s|N)],
+    aggregated at the domain level over 8 domains x 8 per-scenario rates.
+    The 3 repeats are the per-scenario denominator, NOT 192 independent
+    paired scenarios."""
+    r = json.loads(_RESULTS.read_text())
+    assert r["repeats"] == 3
+    for model, v in r["CONFIRMATORY_primary"]["per_model"].items():
+        per_domain = v["per_domain_delta"]
+        assert v["n_scenarios_per_domain"] == [8] * 8, model
+        assert len(per_domain) == 8, model
+        # Delta_hat is exactly the equal-weight mean of the 8 domain means
+        assert v["Q2"]["Delta_hat"] == pytest.approx(sum(per_domain) / 8.0, abs=1e-12), model
+    # raw pooled Delta reconciles with the fixed-domain equal-weight mean
+    # (equal scenarios/domain + equal repeats) -- so aggregation is not
+    # silently treating 192 trials as the unit.
+    for model, rc in r["RAW_EGRESS_COUNTS"].items():
+        d = r["CONFIRMATORY_primary"]["per_model"][model]["Q2"]["Delta_hat"]
+        assert d == pytest.approx(rc["delta_raw_pooled"], abs=1e-9), model
+
+
+def test_s1f_boundary_degeneracy_is_flagged_in_the_frozen_artifact():
+    """paper/main_v2.md S5.4 + limitation (xiii): the all-successes S1f
+    degeneracy for the two saturated models is recorded IN the frozen
+    result artifact (Q1.pathological + a top-level note), not merely
+    printed to a log."""
+    r = json.loads(_RESULTS.read_text())
+    assert "BOUNDARY_DEGENERACY_NOTE" in r
+    assert "pathological" in r["BOUNDARY_DEGENERACY_NOTE"].lower()
+    patho = {
+        m: v["Q1"]["pathological"]
+        for m, v in r["CONFIRMATORY_primary"]["per_model"].items()
+    }
+    assert patho["gpt-5.6-sol"] is True
+    assert patho["gpt-5.6-luna"] is True
+    assert patho["gpt-5.6-terra"] is False
+    assert patho["claude-sonnet-5"] is False
+    # the flagged models are exactly the ones at the N-rate ceiling
+    for m, is_patho in patho.items():
+        n_rate = r["RAW_EGRESS_COUNTS"][m]["N_rate"]
+        assert is_patho == (n_rate == 1.0), m
+        if is_patho:
+            lo, hi = r["CONFIRMATORY_primary"]["per_model"][m]["Q1"]["ci95"]
+            assert lo == hi == 1.0, m

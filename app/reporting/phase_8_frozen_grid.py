@@ -27,6 +27,26 @@ ROUND_ONE_FRAMINGS: tuple[str, ...] = ("F1", "F2", "F3")
 ROUND_TWO_FRAMINGS: tuple[str, ...] = ("F4", "F5", "F6")
 ALL_FRAMINGS: tuple[str, ...] = ROUND_ONE_FRAMINGS + ROUND_TWO_FRAMINGS
 
+# The two pilot rounds' four-record sets. Round one (F1-F3, Phase 8C) used
+# records that overlap the 24 main-study scenarios; round two (F4-F6,
+# Phase 8A.2) used four purpose-built pilot-only records, DISJOINT from
+# set A and from the main study (docs/phase_8a2_pilot_design.md S4,
+# docs/phase_8c_pilot_result.md). Both sets are transcribed here from the
+# frozen design/result docs and mechanically checked disjoint by
+# tests/unit/test_phase_8_round_set_disjointness.py.
+ROUND_ONE_PILOT_RECORDS: tuple[str, ...] = (
+    "healthcare-billing",
+    "logistics-shipment",
+    "insurance-claims",
+    "ad-platform-advertiser",
+)
+ROUND_TWO_PILOT_RECORDS: tuple[str, ...] = (
+    "pilotonly-vehicle-service",
+    "pilotonly-subscription-mgmt",
+    "pilotonly-benefits-inquiry",
+    "pilotonly-loyalty-rewards",
+)
+
 BAND_LOW, BAND_HIGH = 0.25, 0.70
 CEILING_MIN_RATE = 0.917  # round-one ceiling rule: min rate >= this, across F1-F3
 SENSITIVITY_MIN_SEPARATION = 0.50

@@ -93,29 +93,22 @@ reproducibility check are all reproduced here
 frozen analysis artifacts v1 used.
 
 \smallskip
-\textbf{Numeric integrity.} Every number in this draft is checked by
-\code{paper/arxiv/audit_phase8_numbers.py} against frozen source and the
-build fails on any drift: Phase~6/7 values against the same frozen
-analysis artifacts v1 used; Phase~8 pilot results against the frozen
-pilot artifacts and, for round two, a live recomputation from the raw
-trial bytes; the restored v1 tables row-for-row against v1; the derived
-quantities in the abstract and introduction against the frozen grid; and
-every cited arXiv id against a hand-verified set. Phase~9's numbers are
-checked the same way, against the frozen analysis output
-(\code{docs/phase_9_design/phase_9_results_attempt_002.json}), by
-\code{paper/arxiv/audit_phase9_numbers.py}, which also fails the build on
-unsupported causal or cross-round-attribution wording for the Phase~8
-pilot search, on any statement that the two pilot rounds shared a
-scenario set, on \code{L0} used as a synonym for a privacy violation, and
-on stale F3-as-open-question language; and which requires the
-disjoint-record-set disclosure, the within-round-versus-cross-round
-distinction, the L0 construct-validity paragraph, the Claude Holm caveat,
-and the provider/scenario comparability limitation to be present. This is
-verification
-rather than generation --- v1's \code{gen_tables.py} regenerates its
-tables from artifacts, whereas here the prose is written and then checked
---- and it is aimed where both v1's errors and this revision's occurred:
-prose claims in the abstract and introduction, not table cells.
+\textbf{Numeric integrity.} Reported numerical quantities and tables are
+automatically reconciled against the frozen Phase~6--9 analysis artifacts
+--- including recomputation from the available byte-pinned raw trial data
+for the Phase~8 round-two and Phase~9 runs --- and the build fails on any
+numerical drift. The Markdown source of record and this LaTeX build are
+checked against each other table-for-table and figure-for-figure, so the
+two renderings cannot drift apart. The repository additionally contains
+separate manuscript-lint checks for previously identified scope and
+wording inconsistencies (for example, causal or cross-round attribution
+for the Phase~8 pilot search, \code{L0} used as a synonym for a privacy
+violation, and presence of the required confound and caveat
+disclosures); these are documentation safeguards, not statistical or
+numerical verification. The full lint list lives in the audit code
+(\code{paper/arxiv/audit_phase8_numbers.py},
+\code{paper/arxiv/audit_phase9_numbers.py}) and the reproducibility
+notes.
 }}
 \end{center}
 
@@ -144,9 +137,12 @@ unresolved at $n = 12$. A separately pre-registered 1{,}536-trial F3
 resolution study (64 scenarios, three repeats, matched unlabeled/public
 arms, four models, zero attrition; raw data frozen before analysis) then
 placed all four models above the band, with Sol and Luna fully
-saturated. Where upward headroom remained, public labeling increased
-verbatim egress for Terra ($+0.167$) and Claude ($+0.104$) under the
-pre-registered model-specific confidence-interval criterion; Claude did
+saturated. Terra and Claude classified above the band but were not
+saturated, so their unlabeled baselines retained upward room; under the
+pre-registered model-specific confidence-interval criterion, public
+labeling increased verbatim egress for both ($+0.167$ and $+0.104$),
+showing that lying inside the pre-specified panel band is not a necessary
+condition for detecting a model-specific directional effect. Claude did
 not remain below 0.05 under the supplementary Holm adjustment. These
 results show that baseline saturation is an important measurement
 constraint for label-effect experiments: boundary operating regimes can
@@ -249,21 +245,27 @@ outcome over six record values, three near-match specificity detectors
 with a measured $0.0\%$ false-positive rate against adversarial synthetic
 negative controls, a suppress/permit calibration check, and a second
 delivery channel (direct user reply) built and live-exercised.
-(2)~\textbf{An empirical demonstration that floor/ceiling saturation is a
-measurement constraint} for sensitivity-label experiments: across
-Phases~7--9 the unlabeled baseline was repeatedly saturated, leaving no
-headroom for a label effect in the saturated direction, and the larger
-Phase~9 follow-up resolved F3 to a high-egress regime rather than
-revealing an intermediate one.
-(3)~\textbf{A pre-registered pilot-search and stopping procedure that was
-followed exactly}: two rounds over six task formulations, a fixed
-acceptance rule, and termination before the planned
-$\approx$13{,}184-trial main study when no formulation met the panel
-criterion. (4)~\textbf{A separately pre-registered 1{,}536-trial F3
-resolution study} with matched public/unlabeled arms, establishing F3 as
-a high-egress regime above the band for all four models and detecting
-model-specific public-label effects (Terra, Claude) where upward headroom
-remained. The frozen designs, byte-pinned raw data, and machine-checked
+(2)~\textbf{A separately pre-registered 1{,}536-trial F3 resolution
+study} with matched public/unlabeled arms that draws a distinction
+between a conservative panel-level headroom screen and model-specific
+directional detectability: all four models classified \code{ABOVE} the
+pre-specified $[0.25, 0.70]$ panel band; Sol and Luna were fully
+saturated; Terra and Claude were above the band but not saturated; under
+the pre-registered \emph{primary} model-specific CI rule a positive
+\mbox{$P - N$} effect was detected for Terra and Claude, and Terra also
+survived the supplementary Holm familywise adjustment while Claude did
+not.
+(3)~\textbf{An empirical demonstration that floor/ceiling saturation is a
+directional measurement constraint} across the study arc: near a bound,
+an effect in the saturated direction cannot be observed regardless of
+sample size. This is stated narrowly for this fixed decision surface and
+carries no claim about how prevalent saturation is in deployed agent
+tasks. (4)~\textbf{A pre-registered pilot-search and stopping procedure
+that was followed exactly}: two rounds over six task formulations, a
+fixed acceptance rule, and termination before the planned
+$\approx$13{,}184-trial main study when no formulation placed at least
+three of four models inside the panel band. The frozen designs,
+byte-pinned raw data, and machine-checked
 numeric audits support these contributions and are described under
 Reproducibility (\S\ref{sec:repro}); the reproducibility engineering is
 not itself a scientific claim. Two further observations --- a calibration
@@ -683,6 +685,17 @@ one's pilot records overlapped the main study
 executed in different windows against provider endpoints whose underlying
 snapshot identity was not pinned.
 
+\paragraph{Round-two design guardrail.}
+The frozen Phase~8A.2 design (\code{docs/phase_8a2_pilot_design.md}
+\S2--\S3) fixed, before any F4/F5/F6 candidate was written, exactly which
+round-one information could inform round two: no candidate could be
+written, revised, or discarded using any individual model's Phase~8C
+rate, and the only permitted carryover was a single general,
+model-agnostic mechanism-level lesson (\S3), stated once before drafting.
+The three candidates were then written as one batch, piloted once, and
+evaluated mechanically against the \S1 acceptance rule, with a hard stop
+after round two.
+
 \textbf{Round one} --- three formulations (F1: ``the billing agent needs
 to verify this account''; F2: ``escalate to a specialist''; F3: ``the
 remote agent asked for these details''), 576 trials, 575 completed.
@@ -694,26 +707,38 @@ completed.
 
 \begin{table}[t]
 \centering
-\caption{Unlabeled-arm egress rate, all four models. \textbf{This is not
-a matched six-condition experiment:} columns F1--F3 are round one on
-record set A, columns F4--F6 are round two on record set B, the two sets
-are disjoint (F1--F3: \code{healthcare-billing}, \code{logistics-shipment},
-\code{insurance-claims}, \code{ad-platform-advertiser}; F4--F6:
-\code{pilotonly-vehicle-service}, \code{pilotonly-subscription-mgmt},
-\code{pilotonly-benefits-inquiry}, \code{pilotonly-loyalty-rewards}), and
-the rounds ran at different times. The round-one-to-round-two difference
-confounds task formulation, record set, and execution window and is not
-attributed to any one of them.}
+\caption{Unlabeled-arm egress rate, all four models, shown as \textbf{two
+separate panels because F1--F6 are not a matched six-condition
+experiment.} Panel A is round one on record set A
+(\code{healthcare-billing}, \code{logistics-shipment},
+\code{insurance-claims}, \code{ad-platform-advertiser}); Panel B is round
+two on record set B (\code{pilotonly-vehicle-service},
+\code{pilotonly-subscription-mgmt}, \code{pilotonly-benefits-inquiry},
+\code{pilotonly-loyalty-rewards}). The two record sets are disjoint and
+the rounds ran in different execution windows. Within a panel, record
+content is fixed across the three formulations, so within-round contrasts
+are matched; a cross-panel difference confounds task formulation, record
+set, and execution window and is descriptive only.}
 \label{tab:grid}
 \small
-\begin{tabular}{@{}lcccccc@{}}
+\begin{tabular}{@{}lccc@{}}
 \toprule
-model & F1 & F2 & F3 & F4 & F5 & F6 \\
+\multicolumn{4}{@{}l}{\emph{Panel A --- round one, record set A}} \\
+model & F1 & F2 & F3 \\
 \midrule
-gpt-5.6-sol     & $1.000$ & $1.000$ & $1.000$ & $0.000$ & $0.000$ & $0.000$ \\
-gpt-5.6-terra   & $0.917$ & $0.500$ & $0.583$ & $0.000$ & $0.000$ & $0.000$ \\
-gpt-5.6-luna    & $1.000$ & $0.917$ & $0.917$ & $0.000$ & $0.000$ & $0.000$ \\
-claude-sonnet-5 & $1.000$ & $1.000$ & $0.750$ & $0.417$ & $0.917$ & $0.833$ \\
+gpt-5.6-sol     & $1.000$ & $1.000$ & $1.000$ \\
+gpt-5.6-terra   & $0.917$ & $0.500$ & $0.583$ \\
+gpt-5.6-luna    & $1.000$ & $0.917$ & $0.917$ \\
+claude-sonnet-5 & $1.000$ & $1.000$ & $0.750$ \\
+\midrule
+\addlinespace
+\multicolumn{4}{@{}l}{\emph{Panel B --- round two, record set B (disjoint from A)}} \\
+model & F4 & F5 & F6 \\
+\midrule
+gpt-5.6-sol     & $0.000$ & $0.000$ & $0.000$ \\
+gpt-5.6-terra   & $0.000$ & $0.000$ & $0.000$ \\
+gpt-5.6-luna    & $0.000$ & $0.000$ & $0.000$ \\
+claude-sonnet-5 & $0.417$ & $0.917$ & $0.833$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -776,7 +801,11 @@ does not redefine that rule retroactively, and does not revisit F1--F2
 or F4--F6: selecting F3 follows the interval ambiguity the pilot itself
 flagged (it is not chosen for its outcome), and the choice, the design,
 the estimands, and the decision rules were all fixed and committed
-before any Phase~9 model call (Appendix~\ref{app:pinned}).
+before any Phase~9 model call (Appendix~\ref{app:pinned}). Phase~9 does
+not alter the frozen Phase~8 stopping decision --- the acceptance rule,
+the point-estimate gate, and the round-limit stop all stand as executed;
+Phase~9 only informs how the $[0.25, 0.70]$ operating criterion should be
+interpreted in future study design.
 
 \paragraph{Design.}
 One task formulation --- the verbatim Phase~8 F3 \code{a2a_relay} prompt --- and
@@ -929,6 +958,24 @@ statement about where the tested formulations placed the baseline, not
 about why: as noted in \S\ref{subsec:phase8}, the formulations vary
 surface wording together with task-structural cues, and the Phase~8
 rounds also differed in record set and execution window.
+
+\paragraph{The pre-registered band's role.}
+Phase~9 also clarifies what the $[0.25, 0.70]$ band was and was not. The
+band was a conservative \emph{panel-level} search criterion, chosen a
+priori to give the whole four-model panel headroom in \textbf{both}
+directions at once; it was not specified as a necessary condition for
+every model-specific label effect to be detectable. Terra and Claude
+both classify \code{ABOVE} under Q1, yet their unlabeled point estimates
+stay below the upper boundary, leaving $1 - 0.823 = 0.177$ and
+$1 - 0.844 = 0.156$ of upward point-estimate gap to the ceiling (these
+are descriptive gaps, not thresholds). Under the pre-registered
+model-specific CI criterion a positive \mbox{$P - N$} contrast was still
+detected for both. \code{gpt-5.6-sol} and \code{gpt-5.6-luna}, by
+contrast, had $N = 1.000$ and therefore no upward room at all for an
+additional positive change. \code{ABOVE} and \code{SATURATED} are thus
+empirically distinct operating regimes: the frozen panel verdict remains
+\code{FAILS} exactly as pre-registered, but failing that panel screen did
+not make every directional contrast unmeasurable.
 
 \begin{table}[t]
 \centering
@@ -1138,9 +1185,26 @@ fully saturated. Additional samples can improve resolution around a
 baseline but cannot, by themselves, create directional headroom if the
 underlying operating regime is saturated: the larger Phase~9 follow-up
 resolved F3 to a high-egress regime rather than revealing an intermediate
-one. The practical consequence is that a label or policy
-intervention should be evaluated only against a baseline demonstrated to
-have headroom in the direction the effect is expected to move.
+one.
+
+The pre-registered $[0.25, 0.70]$ band served its intended design role as
+a conservative screen for panel-wide bidirectional headroom, and the
+frozen Q1 panel verdict is \code{FAILS} exactly as pre-registered.
+Phase~9 shows that failing that screen does not imply that every
+directional contrast is unmeasurable: Terra and Claude were above the
+band but not saturated and retained enough upward room for positive
+\mbox{$P - N$} contrasts to be detected at the Phase~9 precision. What
+becomes structurally unobservable is movement toward a boundary once that
+boundary is reached. More generally, for a directional effect the
+relevant headroom is the distance from the baseline to the corresponding
+outcome bound, read together with the effect size one aims to resolve and
+the uncertainty of the estimator. A fixed interior band is a useful
+conservative experimental-design operating criterion, but it is not a
+universal detectability threshold: a baseline outside it can still leave
+room for a particular effect to be detected, and the practical
+consequence is that a label or policy intervention should be evaluated
+against a baseline demonstrated to have headroom in the direction the
+effect is expected to move.
 
 Five things this paper does not claim. First, it does not claim that
 task wording, or task formulation, \emph{caused} the observed operating
@@ -1171,7 +1235,13 @@ informational requirement, the recipient, the available actions, and the
 execution window fixed while varying one component at a time ---
 beginning with a meaning-preserving surface-wording variation --- would
 be needed to identify which task-formulation features cause the observed
-operating-regime differences. That study is not run here.
+operating-regime differences. That study is not run here. Separately,
+future studies could choose their operating criterion by first specifying
+the directional effect size of interest and the desired precision, then
+relating those to the distance from the baseline to the relevant outcome
+bound, rather than treating a fixed interior interval as a universal
+detectability threshold; this paper does not validate that alternative
+rule.
 
 % ===========================================================================
 \section{Limitations}
@@ -1260,7 +1330,15 @@ that the transfer was inappropriate. Paraphrased or transformed
 disclosure and contextual appropriateness are outside the primary
 contrast (the L1--L3 near-match detectors, \S\ref{subsec:validation},
 are descriptive only). The panel is four models from two providers and
-is not a random sample of deployed models.
+is not a random sample of deployed models. \emph{(xix)} The
+$[0.25, 0.70]$ interval was selected a priori as an operating criterion
+for panel-wide bidirectional headroom; it was not estimated from Phase~9
+data and is not validated here as an optimal or minimal detectability
+threshold. Phase~9 shows that model-specific positive \mbox{$P - N$}
+contrasts can still be detected above its upper edge when the baseline is
+not saturated (\S\ref{subsec:phase9}, \S\ref{sec:discussion}); the
+equal-weight point-estimate gaps $0.177$ (Terra) and $0.156$ (Claude)
+are descriptive, not a required headroom.
 
 % ===========================================================================
 \section{Reproducibility}

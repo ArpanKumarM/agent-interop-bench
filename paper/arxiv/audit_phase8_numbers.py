@@ -285,27 +285,48 @@ def audit_pilot_result_docs() -> None:
 # --------------------------------------------------------------------------- #
 # 3. paper/main_v2.md Table 1 grid
 # --------------------------------------------------------------------------- #
+# Table 1 (tab:grid) is now rendered as TWO 3-column panels -- Panel A =
+# round one (F1-F3, record set A), Panel B = round two (F4-F6, record set
+# B) -- because F1-F6 are not a matched six-condition experiment. Each
+# model contributes one 3-numeric-cell row per panel, so 4 models x 2
+# panels = 8 rows, in panel order (all of Panel A, then all of Panel B).
 _MODEL_ROW_RE = re.compile(
     r"^\|\s*(gpt-5\.6-sol|gpt-5\.6-terra|gpt-5\.6-luna|claude-sonnet-5)\s*"
-    r"\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|",
+    r"\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|",
     re.MULTILINE,
 )
 
 
+def _check_table_1_rows(rows: list, where: str) -> None:
+    check(
+        len(rows) == 8,
+        f"{where}: expected 8 panel rows (4 models x 2 panels), found {len(rows)}",
+    )
+    panel_a, panel_b = rows[:4], rows[4:]
+    for panel_rows, framings, panel in (
+        (panel_a, grid.ROUND_ONE_FRAMINGS, "A"),
+        (panel_b, grid.ROUND_TWO_FRAMINGS, "B"),
+    ):
+        seen = set()
+        for model, *cells in panel_rows:
+            seen.add(model)
+            values = [float(c) for c in cells]
+            expected = [grid.N_RATE[model][f] for f in framings]
+            check(
+                values == expected,
+                f"{where} Panel {panel} row for {model}: {values} != frozen grid {expected}",
+            )
+        missing = set(grid.PANEL) - seen
+        check(not missing, f"{where} Panel {panel} missing models: {missing}")
+
+
 def audit_table_1() -> None:
-    rows = _MODEL_ROW_RE.findall(MAIN_V2)
-    check(len(rows) == 4, f"Table 1: expected 4 model rows, found {len(rows)}")
-    seen_models = set()
-    for model, *cells in rows:
-        seen_models.add(model)
-        values = [float(c) for c in cells]
-        expected = [grid.N_RATE[model][f] for f in grid.ALL_FRAMINGS]
-        check(
-            values == expected,
-            f"Table 1 row for {model}: {values} != frozen grid {expected}",
-        )
-    missing = set(grid.PANEL) - seen_models
-    check(not missing, f"Table 1 missing models: {missing}")
+    # scope the row scan to the Table 1 region only -- other Markdown
+    # tables (e.g. the S6.4 F4-F6 public-arm table) also have
+    # ``| <model> | <num> | <num> | <num> |``-shaped rows.
+    start = MAIN_V2.index("**Table 1.")
+    end = MAIN_V2.index("Round one (set A) exhibited", start)
+    _check_table_1_rows(_MODEL_ROW_RE.findall(MAIN_V2[start:end]), "Table 1")
 
 
 # --------------------------------------------------------------------------- #
@@ -716,7 +737,6 @@ def audit_appendix_b_hashes() -> None:
 # --------------------------------------------------------------------------- #
 _TEX_MODEL_ROW_RE = re.compile(
     r"^(gpt-5\.6-sol|gpt-5\.6-terra|gpt-5\.6-luna|claude-sonnet-5)\s*"
-    r"&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*"
     r"&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*&\s*\$([\d.]+)\$\s*\\\\",
     re.MULTILINE,
 )
@@ -750,13 +770,10 @@ def _data_row_numbers(block: str) -> list[str]:
 
 
 def audit_tex_mirrors_manuscript() -> None:
-    # -- Table 1 grid --
-    rows = _TEX_MODEL_ROW_RE.findall(_tex_table_block("tab:grid"))
-    check(len(rows) == 4, f"main_v2.tex Table 1: expected 4 rows, found {len(rows)}")
-    for model, *cells in rows:
-        got = [float(c) for c in cells]
-        want = [grid.N_RATE[model][f] for f in grid.ALL_FRAMINGS]
-        check(got == want, f"main_v2.tex Table 1 row {model}: {got} != frozen {want}")
+    # -- Table 1 grid (two 3-column panels: A = F1-F3, B = F4-F6) --
+    _check_table_1_rows(
+        _TEX_MODEL_ROW_RE.findall(_tex_table_block("tab:grid")), "main_v2.tex Table 1"
+    )
 
     # -- acceptance table --
     acc = _TEX_ACCEPT_ROW_RE.findall(_tex_table_block("tab:accept"))

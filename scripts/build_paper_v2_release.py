@@ -1,11 +1,17 @@
-r"""Build the deterministic public reproducibility release for ``paper-v2.4``.
+r"""Build the deterministic public reproducibility release for ``paper-v2.5``.
 
-``paper-v2.4`` is a TMLR-formatting patch of ``paper-v2.3`` (itself a
-wording patch of ``paper-v2.2`` / ``paper-v2.1``, itself a claim-scope
-revision of ``paper-v2.0``): only ``paper/tmlr/`` derivation scripts and
-the regenerated anonymous ``main_tmlr.tex`` changed (references now
-precede the appendix). The public manuscript, canonical raw data, and
-every frozen scientific output are byte-identical to ``paper-v2.0``.
+``paper-v2.5`` is an evidence-alignment revision over ``paper-v2.4``: the
+manuscript now separates the conservative panel-level headroom screen
+from model-specific directional detectability (Terra/Claude were above
+the ``[0.25, 0.70]`` band but not saturated, and a positive P-N effect
+was still detected for both under the pre-registered primary CI rule),
+Table 1 is split into two disjoint-record-set panels, the Numeric
+integrity note is shortened, and three new tests are added (Phase 8
+round-set disjointness, the provider-bound decision-context seam, and the
+Phase 9 Q2-estimand / S1f-boundary artifact checks). No experiment, raw
+trial, frozen analysis, numerical result, or pre-registered rule
+changed; canonical raw data and every frozen scientific output are
+byte-identical to ``paper-v2.0``.
 
 Contents:
   * the full tracked source tree at HEAD (``git archive HEAD``) -- app/,
@@ -39,7 +45,7 @@ import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "agent-interop-bench-paper-v2.4"
+PREFIX = "agent-interop-bench-paper-v2.5"
 OUT = ROOT / "dist" / f"{PREFIX}.tar.gz"
 
 # git-ignored published raw-data trees, added from disk by allow-list.
@@ -119,6 +125,7 @@ _ARCHIVE_EXCLUDE = {
     "docs/release_v2_2_notes.md",
     "docs/release_v2_3_notes.md",
     "docs/release_v2_4_notes.md",
+    "docs/release_v2_5_notes.md",
 }
 
 
