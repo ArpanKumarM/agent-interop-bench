@@ -11,4 +11,5 @@
 [sub] commit SHA d06a88b0eebd... relabelled (1x)
 [sub] commit SHA 89c0542... relabelled (1x)
 [move] section 5.2 'Secondary diagnostics' + 'Cross-phase reproducibility check' paragraphs and tables tab:p7diag / tab:xphase relocated verbatim to a new appendix section 'Phase 7 secondary and cross-phase tables' (main-body compression; no text changed)
+[order] TMLR format: bibliography emitted between the main body and \appendix (public source keeps \appendix before the bibliography); appendix content, labels, and A--D lettering unchanged
 [bib] dropped ['mahapatra2026v1'] from references_tmlr.bib (no \cite to it in the anonymized body)

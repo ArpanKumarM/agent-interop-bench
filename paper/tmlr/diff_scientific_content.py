@@ -45,7 +45,15 @@ COMMIT_SHAS = {
 
 def _body(tex: str) -> str:
     s = tex[tex.index(r"\begin{abstract}") :]
-    s = s[: s.index(r"\bibliography{")]
+    # Keep everything up to \end{document}. The bibliography block sits
+    # AFTER the appendix in the public manuscript but BEFORE it in the
+    # TMLR submission (TMLR wants references, then appendix), so excise
+    # the two bib lines wherever they occur rather than slicing at them --
+    # otherwise the anon appendix would be dropped from the comparison.
+    if r"\end{document}" in s:
+        s = s[: s.index(r"\end{document}")]
+    s = re.sub(r"\\bibliographystyle\{[^}]*\}[ \t]*\n?", "", s)
+    s = re.sub(r"\\bibliography\{[^}]*\}[ \t]*\n?", "", s)
     # drop the two artifact paragraphs (one per side) up to the blank line
     for para in (r"\paragraph{Public artifact.}", r"\paragraph{Reproducibility artifacts.}"):
         if para in s:

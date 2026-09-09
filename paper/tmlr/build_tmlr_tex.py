@@ -172,13 +172,34 @@ def main() -> int:
     if leftover:
         raise SystemExit(f"anonymization FAILED: commit-shaped hashes remain: {leftover}")
 
-    # --- 4. assemble ---
+    # --- 3c. TMLR section order: references must precede the appendix.
+    #        The public manuscript places \appendix before the bibliography;
+    #        for the TMLR submission we split the sliced body at \appendix and
+    #        emit  main body -> \bibliography -> \appendix ... .  Only the
+    #        position of the bibliography block changes; no appendix content
+    #        is moved, reworded, or renumbered (\appendix still immediately
+    #        precedes Appendix A, so lettering A..E is unchanged). ---
+    ap = body.index("\\appendix")
+    if body.count("\\appendix") != 1:
+        raise SystemExit("expected exactly one \\appendix in the sliced body")
+    main_body = body[:ap].rstrip()
+    appendix = body[ap:].strip()
+    appendix = re.sub(r"\s*\\clearpage\s*$", "\n", appendix)
+    log.append(
+        "[order] TMLR format: bibliography emitted between the main body and "
+        "\\appendix (public source keeps \\appendix before the bibliography); "
+        "appendix content, labels, and A--D lettering unchanged"
+    )
+
+    # --- 4. assemble: main body -> references -> appendix -> end ---
     out = (
         PREAMBLE
         + "\n"
-        + body
+        + main_body
         + "\n\n"
-        + "\\bibliographystyle{tmlr}\n\\bibliography{references_tmlr}\n\n\\end{document}\n"
+        + "\\bibliographystyle{tmlr}\n\\bibliography{references_tmlr}\n\n"
+        + appendix
+        + "\n\n\\end{document}\n"
     )
     OUT_TEX.write_text(out)
 

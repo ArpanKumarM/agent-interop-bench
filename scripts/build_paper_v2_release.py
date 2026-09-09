@@ -1,8 +1,10 @@
-r"""Build the deterministic public reproducibility release for ``paper-v2.3``.
+r"""Build the deterministic public reproducibility release for ``paper-v2.4``.
 
-``paper-v2.3`` is a wording-consistency patch of ``paper-v2.2`` (itself a
-patch of ``paper-v2.1``, itself a claim-scope revision of ``paper-v2.0``):
-the manuscript and its numeric audits changed; the canonical raw data and
+``paper-v2.4`` is a TMLR-formatting patch of ``paper-v2.3`` (itself a
+wording patch of ``paper-v2.2`` / ``paper-v2.1``, itself a claim-scope
+revision of ``paper-v2.0``): only ``paper/tmlr/`` derivation scripts and
+the regenerated anonymous ``main_tmlr.tex`` changed (references now
+precede the appendix). The public manuscript, canonical raw data, and
 every frozen scientific output are byte-identical to ``paper-v2.0``.
 
 Contents:
@@ -37,7 +39,7 @@ import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "agent-interop-bench-paper-v2.3"
+PREFIX = "agent-interop-bench-paper-v2.4"
 OUT = ROOT / "dist" / f"{PREFIX}.tar.gz"
 
 # git-ignored published raw-data trees, added from disk by allow-list.
@@ -116,6 +118,7 @@ _ARCHIVE_EXCLUDE = {
     "docs/release_v2_1_notes.md",
     "docs/release_v2_2_notes.md",
     "docs/release_v2_3_notes.md",
+    "docs/release_v2_4_notes.md",
 }
 
 
