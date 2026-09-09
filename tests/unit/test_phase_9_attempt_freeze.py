@@ -4,6 +4,13 @@ attempt-001 billing abort).
 The scientific freeze (32a76bf) and execution-implementation freeze
 (a347a8b) are unchanged; this only guards the attempt-level re-freeze
 manifest.
+
+NOTE: the attempt-002 freeze manifest is a *pre-execution* snapshot. It
+asserts the four real output directories are pristine. Once attempt 002
+has actually run (dirs now hold 384 trials each), the "reproduces /
+matches a fresh build" checks are expected to go stale -- only the
+frozen-parameter assertions still hold. The two tests below are therefore
+skipped after execution.
 """
 
 from __future__ import annotations
@@ -11,6 +18,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from scripts.phase_9_attempt_freeze import (
     ATTEMPT_ID,
     EXECUTION_IMPLEMENTATION_FREEZE_COMMIT,
@@ -22,16 +30,57 @@ from scripts.phase_9_attempt_freeze import (
 from scripts.phase_9_attempt_freeze import main as attempt_freeze_main
 
 _ROOT = Path(__file__).resolve().parents[2]
+_DIRS_PRISTINE = all(
+    not (_ROOT / "reports" / "experiments" / f"phase-9-f3-{s}" / "trials.jsonl").exists()
+    or not (_ROOT / "reports" / "experiments" / f"phase-9-f3-{s}" / "trials.jsonl")
+    .read_text()
+    .strip()
+    for s in ("sol", "terra", "luna", "claude")
+)
 
 
+@pytest.mark.skipif(
+    not _DIRS_PRISTINE,
+    reason="attempt 002 executed; pre-execution pristine-output snapshot is expectedly stale",
+)
 def test_attempt_002_manifest_reproduces_and_verifies():
     assert attempt_freeze_main(["--check"]) == 0
     assert verify_attempt_manifest() == []
 
 
+@pytest.mark.skipif(
+    not _DIRS_PRISTINE,
+    reason="attempt 002 executed; pre-execution pristine-output snapshot is expectedly stale",
+)
 def test_attempt_002_manifest_on_disk_matches_a_fresh_build():
     on_disk = json.loads(MANIFEST_PATH.read_text())
     assert on_disk == build_manifest()
+
+
+def test_attempt_002_manifest_frozen_parameters_are_intact_regardless_of_execution():
+    """These MUST hold whether or not attempt 002 has run -- only the
+    pristine-output snapshot is allowed to go stale post-execution."""
+    a = json.loads(MANIFEST_PATH.read_text())
+    b = build_manifest()
+
+    def _flat(d, p=""):
+        out = {}
+        for k, v in d.items():
+            if isinstance(v, dict):
+                out.update(_flat(v, f"{p}{k}."))
+            else:
+                out[f"{p}{k}"] = v
+        return out
+
+    fa, fb = _flat(a), _flat(b)
+    changed = [
+        k
+        for k in set(fa) | set(fb)
+        if fa.get(k) != fb.get(k)
+        and "real_output_dir_state" not in k
+        and k != "attempt_manifest_sha256"
+    ]
+    assert changed == [], f"frozen-parameter drift: {changed}"
 
 
 def test_attempt_002_changes_no_frozen_parameter():

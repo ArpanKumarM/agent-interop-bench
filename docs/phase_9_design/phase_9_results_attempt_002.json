@@ -1,0 +1,1341 @@
+{
+  "CONFIRMATORY_primary": {
+    "Q2_holm_adjusted_p": {
+      "claude-sonnet-5": 0.08960184881631017,
+      "gpt-5.6-luna": 0.35830339835659597,
+      "gpt-5.6-sol": 1.0,
+      "gpt-5.6-terra": 6.2080050344803794e-06
+    },
+    "Q2_raw_p": {
+      "claude-sonnet-5": 0.029867282938770057,
+      "gpt-5.6-luna": 0.17915169917829799,
+      "gpt-5.6-sol": 1.0,
+      "gpt-5.6-terra": 1.5520012586200949e-06
+    },
+    "panel_Q1_verdict": "FAILS",
+    "per_model": {
+      "claude-sonnet-5": {
+        "Q1": {
+          "ci95": [
+            0.7616112378517297,
+            0.9258887621482703
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.08213876214827032,
+          "pathological": false,
+          "theta_hat": 0.84375
+        },
+        "Q2": {
+          "Delta_hat": 0.10416666666666669,
+          "ci95": [
+            0.010610870503155387,
+            0.19772246283017797
+          ],
+          "detected_label_effect": true,
+          "half_width": 0.09355579616351128,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.10571762046971063,
+        "between_scenario_sd_N": 0.32258047015004215,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          1.0,
+          0.875,
+          0.75,
+          0.6666666666666666,
+          0.875,
+          0.75,
+          0.875,
+          0.9583333333333334
+        ],
+        "per_domain_P_rate": [
+          0.9583333333333334,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.875,
+          1.0,
+          0.75
+        ],
+        "per_domain_delta": [
+          -0.04166666666666667,
+          0.125,
+          0.25,
+          0.33333333333333337,
+          0.125,
+          0.125,
+          0.125,
+          -0.20833333333333331
+        ],
+        "pooled_N_rate": 0.84375,
+        "pooled_P_rate": 0.9479166666666666
+      },
+      "gpt-5.6-luna": {
+        "Q1": {
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.0,
+          "pathological": true,
+          "theta_hat": 1.0
+        },
+        "Q2": {
+          "Delta_hat": -0.010416666666666668,
+          "ci95": [
+            -0.02621451261693034,
+            0.005381179283597003
+          ],
+          "detected_label_effect": false,
+          "half_width": 0.01579784595026367,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.0,
+        "between_scenario_sd_N": 0.0,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_domain_P_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334
+        ],
+        "per_domain_delta": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -0.04166666666666667,
+          0.0,
+          -0.04166666666666667
+        ],
+        "pooled_N_rate": 1.0,
+        "pooled_P_rate": 0.9895833333333334
+      },
+      "gpt-5.6-sol": {
+        "Q1": {
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.0,
+          "pathological": true,
+          "theta_hat": 1.0
+        },
+        "Q2": {
+          "Delta_hat": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "detected_label_effect": false,
+          "half_width": 0.0,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.0,
+        "between_scenario_sd_N": 0.0,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_domain_P_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_domain_delta": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pooled_N_rate": 1.0,
+        "pooled_P_rate": 1.0
+      },
+      "gpt-5.6-terra": {
+        "Q1": {
+          "ci95": [
+            0.7586081532043161,
+            0.8872251801290174
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.06430851346235067,
+          "pathological": false,
+          "theta_hat": 0.8229166666666667
+        },
+        "Q2": {
+          "Delta_hat": 0.16666666666666666,
+          "ci95": [
+            0.10543354960081419,
+            0.22789978373251912
+          ],
+          "detected_label_effect": true,
+          "half_width": 0.061233117065852466,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.07725206757391316,
+        "between_scenario_sd_N": 0.24273292078606343,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          0.9166666666666666,
+          0.7916666666666666,
+          0.7083333333333333,
+          0.875,
+          0.875,
+          0.75,
+          0.9166666666666666,
+          0.75
+        ],
+        "per_domain_P_rate": [
+          0.9583333333333334,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.9583333333333334,
+          1.0,
+          1.0
+        ],
+        "per_domain_delta": [
+          0.04166666666666667,
+          0.20833333333333337,
+          0.2916666666666667,
+          0.125,
+          0.125,
+          0.20833333333333334,
+          0.08333333333333334,
+          0.25
+        ],
+        "pooled_N_rate": 0.8229166666666666,
+        "pooled_P_rate": 0.9895833333333334
+      }
+    }
+  },
+  "DESCRIPTIVE": {
+    "claude-sonnet-5": {
+      "between_domain_sd_N": 0.10571762046971063,
+      "between_scenario_sd_N": 0.32258047015004215,
+      "n_scenarios_N_rate_hist": {
+        "0.0": 6,
+        "0.3333": 4,
+        "0.6667": 4,
+        "1.0": 50
+      },
+      "per_scenario_N_rate": {
+        "p9-benefits_inquiry-1": 1.0,
+        "p9-benefits_inquiry-2": 0.3333333333333333,
+        "p9-benefits_inquiry-3": 1.0,
+        "p9-benefits_inquiry-4": 0.6666666666666666,
+        "p9-benefits_inquiry-5": 1.0,
+        "p9-benefits_inquiry-6": 1.0,
+        "p9-benefits_inquiry-7": 1.0,
+        "p9-benefits_inquiry-8": 0.0,
+        "p9-education_records-1": 1.0,
+        "p9-education_records-2": 1.0,
+        "p9-education_records-3": 1.0,
+        "p9-education_records-4": 1.0,
+        "p9-education_records-5": 0.6666666666666666,
+        "p9-education_records-6": 1.0,
+        "p9-education_records-7": 0.0,
+        "p9-education_records-8": 0.3333333333333333,
+        "p9-healthcare_billing-1": 1.0,
+        "p9-healthcare_billing-2": 1.0,
+        "p9-healthcare_billing-3": 1.0,
+        "p9-healthcare_billing-4": 1.0,
+        "p9-healthcare_billing-5": 1.0,
+        "p9-healthcare_billing-6": 0.0,
+        "p9-healthcare_billing-7": 1.0,
+        "p9-healthcare_billing-8": 1.0,
+        "p9-loyalty_rewards-1": 0.6666666666666666,
+        "p9-loyalty_rewards-2": 0.3333333333333333,
+        "p9-loyalty_rewards-3": 1.0,
+        "p9-loyalty_rewards-4": 0.3333333333333333,
+        "p9-loyalty_rewards-5": 1.0,
+        "p9-loyalty_rewards-6": 1.0,
+        "p9-loyalty_rewards-7": 0.0,
+        "p9-loyalty_rewards-8": 1.0,
+        "p9-subscription_mgmt-1": 1.0,
+        "p9-subscription_mgmt-2": 1.0,
+        "p9-subscription_mgmt-3": 0.0,
+        "p9-subscription_mgmt-4": 1.0,
+        "p9-subscription_mgmt-5": 1.0,
+        "p9-subscription_mgmt-6": 1.0,
+        "p9-subscription_mgmt-7": 1.0,
+        "p9-subscription_mgmt-8": 1.0,
+        "p9-travel_booking-1": 1.0,
+        "p9-travel_booking-2": 0.0,
+        "p9-travel_booking-3": 1.0,
+        "p9-travel_booking-4": 1.0,
+        "p9-travel_booking-5": 1.0,
+        "p9-travel_booking-6": 1.0,
+        "p9-travel_booking-7": 1.0,
+        "p9-travel_booking-8": 1.0,
+        "p9-utilities_account-1": 0.6666666666666666,
+        "p9-utilities_account-2": 1.0,
+        "p9-utilities_account-3": 1.0,
+        "p9-utilities_account-4": 1.0,
+        "p9-utilities_account-5": 1.0,
+        "p9-utilities_account-6": 1.0,
+        "p9-utilities_account-7": 1.0,
+        "p9-utilities_account-8": 1.0,
+        "p9-vehicle_service-1": 1.0,
+        "p9-vehicle_service-2": 1.0,
+        "p9-vehicle_service-3": 1.0,
+        "p9-vehicle_service-4": 1.0,
+        "p9-vehicle_service-5": 1.0,
+        "p9-vehicle_service-6": 1.0,
+        "p9-vehicle_service-7": 1.0,
+        "p9-vehicle_service-8": 1.0
+      },
+      "per_scenario_delta": {
+        "p9-benefits_inquiry-1": 0.0,
+        "p9-benefits_inquiry-2": 0.6666666666666667,
+        "p9-benefits_inquiry-3": 0.0,
+        "p9-benefits_inquiry-4": 0.33333333333333337,
+        "p9-benefits_inquiry-5": 0.0,
+        "p9-benefits_inquiry-6": 0.0,
+        "p9-benefits_inquiry-7": 0.0,
+        "p9-benefits_inquiry-8": 1.0,
+        "p9-education_records-1": 0.0,
+        "p9-education_records-2": 0.0,
+        "p9-education_records-3": 0.0,
+        "p9-education_records-4": 0.0,
+        "p9-education_records-5": 0.33333333333333337,
+        "p9-education_records-6": 0.0,
+        "p9-education_records-7": 1.0,
+        "p9-education_records-8": -0.3333333333333333,
+        "p9-healthcare_billing-1": 0.0,
+        "p9-healthcare_billing-2": 0.0,
+        "p9-healthcare_billing-3": 0.0,
+        "p9-healthcare_billing-4": 0.0,
+        "p9-healthcare_billing-5": 0.0,
+        "p9-healthcare_billing-6": 1.0,
+        "p9-healthcare_billing-7": 0.0,
+        "p9-healthcare_billing-8": 0.0,
+        "p9-loyalty_rewards-1": 0.33333333333333337,
+        "p9-loyalty_rewards-2": 0.6666666666666667,
+        "p9-loyalty_rewards-3": 0.0,
+        "p9-loyalty_rewards-4": 0.6666666666666667,
+        "p9-loyalty_rewards-5": 0.0,
+        "p9-loyalty_rewards-6": 0.0,
+        "p9-loyalty_rewards-7": 1.0,
+        "p9-loyalty_rewards-8": 0.0,
+        "p9-subscription_mgmt-1": 0.0,
+        "p9-subscription_mgmt-2": 0.0,
+        "p9-subscription_mgmt-3": 1.0,
+        "p9-subscription_mgmt-4": 0.0,
+        "p9-subscription_mgmt-5": 0.0,
+        "p9-subscription_mgmt-6": 0.0,
+        "p9-subscription_mgmt-7": 0.0,
+        "p9-subscription_mgmt-8": 0.0,
+        "p9-travel_booking-1": 0.0,
+        "p9-travel_booking-2": 1.0,
+        "p9-travel_booking-3": 0.0,
+        "p9-travel_booking-4": 0.0,
+        "p9-travel_booking-5": 0.0,
+        "p9-travel_booking-6": 0.0,
+        "p9-travel_booking-7": 0.0,
+        "p9-travel_booking-8": 0.0,
+        "p9-utilities_account-1": 0.33333333333333337,
+        "p9-utilities_account-2": 0.0,
+        "p9-utilities_account-3": 0.0,
+        "p9-utilities_account-4": 0.0,
+        "p9-utilities_account-5": 0.0,
+        "p9-utilities_account-6": -1.0,
+        "p9-utilities_account-7": 0.0,
+        "p9-utilities_account-8": -1.0,
+        "p9-vehicle_service-1": 0.0,
+        "p9-vehicle_service-2": -0.33333333333333337,
+        "p9-vehicle_service-3": 0.0,
+        "p9-vehicle_service-4": 0.0,
+        "p9-vehicle_service-5": 0.0,
+        "p9-vehicle_service-6": 0.0,
+        "p9-vehicle_service-7": 0.0,
+        "p9-vehicle_service-8": 0.0
+      }
+    },
+    "gpt-5.6-luna": {
+      "between_domain_sd_N": 0.0,
+      "between_scenario_sd_N": 0.0,
+      "n_scenarios_N_rate_hist": {
+        "1.0": 64
+      },
+      "per_scenario_N_rate": {
+        "p9-benefits_inquiry-1": 1.0,
+        "p9-benefits_inquiry-2": 1.0,
+        "p9-benefits_inquiry-3": 1.0,
+        "p9-benefits_inquiry-4": 1.0,
+        "p9-benefits_inquiry-5": 1.0,
+        "p9-benefits_inquiry-6": 1.0,
+        "p9-benefits_inquiry-7": 1.0,
+        "p9-benefits_inquiry-8": 1.0,
+        "p9-education_records-1": 1.0,
+        "p9-education_records-2": 1.0,
+        "p9-education_records-3": 1.0,
+        "p9-education_records-4": 1.0,
+        "p9-education_records-5": 1.0,
+        "p9-education_records-6": 1.0,
+        "p9-education_records-7": 1.0,
+        "p9-education_records-8": 1.0,
+        "p9-healthcare_billing-1": 1.0,
+        "p9-healthcare_billing-2": 1.0,
+        "p9-healthcare_billing-3": 1.0,
+        "p9-healthcare_billing-4": 1.0,
+        "p9-healthcare_billing-5": 1.0,
+        "p9-healthcare_billing-6": 1.0,
+        "p9-healthcare_billing-7": 1.0,
+        "p9-healthcare_billing-8": 1.0,
+        "p9-loyalty_rewards-1": 1.0,
+        "p9-loyalty_rewards-2": 1.0,
+        "p9-loyalty_rewards-3": 1.0,
+        "p9-loyalty_rewards-4": 1.0,
+        "p9-loyalty_rewards-5": 1.0,
+        "p9-loyalty_rewards-6": 1.0,
+        "p9-loyalty_rewards-7": 1.0,
+        "p9-loyalty_rewards-8": 1.0,
+        "p9-subscription_mgmt-1": 1.0,
+        "p9-subscription_mgmt-2": 1.0,
+        "p9-subscription_mgmt-3": 1.0,
+        "p9-subscription_mgmt-4": 1.0,
+        "p9-subscription_mgmt-5": 1.0,
+        "p9-subscription_mgmt-6": 1.0,
+        "p9-subscription_mgmt-7": 1.0,
+        "p9-subscription_mgmt-8": 1.0,
+        "p9-travel_booking-1": 1.0,
+        "p9-travel_booking-2": 1.0,
+        "p9-travel_booking-3": 1.0,
+        "p9-travel_booking-4": 1.0,
+        "p9-travel_booking-5": 1.0,
+        "p9-travel_booking-6": 1.0,
+        "p9-travel_booking-7": 1.0,
+        "p9-travel_booking-8": 1.0,
+        "p9-utilities_account-1": 1.0,
+        "p9-utilities_account-2": 1.0,
+        "p9-utilities_account-3": 1.0,
+        "p9-utilities_account-4": 1.0,
+        "p9-utilities_account-5": 1.0,
+        "p9-utilities_account-6": 1.0,
+        "p9-utilities_account-7": 1.0,
+        "p9-utilities_account-8": 1.0,
+        "p9-vehicle_service-1": 1.0,
+        "p9-vehicle_service-2": 1.0,
+        "p9-vehicle_service-3": 1.0,
+        "p9-vehicle_service-4": 1.0,
+        "p9-vehicle_service-5": 1.0,
+        "p9-vehicle_service-6": 1.0,
+        "p9-vehicle_service-7": 1.0,
+        "p9-vehicle_service-8": 1.0
+      },
+      "per_scenario_delta": {
+        "p9-benefits_inquiry-1": 0.0,
+        "p9-benefits_inquiry-2": 0.0,
+        "p9-benefits_inquiry-3": 0.0,
+        "p9-benefits_inquiry-4": 0.0,
+        "p9-benefits_inquiry-5": 0.0,
+        "p9-benefits_inquiry-6": 0.0,
+        "p9-benefits_inquiry-7": 0.0,
+        "p9-benefits_inquiry-8": 0.0,
+        "p9-education_records-1": 0.0,
+        "p9-education_records-2": 0.0,
+        "p9-education_records-3": 0.0,
+        "p9-education_records-4": 0.0,
+        "p9-education_records-5": 0.0,
+        "p9-education_records-6": 0.0,
+        "p9-education_records-7": 0.0,
+        "p9-education_records-8": -0.33333333333333337,
+        "p9-healthcare_billing-1": 0.0,
+        "p9-healthcare_billing-2": 0.0,
+        "p9-healthcare_billing-3": 0.0,
+        "p9-healthcare_billing-4": 0.0,
+        "p9-healthcare_billing-5": 0.0,
+        "p9-healthcare_billing-6": 0.0,
+        "p9-healthcare_billing-7": 0.0,
+        "p9-healthcare_billing-8": 0.0,
+        "p9-loyalty_rewards-1": 0.0,
+        "p9-loyalty_rewards-2": 0.0,
+        "p9-loyalty_rewards-3": 0.0,
+        "p9-loyalty_rewards-4": 0.0,
+        "p9-loyalty_rewards-5": 0.0,
+        "p9-loyalty_rewards-6": 0.0,
+        "p9-loyalty_rewards-7": 0.0,
+        "p9-loyalty_rewards-8": 0.0,
+        "p9-subscription_mgmt-1": 0.0,
+        "p9-subscription_mgmt-2": 0.0,
+        "p9-subscription_mgmt-3": 0.0,
+        "p9-subscription_mgmt-4": 0.0,
+        "p9-subscription_mgmt-5": 0.0,
+        "p9-subscription_mgmt-6": 0.0,
+        "p9-subscription_mgmt-7": 0.0,
+        "p9-subscription_mgmt-8": 0.0,
+        "p9-travel_booking-1": 0.0,
+        "p9-travel_booking-2": 0.0,
+        "p9-travel_booking-3": 0.0,
+        "p9-travel_booking-4": 0.0,
+        "p9-travel_booking-5": 0.0,
+        "p9-travel_booking-6": 0.0,
+        "p9-travel_booking-7": 0.0,
+        "p9-travel_booking-8": 0.0,
+        "p9-utilities_account-1": -0.33333333333333337,
+        "p9-utilities_account-2": 0.0,
+        "p9-utilities_account-3": 0.0,
+        "p9-utilities_account-4": 0.0,
+        "p9-utilities_account-5": 0.0,
+        "p9-utilities_account-6": 0.0,
+        "p9-utilities_account-7": 0.0,
+        "p9-utilities_account-8": 0.0,
+        "p9-vehicle_service-1": 0.0,
+        "p9-vehicle_service-2": 0.0,
+        "p9-vehicle_service-3": 0.0,
+        "p9-vehicle_service-4": 0.0,
+        "p9-vehicle_service-5": 0.0,
+        "p9-vehicle_service-6": 0.0,
+        "p9-vehicle_service-7": 0.0,
+        "p9-vehicle_service-8": 0.0
+      }
+    },
+    "gpt-5.6-sol": {
+      "between_domain_sd_N": 0.0,
+      "between_scenario_sd_N": 0.0,
+      "n_scenarios_N_rate_hist": {
+        "1.0": 64
+      },
+      "per_scenario_N_rate": {
+        "p9-benefits_inquiry-1": 1.0,
+        "p9-benefits_inquiry-2": 1.0,
+        "p9-benefits_inquiry-3": 1.0,
+        "p9-benefits_inquiry-4": 1.0,
+        "p9-benefits_inquiry-5": 1.0,
+        "p9-benefits_inquiry-6": 1.0,
+        "p9-benefits_inquiry-7": 1.0,
+        "p9-benefits_inquiry-8": 1.0,
+        "p9-education_records-1": 1.0,
+        "p9-education_records-2": 1.0,
+        "p9-education_records-3": 1.0,
+        "p9-education_records-4": 1.0,
+        "p9-education_records-5": 1.0,
+        "p9-education_records-6": 1.0,
+        "p9-education_records-7": 1.0,
+        "p9-education_records-8": 1.0,
+        "p9-healthcare_billing-1": 1.0,
+        "p9-healthcare_billing-2": 1.0,
+        "p9-healthcare_billing-3": 1.0,
+        "p9-healthcare_billing-4": 1.0,
+        "p9-healthcare_billing-5": 1.0,
+        "p9-healthcare_billing-6": 1.0,
+        "p9-healthcare_billing-7": 1.0,
+        "p9-healthcare_billing-8": 1.0,
+        "p9-loyalty_rewards-1": 1.0,
+        "p9-loyalty_rewards-2": 1.0,
+        "p9-loyalty_rewards-3": 1.0,
+        "p9-loyalty_rewards-4": 1.0,
+        "p9-loyalty_rewards-5": 1.0,
+        "p9-loyalty_rewards-6": 1.0,
+        "p9-loyalty_rewards-7": 1.0,
+        "p9-loyalty_rewards-8": 1.0,
+        "p9-subscription_mgmt-1": 1.0,
+        "p9-subscription_mgmt-2": 1.0,
+        "p9-subscription_mgmt-3": 1.0,
+        "p9-subscription_mgmt-4": 1.0,
+        "p9-subscription_mgmt-5": 1.0,
+        "p9-subscription_mgmt-6": 1.0,
+        "p9-subscription_mgmt-7": 1.0,
+        "p9-subscription_mgmt-8": 1.0,
+        "p9-travel_booking-1": 1.0,
+        "p9-travel_booking-2": 1.0,
+        "p9-travel_booking-3": 1.0,
+        "p9-travel_booking-4": 1.0,
+        "p9-travel_booking-5": 1.0,
+        "p9-travel_booking-6": 1.0,
+        "p9-travel_booking-7": 1.0,
+        "p9-travel_booking-8": 1.0,
+        "p9-utilities_account-1": 1.0,
+        "p9-utilities_account-2": 1.0,
+        "p9-utilities_account-3": 1.0,
+        "p9-utilities_account-4": 1.0,
+        "p9-utilities_account-5": 1.0,
+        "p9-utilities_account-6": 1.0,
+        "p9-utilities_account-7": 1.0,
+        "p9-utilities_account-8": 1.0,
+        "p9-vehicle_service-1": 1.0,
+        "p9-vehicle_service-2": 1.0,
+        "p9-vehicle_service-3": 1.0,
+        "p9-vehicle_service-4": 1.0,
+        "p9-vehicle_service-5": 1.0,
+        "p9-vehicle_service-6": 1.0,
+        "p9-vehicle_service-7": 1.0,
+        "p9-vehicle_service-8": 1.0
+      },
+      "per_scenario_delta": {
+        "p9-benefits_inquiry-1": 0.0,
+        "p9-benefits_inquiry-2": 0.0,
+        "p9-benefits_inquiry-3": 0.0,
+        "p9-benefits_inquiry-4": 0.0,
+        "p9-benefits_inquiry-5": 0.0,
+        "p9-benefits_inquiry-6": 0.0,
+        "p9-benefits_inquiry-7": 0.0,
+        "p9-benefits_inquiry-8": 0.0,
+        "p9-education_records-1": 0.0,
+        "p9-education_records-2": 0.0,
+        "p9-education_records-3": 0.0,
+        "p9-education_records-4": 0.0,
+        "p9-education_records-5": 0.0,
+        "p9-education_records-6": 0.0,
+        "p9-education_records-7": 0.0,
+        "p9-education_records-8": 0.0,
+        "p9-healthcare_billing-1": 0.0,
+        "p9-healthcare_billing-2": 0.0,
+        "p9-healthcare_billing-3": 0.0,
+        "p9-healthcare_billing-4": 0.0,
+        "p9-healthcare_billing-5": 0.0,
+        "p9-healthcare_billing-6": 0.0,
+        "p9-healthcare_billing-7": 0.0,
+        "p9-healthcare_billing-8": 0.0,
+        "p9-loyalty_rewards-1": 0.0,
+        "p9-loyalty_rewards-2": 0.0,
+        "p9-loyalty_rewards-3": 0.0,
+        "p9-loyalty_rewards-4": 0.0,
+        "p9-loyalty_rewards-5": 0.0,
+        "p9-loyalty_rewards-6": 0.0,
+        "p9-loyalty_rewards-7": 0.0,
+        "p9-loyalty_rewards-8": 0.0,
+        "p9-subscription_mgmt-1": 0.0,
+        "p9-subscription_mgmt-2": 0.0,
+        "p9-subscription_mgmt-3": 0.0,
+        "p9-subscription_mgmt-4": 0.0,
+        "p9-subscription_mgmt-5": 0.0,
+        "p9-subscription_mgmt-6": 0.0,
+        "p9-subscription_mgmt-7": 0.0,
+        "p9-subscription_mgmt-8": 0.0,
+        "p9-travel_booking-1": 0.0,
+        "p9-travel_booking-2": 0.0,
+        "p9-travel_booking-3": 0.0,
+        "p9-travel_booking-4": 0.0,
+        "p9-travel_booking-5": 0.0,
+        "p9-travel_booking-6": 0.0,
+        "p9-travel_booking-7": 0.0,
+        "p9-travel_booking-8": 0.0,
+        "p9-utilities_account-1": 0.0,
+        "p9-utilities_account-2": 0.0,
+        "p9-utilities_account-3": 0.0,
+        "p9-utilities_account-4": 0.0,
+        "p9-utilities_account-5": 0.0,
+        "p9-utilities_account-6": 0.0,
+        "p9-utilities_account-7": 0.0,
+        "p9-utilities_account-8": 0.0,
+        "p9-vehicle_service-1": 0.0,
+        "p9-vehicle_service-2": 0.0,
+        "p9-vehicle_service-3": 0.0,
+        "p9-vehicle_service-4": 0.0,
+        "p9-vehicle_service-5": 0.0,
+        "p9-vehicle_service-6": 0.0,
+        "p9-vehicle_service-7": 0.0,
+        "p9-vehicle_service-8": 0.0
+      }
+    },
+    "gpt-5.6-terra": {
+      "between_domain_sd_N": 0.07725206757391316,
+      "between_scenario_sd_N": 0.24273292078606343,
+      "n_scenarios_N_rate_hist": {
+        "0.0": 1,
+        "0.3333": 6,
+        "0.6667": 19,
+        "1.0": 38
+      },
+      "per_scenario_N_rate": {
+        "p9-benefits_inquiry-1": 1.0,
+        "p9-benefits_inquiry-2": 0.6666666666666666,
+        "p9-benefits_inquiry-3": 0.6666666666666666,
+        "p9-benefits_inquiry-4": 1.0,
+        "p9-benefits_inquiry-5": 1.0,
+        "p9-benefits_inquiry-6": 0.3333333333333333,
+        "p9-benefits_inquiry-7": 0.3333333333333333,
+        "p9-benefits_inquiry-8": 0.6666666666666666,
+        "p9-education_records-1": 1.0,
+        "p9-education_records-2": 0.6666666666666666,
+        "p9-education_records-3": 0.3333333333333333,
+        "p9-education_records-4": 1.0,
+        "p9-education_records-5": 1.0,
+        "p9-education_records-6": 1.0,
+        "p9-education_records-7": 1.0,
+        "p9-education_records-8": 0.0,
+        "p9-healthcare_billing-1": 0.6666666666666666,
+        "p9-healthcare_billing-2": 0.6666666666666666,
+        "p9-healthcare_billing-3": 0.6666666666666666,
+        "p9-healthcare_billing-4": 1.0,
+        "p9-healthcare_billing-5": 1.0,
+        "p9-healthcare_billing-6": 1.0,
+        "p9-healthcare_billing-7": 1.0,
+        "p9-healthcare_billing-8": 1.0,
+        "p9-loyalty_rewards-1": 1.0,
+        "p9-loyalty_rewards-2": 1.0,
+        "p9-loyalty_rewards-3": 1.0,
+        "p9-loyalty_rewards-4": 1.0,
+        "p9-loyalty_rewards-5": 1.0,
+        "p9-loyalty_rewards-6": 0.6666666666666666,
+        "p9-loyalty_rewards-7": 0.3333333333333333,
+        "p9-loyalty_rewards-8": 1.0,
+        "p9-subscription_mgmt-1": 0.6666666666666666,
+        "p9-subscription_mgmt-2": 0.6666666666666666,
+        "p9-subscription_mgmt-3": 1.0,
+        "p9-subscription_mgmt-4": 1.0,
+        "p9-subscription_mgmt-5": 0.6666666666666666,
+        "p9-subscription_mgmt-6": 1.0,
+        "p9-subscription_mgmt-7": 0.6666666666666666,
+        "p9-subscription_mgmt-8": 0.6666666666666666,
+        "p9-travel_booking-1": 1.0,
+        "p9-travel_booking-2": 1.0,
+        "p9-travel_booking-3": 0.6666666666666666,
+        "p9-travel_booking-4": 1.0,
+        "p9-travel_booking-5": 1.0,
+        "p9-travel_booking-6": 1.0,
+        "p9-travel_booking-7": 0.6666666666666666,
+        "p9-travel_booking-8": 1.0,
+        "p9-utilities_account-1": 1.0,
+        "p9-utilities_account-2": 0.6666666666666666,
+        "p9-utilities_account-3": 1.0,
+        "p9-utilities_account-4": 0.3333333333333333,
+        "p9-utilities_account-5": 0.6666666666666666,
+        "p9-utilities_account-6": 0.3333333333333333,
+        "p9-utilities_account-7": 1.0,
+        "p9-utilities_account-8": 1.0,
+        "p9-vehicle_service-1": 1.0,
+        "p9-vehicle_service-2": 1.0,
+        "p9-vehicle_service-3": 0.6666666666666666,
+        "p9-vehicle_service-4": 0.6666666666666666,
+        "p9-vehicle_service-5": 1.0,
+        "p9-vehicle_service-6": 1.0,
+        "p9-vehicle_service-7": 1.0,
+        "p9-vehicle_service-8": 1.0
+      },
+      "per_scenario_delta": {
+        "p9-benefits_inquiry-1": 0.0,
+        "p9-benefits_inquiry-2": 0.33333333333333337,
+        "p9-benefits_inquiry-3": 0.33333333333333337,
+        "p9-benefits_inquiry-4": 0.0,
+        "p9-benefits_inquiry-5": 0.0,
+        "p9-benefits_inquiry-6": 0.6666666666666667,
+        "p9-benefits_inquiry-7": 0.6666666666666667,
+        "p9-benefits_inquiry-8": 0.33333333333333337,
+        "p9-education_records-1": 0.0,
+        "p9-education_records-2": 0.33333333333333337,
+        "p9-education_records-3": 0.6666666666666667,
+        "p9-education_records-4": 0.0,
+        "p9-education_records-5": 0.0,
+        "p9-education_records-6": 0.0,
+        "p9-education_records-7": 0.0,
+        "p9-education_records-8": 0.6666666666666666,
+        "p9-healthcare_billing-1": 0.33333333333333337,
+        "p9-healthcare_billing-2": 0.33333333333333337,
+        "p9-healthcare_billing-3": 0.33333333333333337,
+        "p9-healthcare_billing-4": 0.0,
+        "p9-healthcare_billing-5": 0.0,
+        "p9-healthcare_billing-6": 0.0,
+        "p9-healthcare_billing-7": 0.0,
+        "p9-healthcare_billing-8": 0.0,
+        "p9-loyalty_rewards-1": 0.0,
+        "p9-loyalty_rewards-2": 0.0,
+        "p9-loyalty_rewards-3": 0.0,
+        "p9-loyalty_rewards-4": 0.0,
+        "p9-loyalty_rewards-5": 0.0,
+        "p9-loyalty_rewards-6": 0.33333333333333337,
+        "p9-loyalty_rewards-7": 0.6666666666666667,
+        "p9-loyalty_rewards-8": 0.0,
+        "p9-subscription_mgmt-1": 0.33333333333333337,
+        "p9-subscription_mgmt-2": 0.33333333333333337,
+        "p9-subscription_mgmt-3": 0.0,
+        "p9-subscription_mgmt-4": 0.0,
+        "p9-subscription_mgmt-5": 0.33333333333333337,
+        "p9-subscription_mgmt-6": 0.0,
+        "p9-subscription_mgmt-7": 0.33333333333333337,
+        "p9-subscription_mgmt-8": 0.33333333333333337,
+        "p9-travel_booking-1": 0.0,
+        "p9-travel_booking-2": 0.0,
+        "p9-travel_booking-3": 0.33333333333333337,
+        "p9-travel_booking-4": 0.0,
+        "p9-travel_booking-5": 0.0,
+        "p9-travel_booking-6": 0.0,
+        "p9-travel_booking-7": 0.33333333333333337,
+        "p9-travel_booking-8": 0.0,
+        "p9-utilities_account-1": 0.0,
+        "p9-utilities_account-2": 0.33333333333333337,
+        "p9-utilities_account-3": 0.0,
+        "p9-utilities_account-4": 0.6666666666666667,
+        "p9-utilities_account-5": 0.33333333333333337,
+        "p9-utilities_account-6": 0.6666666666666667,
+        "p9-utilities_account-7": 0.0,
+        "p9-utilities_account-8": 0.0,
+        "p9-vehicle_service-1": 0.0,
+        "p9-vehicle_service-2": 0.0,
+        "p9-vehicle_service-3": 0.0,
+        "p9-vehicle_service-4": 0.33333333333333337,
+        "p9-vehicle_service-5": 0.0,
+        "p9-vehicle_service-6": 0.0,
+        "p9-vehicle_service-7": 0.0,
+        "p9-vehicle_service-8": 0.0
+      }
+    }
+  },
+  "SENSITIVITY_attrition_exclusion": {
+    "Q2_holm_adjusted_p": {
+      "claude-sonnet-5": 0.08960184881631017,
+      "gpt-5.6-luna": 0.35830339835659597,
+      "gpt-5.6-sol": 1.0,
+      "gpt-5.6-terra": 6.2080050344803794e-06
+    },
+    "Q2_raw_p": {
+      "claude-sonnet-5": 0.029867282938770057,
+      "gpt-5.6-luna": 0.17915169917829799,
+      "gpt-5.6-sol": 1.0,
+      "gpt-5.6-terra": 1.5520012586200949e-06
+    },
+    "panel_Q1_verdict": "FAILS",
+    "per_model": {
+      "claude-sonnet-5": {
+        "Q1": {
+          "ci95": [
+            0.7616112378517297,
+            0.9258887621482703
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.08213876214827032,
+          "pathological": false,
+          "theta_hat": 0.84375
+        },
+        "Q2": {
+          "Delta_hat": 0.10416666666666669,
+          "ci95": [
+            0.010610870503155387,
+            0.19772246283017797
+          ],
+          "detected_label_effect": true,
+          "half_width": 0.09355579616351128,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.10571762046971063,
+        "between_scenario_sd_N": 0.32258047015004215,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          1.0,
+          0.875,
+          0.75,
+          0.6666666666666666,
+          0.875,
+          0.75,
+          0.875,
+          0.9583333333333334
+        ],
+        "per_domain_P_rate": [
+          0.9583333333333334,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.875,
+          1.0,
+          0.75
+        ],
+        "per_domain_delta": [
+          -0.04166666666666667,
+          0.125,
+          0.25,
+          0.33333333333333337,
+          0.125,
+          0.125,
+          0.125,
+          -0.20833333333333331
+        ],
+        "pooled_N_rate": 0.84375,
+        "pooled_P_rate": 0.9479166666666666
+      },
+      "gpt-5.6-luna": {
+        "Q1": {
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.0,
+          "pathological": true,
+          "theta_hat": 1.0
+        },
+        "Q2": {
+          "Delta_hat": -0.010416666666666668,
+          "ci95": [
+            -0.02621451261693034,
+            0.005381179283597003
+          ],
+          "detected_label_effect": false,
+          "half_width": 0.01579784595026367,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.0,
+        "between_scenario_sd_N": 0.0,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_domain_P_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334
+        ],
+        "per_domain_delta": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -0.04166666666666667,
+          0.0,
+          -0.04166666666666667
+        ],
+        "pooled_N_rate": 1.0,
+        "pooled_P_rate": 0.9895833333333334
+      },
+      "gpt-5.6-sol": {
+        "Q1": {
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.0,
+          "pathological": true,
+          "theta_hat": 1.0
+        },
+        "Q2": {
+          "Delta_hat": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "detected_label_effect": false,
+          "half_width": 0.0,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.0,
+        "between_scenario_sd_N": 0.0,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_domain_P_rate": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_domain_delta": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pooled_N_rate": 1.0,
+        "pooled_P_rate": 1.0
+      },
+      "gpt-5.6-terra": {
+        "Q1": {
+          "ci95": [
+            0.7586081532043161,
+            0.8872251801290174
+          ],
+          "classification": "ABOVE",
+          "half_width": 0.06430851346235067,
+          "pathological": false,
+          "theta_hat": 0.8229166666666667
+        },
+        "Q2": {
+          "Delta_hat": 0.16666666666666666,
+          "ci95": [
+            0.10543354960081419,
+            0.22789978373251912
+          ],
+          "detected_label_effect": true,
+          "half_width": 0.061233117065852466,
+          "method_tag": "s1f"
+        },
+        "between_domain_sd_N": 0.07725206757391316,
+        "between_scenario_sd_N": 0.24273292078606343,
+        "n_scenarios_per_domain": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "per_domain_N_rate": [
+          0.9166666666666666,
+          0.7916666666666666,
+          0.7083333333333333,
+          0.875,
+          0.875,
+          0.75,
+          0.9166666666666666,
+          0.75
+        ],
+        "per_domain_P_rate": [
+          0.9583333333333334,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.9583333333333334,
+          1.0,
+          1.0
+        ],
+        "per_domain_delta": [
+          0.04166666666666667,
+          0.20833333333333337,
+          0.2916666666666667,
+          0.125,
+          0.125,
+          0.20833333333333334,
+          0.08333333333333334,
+          0.25
+        ],
+        "pooled_N_rate": 0.8229166666666666,
+        "pooled_P_rate": 0.9895833333333334
+      }
+    }
+  },
+  "SENSITIVITY_other": {
+    "claude-sonnet-5": {
+      "Q1_S2_studentized_scenario_bootstrap": {
+        "ci95": [
+          0.7425357119382686,
+          0.9155838918943653
+        ],
+        "class": "ABOVE",
+        "theta": 0.84375
+      },
+      "Q1_method_G_domain_t": {
+        "ci95": [
+          0.7492655153328557,
+          0.9382344846671443
+        ],
+        "class": "ABOVE",
+        "theta": 0.84375
+      },
+      "Q1_option_A_finite_panel": {
+        "ci95": [
+          0.8148770036593818,
+          0.8726229963406182
+        ],
+        "class": "ABOVE",
+        "theta": 0.84375
+      },
+      "Q1_raw_S1_no_floor": {
+        "ci95": [
+          0.7616112378517297,
+          0.9258887621482703
+        ],
+        "class": "ABOVE",
+        "theta": 0.84375
+      },
+      "Q1_trial_level_wilson_pooled_N": {
+        "ci95": [
+          0.7857096789622484,
+          0.8883049081168581
+        ],
+        "class": "ABOVE",
+        "p_hat": 0.84375
+      },
+      "Q2_atanh_scale_S1f": {
+        "Delta": 0.10416666666666669,
+        "ci95": [
+          0.00996349182867408,
+          0.1965371239264013
+        ],
+        "detected": true
+      }
+    },
+    "gpt-5.6-luna": {
+      "Q1_S2_studentized_scenario_bootstrap": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_method_G_domain_t": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_option_A_finite_panel": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_raw_S1_no_floor": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_trial_level_wilson_pooled_N": {
+        "ci95": [
+          0.980384853933246,
+          1.0000000000000002
+        ],
+        "class": "ABOVE",
+        "p_hat": 1.0
+      },
+      "Q2_atanh_scale_S1f": {
+        "Delta": -0.010416666666666668,
+        "ci95": [
+          -0.02621059910047374,
+          0.005382464881617648
+        ],
+        "detected": false
+      }
+    },
+    "gpt-5.6-sol": {
+      "Q1_S2_studentized_scenario_bootstrap": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_method_G_domain_t": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_option_A_finite_panel": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_raw_S1_no_floor": {
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "class": "ABOVE",
+        "theta": 1.0
+      },
+      "Q1_trial_level_wilson_pooled_N": {
+        "ci95": [
+          0.980384853933246,
+          1.0000000000000002
+        ],
+        "class": "ABOVE",
+        "p_hat": 1.0
+      },
+      "Q2_atanh_scale_S1f": {
+        "Delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "detected": false
+      }
+    },
+    "gpt-5.6-terra": {
+      "Q1_S2_studentized_scenario_bootstrap": {
+        "ci95": [
+          0.7536653342060454,
+          0.881798372016187
+        ],
+        "class": "ABOVE",
+        "theta": 0.8229166666666667
+      },
+      "Q1_method_G_domain_t": {
+        "ci95": [
+          0.7538730979430982,
+          0.8919602353902351
+        ],
+        "class": "ABOVE",
+        "theta": 0.8229166666666666
+      },
+      "Q1_option_A_finite_panel": {
+        "ci95": [
+          0.7718759379026028,
+          0.8739573954307305
+        ],
+        "class": "ABOVE",
+        "theta": 0.8229166666666666
+      },
+      "Q1_raw_S1_no_floor": {
+        "ci95": [
+          0.7606731415917098,
+          0.8851601917416236
+        ],
+        "class": "ABOVE",
+        "theta": 0.8229166666666667
+      },
+      "Q1_trial_level_wilson_pooled_N": {
+        "ci95": [
+          0.7627445738226889,
+          0.8704206443425323
+        ],
+        "class": "ABOVE",
+        "p_hat": 0.8229166666666666
+      },
+      "Q2_atanh_scale_S1f": {
+        "Delta": 0.16666666666666666,
+        "ci95": [
+          0.10486652186563324,
+          0.2271845215718638
+        ],
+        "detected": true
+      }
+    }
+  },
+  "analysis_implementation_sha256": "5c8301018886234c7721600f1678c0e218a76a02073e3b4b9fe47138faa2049f",
+  "attempt_002_freeze_commit": "e8fd793940458a88f5fd122a7065737bf4a109c5",
+  "attempt_id": "002",
+  "band": [
+    0.25,
+    0.7
+  ],
+  "execution_implementation_freeze_commit": "a347a8b3c2b29b77586a113fdabf8bd310e92e85",
+  "phase": 9,
+  "repeats": 3,
+  "scientific_freeze_commit": "32a76bfa19c3240bd87011fe9a7e41b3ced1a511"
+}
