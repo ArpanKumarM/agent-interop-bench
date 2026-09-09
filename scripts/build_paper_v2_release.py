@@ -1,4 +1,8 @@
-r"""Build the deterministic public reproducibility release for ``paper-v2.0``.
+r"""Build the deterministic public reproducibility release for ``paper-v2.1``.
+
+``paper-v2.1`` is a claim-scope revision of ``paper-v2.0``: the manuscript
+and its numeric audits changed; the canonical raw data and every frozen
+scientific output are byte-identical to ``paper-v2.0``.
 
 Contents:
   * the full tracked source tree at HEAD (``git archive HEAD``) -- app/,
@@ -32,7 +36,7 @@ import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "agent-interop-bench-paper-v2.0"
+PREFIX = "agent-interop-bench-paper-v2.1"
 OUT = ROOT / "dist" / f"{PREFIX}.tar.gz"
 
 # git-ignored published raw-data trees, added from disk by allow-list.
@@ -106,7 +110,7 @@ def _iter_disk_tree(rel: str):
 # Tracked files kept OUT of the reproducibility bundle: release-page
 # narrative whose content would otherwise make the bundle SHA-256
 # self-referential.
-_ARCHIVE_EXCLUDE = {"docs/release_v2_notes.md"}
+_ARCHIVE_EXCLUDE = {"docs/release_v2_notes.md", "docs/release_v2_1_notes.md"}
 
 
 def _iter_git_archive():

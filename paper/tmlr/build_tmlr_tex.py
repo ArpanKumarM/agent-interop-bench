@@ -35,8 +35,8 @@ OUT_BIB = ROOT / "paper" / "tmlr" / "references_tmlr.bib"
 LOG = ROOT / "paper" / "tmlr" / "TRANSFORM_LOG.txt"
 
 TITLE = (
-    "Whether a Sensitivity-Label Effect Can Be Measured at an MCP-to-A2A "
-    "Handoff Depends on the Task Framing: \\\\ A Pre-Registered Sweep"
+    "Measuring Sensitivity-Label Effects at an MCP-to-A2A Handoff: \\\\ "
+    "Baseline Saturation and Directional Headroom"
 )
 
 # Required TMLR first-page disclosure of generative-AI use. Anonymous;

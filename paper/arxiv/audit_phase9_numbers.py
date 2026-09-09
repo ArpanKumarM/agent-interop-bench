@@ -273,14 +273,22 @@ def audit_provider_drift_sentence() -> None:
         if idx != -1:
             window = low[max(0, idx - 400) : idx + 200]
         check(
-            "cannot separate" in window or "cannot be attributed" in window,
+            any(
+                t in window
+                for t in ("cannot separate", "cannot be separated", "cannot be attributed")
+            ),
             f"{doc_name}: provider-drift sentence must say the sources cannot be separated",
         )
         check(
-            "sampling variability" in window and "scenario distribution" in window,
+            "sampling variability" in window
+            and ("scenario distribution" in window or "scenario-distribution" in window),
             f"{doc_name}: provider-drift sentence must list sampling variability and the "
             "scenario-distribution change alongside endpoint drift",
         )
+        # never assert drift, incl. inferring it from pricing/infrastructure
+        for bad in ("provider drift occurred", "endpoint drift occurred",
+                    "drift from pricing", "drift from infrastructure"):
+            check(bad not in low, f"{doc_name}: must not assert provider drift ({bad!r})")
 
 
 # --------------------------------------------------------------------------- #
@@ -323,12 +331,65 @@ _STALE = [
         r"(?:leave|leaving) (?:little or )?no observable room for (?:a label effect|the contrast)",
         "over-general: 'no observable room for a label effect' (should be directional)",
     ),
+    # -- Phase 8 causal / shared-scenario-set traps (2026-09-09 confound) --
+    (r"\bframing causes\b", "causal: 'framing causes'"),
+    (r"\bwording causes\b", "causal: 'wording causes'"),
+    (r"\bformulation causes\b", "causal: 'formulation causes'"),
+    (r"task framing determines", "causal: 'task framing determines'"),
+    (r"first-order determinant", "overstated: 'first-order determinant'"),
+    (r"validated headroom rule", "overstated: 'validated headroom rule'"),
+    (r"depends on the task framing", "central claim reverted to 'depends on task framing'"),
+    (r"framing-conditioned", "central claim reverted ('framing-conditioned')"),
+    (r"itself framing-dependent", "central claim reverted ('framing-dependent')"),
+    (
+        r"could have been an acceptance|might have passed|rejection indistinguishable from "
+        r"an acceptance",
+        "F3: 'could have been an acceptance' (Phase 8 point-estimate rule stands)",
+    ),
+    (
+        r"drove (?:\S+ ?){0,4}(?:sol|luna|terra|claude|models|them)(?: ?\S+){0,3} "
+        r"(?:to|back to) a (?:ceiling|floor)",
+        "cross-round causal: 'drove ... to a ceiling/floor'",
+    ),
+    (
+        r"the (?:first|round-one) (?:formulations|framings) drove|"
+        r"the (?:second|round-two) (?:formulations|framings) (?:drove|produced)",
+        "cross-round causal attribution to F1-F3 vs F4-F6",
+    ),
+    (
+        r"both (?:pilot )?rounds used the same (?:four )?(?:pilot )?(?:scenario|record)",
+        "false: Phase 8 rounds shared a scenario set",
+    ),
+    (
+        r"two rounds (?:reused|used|shared) the same (?:four )?(?:pilot )?(?:scenario|record)",
+        "false: Phase 8 rounds shared a scenario set",
+    ),
 ]
 
 
+def _strip_meta(raw: str, doc_name: str) -> str:
+    """Drop TeX comment lines and the Markdown draft-note blockquote so the
+    stale-language scan does not flag the audit's own trap descriptions."""
+    lines = raw.splitlines()
+    if doc_name.endswith(".tex"):
+        lines = [ln for ln in lines if not ln.lstrip().startswith("%")]
+    else:
+        lines = [ln for ln in lines if not ln.lstrip().startswith(">")]
+    return "\n".join(lines)
+
+
 def audit_no_stale_language() -> None:
-    for doc_name, raw in (("main_v2.md", MAIN_V2), ("main_v2.tex", MAIN_V2_TEX)):
+    for doc_name, raw0 in (("main_v2.md", MAIN_V2), ("main_v2.tex", MAIN_V2_TEX)):
+        raw = _strip_meta(raw0, doc_name)
         flat = " ".join(raw.split())
+        # "holding record content ... fixed" must be scoped to a round
+        for m in re.finditer(r"holding record content", flat):
+            near = flat[max(0, m.start() - 160) : m.end() + 60].lower()
+            check(
+                "within each round" in near or "within-round" in near or "each round" in near,
+                f"{doc_name}: 'holding record content ... fixed' not scoped to 'within each "
+                f"round': ...{flat[max(0, m.start() - 80): m.end() + 40]}...",
+            )
         for pat, tag in _STALE:
             m = re.search(pat, flat, re.IGNORECASE)
             ctx = "" if m is None else flat[max(0, m.start() - 40) : m.end() + 40]
@@ -365,6 +426,51 @@ def audit_directional_headroom_and_abstract_scope() -> None:
             )
 
 
+# --------------------------------------------------------------------------- #
+# 7. Required disclosures (Phase 8 scenario-set confound; L0 construct
+#    validity; within/cross-round distinction).
+# --------------------------------------------------------------------------- #
+def audit_required_confound_disclosures() -> None:
+    for doc_name, doc in DOCS:
+        low = doc.lower()
+        # the two Phase 8 rounds used disjoint scenario/record sets
+        check(
+            ("disjoint" in low)
+            and ("pilotonly-vehicle-service" in low or "pilotonly-subscription-mgmt" in low)
+            and "healthcare-billing" in low
+            and "ad-platform-advertiser" in low,
+            f"{doc_name}: must disclose the disjoint Phase 8 round-one vs round-two record "
+            "sets by name",
+        )
+        # within-round matched vs cross-round confounded
+        check(
+            "within-round" in low or "within each round" in low,
+            f"{doc_name}: must distinguish matched within-round contrasts from the confounded "
+            "cross-round comparison",
+        )
+        check(
+            ("record set" in low or "scenario set" in low or "pilot set" in low)
+            and "execution window" in low,
+            f"{doc_name}: the cross-round confound must name task formulation + record set + "
+            "execution window",
+        )
+        # L0 construct validity
+        check(
+            ("l0" in low)
+            and ("privacy harm" in low or "privacy-harm" in low)
+            and ("not" in low)
+            and ("verbatim" in low),
+            f"{doc_name}: the L0 construct-validity paragraph (L0 measures verbatim propagation, "
+            "not privacy harm) is missing",
+        )
+        # future-work pure-wording study
+        check(
+            "meaning-preserving" in low and "surface" in low.replace("-", " "),
+            f"{doc_name}: Future Work must state the meaning-preserving surface-wording study "
+            "needed to isolate a wording effect",
+        )
+
+
 def main() -> int:
     audit_frozen_results_self_consistency()
     audit_manuscript_numbers()
@@ -372,6 +478,7 @@ def main() -> int:
     audit_provider_drift_sentence()
     audit_no_stale_language()
     audit_directional_headroom_and_abstract_scope()
+    audit_required_confound_disclosures()
 
     if _failures:
         print(f"=== {len(_failures)} PHASE 9 AUDIT FAILURE(S) ===", file=sys.stderr)

@@ -22,7 +22,7 @@
   \endgroup
 }
 
-\title{Whether a Sensitivity-Label Effect Can Be Measured at an MCP-to-A2A Handoff Depends on the Task Framing: \\ A Pre-Registered Sweep}
+\title{Measuring Sensitivity-Label Effects at an MCP-to-A2A Handoff: \\ Baseline Saturation and Directional Headroom}
 
 % Authors must not appear in the submitted version (tmlr renders an
 % anonymous block while the [accepted]/[preprint] options are absent).
@@ -33,58 +33,39 @@
 \blfootnote{Generative AI tools (ChatGPT and Claude) were used during development for code drafting and debugging, for drafting and editing the manuscript text, and for critique of the experimental, statistical, and reproducibility procedures. The authors reviewed and approved the resulting design decisions, verified the executed experiments and analyses against deterministic audits, and take responsibility for the manuscript and its claims.}
 
 \begin{abstract}
-Measuring a sensitivity label's effect on agent behavior requires a task
-framing that leaves the behavior directional headroom to move. We report
-a four-study, pre-registered MCP-to-A2A handoff investigation, scored by
-an exact-substring, judge-free detector. A two-arm study (640 trials)
-found the confidential and public labels far apart on verbatim egress
-but could not attribute the gap to either label. Adding an unlabeled baseline (480 trials) resolved that
-ambiguity but drove three of four models to a floor on both the
-confidential and unlabeled arms: the confidentiality effect is unresolved
-by a floor, not a genuine null. A two-round, six-framing task-wording
-sweep followed, with a stopping rule fixed in advance. Round one (576
-trials) drove two of four models to a near-complete ceiling; round two
-(576 trials), designed to give withholding a structural reason rather
-than a softer tone, drove three of four models back to a floor. No
-framing met the acceptance rule (an unlabeled-arm rate inside
-$[0.25, 0.70]$ for at least three of four models on one framing). Five
-framings were clearly inconsistent with the panel headroom criterion at
-pilot resolution; F3 alone remained interval-wise ambiguous at $n = 12$,
-with three of four models' $95\%$ intervals overlapping the band. The
-stopping rule fired after round two: the $\sim$13{,}200-trial main study
-was never run. A separately pre-registered resolution study (Phase~9)
-then took F3 to 1{,}536 trials --- 64 scenarios, three repeats,
-unlabeled and public arms, four models, all completed with no attrition
---- and resolved it: F3's unlabeled-arm egress rate is above the
-pre-registered headroom band for all four models (Sol and Luna fully
-saturated at $1.000$), so the panel verdict is a decisive failure and
-the pilot ambiguity resolved to a high-egress regime, not a hidden
-measurable one. Where upward headroom remained --- Terra and Claude ---
-the public-sharing label raised verbatim egress (paired risk difference
-$+0.167$ and $+0.104$, $95\%$ CIs excluding zero); for the two saturated
-models no additional positive effect could be observed. Task framing
-sets the baseline operating regime and therefore the directional
-headroom available for detecting a label-induced change: near a floor
-further decreases are hard to observe, near a ceiling further increases
-are, and intermediate baselines give headroom in both directions.
-Calibration reliability was itself framing-dependent, and no model's
-in-band behavior in one round persisted into the next. At one framing,
-an explicit ``share everything'' instruction produced far lower
-compliance than the same model's own unlabeled baseline --- 11 of 12
-trials relayed unprompted, 1 of 12 complied with the explicit
-instruction --- an unexplained inversion, reported with no mechanism
-proposed. Findings are scoped to one controlled handoff, one host
-policy, one decision surface, and six framings authored by a single
-researcher --- not the space of possible agent tasks. This is not
-evidence that sensitivity labels are ineffective in agent systems
-generally, that task framing outweighs labels, or that a public label
-always increases leakage; it is a report that whether a label contrast
-can be measured at this handoff is framing-conditioned, that a
-pre-registered six-framing sweep found none that placed the whole panel
-inside the headroom band, and that the one interval-ambiguous framing
-(F3, Phase~9) resolved above the band for all four models while showing a
-positive public-label effect for the two models that retained upward
-headroom.
+We study how baseline saturation affects the measurement of
+sensitivity-label effects at a controlled MCP-result $\to$ A2A-message
+handoff, using deterministic verbatim sensitive-field egress --- an
+exact-substring, judge-free detector over six record values --- as the
+outcome. Earlier experiments (640 and 480 trials) showed that an
+explicit confidential-vs-public label contrast can become uninterpretable
+when the unlabeled baseline sits near a boundary: with an unlabeled arm
+added, three of four models floored on both the confidential and
+unlabeled arms, leaving the confidentiality contrast unmeasured rather
+than null. We therefore pre-registered a two-round pilot search for
+operating regimes with directional headroom. Within each round, three
+task formulations were evaluated on a common four-record pilot set,
+holding record content, labels, scoring, and the model panel fixed; the
+two rounds used disjoint pilot sets and were executed separately, so any
+cross-round difference in baseline egress is descriptive, not causal. No
+tested pilot condition placed at least three of four models inside the
+pre-specified $[0.25, 0.70]$ headroom band. One formulation, F3, failed
+the pre-registered point-estimate gate but remained interval-wise
+unresolved at $n = 12$. A separately pre-registered 1{,}536-trial F3
+resolution study (64 scenarios, three repeats, matched unlabeled/public
+arms, four models, zero attrition; raw data frozen before analysis) then
+placed all four models above the band, with Sol and Luna fully
+saturated. Where upward headroom remained, public labeling increased
+verbatim egress for Terra ($+0.167$) and Claude ($+0.104$) under the
+pre-registered model-specific confidence-interval criterion; Claude did
+not remain below 0.05 under the supplementary Holm adjustment. These
+results show that baseline saturation is an important measurement
+constraint for label-effect experiments: boundary operating regimes can
+prevent an effect in the saturated direction from being observed, and
+adding samples does not create headroom. This study measures verbatim
+field propagation, not privacy harm or contextual appropriateness, and
+it makes no claim that task wording alone produced the observed
+operating regimes.
 \end{abstract}
 
 % ===========================================================================
@@ -102,118 +83,101 @@ three-study arc, plus a separately pre-registered resolution study)
 conducted over the same fixed decision surface with the same judge-free
 scoring pipeline.
 
-The central finding is not the label effect the first study set out to
-measure. It is that \textbf{whether a sensitivity label's effect is
-measurable here depends on the task framing.} A pre-registered two-round
-sweep of six task framings did not find one that met its acceptance
-criterion --- an unlabeled-arm rate inside $[0.25, 0.70]$ for at least
-three of four models on the same framing. On point estimates no framing
-placed more than one model in that band. At the pilot's $n = 12$ per
-cell, five framings were clearly inconsistent with the panel headroom
-criterion; F3 alone remained interval-wise ambiguous, with three of four
-models' $95\%$ Wilson intervals overlapping the band, so at that sample
-size its classification could not be distinguished between rejection and
-acceptance (\S\ref{subsec:phase8}). A stopping rule fixed before either
-pilot ran ended the search after the second round rather than permitting
-a third, fourth, or fifth attempt --- so the sweep's negative result is
-what a two-round pilot could establish, not what a powered study
-concluded. A separately pre-registered resolution study (Phase~9,
-\S\ref{subsec:phase9}) then took F3 alone to 192 trials per model and
-resolved it: the unlabeled-arm egress rate is above the $[0.25, 0.70]$
-band for all four models (Sol and Luna fully saturated), so F3 fails the
-headroom rule rather than passing it --- the pilot ambiguity resolved to
-a high-egress regime, not a usable middle. Against the two models that
-retained upward headroom at F3, the public label raised verbatim egress
-(paired risk difference $+0.167$ and $+0.104$, $95\%$ CIs excluding
-zero).
+\textbf{The central finding is a measurement constraint, not a
+task-wording effect.} Across these studies, unlabeled verbatim egress
+frequently occupied \emph{saturated} operating regimes --- near a floor
+(rate $\approx 0$) or near a ceiling (rate $\approx 1$). A saturated
+baseline restricts the \emph{directional headroom} available for
+estimating a label's effect: near a floor a further decrease is
+difficult to observe, near a ceiling a further increase is, and only an
+intermediate baseline gives headroom in both directions. A
+pre-registered two-round pilot search (Phase~8) looked for a task
+formulation that would place the four-model panel's unlabeled rate
+inside $[0.25, 0.70]$ --- the pre-specified headroom band --- on the
+same formulation. None did: on point estimates no formulation placed
+more than one model in the band; five were clearly inconsistent with the
+panel criterion at pilot resolution, and one (F3) failed the
+pre-registered point-estimate gate but remained interval-wise unresolved
+at $n = 12$. A stopping rule fixed before either round ran ended the
+search after round two rather than permitting a third attempt, so the
+negative result is what a two-round pilot could establish, not what a
+powered study concluded.
+
+\paragraph{Two rounds, disjoint scenario sets.}
+Phase~8's two rounds each held their own four-record pilot set fixed
+across the three formulations and four arms they compared, so
+\emph{within-round} formulation contrasts are matched with respect to
+record content. But the two rounds used \textbf{disjoint} pilot sets ---
+round one's four scenarios overlapped the main-study 24 and were
+replaced, before round two, with four purpose-built pilot-only records
+--- and were executed at different times. Round one's fixed set sat
+predominantly in high-egress regimes; round two's (different) fixed set
+sat predominantly in low-egress regimes. Because task formulation,
+scenario set, and execution window all changed between rounds, this
+cross-round difference is descriptive and does not identify which factor
+produced it (\S\ref{subsec:phase8}).
+
+\paragraph{F3 resolved independently.}
+A separately pre-registered 1{,}536-trial study (Phase~9,
+\S\ref{subsec:phase9}) took F3 alone to 192 trials per model over 64
+generator-drawn scenarios, with matched unlabeled/public arms and the
+raw data frozen before analysis. Under its pre-registered
+interval-containment rule, F3's unlabeled-arm egress rate is above
+$[0.25, 0.70]$ for all four models (Sol and Luna fully saturated at
+$192/192$), so the panel verdict is \code{FAILS}. Where upward headroom
+remained, adding \code{[PUBLIC - OK TO SHARE]} increased verbatim egress
+for \code{gpt-5.6-terra} ($+0.167$) and \code{claude-sonnet-5}
+($+0.104$), both $95\%$ CIs excluding zero; \code{claude-sonnet-5} did
+not remain below 0.05 under the supplementary Holm adjustment. Phase~9
+resolves F3 only; it does not validate any cross-round interpretation of
+Phase~8.
 
 \paragraph{The arc.}
-A two-arm study (Phase~6, confidential vs.\ public labels) found a large
-label contrast but could not say which of the two active labels --- the
-confidential header or the public one --- was doing the work, since both
-arms carried an explicit cue and neither was a baseline. A three-arm
-extension (Phase~7) added an unlabeled baseline to resolve that
-ambiguity. It succeeded structurally --- the three contrasts
-(confidential vs.\ unlabeled, public vs.\ unlabeled, confidential vs.\
-public) are now all separately readable --- but three of four models
-produced a complete floor on both the confidential and unlabeled arms, so
-the confidentiality contrast specifically remains unresolved: not because
-no effect exists, but because the instrument had no room below zero to
-show one. Phase~7 did produce one substantial result: for
-\code{claude-sonnet-5}, the public label raised verbatim egress over the
-unlabeled baseline in every one of the ten scenarios
-(\mbox{$P - N$} mean $+0.800$) --- the only Phase~7 label effect
-measurable against a baseline that was not itself on the floor. A
-pre-registered, two-round framing sweep (Phase~8) then searched for a
-task wording that would give the other three models a baseline in a
-measurable range too, so a label's influence could be read across the
-panel rather than for one model at one framing. It did not find one that
-cleared the acceptance rule on point estimates --- though at F3 the
-pilot's $n = 12$ left that classification unresolved between rejection
-and acceptance (\S\ref{subsec:phase8}), which a separate resolution
-study (Phase~9) later settled as a rejection (\S\ref{subsec:phase9}).
-The first round's three framings
-drove \code{sol} and \code{luna} to a near-complete ceiling and left
-\code{terra} and \code{claude} more variable, \code{terra} briefly
-inside the target band; the second round's three, designed to give
-withholding a structural reason rather than a softer tone, drove
-\code{sol}, \code{terra}, and \code{luna} to a floor. The pilots did, however, carry a \code{public} arm at every
-framing --- collected under the pilot design but outside its frozen
-analysis plan. Analyzed post hoc (\S\ref{subsec:publicarm}), that arm
-supplies the within-study, same-framing label measurement the rest of
-the arc lacks: at F4, the one framing that left a model's baseline in
-range, adding the public label moved \code{claude-sonnet-5}'s rate by
-$+0.500$ ($n = 12$, exploratory). The \textbf{Phase~9 resolution study}
-then closes the arc on F3 specifically: at 192 trials per model the
-unlabeled baseline is above the headroom band for all four models
-(\code{gpt-5.6-sol} and \code{gpt-5.6-luna} fully saturated), and a
-within-study positive public-label effect is detectable only for the two
-models that retained upward headroom --- \code{gpt-5.6-terra} $+0.167$
-and \code{claude-sonnet-5} $+0.104$, both $95\%$ CIs excluding zero
-(\S\ref{subsec:phase9}).
+A two-arm study (Phase~6, confidential vs.\ public labels) found the
+confidential and public arms far apart on verbatim egress but could not
+say which of the two active labels was doing the work, since both arms
+carried an explicit cue and neither was a baseline. A three-arm extension (Phase~7) added an unlabeled baseline:
+the three contrasts became separately readable, but three of four models
+produced a complete floor on both the confidential and unlabeled arms,
+so the confidentiality contrast is unmeasured, not null. Phase~7's one
+measurable label effect was for \code{claude-sonnet-5}, whose unlabeled
+baseline was not on the floor: the public label raised verbatim egress
+in every one of the ten scenarios (\mbox{$P - N$} mean $+0.800$).
+Phase~8 then searched for a formulation giving the other three models a
+non-saturated baseline too; none was found. The pilots also carried a
+\code{public} arm at every formulation, outside the frozen analysis
+plan; analyzed post hoc (\S\ref{subsec:publicarm}), it supplies one
+within-study, same-formulation label measurement (\code{claude-sonnet-5}
+at F4, $+0.500$, $n = 12$, exploratory). Phase~9 supplies the
+confirmatory same-formulation public-vs-unlabeled measurement for F3.
 
 \paragraph{Contributions.}
-(1)~A validated measurement instrument: a suppress/permit calibration
-check that separates in the intended direction on live models ---
-\code{suppress} at exactly $0.000$ with \code{permit} above it in every
-pilot cell --- meeting the pre-registered $0.50$ separation bar for all
-four models in round one and falling below it for some models in round
-two (\S\ref{subsec:calib}); three deterministic near-match leakage
-detectors with a measured $0.0\%$ false-positive rate against adversarial
-synthetic negative controls; and a second delivery channel (a direct
-reply to the user, instead of a relay to the remote agent), built and
-live-exercised to allow isolating whether an observed effect is specific
-to agent-to-agent delegation (not used in either pilot round).
-(2)~A pre-registered, two-round task-framing sweep with a stopping rule
-fixed and followed --- the rule fired on schedule, and the
-$\sim$13{,}200-trial main study it would have gated was never executed.
-(3)~The central finding: across six framings authored by one researcher,
-no framing produced an unlabeled-arm rate in the pre-registered band for
-three of four models simultaneously, and whether a label effect is
-measurable at all is itself framing-dependent. A separately
-pre-registered resolution study (Phase~9) took the one framing the pilot
-left unresolved (F3) to 192 trials per model: it fails the headroom rule
-for all four models --- the unlabeled baseline is above the band, with
-two models fully saturated --- while the public-sharing label raises
-verbatim egress for the two models that retain upward headroom (paired
-risk difference $+0.167$ and $+0.104$, $95\%$ CIs excluding zero).
-(4)~A methodological result carried by the arc as a whole: the direction
-in which a label effect could be detected depends on where the framing
-places the baseline --- near a floor, further decreases are hard to
-observe; near a ceiling, further increases are; an intermediate baseline
-gives headroom both ways. Across the arc no framing placed the whole
-panel at an intermediate baseline, and adding samples does not create
-headroom where the baseline is saturated: Phase~9's more-than-tenfold
-increase in $n$ left F3's baseline above the band for every model (two
-fully saturated) and resolved it to another high-egress regime rather
-than a hidden middle. The
-pre-registration process also surfaced two incidental findings: an
-instrument-sensitivity check whose reliability turned out to be
-framing-dependent rather than a fixed model property, and a single
-unexplained inversion --- an explicit ``share everything'' instruction
-producing sharply \emph{lower} compliance than the same model's
-unprompted baseline --- reported as an open anomaly with no mechanism
-claimed.
+(1)~\textbf{A deterministic, judge-free instrument} for verbatim
+sensitive-field egress at an MCP $\to$ A2A handoff: an exact-substring
+outcome over six record values, three near-match specificity detectors
+with a measured $0.0\%$ false-positive rate against adversarial synthetic
+negative controls, a suppress/permit calibration check, and a second
+delivery channel (direct user reply) built and live-exercised.
+(2)~\textbf{An empirical demonstration that floor/ceiling saturation is a
+measurement constraint} for sensitivity-label experiments: across
+Phases~7--9 the unlabeled baseline was repeatedly saturated, leaving no
+headroom for a label effect in the saturated direction, and increasing
+the per-model sample more than tenfold (Phase~9) did not create headroom.
+(3)~\textbf{A pre-registered pilot-search and stopping procedure that was
+followed exactly}: two rounds over six task formulations, a fixed
+acceptance rule, and termination before the planned
+$\approx$13{,}184-trial main study when no formulation met the panel
+criterion. (4)~\textbf{A separately pre-registered 1{,}536-trial F3
+resolution study} with matched public/unlabeled arms, establishing F3 as
+a high-egress regime above the band for all four models and detecting
+model-specific public-label effects (Terra, Claude) where upward headroom
+remained. The frozen designs, byte-pinned raw data, and machine-checked
+numeric audits support these contributions and are described under
+Reproducibility (\S\ref{sec:repro}); the reproducibility engineering is
+not itself a scientific claim. Two further observations --- a calibration
+separation that varied across task formulations, and one unexplained
+``share everything'' compliance inversion --- are reported descriptively
+in \S\ref{sec:secondary}, not as contributions.
 
 % ===========================================================================
 \section{Background and System Model}
@@ -240,7 +204,7 @@ measured decision per trial is produced by an adapter given only a
 sanitized decision context (user prompt, fixed host policy, observable
 protocol history, model-visible tool list, target Agent Card where
 applicable) --- never a ground-truth label, condition name, arm name,
-sink name, framing id, or evaluator state. Two provider adapters (OpenAI
+sink name, formulation id, or evaluator state. Two provider adapters (OpenAI
 Responses, Anthropic Messages) share one provider-neutral decision seam:
 a single canonical action schema compiled to each provider's tool-use
 format and mapped back through one shared post-parse path, unchanged
@@ -264,8 +228,8 @@ Phase~8.
 \emph{MCPHunt}~\citep{mcphunt2026} evaluates cross-boundary data
 propagation within multi-server MCP agents; our flow instead crosses from
 a local MCP result into a remote A2A message (Phases~6--7 and~9) or a
-direct user reply (Phase~8) under a matched, pre-registered label or framing
-intervention. \emph{AgentRFC}~\citep{agentrfc2026} (security design
+direct user reply (Phase~8) under a matched, pre-registered label or
+task-formulation intervention. \emph{AgentRFC}~\citep{agentrfc2026} (security design
 principles, TLA+ invariants, a ``Composition Safety'' principle) and
 \emph{Formal Security Analysis of Agent Protocol
 Composition}~\citep{agentthread2026} (source-linked formal analysis plus
@@ -298,14 +262,14 @@ probed: \emph{CI-Work}~\citep{fu2026ciwork} scores enterprise agents on
 conveying needed content while withholding sensitive context across five
 information-flow directions and reports a utility--leakage trade-off;
 \emph{AgentCIBench}~\citep{goel2026agentcibench} names two failure modes
-our round-two framings deliberately induce --- \emph{task-ambiguity
+our round-two formulations were designed around --- \emph{task-ambiguity
 overshare}, where an under-specified prompt draws out dense state (our
 F4), and \emph{recipient misalignment}, where content goes to an
 addressee whose need is not established (our F5). Our study is narrower
 than all four: one record, one labeled field-egress outcome, one
-handoff, exact-substring scoring, with a pre-registered label or framing
-as the intervention rather than an adversary, and it stopped before the
-confirmatory study.
+handoff, exact-substring scoring, with a pre-registered label or task
+formulation as the intervention rather than an adversary, and it stopped
+before the confirmatory study.
 
 This paper sits closest to the literature on LLM prompt sensitivity.
 \citet{sclar2023quantifying} show meaning-preserving prompt-format
@@ -314,12 +278,14 @@ model, and argue for reporting a range of performance across plausible
 formats rather than a single one;
 \emph{PromptSET}~\citep{razavi2025benchmarking} casts predicting a
 prompt's sensitivity as its own task and finds existing methods weak at
-it. Our result is the agent-behavior analogue: task wording changed the
-unlabeled operating regime so much --- floor to ceiling across six
-framings --- that whether a pre-registered label contrast could be
-measured at all depended on it, and under the pre-registered headroom
-rule none of the six gave that contrast room to be read across the panel
-(\S\ref{subsec:phase8}).
+it. Our result is an agent-behavior analogue at the level of
+\emph{measurability}: baseline verbatim egress varied widely across the
+tested task formulations --- with several formulations placing it near a
+floor or a ceiling --- so that under the pre-registered acceptance rule
+none of the six left the label contrast readable across the panel
+(\S\ref{subsec:phase8}). Our formulations vary surface wording together
+with task-structural cues, and the two pilot rounds used disjoint
+scenario sets, so we do not isolate a pure wording effect.
 
 % ===========================================================================
 \section{Instrument}
@@ -377,6 +343,21 @@ user-turn text, never to the record or the policy.
 substring of the verbatim outbound message; $0$ otherwise, including on
 \code{stop}. No LLM judge in the primary outcome.
 
+\paragraph{What L0 does and does not measure.}
+The primary L0 outcome measures verbatim sensitive-field propagation, not
+privacy harm or contextual appropriateness. An L0-positive relay can be
+operationally appropriate --- for example, an account identifier may
+legitimately be needed by the receiving agent to act on the case. The
+outcome asks whether any scored value crossed the measured handoff
+verbatim, not whether that transfer violated a privacy norm. We use this
+deliberately narrow construct because it is deterministic and
+judge-free; semantic disclosure (paraphrase, summary, inference) and
+contextual appropriateness are outside the primary claim. Accordingly,
+\code{L0 = 1} is reported throughout as \emph{verbatim egress} /
+\emph{sensitive-field propagation} / \emph{verbatim field transfer}, and
+is not used as a synonym for ``privacy violation'', ``inappropriate
+disclosure'', or ``unsafe disclosure''.
+
 \subsection{Instrument validation}
 \label{subsec:validation}
 
@@ -386,12 +367,14 @@ account details\ldots'') and \code{permit} (``include the customer's full
 account record verbatim\ldots'') are unlabeled-arm bodies with that
 instruction appended to the user turn. The pre-registered gate: a model
 passes if \code{permit rate} $-$ \code{suppress rate} $\ge 0.50$ and
-\code{suppress rate} $\le 0.15$, pooled per model per framing. Results
-are reported in \S\ref{subsec:phase8} and \S\ref{subsec:calib}; the
-summary is that the mechanism separated cleanly in every round-one
-framing for every model and continued to separate correctly in
-direction, though not always in magnitude, in round two
-(\S\ref{subsec:calib}).
+\code{suppress rate} $\le 0.15$, pooled per model per formulation.
+Results are reported in \S\ref{subsec:phase8} and \S\ref{subsec:calib};
+the summary is that the mechanism separated in the intended direction
+(\code{permit} $>$ \code{suppress}) in every round-one and round-two
+cell, with the separation magnitude smaller in round two for some
+models. The two rounds used disjoint scenario sets
+(\S\ref{subsec:phase8}), so the round-to-round magnitude change is
+descriptive and is not attributed to task formulation.
 
 \paragraph{Near-match scoring (L1--L3).}
 The frozen primary detector (L0) is exact-substring only. Three
@@ -509,41 +492,58 @@ claude-sonnet-5 & \mbox{$C - P$} & $-0.900$ & $-1.000$ & $0 / 0 / 10$ \\
 \end{tabular}
 \end{table}
 
-\subsection{Phase 8 --- the framing sweep: ceiling, then floor, then stop}
+\subsection{Phase 8 --- a two-round pre-registered pilot search}
 \label{subsec:phase8}
 
-Phase~8 was a pre-registered, two-round sweep of the task wording
-surrounding the decision, holding record content, labels, scoring, and
-the four-model panel fixed. Each round ran \textbf{four arms} ---
-\code{suppress}, \code{unlabeled}, \code{public}, \code{permit} --- over
-4 pilot scenarios $\times$ 3 repeats, so 4 models $\times$ 3 framings
-$\times$ 4 arms $\times$ 12 $= 576$ trials per round and $n = 12$ per
-(model, framing, arm) cell. The sweep searched for a framing whose
-\code{unlabeled}-arm rate would land in the range $[0.25, 0.70]$ for at
-least three of four models simultaneously --- the pre-registered
-headroom rule --- on the reasoning that a model already at $0.00$ or
-$1.00$ has no room to show a label's influence in either direction. The
-acceptance rule read only the \code{unlabeled} and \code{permit}/%
-\code{suppress} arms; the \code{public} arm rode along and is analyzed
-separately in \S\ref{subsec:publicarm}.
+Phase~8 was a pre-registered pilot search, run in two rounds, for a task
+formulation whose \code{unlabeled}-arm egress rate would land inside
+$[0.25, 0.70]$ --- the pre-specified \emph{headroom band} --- for at
+least three of four models on the same formulation. The reasoning: a
+model already near $0.00$ or $1.00$ has no room to show a label's
+influence in the direction toward that bound. Each round ran
+\textbf{four arms} --- \code{suppress}, \code{unlabeled}, \code{public},
+\code{permit} --- over four pilot records $\times$ 3 repeats, so 4
+models $\times$ 3 formulations $\times$ 4 arms $\times$ 12 $= 576$ trials
+per round and $n = 12$ per (model, formulation, arm) cell. \textbf{Within
+each round, the three formulations were evaluated on the same four pilot
+records, holding record content, labels, scoring, and the four-model
+panel fixed.} The acceptance rule read only the \code{unlabeled} and
+\code{permit}/\code{suppress} arms; the \code{public} arm rode along and
+is analyzed post hoc in \S\ref{subsec:publicarm}.
 
-\textbf{Round one} --- three framings (F1: ``the billing agent needs to
-verify this account''; F2: ``escalate to a specialist''; F3: ``the remote
-agent asked for these details''), 576 trials, 575 completed --- drove
-\code{sol} and \code{luna} to a ceiling and left \code{terra} and
-\code{claude} more variable across the three. \textbf{Round two} --- three
-framings (F4: a status-only ask whose literal content does not require
-the record's specifics; F5: a recipient-TBD handoff, where the eventual
-recipient's need is not yet established; F6: an explicit
-reference-or-detail choice), 576 trials, 575 completed, each
-independently designed to give withholding a structural reason rather
-than a softer tone --- drove \code{sol}, \code{terra}, and \code{luna}
-back to a floor.
+\paragraph{The two rounds used disjoint record sets.}
+Round one (Phase~8C, F1/F2/F3) used \code{healthcare-billing},
+\code{logistics-shipment}, \code{insurance-claims},
+\code{ad-platform-advertiser} --- four records that overlap the 24
+main-study scenarios. Round two (Phase~8A.2, F4/F5/F6) used four
+purpose-built pilot-only records --- \code{pilotonly-vehicle-service},
+\code{pilotonly-subscription-mgmt}, \code{pilotonly-benefits-inquiry},
+\code{pilotonly-loyalty-rewards} --- created specifically because round
+one's pilot records overlapped the main study
+(\code{docs/phase_8a2_pilot_design.md} \S4). The two rounds were also
+executed at different times against different provider snapshots.
+
+\textbf{Round one} --- three formulations (F1: ``the billing agent needs
+to verify this account''; F2: ``escalate to a specialist''; F3: ``the
+remote agent asked for these details''), 576 trials, 575 completed.
+\textbf{Round two} --- three formulations (F4: a status-only ask whose
+literal content does not require the record's specifics; F5: a
+recipient-TBD handoff, where the eventual recipient's need is not yet
+established; F6: an explicit reference-or-detail choice), 576 trials, 575
+completed.
 
 \begin{table}[t]
 \centering
-\caption{Unlabeled-arm relay rate, all four models $\times$ all six
-framings.}
+\caption{Unlabeled-arm egress rate, all four models. \textbf{This is not
+a matched six-condition experiment:} columns F1--F3 are round one on
+record set A, columns F4--F6 are round two on record set B, the two sets
+are disjoint (F1--F3: \code{healthcare-billing}, \code{logistics-shipment},
+\code{insurance-claims}, \code{ad-platform-advertiser}; F4--F6:
+\code{pilotonly-vehicle-service}, \code{pilotonly-subscription-mgmt},
+\code{pilotonly-benefits-inquiry}, \code{pilotonly-loyalty-rewards}), and
+the rounds ran at different times. The round-one-to-round-two difference
+confounds task formulation, record set, and execution window and is not
+attributed to any one of them.}
 \label{tab:grid}
 \small
 \begin{tabular}{@{}lcccccc@{}}
@@ -558,77 +558,68 @@ claude-sonnet-5 & $1.000$ & $1.000$ & $0.750$ & $0.417$ & $0.917$ & $0.833$ \\
 \end{tabular}
 \end{table}
 
-Three cells fall inside the pre-registered band $[0.25, 0.70]$: terra at
-F2 ($0.500$) and F3 ($0.583$); claude at F4 ($0.417$). No other cell in
-Table~\ref{tab:grid} falls inside the band.
+Round one (set A) exhibited predominantly high-egress regimes; round two
+(set B) exhibited predominantly low-egress regimes. Because task
+formulation, pilot record set, and execution window all changed between
+rounds, this round-level difference is \textbf{descriptive and does not
+identify which factor produced it}. Within-round contrasts, by contrast,
+are matched with respect to record content: on set A, \code{gpt-5.6-terra}
+differs across F1 ($0.917$) versus F2/F3 ($0.500$, $0.583$); on set B,
+\code{claude-sonnet-5} differs across F4 ($0.417$) versus F5/F6
+($0.917$, $0.833$). These within-round differences are
+formulation-associated \emph{on that fixed pilot set and execution
+window}, and are not generalized beyond the four records of each round.
 
-\paragraph{Stated classification rules}
-(not descriptive labels --- every model placed in a category below
-satisfies the stated numeric rule, and every model excluded fails it):
-\begin{itemize}
-\item \textbf{Ceiling (round one):} minimum rate $\ge 0.917$ across F1,
-  F2, and F3. Satisfied by \code{sol} (min $1.000$) and \code{luna} (min
-  $0.917$). Not satisfied by \code{terra} (min $0.500$) or \code{claude}
-  (min $0.750$).
-\item \textbf{Floor (round two):} rate exactly $0.000$ in F4, F5, and F6.
-  Satisfied by \code{sol}, \code{terra}, and \code{luna}. Not satisfied
-  by \code{claude} ($0.417$, $0.917$, $0.833$ --- none zero).
-\item \textbf{In-band:} rate within $[0.25, 0.70]$, the pre-registered
-  headroom criterion (\S\ref{subsec:validation}, \S\ref{subsec:phase8}
-  intro). Three cells qualify, as listed above. No model was ever in-band
-  in both rounds, and no framing placed more than one of the four models
-  in-band at once: checked against every cell in Table~\ref{tab:grid},
-  the maximum simultaneous in-band count for any single framing is 1 of 4
-  (at F2, F3, and F4) and 0 of 4 at F1, F5, and F6.
-\end{itemize}
-
-The pre-registered acceptance rule required \textbf{at least three of
-four models in-band on the same framing, simultaneously}. On point
-estimates no framing reached even two. The stopping rule (fixed in
+Three cells fall inside $[0.25, 0.70]$: \code{gpt-5.6-terra} at F2
+($0.500$) and F3 ($0.583$) on set A; \code{claude-sonnet-5} at F4
+($0.417$) on set B. No other Table~\ref{tab:grid} cell is in-band, and
+the maximum simultaneous in-band count for any single formulation is 1
+of 4. The pre-registered acceptance rule required \textbf{at least three
+of four models in-band on the same formulation}; no formulation reached
+even two. The stopping rule (fixed in
 \code{docs/phase_8a2_pilot_design.md} \S1a before round two's data
 existed) therefore fired after round two: no third round was attempted,
-and the main study this sweep would have gated --- S8-A through S8-D,
-13{,}184 trials at the repeat counts fixed for the primary contrast and
-its secondary sub-studies --- was never executed.
+and the main study this search would have gated --- S8-A through S8-D,
+$\sim$13{,}200 trials (13{,}184 exactly) at the repeat counts fixed for
+the primary contrast and its secondary sub-studies --- was never
+executed.
 
-\paragraph{Resolution.}
-The classification above is a point-estimate call at $n = 12$ per cell.
-A Wilson $95\%$ interval on \code{gpt-5.6-terra}'s F2 rate ($6/12 =
-0.500$) is roughly $[0.25, 0.75]$ --- wider than the whole acceptance
-band. Applying that interval cell by cell: for F1, F2, F4, F5, and F6
-the acceptance criterion is unmet under any reading (at most two models'
-intervals reach the band). \textbf{F3 is the exception} --- three of
-four models' $95\%$ intervals overlap $[0.25, 0.70]$ there
-(\code{terra} $0.583 \to [0.32, 0.81]$, \code{luna} $0.917 \to [0.65,
-0.99]$, \code{claude} $0.750 \to [0.47, 0.91]$; only \code{sol}, 12/12,
-is firmly outside). Three of four is the acceptance threshold, so at the
-pilot's sample size F3's classification could not be distinguished
-between rejection and acceptance. The stopping rule fired correctly given
-the rule as written; the sweep's negative result on F3 turned on a
-resolution the pilot did not have. F3 is therefore the one framing
-carried forward to a separate, higher-resolution study --- Phase~9
-(\S\ref{subsec:phase9}) --- which resolves it. F3's round-one
-\code{public} arm had also been lost to a raw-data overwrite
+\paragraph{F3 at pilot resolution.}
+F3 \textbf{failed the pre-registered Phase~8 point-estimate gate} --- only
+\code{gpt-5.6-terra} ($0.583$) was in-band, and the rule needs three of
+four. \textbf{It remained interval-wise unresolved at $n = 12$}: the
+point estimates carry wide Wilson intervals (\code{gpt-5.6-terra}
+$0.583 \to [0.32, 0.81]$, \code{gpt-5.6-luna} $0.917 \to [0.65, 0.99]$,
+\code{claude-sonnet-5} $0.750 \to [0.47, 0.91]$; only \code{gpt-5.6-sol},
+12/12, is firmly above), so $n = 12$ did not have the resolution to
+place F3 confidently relative to the band. Phase~8 remains governed by
+its original point-estimate rule, and its stopping rule fired as frozen.
+F3 was carried forward, unchanged, to a separate study (Phase~9,
+\S\ref{subsec:phase9}) with its own pre-registered interval-containment
+rule; Phase~9 does not redefine the Phase~8 rule retroactively. F3's
+round-one \code{public} arm had also been lost to a raw-data overwrite
 (\S\ref{subsec:publicarm}); Phase~9 collects a fresh \code{public} arm at
-F3 over 64 new scenarios.
+F3.
 
 \subsection{Phase 9 --- the F3 resolution study}
 \label{subsec:phase9}
 
 \paragraph{Why F3, and why a separate study.}
-Phase~8's interval re-analysis (\S\ref{subsec:phase8}) left F3, and only
-F3, with three of four models' $n = 12$ Wilson intervals reaching the
-$[0.25, 0.70]$ band --- the acceptance threshold itself --- so the
-pilot's point-estimate rejection of F3 could not be told apart from an
-acceptance. Phase~9 is a new study that resolves that one question at
-adequate $n$. It does not reopen the Phase~8 sweep, does not inherit its
-point-estimate rule, and does not revisit F1--F2 or F4--F6: selecting F3
-follows the ambiguity the pilot itself flagged, and the choice, the
-design, the estimands, and the decision rules were all fixed and
-committed before any Phase~9 model call (Appendix~\ref{app:pinned}).
+F3 failed the pre-registered Phase~8 point-estimate gate but was
+interval-wise unresolved at $n = 12$ (\S\ref{subsec:phase8}): its four
+per-model point estimates carry Wilson intervals wide enough that
+$n = 12$ could not place F3 confidently relative to the $[0.25, 0.70]$
+band. Phase~9 is a new study that resolves that one question at adequate
+$n$, under its own pre-registered interval-containment rule. It does not
+reopen the Phase~8 search, does not inherit its point-estimate rule,
+does not redefine that rule retroactively, and does not revisit F1--F2
+or F4--F6: selecting F3 follows the interval ambiguity the pilot itself
+flagged (it is not chosen for its outcome), and the choice, the design,
+the estimands, and the decision rules were all fixed and committed
+before any Phase~9 model call (Appendix~\ref{app:pinned}).
 
 \paragraph{Design.}
-One framing --- the verbatim Phase~8 F3 \code{a2a_relay} prompt --- and
+One task formulation --- the verbatim Phase~8 F3 \code{a2a_relay} prompt --- and
 two arms: \code{unlabeled} (\code{N}) and \code{public} (\code{P} $=$
 \code{N} prefixed with \code{[PUBLIC - OK TO SHARE]}, byte-identical
 otherwise). Eight fixed domains $\times$ eight generator-drawn scenarios
@@ -664,7 +655,7 @@ iff its lower limit $> 0.70$; \code{UNRESOLVED} otherwise. Panel:
 adjustment across the four $\Delta_m$ contrasts was pre-registered as
 supplementary robustness only, not as the primary criterion.
 
-\paragraph{Q1 result: F3 fails the headroom rule for every model.}
+\paragraph{Q1 result: F3's unlabeled baseline is above the headroom band for every model.}
 The raw unlabeled-arm egress counts (out of 192 planned $= 64$ scenarios
 $\times$ 3 repeats) are \code{gpt-5.6-sol} $192/192$,
 \code{gpt-5.6-terra} $158/192$, \code{gpt-5.6-luna} $192/192$,
@@ -762,31 +753,35 @@ negative. The atanh-scale Q2 sensitivity analysis gives the same
 detected~/ not-detected pattern.
 
 \paragraph{The operating-regime reading.}
-Task framing sets the baseline operating regime and therefore the
-\emph{directional headroom} available for detecting a label-induced
-change. Near a floor, further decreases are difficult or impossible to
-observe; near a ceiling, further increases are; an intermediate baseline
-provides headroom in both directions. Because the public-label effects
-of interest here are positive \mbox{$P - N$} differences, a baseline
-near the ceiling is the binding constraint: it prevents detecting a
-further positive increase. Table~\ref{tab:regime} places every model's
-unlabeled baseline in each study on this scale. F3 at Phase~9 resolution
-puts all four models above the headroom band --- \code{gpt-5.6-sol} and
-\code{gpt-5.6-luna} fully saturated, \code{gpt-5.6-terra} and
-\code{claude-sonnet-5} above the band but not saturated; none is at an
-intermediate baseline. The pilot-scale interval ambiguity at F3 was a
-lack of resolution, not a hidden usable regime.
+The unlabeled baseline determines the \emph{directional headroom}
+available for detecting a label-induced change: near a floor a further
+decrease is difficult or impossible to observe; near a ceiling a further
+increase is; an intermediate baseline provides headroom in both
+directions. Because the public-label effects of interest here are
+positive \mbox{$P - N$} differences, a baseline near the ceiling is the
+binding constraint. Across the tested task formulations the unlabeled
+baseline ranged from floor to saturation (Table~\ref{tab:regime}); at
+F3, taken to Phase~9 resolution, it sits above the headroom band for all
+four models --- \code{gpt-5.6-sol} and \code{gpt-5.6-luna} fully
+saturated, \code{gpt-5.6-terra} and \code{claude-sonnet-5} above the band
+but not saturated; none is at an intermediate baseline. This is a
+statement about where the tested formulations placed the baseline, not
+about why: as noted in \S\ref{subsec:phase8}, the formulations vary
+surface wording together with task-structural cues, and the Phase~8
+rounds also differed in record set and execution window.
 
 \begin{table}[t]
 \centering
 \caption{Unlabeled-baseline operating regime, by model and study.
-\code{N} is the pooled unlabeled-arm relay/egress rate; the Phase~8
-column is the range across F1--F6 (Table~\ref{tab:grid}).}
+\code{N} is the pooled unlabeled-arm egress rate. The Phase~8 column
+reports the min--max across F1--F6 (Table~\ref{tab:grid}), which spans
+two rounds on \textbf{disjoint record sets}; it is a range of observed
+regimes, not a matched contrast.}
 \label{tab:regime}
 \small
 \begin{tabular}{@{}lcccl@{}}
 \toprule
-model & Phase~7 \code{N} & Phase~8 \code{N} (F1--F6 range) & Phase~9 F3 \code{N} & Phase~9 F3 regime \\
+model & Phase~7 \code{N} & Phase~8 \code{N} (F1--F6 min--max) & Phase~9 F3 \code{N} & Phase~9 F3 regime \\
 \midrule
 gpt-5.6-sol     & $0.000$ & $0.000$--$1.000$ & $1.000$ & saturated \\
 gpt-5.6-terra   & $0.000$ & $0.000$--$0.917$ & $0.823$ & above band \\
@@ -800,55 +795,56 @@ claude-sonnet-5 & $0.125$ & $0.417$--$1.000$ & $0.844$ & above band \\
 \section{Secondary Findings}
 \label{sec:secondary}
 
-\subsection{A calibration result can be a property of the framing, not the model}
+\subsection{Calibration separation varied within each round, not only across models}
 \label{subsec:calib}
 
-\code{gpt-5.6-terra}'s calibration separation (\code{permit} $-$
-\code{suppress}) is $1.000$ (F1), $0.750$ (F2), and $0.667$ (F3) in round
-one, and $0.167$ (F4), $0.333$ (F5), $0.167$ (F6) in round two --- at or
-above the pre-registered $0.50$ acceptance threshold in every round-one
-framing, below it in every round-two framing. This is not the same claim
-as ``the calibration check failed for terra'': in every one of these six
-cells, \code{suppress} is exactly $0.000$ and \code{permit} is strictly
-positive, so the direction the check is designed to detect --- more
-compliance under an explicit permission than under an explicit
-prohibition --- is present throughout. What changed between rounds is the
-\emph{magnitude} of that separation, which fell under the pre-registered
-bar specifically in round two. The mechanism did not break; the effect it
-measures shrank.
+The suppress/permit calibration separation (\code{permit} $-$
+\code{suppress}) is not constant across the six formulations.
+\code{gpt-5.6-terra}'s calibration separation is $1.000$ (F1), $0.750$
+(F2), $0.667$ (F3) on round one's record set A, and on round two's
+record set B it is $0.167$ (F4), $0.333$ (F5), $0.167$ (F6) --- at or
+above the pre-registered $0.50$ bar for every set-A formulation and
+below it for every set-B formulation. In all six cells \code{suppress}
+is exactly $0.000$ and \code{permit} is strictly positive, so the
+direction the check is designed to detect --- more compliance under an
+explicit permission than under an explicit prohibition --- is present
+throughout; what differs is the \emph{magnitude} of the separation.
+Because record set A and record set B are disjoint and the two rounds
+ran at different times, the round-one-to-round-two magnitude change is
+\textbf{descriptive and is not attributed to task formulation}.
 
-A second, independent instance of the same framing-dependence:
-\textbf{the model that is the ``exception'' changes between rounds.} In
-round one, terra is the only model to ever enter the pre-registered band
-(F2, F3); in round two, terra floors completely (Table~\ref{tab:grid})
-and claude becomes the sole calibration exception instead
-(\S\ref{subsec:f5}). Which model behaves atypically is itself a function
-of the framing, not a fixed property of any one model --- the same
-lesson as the separation-shrinkage finding above, reached independently.
-
-A third view of the same effect, per framing rather than per round.
-\code{permit} $-$ \code{suppress} at F4 / F5 / F6 is \code{sol} $0.667 /
-1.000 / 0.917$, \code{terra} $0.167 / 0.333 / 0.167$, \code{claude}
-$0.583 / 0.083 / 0.833$; only \code{luna} is flat ($1.000$ at all
-three). \code{claude}'s $0.083$ at F5 is the permit collapse of
+The \emph{within-round} variation is matched with respect to record
+content. On set B, \code{permit} $-$ \code{suppress} at F4 / F5 / F6 is
+\code{gpt-5.6-sol} $0.667 / 1.000 / 0.917$, \code{gpt-5.6-terra}
+$0.167 / 0.333 / 0.167$, \code{claude-sonnet-5} $0.583 / 0.083 / 0.833$;
+only \code{gpt-5.6-luna} is flat ($1.000$ at all three).
+\code{claude-sonnet-5}'s $0.083$ at F5 is the permit collapse of
 \S\ref{subsec:f5}, but even setting F5 aside its F4 and F6 separations
-($0.583$, $0.833$) differ. So an explicit instruction's effect on this
-behavior is framing-modulated for three of four models --- from an arm
-independent of the \code{unlabeled}-baseline sweep, and independent of
-the \code{public} arm of \S\ref{subsec:publicarm}.
+($0.583$, $0.833$) differ. So on that fixed four-record set, an explicit
+permission/prohibition instruction's effect on this behavior differed
+across the three formulations for three of four models --- from an arm
+independent of the \code{unlabeled}-baseline search and of the
+\code{public} arm of \S\ref{subsec:publicarm}. A related descriptive
+observation: the model that behaves most atypically differs between
+rounds --- \code{gpt-5.6-terra} on set A (the only model ever in-band,
+at F2/F3), \code{claude-sonnet-5} on set B (the calibration exception of
+\S\ref{subsec:f5}) --- but because the two rounds also differ in record
+set and execution date, this is not evidence that a formulation change
+alone moves which model is the exception.
 
 \subsection{One model never floors, and entered the band once}
 \label{subsec:claude-band}
 
 Unlike the other three, \code{claude-sonnet-5} never produced an exact
-$0.000$ rate in any of the six framings (Table~\ref{tab:grid}; minimum
-$0.417$). It entered the pre-registered band exactly once, at F4
+$0.000$ rate in any of the six formulations (Table~\ref{tab:grid};
+minimum $0.417$). It entered the pre-registered band exactly once, at F4
 ($0.417$) --- the only in-band cell outside round one. Its other two
 round-two values, F5 ($0.917$) and F6 ($0.833$), are both above the
 band's upper bound of $0.70$ and are not counted as in-band anywhere in
-this paper. This is reported descriptively and without a mechanism claim:
-it is a cross-framing stability difference between one model and the
-other three, not an explanation of it.
+this paper. This is reported descriptively and without a mechanism
+claim, and across two rounds that also differ in record set and date: it
+is a stability difference between one model and the other three, not an
+explanation of it.
 
 \subsection{The permit collapse at F5}
 \label{subsec:f5}
@@ -856,12 +852,13 @@ other three, not an explanation of it.
 At F5, an explicit ``include the customer's full account record
 verbatim'' instruction produced a \code{claude-sonnet-5} compliance rate
 of $0.083$ (1 of 12 trials) against that same model's own unlabeled-arm
-rate of $0.917$ (11 of 12 trials) at the identical framing --- lower
-compliance under an explicit instruction to share than with no
-instruction at all. No other cell among the 24 model $\times$ framing
-combinations in this study shows a \code{permit} rate below its
-corresponding unlabeled rate to any comparable degree. This is reported
-as a single unexplained anomaly. No mechanism is proposed.
+rate of $0.917$ (11 of 12 trials) at the identical formulation and on
+the same four round-two records --- lower compliance under an explicit
+instruction to share than with no instruction at all. No other cell
+among the 24 model $\times$ formulation combinations in this study shows
+a \code{permit} rate below its corresponding unlabeled rate to any
+comparable degree. This is reported as a single unexplained anomaly. No
+mechanism is proposed.
 
 A structurally different, non-comparable data point exists at F1, where
 the same model's unlabeled rate was already at the ceiling ($1.000$):
@@ -871,34 +868,35 @@ sampling variation for a cell this size. It is not counted as a second
 instance of the F5 phenomenon. The adjacent cell is more informative: at
 F2 the same model has an identical unlabeled baseline ($1.000$) and shows
 no drop at all (\code{permit} $= 1.000$) --- the same ceiling, a
-different outcome, one framing away. Instability at a saturated baseline
-is the honest reading of the F1 cell, not a second inversion.
+different outcome, one formulation away. Instability at a saturated
+baseline is the honest reading of the F1 cell, not a second inversion.
 
 \paragraph{Named follow-ups, none attempted yet:}
 (1) does the F5 collapse replicate at a larger $n$ per cell (currently
 12); (2) is it specific to this exact \code{permit} instruction wording,
 tested with alternative phrasings of the same content; (3) is it driven
-by one of the four pooled pilot scenarios rather than general to the
-framing; (4) does anything resembling it appear in another model, or in
-this model under a framing not yet tried; (5) does it appear under the
-\code{reply_to_user} sink, which neither pilot round exercised
+by one of the four round-two pilot records rather than general to the
+formulation; (4) does anything resembling it appear in another model, or
+in this model under a formulation not yet tried; (5) does it appear
+under the \code{reply_to_user} sink, which neither pilot round exercised
 (\S\ref{sec:instrument}).
 
 \subsection{The public arm: an unplanned within-study label measurement}
 \label{subsec:publicarm}
 
-The Phase~8 pilots ran four arms --- \code{suppress}, \code{unlabeled},
-\code{public}, \code{permit} --- so the \code{public}-vs-\code{unlabeled}
-(\mbox{$P - N$}) label contrast was collected at every pilot framing.
-The frozen pilot analysis plan (\code{docs/phase_8a2_pilot_design.md}
-\S6) reserved \mbox{$P - N$} as the \emph{primary} test for the main
-study and did not call for reporting it at the pilot stage; the pilot's
-job was to apply the headroom and sensitivity rules to the other arms.
-This subsection analyzes the \code{public} arm \textbf{post hoc}. The
-reason it was examined is specific and precedes the result: a review of
-this manuscript observed that the paper compared Phase~8 framing effects
-against a Phase~7 label effect measured in a \emph{different} study, with
-no within-study, same-framing label measurement anywhere. The
+The Phase~8 pilot rounds ran four arms --- \code{suppress},
+\code{unlabeled}, \code{public}, \code{permit} --- so the
+\code{public}-vs-\code{unlabeled} (\mbox{$P - N$}) label contrast was
+collected at every pilot formulation. The frozen pilot analysis plan
+(\code{docs/phase_8a2_pilot_design.md} \S6) reserved \mbox{$P - N$} as
+the \emph{primary} test for the main study and did not call for
+reporting it at the pilot stage; the pilot's job was to apply the
+headroom and sensitivity rules to the other arms. This subsection
+analyzes the \code{public} arm \textbf{post hoc}. The reason it was
+examined is specific and precedes the result: a review of this
+manuscript observed that the paper compared Phase~8 operating regimes
+against a Phase~7 label effect measured in a \emph{different} study,
+with no within-study, same-formulation label measurement anywhere. The
 \code{public}-arm data was analyzed to fill that gap --- not because F4
 or any other cell had been inspected first.
 
@@ -929,82 +927,90 @@ claude-sonnet-5 & $0.917$ & $0.417$ & $+0.500$ & $+0.083$ & $+0.167$ \\
 \end{tabular}
 \end{table}
 
-At \textbf{F4} --- the one pilot cell where a model's \code{unlabeled}
-baseline sits inside the pre-registered band (\code{claude-sonnet-5},
-\code{N} $= 0.417$) --- adding \code{[PUBLIC - OK TO SHARE]} raised the
-rate to $0.917$, a \mbox{$P - N$} of \textbf{$+0.500$} at $n = 12$. A
-Fisher exact test on that $2\times2$ gives $p \approx 0.03$; that figure
-is one comparison, chosen after the fact from the twelve
-(model, framing) cells this analysis makes available, uncorrected, at
-$n = 12$ --- a descriptive marker, not a confirmatory test. Across the
-three round-two framings where Claude's \mbox{$P - N$} is computable it
-is $+0.500$ (F4), $+0.083$ (F5), $+0.167$ (F6); the Phase~7 framing gave
-$+0.800$. The label effect, where it can be seen at all, is itself
-framing-dependent. This is one model, three framings, $n = 12$, reported
-as exploratory.
+At \textbf{F4} --- the one round-two pilot cell where a model's
+\code{unlabeled} baseline sits inside the pre-registered band
+(\code{claude-sonnet-5}, \code{N} $= 0.417$) --- adding
+\code{[PUBLIC - OK TO SHARE]} raised the rate to $0.917$, a
+\mbox{$P - N$} of \textbf{$+0.500$} at $n = 12$. A Fisher exact test on
+that $2\times2$ gives $p \approx 0.03$; that figure is one comparison,
+chosen after the fact from the twelve (model, formulation) cells this
+analysis makes available, uncorrected, at $n = 12$ --- a descriptive
+marker, not a confirmatory test. For \code{claude-sonnet-5}, the
+computable round-two \mbox{$P - N$} values are $+0.500$ (F4), $+0.083$
+(F5), $+0.167$ (F6) on record set B; the Phase~7 study (a different
+formulation, different scenarios) gave $+0.800$. This is one model,
+three round-two formulations, $n = 12$, reported as exploratory; the
+confirmatory same-formulation \mbox{$P - N$} measurement is Phase~9's F3
+result (\S\ref{subsec:phase9}).
 
 % ===========================================================================
 \section{Discussion}
 \label{sec:discussion}
 
-The claim this paper supports is deliberately narrow: \textbf{in this
-controlled handoff, task framing strongly changes the baseline
-disclosure regime and therefore the directional headroom available for
-estimating a sensitivity label's effect --- near a floor a further
-decrease is hard to observe, near a ceiling a further increase is, and
-only an intermediate baseline gives headroom both ways.} The
-pre-registered headroom rule (\S\ref{subsec:phase8}) required a model's
-\code{unlabeled}-arm rate inside $[0.25, 0.70]$ for at least three of
-four models on the same framing. On point estimates no framing reached
-two; at $n = 12$ five framings were clearly inconsistent with the panel
-headroom criterion, and F3 alone remained interval-wise ambiguous, with
-three of four models' $95\%$ intervals overlapping the band --- three of
-four being the threshold itself. The pre-registered two-round sweep
-therefore rejected every framing, and F3's rejection was, at $n = 12$,
-not distinguishable from an acceptance. A separately pre-registered
-resolution study (Phase~9, \S\ref{subsec:phase9}) took F3 to 192 trials
-per model and resolved it: the unlabeled baseline is above the band for
-all four models (\code{gpt-5.6-sol} and \code{gpt-5.6-luna} fully
-saturated), so the pilot ambiguity resolved to a high-egress regime, not
-a hidden measurable one. Where upward headroom remained, the
-public-sharing label raised verbatim egress (\code{gpt-5.6-terra}
-$+0.167$, \code{claude-sonnet-5} $+0.104$, $95\%$ CIs excluding zero);
-for the two saturated models no additional positive effect could be
-observed.
+The claim this paper supports is a measurement consequence: \textbf{in
+this controlled MCP-to-A2A handoff, baseline verbatim egress frequently
+occupied saturated operating regimes that restricted the directional
+headroom available for estimating sensitivity-label effects --- near a
+floor, further decreases are difficult to observe; near a ceiling,
+further increases are difficult to observe. A pre-registered two-round
+pilot search did not identify a task formulation that placed the full
+four-model panel inside the pre-specified $[0.25, 0.70]$ headroom band,
+and a separately pre-registered 1{,}536-trial resolution study placed
+the sole pilot-ambiguous F3 formulation above the band for all four
+models. Where upward headroom remained in Phase~9, public labeling
+increased verbatim egress for \code{gpt-5.6-terra} and
+\code{claude-sonnet-5} under the pre-registered model-specific CI
+criterion.} This claim does not require identifying \emph{why} a given
+baseline became saturated. In Phase~8 the two rounds differed
+simultaneously in task formulation, pilot record set, and execution
+window (\S\ref{subsec:phase8}), so the round-level
+ceiling-versus-floor difference is descriptive; only the within-round
+contrasts are matched.
 
 \paragraph{A methodological reading.}
-Across the arc a label effect has been undetectable in one or both
-directions for the same structural reason: the baseline sat too close to
-a bound. Near a floor (Phase~7, and F4--F6 in Phase~8) a further
-decrease cannot be seen; near a ceiling (F1--F3 in Phase~8, and F3 again
-at Phase~9 resolution) a further increase cannot. Adding samples does
-not create headroom where the baseline is saturated --- Phase~9
-increased the per-model sample more than tenfold over the pilot and F3's
-baseline stayed above the band for every model (two fully saturated);
-the extra resolution turned an apparent interval ambiguity into a
-decisive rejection and revealed a second high-egress regime rather than a
-hidden middle. The practical consequence is that a label or policy
-intervention should be evaluated only against a baseline that has
-headroom in the direction the effect is expected to move.
+Across Phases~7--9 a label effect has been undetectable in one or both
+directions for the same structural reason: the unlabeled baseline sat
+too close to a bound. Phase~7 floored three of four models; round one of
+the Phase~8 search sat near a ceiling on its fixed record set; round two
+of the Phase~8 search sat near a floor on its (different) fixed record
+set; and F3 at Phase~9 resolution sits above the band, with two models
+fully saturated. Adding samples does not create headroom where the
+baseline is saturated --- Phase~9 increased the per-model sample more
+than tenfold over the pilot and F3's baseline stayed above the band for
+every model. The practical consequence is that a label or policy
+intervention should be evaluated only against a baseline demonstrated to
+have headroom in the direction the effect is expected to move.
 
-Four things this does not claim. First, it does not claim task framing
-generally outweighs labels: the arc measures \emph{whether a label
-contrast is readable}, not a contest between the two. Second, it does
-not claim the label has no effect where the direction of interest is
-unobservable: for a model whose baseline sits at a floor or a ceiling,
-an effect in the saturated direction is unobserved, not
-observed-and-absent. Third, it does not claim that six framings --- a
-small, hand-authored sample --- represent the space of possible
-framings; F3 is now resolved, but F1--F2 and F4--F6 remain
-point-estimate calls, and other framings are untested. Fourth, it does
-not claim the public label always increases leakage: Phase~9 detected a
-positive public-label effect for the two models with headroom at F3,
-while the Phase~8 \code{public}-arm result (\S\ref{subsec:publicarm}) is
-one model at three framings, $n = 12$, outside the frozen plan. What the
-paper does establish is the process: the acceptance rule, the stopping
-rule, the separate pre-registration of the F3 resolution study, and the
-disclosure of every arm collected were fixed or followed rather than
-chosen after seeing the numbers.
+Five things this paper does not claim. First, it does not claim that
+task wording, or task formulation, \emph{caused} the observed operating
+regimes: the formulations vary surface wording together with
+task-structural cues (requested information, recipient/handoff context,
+offered action alternatives), and the Phase~8 rounds also differ in
+record set and date, so no single component is identified. Second, it
+does not claim that task formulation outweighs labels; the arc measures
+\emph{whether a label contrast is readable}, not a contest between the
+two. Third, it does not claim the label has no effect where the
+direction of interest is unobservable: for a model whose baseline sits
+at a floor or a ceiling, an effect in the saturated direction is
+unobserved, not observed-and-absent. Fourth, it does not claim that six
+formulations represent the space of possible task formulations; F3 is
+resolved, F1--F2 and F4--F6 remain point-estimate calls on their own
+pilot sets, and other formulations are untested. Fifth, it does not
+claim the public label always increases verbatim egress: Phase~9
+detected a positive public-label effect for two models with headroom at
+F3, while the Phase~8 \code{public}-arm result (\S\ref{subsec:publicarm})
+is one model, exploratory. What the paper does establish is the process:
+the acceptance rule, the stopping rule, the separate pre-registration of
+the F3 resolution study, and the disclosure of every arm collected were
+fixed or followed rather than chosen after seeing the numbers.
+
+\paragraph{Future work.}
+A controlled formulation study that holds the scenario set, the literal
+informational requirement, the recipient, the available actions, and the
+execution window fixed while varying one component at a time ---
+beginning with a meaning-preserving surface-wording variation --- would
+be needed to identify which task-formulation features cause the observed
+operating-regime differences. That study is not run here.
 
 % ===========================================================================
 \section{Limitations}
@@ -1015,37 +1021,49 @@ two-action decision surface (\code{{relay_to_remote, stop}} or
 \code{{reply_to_user, stop}}); one provider snapshot per phase; providers
 not numerically equated. \emph{(ii)} Single-decision trials: no
 multi-turn negotiation, no opportunity for the model to ask a clarifying
-question before deciding. \emph{(iii)} Six task framings, authored by one
-researcher, evaluated in two rounds of three; not a systematic or random
-sample of possible framings. ``Framing'' here spans surface wording and
-task-structural cues --- the recipient's identity, whether the literal
-request needs the record's specifics, and the offered action set --- so
-the manipulation is not a pure change of tone; this is deliberate, since
-the search was for any wording that yields an intermediate unlabeled
-baseline, not for an isolated tone effect. \emph{(iv)} Small per-cell sample size in
-the pilots (12 trials per model per arm per framing). At $n = 12$ the
-in-band/out classification is not resolvable for every cell: a Wilson
-$95\%$ interval on a $6/12$ rate spans the whole acceptance band, and at
-F3 three of four models' intervals overlapped it (\S\ref{subsec:phase8}),
-so at the pilot's $n$ the F3 classification was not resolvable ---
-Phase~9 (\S\ref{subsec:phase9}) resolves it, at 192 trials per model, as
-a rejection. The F5 anomaly (\S\ref{subsec:f5}), terra's round-two
-separation (\S\ref{subsec:calib}), and the \S\ref{subsec:publicarm}
-\mbox{$P - N$} values are all at this pilot resolution. \emph{(v)} The F1--F3 \code{public} arm was overwritten
-before it was analyzed and is unrecoverable (\S\ref{subsec:publicarm});
-the within-study label contrast therefore exists only for F4--F6, and
-only for one model. \emph{(vi)} The \code{reply_to_user} sink was
-exercised live but not systematically validated (\S\ref{sec:instrument})
-and was not part of either pilot round; its behavior under the framings
-and labels studied here is untested. \emph{(vii)} The F5 permit collapse
+question before deciding. \emph{(iii)} Six task formulations, authored by
+one researcher, evaluated in two rounds of three; not a systematic or
+random sample of possible formulations. ``Formulation'' here is
+intentionally broad: F1--F6 vary not only surface wording but also
+task-relevance cues, recipient/handoff context, and in some cases the
+action structure. The study therefore measures operating-regime
+variation across these formulations; it does not identify which
+component causes that variation. \emph{(iii-a)} \textbf{The two Phase~8
+rounds changed three things at once.} Round one (F1/F2/F3) and round two
+(F4/F5/F6) used disjoint four-record pilot sets (round one:
+\code{healthcare-billing}, \code{logistics-shipment},
+\code{insurance-claims}, \code{ad-platform-advertiser}; round two: four
+purpose-built \code{pilotonly-*} records) and were executed at different
+times against different provider snapshots. Within each round the three
+formulations share a fixed record set, so within-round contrasts are
+matched; the round-one-to-round-two difference in baseline egress
+confounds task formulation, record set, and execution window and does
+not identify a formulation effect. \emph{(iv)} Small per-cell sample size
+in the pilots (12 trials per model per arm per formulation). At $n = 12$
+the in-band/out classification is not resolvable for every cell: a
+Wilson $95\%$ interval on a $6/12$ rate spans the whole acceptance band.
+F3 failed the pre-registered Phase~8 point-estimate gate but was
+interval-wise unresolved at $n = 12$ (\S\ref{subsec:phase8}); the
+separately pre-registered Phase~9 study resolves F3, under its own
+interval-containment rule, as \code{ABOVE} the band for all four models.
+The F5 anomaly (\S\ref{subsec:f5}), the round-two calibration
+separations (\S\ref{subsec:calib}), and the \S\ref{subsec:publicarm}
+\mbox{$P - N$} values are all at this pilot resolution. \emph{(v)} The
+F1--F3 \code{public} arm was overwritten before it was analyzed and is
+unrecoverable (\S\ref{subsec:publicarm}); the within-study label
+contrast therefore exists only for F4--F6, and only for one model.
+\emph{(vi)} The \code{reply_to_user} sink was exercised live but not
+systematically validated (\S\ref{sec:instrument}) and was not part of
+either pilot round; its behavior under the formulations and labels
+studied here is untested. \emph{(vii)} The F5 permit collapse
 (\S\ref{subsec:f5}) is reported with no mechanism and has not been
 replicated. \emph{(viii)} The \code{public}-arm analysis
 (\S\ref{subsec:publicarm}) is post hoc, outside the frozen analysis
 plan, and its $p$-value is one uncorrected comparison selected from
-twelve. \emph{(ix)} The main study this sweep was designed to gate was
+twelve. \emph{(ix)} The main study this search was designed to gate was
 never executed; every Phase~8 finding in this paper is a pilot-scale
 finding, not a confirmatory one. \emph{(x)} The held-out judge (L4) has
-not been run. \emph{(xi)} Phase~9 tests one framing (F3) over 64
+not been run. \emph{(xi)} Phase~9 tests one formulation (F3) over 64
 synthetic, generator-drawn scenarios; it is not a sweep and says nothing
 about F1--F2 or F4--F6 at higher $n$. \emph{(xii)} Phase~9's Q1 estimand
 is an equal-weight mean over eight hand-selected fixed domains --- a
@@ -1063,21 +1081,24 @@ descriptive and not evidence of a zero or negative label effect.
 the pre-registered primary CI criterion, but the supplementary
 Holm-adjusted $p$ ($\approx 0.09$) did not stay below 0.05 after
 familywise adjustment (\S\ref{subsec:phase9}). \emph{(xvi)} Phase~9's 64
-scenarios are disjoint from the four Phase~8 F3 pilot scenarios, so
-Phase~9 is a higher-resolution study of the same framing, not a
+scenarios are disjoint from the four Phase~8 F3 pilot records, so
+Phase~9 is a higher-resolution study of the same task formulation, not a
 like-for-like replication of the pilot cell. \emph{(xvii)} The Phase~9
-F3 unlabeled-egress rates exceed the Phase~8 pilot estimates, but
-Phase~9 differs from that pilot in sample size ($12 \to 192$ per model),
-in the stimulus set (64 new generator-drawn scenarios, disjoint from the
-pilot's), and in execution date; with no provider snapshot pinning
-available we cannot separate sampling variability, the change in scenario
-distribution, and possible provider-endpoint drift as sources of the
-difference. \emph{(xviii)} The primary outcome L0 is verbatim
-exact-substring egress of six field values, not a semantic disclosure
-judge; paraphrased or transformed disclosure is outside the primary
-contrast (the L1--L3 near-match detectors, \S\ref{subsec:validation}, are
-descriptive only). The panel is four models from two providers and is
-not a random sample of deployed models.
+F3 study differs from the Phase~8 F3 pilot in sample size
+($12 \to 192$ per model), scenario set, and execution date. Without
+provider snapshot pinning, sampling variability, scenario-distribution
+differences, and possible provider-endpoint drift cannot be separated;
+we do not infer that behavioral drift occurred, and we do not infer it
+from pricing or infrastructure changes. \emph{(xviii)} The primary
+outcome L0 measures verbatim exact-substring egress of six field values
+(\S\ref{sec:instrument}, ``What L0 does and does not measure''): it is
+not a semantic disclosure judge and not a privacy-harm classifier ---
+\code{L0 = 1} records that a value crossed the handoff verbatim, not
+that the transfer was inappropriate. Paraphrased or transformed
+disclosure and contextual appropriateness are outside the primary
+contrast (the L1--L3 near-match detectors, \S\ref{subsec:validation},
+are descriptive only). The panel is four models from two providers and
+is not a random sample of deployed models.
 
 % ===========================================================================
 \section{Reproducibility}
@@ -1085,16 +1106,19 @@ not a random sample of deployed models.
 
 Each phase's design was frozen and committed before its data existed.
 Phase~7's three-arm extension was pre-registered in response to Phase~6's
-confound, before any Phase~7 trial ran. Phase~8's framing sweep, its
-acceptance rule, and its stopping rule were pre-registered
-(\code{docs/phase_8_design.md}, \code{docs/phase_8a2_pilot_design.md})
-before either pilot round's data existed; the second pre-registration
-document was written specifically in response to a review that identified
-a risk of selecting round-two framings based on round-one per-model
-results, and states explicitly what round-one data may and may not be
-used for in designing round two. Both pilot rounds are reported in full,
-including their rejections --- no framing that was piloted and failed is
-omitted from this paper. All raw trial data, per-model execution
+confound, before any Phase~7 trial ran. Phase~8's two-round pilot search
+(historically the ``framing sweep''), its acceptance rule, and its
+stopping rule were pre-registered (\code{docs/phase_8_design.md},
+\code{docs/phase_8a2_pilot_design.md}) before either pilot round's data
+existed; the second pre-registration document was written in response to
+a review that identified a risk of selecting round-two formulations
+based on round-one per-model results. That document also \textbf{replaced
+the round-one pilot record set} --- which overlapped the 24 main-study
+scenarios --- with four purpose-built pilot-only records, so round one
+and round two do not share a record set (\S\ref{subsec:phase8},
+Appendix~\ref{app:framings}). Both pilot rounds are reported in full,
+including their rejections --- no formulation that was piloted and failed
+is omitted from this paper. All raw trial data, per-model execution
 fingerprints, and manifest hashes are byte-pinned
 (Appendix~\ref{app:pinned}); the pilot analysis code
 (\code{app/reporting/phase_8c_pilot.py}) is committed and tested against
@@ -1130,17 +1154,28 @@ fresh \code{public} arm at F3 over 64 new scenarios.
 % ===========================================================================
 \appendix
 
-\section{Framings piloted and discarded}
+\section{Task formulations piloted and discarded}
 \label{app:framings}
 
-The six framings below are the full set piloted; none was accepted
+The six formulations below are the full set piloted; none was accepted
 (\S\ref{subsec:phase8}). Each is the verbatim user-turn prompt, run
-under the \code{a2a_relay} sink across the four pilot arms. The
+under the \code{a2a_relay} sink across the four pilot arms.
+\textbf{The two rounds used disjoint four-record pilot sets and ran at
+different times}, so F1--F3 and F4--F6 are not a matched six-condition
+contrast. Round one --- pilot record set A: \code{healthcare-billing},
+\code{logistics-shipment}, \code{insurance-claims},
+\code{ad-platform-advertiser} (these overlap the 24 main-study
+scenarios). Round two --- pilot record set B:
+\code{pilotonly-vehicle-service}, \code{pilotonly-subscription-mgmt},
+\code{pilotonly-benefits-inquiry}, \code{pilotonly-loyalty-rewards}
+(purpose-built pilot-only records, disjoint from set A and from the
+main-study scenarios; \code{docs/phase_8a2_pilot_design.md} \S4). The
 acceptance-rule outcome table follows.
 
 \begin{table}[t]
 \centering
-\caption{Round one framings (verbatim prompt, \code{a2a_relay} sink).}
+\caption{Round one formulations (verbatim prompt, \code{a2a_relay} sink;
+pilot record set A).}
 \label{tab:framings-r1}
 \small
 \begin{tabular}{@{}p{0.06\linewidth}p{0.86\linewidth}@{}}
@@ -1156,7 +1191,8 @@ F3 & ``The remote agent asked you to pull this customer's account details for th
 
 \begin{table}[t]
 \centering
-\caption{Round two framings (verbatim prompt, \code{a2a_relay} sink).}
+\caption{Round two formulations (verbatim prompt, \code{a2a_relay} sink;
+pilot record set B).}
 \label{tab:framings-r2}
 \small
 \begin{tabular}{@{}p{0.06\linewidth}p{0.86\linewidth}@{}}
@@ -1177,7 +1213,7 @@ F6 & ``Look up the record for this case. You can either send the remote agent th
 \small
 \begin{tabular}{@{}lccc@{}}
 \toprule
-framing & headroom pass ($\ge$3/4 in-band) & sensitivity pass ($\ge$3/4, sep $\ge 0.50$) & accepted \\
+formulation & headroom pass ($\ge$3/4 in-band) & sensitivity pass ($\ge$3/4, sep $\ge 0.50$) & accepted \\
 \midrule
 F1 & no (0/4) & yes (4/4) & no \\
 F2 & no (1/4) & yes (4/4) & no \\
@@ -1210,9 +1246,11 @@ canonical action-schema hash & \code{96c91c0be27b33a30cd9a9f5699acbc19e3d1522711
 
 \paragraph{Round one}
 (Phase~8C, plan \code{v8pilot}, \code{execution_mode = decision_point},
-sink \code{a2a_relay}). 576 trials planned, 575 completed, \$3.32; one
-attrition on \code{gpt-5.6-terra} (\code{max_output_tokens} truncation,
-no retry or replacement).
+sink \code{a2a_relay}; formulations F1/F2/F3; pilot record set A $=$
+\code{healthcare-billing}, \code{logistics-shipment},
+\code{insurance-claims}, \code{ad-platform-advertiser}). 576 trials
+planned, 575 completed, \$3.32; one attrition on \code{gpt-5.6-terra}
+(\code{max_output_tokens} truncation, no retry or replacement).
 
 \begin{center}
 \scriptsize
@@ -1230,9 +1268,13 @@ raw \code{trials.jsonl}, gpt-5.6-sol     & \code{8056732c70281790b50c9a062407e42
 \end{center}
 
 \paragraph{Round two}
-(Phase~8A.2, plan \code{v8pilot}, framings F4/F5/F6, pilot-only scenarios
-disjoint from the main-study set). 576 trials planned, 575 completed,
-\$3.02; one attrition on \code{gpt-5.6-terra}, same failure mode.
+{\sloppy
+(Phase~8A.2, plan \code{v8pilot}, formulations F4/F5/F6; pilot record set
+B $=$ \code{pilotonly-vehicle-service}, \code{pilotonly-subscription-mgmt},
+\code{pilotonly-benefits-inquiry}, \code{pilotonly-loyalty-rewards} ---
+purpose-built pilot-only records, disjoint from round one's set A and
+from the main-study set). 576 trials planned, 575 completed, \$3.02; one
+attrition on \code{gpt-5.6-terra}, same failure mode.\par}
 
 \begin{center}
 \scriptsize

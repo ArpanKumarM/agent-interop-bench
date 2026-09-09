@@ -130,7 +130,7 @@ def _tex_flat(tex: str) -> str:
     s = re.sub(r"\\[a-zA-Z]+", " ", s)  # remaining control words
     s = s.replace("$", "").replace("{", "").replace("}", "")
     s = s.replace("\x00", "$")  # restore escaped $ as a literal dollar
-    return re.sub(r"[ \t]+", " ", s)
+    return re.sub(r"\s+", " ", s)
 
 
 MAIN_V2_TEX_FLAT = _tex_flat(MAIN_V2_TEX)
@@ -434,7 +434,7 @@ def audit_phase6_phase7_against_frozen_artifacts() -> None:
 def audit_calibration_separations_in_s61() -> None:
     seps = grid.calibration_separations("gpt-5.6-terra")
     m = re.search(
-        r"gpt-5\.6-terra`'s calibration separation.*?round two[^.]*\.",
+        r"gpt-5\.6-terra`'s calibration\s+separation.{0,400}",
         MAIN_V2,
         re.DOTALL,
     )
